@@ -4,9 +4,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 
 // import { store } from './common/components/store'
-import { SignUp } from './common/components/pruebasLogin/signUp'
-import { Layout } from './common/pages/layout/layout'
-import { Dashboard } from './dashboard/pages/dashboard'
+// import { SignUp } from './common/components/pruebasLogin/signUp'
+import { Layout } from './common/pages/layout/layout.jsx'
+import { Dashboard } from './dashboard/dashboard.jsx'
 
 
 

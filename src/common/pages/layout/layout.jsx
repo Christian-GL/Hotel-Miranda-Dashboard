@@ -2,7 +2,8 @@
 import { useState } from "react"
 import { Outlet } from "react-router-dom"
 
-import * as ly from "../../styles/layout.js"
+import * as hd from "../../styles/header.js"
+import * as sb from "../../styles/sidebarMenu.js"
 
 
 export const Layout = () => {
@@ -15,74 +16,77 @@ export const Layout = () => {
 
     return (<>
 
-        <ly.Header display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-
+        <hd.Header display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
             <div>
-                <ly.IconMenu onClick={displaySidebarMenu} />
-                <ly.TitleH2>Dashboard</ly.TitleH2>
+                {sidebarDisplayed ?
+                    <hd.IconMenuCollapsed onClick={displaySidebarMenu} /> :
+                    <hd.IconMenuNotCollaped onClick={displaySidebarMenu} />
+                }
+                <hd.TitleH2>Dashboard</hd.TitleH2>
             </div>
             <div>
-                <ly.IconMail></ly.IconMail>
-                <ly.IconBell></ly.IconBell>
-                <ly.IconLogOut></ly.IconLogOut>
+                <hd.IconMail />
+                <hd.IconBell />
+                <hd.IconLogOut />
             </div>
-        </ly.Header>
+        </hd.Header>
 
 
-        <ly.AsideSideNavigationBar display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+        <sb.AsideSideNavigationBar display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
             <div>
-                <ly.IconHotel display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} ></ly.IconHotel>
-                <ly.DivCtnTitle display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                    <ly.TitleH1>travl</ly.TitleH1>
-                    <ly.PTitleText>Hotel Admin Dashboard</ly.PTitleText>
-                </ly.DivCtnTitle>
+                <sb.IconHotel display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} />
+                <sb.DivCtnTitle display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                    <sb.TitleH1>travl</sb.TitleH1>
+                    <sb.PTitleText>Hotel Admin Dashboard</sb.PTitleText>
+                </sb.DivCtnTitle>
             </div>
 
             <div>
-                <ly.DivCtnNavOption>
-                    <ly.IconDashboard></ly.IconDashboard>
-                    <ly.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                <sb.DivCtnNavOption>
+                    <sb.IconDashboard />
+                    <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                         Dashboard
-                    </ly.PNavOptionText>
-                </ly.DivCtnNavOption>
-                <ly.DivCtnNavOption>
-                    <ly.IconBooking></ly.IconBooking>
-                    <ly.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                    </sb.PNavOptionText>
+                </sb.DivCtnNavOption>
+                <sb.DivCtnNavOption>
+                    <sb.IconBooking />
+                    <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                         Bookings
-                    </ly.PNavOptionText>
-                </ly.DivCtnNavOption>
-                <ly.DivCtnNavOption>
-                    <ly.IconRooms></ly.IconRooms>
-                    <ly.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                    </sb.PNavOptionText>
+                </sb.DivCtnNavOption>
+                <sb.DivCtnNavOption>
+                    <sb.IconRooms />
+                    <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                         Rooms
-                    </ly.PNavOptionText>
-                </ly.DivCtnNavOption>
-                <ly.DivCtnNavOption>
-                    <ly.IconContact></ly.IconContact>
-                    <ly.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                    </sb.PNavOptionText>
+                </sb.DivCtnNavOption>
+                <sb.DivCtnNavOption>
+                    <sb.IconContact />
+                    <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                         Contact
-                    </ly.PNavOptionText>
-                </ly.DivCtnNavOption>
-                <ly.DivCtnNavOption>
-                    <ly.IconUsers></ly.IconUsers>
-                    <ly.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                    </sb.PNavOptionText>
+                </sb.DivCtnNavOption>
+                <sb.DivCtnNavOption>
+                    <sb.IconUsers />
+                    <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                         Users
-                    </ly.PNavOptionText>
-                </ly.DivCtnNavOption>
+                    </sb.PNavOptionText>
+                </sb.DivCtnNavOption>
             </div>
 
-            <ly.DivCtnUser display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                <ly.ImgProfile src="src\common\media\img\HC.png" ></ly.ImgProfile>
-                <ly.TitleH4>Henry Cavill</ly.TitleH4>
-                <ly.TitleH5>HenryCavill@gmail.com</ly.TitleH5>
-                <ly.ButtonContactUs>Contact Us</ly.ButtonContactUs>
-            </ly.DivCtnUser>
+            <sb.DivCtnUser display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                <sb.ImgProfile src="src\common\media\img\HC.png" />
+                <sb.TitleH4>Henry Cavill</sb.TitleH4>
+                <sb.TitleH5>HenryCavill@gmail.com</sb.TitleH5>
+                <sb.ButtonContactUs>Contact Us</sb.ButtonContactUs>
+            </sb.DivCtnUser>
 
-            <ly.DivCtnCredits display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                <ly.TitleMayorCreditH5>Travl Hotel Admin Dashboard</ly.TitleMayorCreditH5>
-                <ly.TitleMinorCreditH6>2025 All Rights Reserved</ly.TitleMinorCreditH6>
-            </ly.DivCtnCredits>
-        </ly.AsideSideNavigationBar>
+            <sb.DivCtnCredits display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                <sb.TitleMayorCreditH5>Travl Hotel Admin Dashboard</sb.TitleMayorCreditH5>
+                <sb.TitleMinorCreditH6>2025 All Rights Reserved</sb.TitleMinorCreditH6>
+            </sb.DivCtnCredits>
+        </sb.AsideSideNavigationBar>
+
 
         <main>
             <Outlet />
