@@ -17,7 +17,7 @@ export const AsideSideNavigationBar = styled.aside`
     align-items: ${props => props.display === 'collapsed' ? 'center' : 'left'};;
     justify-content: ${props => props.display === 'collapsed' ? 'flex-start' : 'space-between'};
     padding: ${props => props.display === 'collapsed' ? '1em' : '1em 2.5em'};
-    width: ${props => props.display === 'collapsed' ? '5rem' : '18rem'};                       // <---- !!!!!
+    width: ${props => props.display === 'collapsed' ? '5rem' : '18rem'};
     height: 100vh;
     text-align: left;
     transition: 0.5s ease;
@@ -54,11 +54,6 @@ export const PTitleText = styled.p`
 `
 
 // Nav options
-export const DivCtnNavOption = styled.div`
-    padding: 1em 0;
-    cursor: pointer;
-`
-
 export const IconDashboard = styled(LuLayoutDashboard)`
     display: inline-block;
     vertical-align: middle;
@@ -108,6 +103,24 @@ export const PNavOptionText = styled.p`
     color: ${gb.colorGrayIconAndTextNavOption};
 `
 
+export const DivCtnNavOption = styled.div`
+    padding: 1.25em 0;
+    cursor: pointer;
+
+    &:hover ${IconDashboard},
+    &:hover ${IconBooking},
+    &:hover ${IconRooms},
+    &:hover ${IconContact},
+    &:hover ${IconUsers} {
+        color: ${gb.colorRed};
+    }
+
+    &:hover ${PNavOptionText} {
+        font-weight: 700;
+        color: ${gb.colorRed};
+    }
+`
+
 // Profile
 export const DivCtnUser = styled.div`
     display: ${props => props.display === 'collapsed' ? 'none' : 'block'};
@@ -115,9 +128,7 @@ export const DivCtnUser = styled.div`
     padding: 3em 1em 1em;
     text-align: center;
     border-radius: 15%;
-    box-shadow: 0 0.10em 0.15em ${gb.colorGray}, // bottom
-            -0.1em 0.10em 0.5em ${gb.colorGray}, // left
-            0.1em 0.10em 0.5em ${gb.colorGray}; // right
+    box-shadow: ${gb.boxShadowCustom};
 `
 
 export const ImgProfile = styled.img`
@@ -132,7 +143,7 @@ export const ImgProfile = styled.img`
 export const TitleH4 = styled.h4`
     font-family: ${gb.fontPoppins};
     font-weight: 600;
-    color: ${gb.colorGrayTitleProfile};
+    color: ${gb.colorGray39};
 `
 
 export const TitleH5 = styled.h5`

@@ -18,6 +18,7 @@ export const Header = styled.header`
     padding: 2em;
     width: 100%;
     height: auto;
+    // box-shadow: inset 0px 0px 10px 3px ${gb.colorGray};
     background-color: ${gb.colorWhiteFull};
 `
 
@@ -40,7 +41,7 @@ export const TitleH2 = styled.h2`
     vertical-align: middle;
     margin-left: 2.5rem;
     font-family: ${gb.fontPoppins};
-    font-size: 1.25em;
+    font-size: 1.5em;
     color: ${gb.colorBlack26};
 `
 
