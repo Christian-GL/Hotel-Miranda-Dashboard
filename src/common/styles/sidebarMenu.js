@@ -12,7 +12,6 @@ import * as gb from './globalVars.js'
 
 
 export const AsideSideNavigationBar = styled.aside`
-    // position: sticky;
     display: flex;
     flex-direction: column;
     align-items: ${props => props.display === 'collapsed' ? 'center' : 'left'};;
@@ -146,7 +145,7 @@ export const TitleH5 = styled.h5`
 export const ButtonContactUs = styled.button`
     padding: 1em 2em;
     border: none;
-    border-radius: 15%;
+    border-radius: 1rem;
     cursor: pointer;
     background-color: ${gb.colorGrayButtonProfile};
 `

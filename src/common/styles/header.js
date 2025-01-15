@@ -11,23 +11,17 @@ import * as gb from '../styles/globalVars.js'
 
 
 export const Header = styled.header`
-    // position: fixed;
-    // top: 0;
-    // left: ${props => props.display === 'collapsed' ? '5rem' : '18rem'};
     transition: 0.5s ease;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1em;
+    padding: 2em;
     width: 100%;
     height: auto;
     background-color: ${gb.colorWhiteFull};
-
-    border-bottom: 5px solid red;
 `
 
 export const IconMenuCollapsed = styled(HiMenuAlt2)`
-    margin-left: 1rem;
     width: 1.5rem;
     height: auto;
     vertical-align: middle;
@@ -35,7 +29,6 @@ export const IconMenuCollapsed = styled(HiMenuAlt2)`
 `
 
 export const IconMenuNotCollaped = styled(MdKeyboardDoubleArrowLeft)`
-    margin-left: 1rem;
     width: 1.5rem;
     height: auto;
     vertical-align: middle;

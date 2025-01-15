@@ -8,13 +8,16 @@ import * as gb from '../common/styles/globalVars.js'
 
 export const SectionDashboard = styled.section`
     // display: grid;
-    background-color: lightblue;
+    padding: 2em;
+    background-color: yellow;
 `
 
 export const SectionStats = styled.section`
     display: flex;
     flex: 1 1 0;
-    padding: 2em;
+    padding: 1em;
+    border-radius: 1rem;
+    background-color: lightblue;
 `
 
 export const ArticleStat = styled.article`
