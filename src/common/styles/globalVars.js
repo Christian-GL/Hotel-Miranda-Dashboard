@@ -7,6 +7,7 @@ export const colorRed = '#E23428';
 export const colorGray = '#5D5449';
 export const colorGrayIconHotel = '#135846';
 export const colorGrayTextKPI = '#787878';
+export const colorGrayTextReview = '#4E4E4E';
 export const colorGray39 = '#393939';
 export const colorGrayEmailProfile = '#B2B2B2';
 export const colorGrayButtonProfile = '#EBF1EF';

@@ -5,6 +5,8 @@ import { MdOutlineBedroomParent } from "react-icons/md";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { IoLogInOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
+import { FaRegCheckCircle } from "react-icons/fa";
+import { RxCrossCircled } from "react-icons/rx";
 
 import * as gb from '../../common/styles/globalVars.js'
 
@@ -139,5 +141,74 @@ export const ArticleReview = styled.article`
     padding: 1em;
     border-radius: 1rem;
     box-shadow: ${gb.boxShadowCustom};
+    background-color: ${gb.colorWhiteFull};
+`
+
+export const PTextReview = styled.p`
+    text-align: left;
+    font-family: ${gb.fontPoppins};
+    font-size: 1em;
+    color: ${gb.colorGrayTextReview};
+`
+
+export const DivCtnDetails = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    min-width: 22rem;
+    text-align: left;
+`
+
+export const ImgProfile = styled.img`
+    display: inline-block;
+    vertical-align: middle;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.5rem;
+`
+
+export const DivCtnInfoDetails = styled.div`
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 1em;
+`
+
+export const DivCtnReviewDetails = styled.div`
+    display: inline-block;
+    vertical-align: middle;
+`
+
+export const TitleNameProfile = styled.h6`
+    display: inline-block;
+    vertical-align: middle;
+    font-family: ${gb.fontPoppins};
+    font-size: 1em;
+    color: ${gb.colorBlack26};
+`
+
+export const DivCtnIcons = styled.div`
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 2.5rem;
+    padding-left: 1em;
+`
+
+export const IconCheckConfirm = styled(FaRegCheckCircle)`
+    display: inline-block;
+    vertical-align: middle;
+    width: 1.75rem;
+    height: auto;
+    cursor: pointer;
+    color: ${gb.colorGreen};
+    background-color: ${gb.colorWhiteFull};
+`
+
+export const IconCheckCross = styled(RxCrossCircled)`
+    display: inline-block;
+    vertical-align: middle;
+    width: 1.9rem;
+    height: auto;
+    cursor: pointer;
+    color: ${gb.colorRed};
     background-color: ${gb.colorWhiteFull};
 `

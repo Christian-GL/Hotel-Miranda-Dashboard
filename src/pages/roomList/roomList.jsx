@@ -1,9 +1,9 @@
 
 import { useState } from "react"
 
-import roomListData from "../../common/data/roomListData.json"
 import * as rl from "./roomList.js"
 import { Table } from "../../common/components/table/table.jsx"
+import roomListData from "../../common/data/roomListData.json"
 
 
 export const RoomList = () => {
@@ -15,7 +15,7 @@ export const RoomList = () => {
     return (
 
         <rl.SectionPageRoomList>
-            <Table rowList={roomList} columnList={nameColumnList}></Table>
+            <Table tableType='roomList' rowList={roomList} columnList={nameColumnList}></Table>
         </rl.SectionPageRoomList>
 
     )

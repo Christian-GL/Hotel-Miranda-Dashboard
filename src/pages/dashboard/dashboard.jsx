@@ -4,13 +4,6 @@ import * as db from "./dashboard.js"
 
 export const Dashboard = () => {
 
-    const PrimaryButtonClickHandler = () => {
-        console.log("Primary Button Clicked")
-    }
-    const SecondaryButtonClickHandler = () => {
-        console.log("Secondary Button Clicked")
-    }
-
     return (
 
         <db.SectionPageDashboard>
@@ -49,15 +42,67 @@ export const Dashboard = () => {
             <db.SectionReviews>
                 <db.TitleSectionReviewsH5>Latest Review by Customers</db.TitleSectionReviewsH5>
                 <db.DivCtnReviews>
+
                     <db.ArticleReview>
-                        Review 1
+                        <db.PTextReview>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+                        </db.PTextReview>
+                        <db.DivCtnDetails>
+                            <db.DivCtnReviewDetails>
+                                <db.ImgProfile src="src\common\media\img\PedroSanchez.png" />
+                                <db.DivCtnInfoDetails>
+                                    <db.TitleNameProfile>Pedro Sánchez</db.TitleNameProfile>
+                                    <db.TextH5>4m ago</db.TextH5>
+                                </db.DivCtnInfoDetails>
+                            </db.DivCtnReviewDetails>
+                            <db.DivCtnIcons>
+                                <db.IconCheckConfirm />
+                                <db.IconCheckCross />
+                            </db.DivCtnIcons>
+                        </db.DivCtnDetails>
                     </db.ArticleReview>
+
                     <db.ArticleReview>
-                        Review 2
+                        <db.PTextReview>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+                        </db.PTextReview>
+                        <db.DivCtnDetails>
+                            <db.DivCtnReviewDetails>
+                                <db.ImgProfile src="src\common\media\img\PedroSanchez.png" />
+                                <db.DivCtnInfoDetails>
+                                    <db.TitleNameProfile>Pedro Sánchez</db.TitleNameProfile>
+                                    <db.TextH5>4m ago</db.TextH5>
+                                </db.DivCtnInfoDetails>
+                            </db.DivCtnReviewDetails>
+                            <db.DivCtnIcons>
+                                <db.IconCheckConfirm />
+                                <db.IconCheckCross />
+                            </db.DivCtnIcons>
+                        </db.DivCtnDetails>
                     </db.ArticleReview>
+
                     <db.ArticleReview>
-                        Review 3
+                        <db.PTextReview>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+                        </db.PTextReview>
+                        <db.DivCtnDetails>
+                            <db.DivCtnReviewDetails>
+                                <db.ImgProfile src="src\common\media\img\PedroSanchez.png" />
+                                <db.DivCtnInfoDetails>
+                                    <db.TitleNameProfile>Pedro Sánchez</db.TitleNameProfile>
+                                    <db.TextH5>4m ago</db.TextH5>
+                                </db.DivCtnInfoDetails>
+                            </db.DivCtnReviewDetails>
+                            <db.DivCtnIcons>
+                                <db.IconCheckConfirm />
+                                <db.IconCheckCross />
+                            </db.DivCtnIcons>
+                        </db.DivCtnDetails>
                     </db.ArticleReview>
+
                 </db.DivCtnReviews>
             </db.SectionReviews>
 

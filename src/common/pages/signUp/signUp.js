@@ -89,6 +89,7 @@ export const ButtonSignUp = styled.button`
     font-weight: 400;
     border: none;
     border-radius: 1rem;
+    cursor: pointer;
     color: ${gb.colorWhiteFull};
     background-color: ${gb.colorRed};
 `

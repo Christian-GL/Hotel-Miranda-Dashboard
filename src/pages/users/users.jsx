@@ -1,21 +1,21 @@
 
 import { useState } from "react"
 
-import roomListData from "../../common/data/roomListData.json"
 import * as us from "./users.js"
 import { Table } from "../../common/components/table/table.jsx"
+import usersData from "../../common/data/usersData.json"
 
 
 export const Users = () => {
 
-    // En la tabla el campo vacio incluye el "id" y el "número" de habitación (su columna no está nombrada)
-    const nameColumnList = ['Room name', '', 'Room type', 'Amenities', 'Price', 'Offer Price', 'Status']
-    const [roomList, setRoomList] = useState(roomListData)
+    // En la tabla el campo vacio incluye el "id", "nombre completo" e "start_date" (su columna no está nombrada)
+    const nameColumnList = ['Name', '', 'Start Date', 'Description', 'Phone number', 'Status']
+    const [roomList, setRoomList] = useState(usersData)
 
     return (
 
         <us.SectionPageUsers>
-            <Table rowList={roomList} columnList={nameColumnList}></Table>
+            <Table tableType='users' rowList={roomList} columnList={nameColumnList}></Table>
         </us.SectionPageUsers>
 
     )

@@ -13,17 +13,16 @@ import { Contact } from './pages/contact/contact.jsx'
 import { Users } from './pages/users/users.jsx'
 
 
-
 createRoot(document.getElementById('root')).render(
     <BrowserRouter>
         <Routes>
             <Route path='' element={<SignUp />} />
-            <Route element={<Layout />}>
-                <Route path="/dashboard" element={<CheckAutentication element={<Dashboard />} />} />
-                <Route path="/bookings" element={<CheckAutentication element={<Bookings />} />} />
-                <Route path="/roomList" element={<CheckAutentication element={<RoomList />} />} />
-                <Route path="/contact" element={<CheckAutentication element={<Contact />} />} />
-                <Route path="/users" element={<CheckAutentication element={<Users />} />} />
+            <Route element={<CheckAutentication element={<Layout />} />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/bookings" element={<Bookings />} />
+                <Route path="/roomList" element={<RoomList />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/users" element={<Users />} />
             </Route>
         </Routes>
     </BrowserRouter >

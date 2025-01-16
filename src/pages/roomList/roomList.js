@@ -14,9 +14,3 @@ export const SectionPageRoomList = styled.section`
     border: 5px solid blue;
     background-color: ${gb.colorGrayBackgroundPage};
 `
-
-// SSSSSs
-export const SectionSSSSSSSS = styled.section`
-    display: flex;
-    padding: 1em 0;
-`

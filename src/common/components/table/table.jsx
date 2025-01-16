@@ -15,50 +15,104 @@ export const Table = (props) => {
     }
 
     const roomListDataPerRow = (roomData, index) => {
-
         return [
-            <tb.ImgTable key={index + '-1'} src={`${roomData.photo}`} />,
+            <tb.TDTable key={index + '-1'} minwidth='10rem' maxwidth='10rem'>
+                <tb.ImgTable src={`${roomData.photo}`} />
+            </tb.TDTable>,
 
-            <tb.LiTable key={index + '-2'} alignitems='left'>
-                <tb.IdTableH6>{roomData.number}</tb.IdTableH6>
-                <tb.TextTableH6>{roomData.id}</tb.TextTableH6>
-            </tb.LiTable>,
+            <tb.TDTable key={index + '-2'} alignitems='left'>
+                <tb.TextGreenTableH6>{roomData.number}</tb.TextGreenTableH6>
+                <tb.TextGrayTableH6>{roomData.id}</tb.TextGrayTableH6>
+            </tb.TDTable>,
 
-            <tb.LiTable key={index + '-3'}>
+            <tb.TDTable key={index + '-3'} minwidth='7rem' maxwidth='7rem'>
                 {eachFirstLetterToUppercase(
                     roomData.type.replace('_', ' ')
                 )}
-            </tb.LiTable>,
+            </tb.TDTable>,
 
-            <tb.LiTable key={index + '-4'}>
+            <tb.TDTable key={index + '-4'}>
                 {roomData.amenities}
-            </tb.LiTable>,
+            </tb.TDTable>,
 
-            <tb.LiTable key={index + '-5'} flexdirection='row'>
+            <tb.TDTable key={index + '-5'} flexdirection='row'>
                 <b>${roomData.price}</b> <tb.PTextPerNight>&nbsp;/night</tb.PTextPerNight>
-            </tb.LiTable>,
+            </tb.TDTable>,
 
-            <tb.LiTable key={index + '-6'} flexdirection='row'>
+            <tb.TDTable key={index + '-6'} flexdirection='row'>
                 <b>${roomData.offer_price}</b> <tb.PTextPerNight>&nbsp;/night</tb.PTextPerNight>
-            </tb.LiTable>,
+            </tb.TDTable>,
 
-            <tb.LiTable key={index + '-7'}>
+            <tb.TDTable key={index + '-7'}>
                 <ButtonStatus status={roomData.status} />
-            </tb.LiTable>
+            </tb.TDTable>
         ]
     }
 
+    const usersDataPerRow = (userData, index) => {
+        return [
+            <tb.TDTable key={index + '-1'} minwidth='10rem' maxwidth='10rem'>
+                <tb.ImgTable src={`${userData.photo}`} />
+            </tb.TDTable>,
 
-    return (
+            <tb.TDTable key={index + '-2'} alignitems='left'>
+                <tb.TextBlackTableH6>{userData.full_name}</tb.TextBlackTableH6>
+                <tb.TextGrayTableH6>{userData.id_employee}</tb.TextGrayTableH6>
+                <tb.TextGrayTableH6>{userData.email}</tb.TextGrayTableH6>
+            </tb.TDTable>,
 
-        <tb.UlTableRoomList rowlistlength={`${props.rowList.length + 1}`} columnlistlength={`${props.columnList.length}`} >
-            {props.columnList.map((nameColumn, index) =>
-                <tb.LiTable key={index} justifycontent='flex-end'><b>{nameColumn}</b></tb.LiTable>
-            )}
-            {props.rowList.map((roomData, index) =>
-                roomListDataPerRow(roomData, index)
-            )}
-        </tb.UlTableRoomList>
+            <tb.TDTable key={index + '-3'}>
+                {userData.start_date}
+            </tb.TDTable>,
 
-    )
+            <tb.TDTable key={index + '-4'} minwidth='30rem' maxwidth='30rem'>
+                {userData.description}
+            </tb.TDTable>,
+
+            <tb.TDTable key={index + '-4'} flexdirection='row' minwidth='10rem' maxwidth='10rem'>
+                <tb.IconPhone />
+                {userData.phone_number}
+            </tb.TDTable>,
+
+            <tb.TDTable key={index + '-7'}>
+                <ButtonStatus status={userData.status_active} />
+            </tb.TDTable>
+        ]
+    }
+
+    const createTable = () => {
+        switch (props.tableType) {
+
+            case 'roomList':
+                return (
+                    <tb.Table rowlistlength={`${props.rowList.length + 1}`} columnlistlength={`${props.columnList.length}`} >
+                        {props.columnList.map((nameColumn, index) =>
+                            <tb.THTable key={index}>{nameColumn}</tb.THTable>
+                        )}
+                        {props.rowList.map((roomData, index) =>
+                            roomListDataPerRow(roomData, index)
+                        )}
+                    </tb.Table>
+                )
+
+            case 'users':
+                return (
+                    <tb.Table rowlistlength={`${props.rowList.length + 1}`} columnlistlength={`${props.columnList.length}`} >
+                        {props.columnList.map((nameColumn, index) =>
+                            <tb.THTable key={index}>{nameColumn}</tb.THTable>
+                        )}
+                        {props.rowList.map((userData, index) =>
+                            usersDataPerRow(userData, index)
+                        )}
+                    </tb.Table>
+                )
+        }
+    }
+
+
+    return (<>
+
+        {createTable()}
+
+    </>)
 }
