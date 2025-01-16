@@ -8,13 +8,13 @@ import { MdOutlineBedroomParent } from "react-icons/md";
 import { MdContacts } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 
-import * as gb from './globalVars.js'
+import * as gb from '../../styles/globalVars.js'
 
 
 export const AsideSideNavigationBar = styled.aside`
     display: flex;
     flex-direction: column;
-    align-items: ${props => props.display === 'collapsed' ? 'center' : 'left'};;
+    align-items: ${props => props.display === 'collapsed' ? 'center' : 'left'};
     justify-content: ${props => props.display === 'collapsed' ? 'flex-start' : 'space-between'};
     padding: ${props => props.display === 'collapsed' ? '1em' : '1em 2.5em'};
     width: ${props => props.display === 'collapsed' ? '5rem' : '18rem'};
@@ -59,7 +59,7 @@ export const IconDashboard = styled(LuLayoutDashboard)`
     vertical-align: middle;
     width: 1.5rem;
     height: auto;
-    color: ${gb.colorGrayIconAndTextNavOption};
+    color: ${gb.colorGreen};
 `
 
 export const IconBooking = styled(FaRegCalendarAlt)`
@@ -67,7 +67,7 @@ export const IconBooking = styled(FaRegCalendarAlt)`
     vertical-align: middle;
     width: 1.5rem;
     height: auto;
-    color: ${gb.colorGrayIconAndTextNavOption};
+    color: ${gb.colorGreen};
 `
 
 export const IconRooms = styled(MdOutlineBedroomParent)`
@@ -75,7 +75,7 @@ export const IconRooms = styled(MdOutlineBedroomParent)`
     vertical-align: middle;
     width: 1.5rem;
     height: auto;
-    color: ${gb.colorGrayIconAndTextNavOption};
+    color: ${gb.colorGreen};
 `
 
 export const IconContact = styled(MdContacts)`
@@ -83,7 +83,7 @@ export const IconContact = styled(MdContacts)`
     vertical-align: middle;
     width: 1.5rem;
     height: auto;
-    color: ${gb.colorGrayIconAndTextNavOption};
+    color: ${gb.colorGreen};
 `
 
 export const IconUsers = styled(FaUser)`
@@ -91,7 +91,7 @@ export const IconUsers = styled(FaUser)`
     vertical-align: middle;
     width: 1.5rem;
     height: auto;
-    color: ${gb.colorGrayIconAndTextNavOption};
+    color: ${gb.colorGreen};
 `
 
 export const PNavOptionText = styled.p`
@@ -100,7 +100,7 @@ export const PNavOptionText = styled.p`
     margin-left: 1.5rem;
     font-family: ${gb.fontPoppins};
     font-size: 0.85em;
-    color: ${gb.colorGrayIconAndTextNavOption};
+    color: ${gb.colorGreen};
 `
 
 export const DivCtnNavOption = styled.div`
@@ -125,6 +125,7 @@ export const DivCtnNavOption = styled.div`
 export const DivCtnUser = styled.div`
     display: ${props => props.display === 'collapsed' ? 'none' : 'block'};
     position: relative;
+    margin-top: 2rem;
     padding: 3em 1em 1em;
     text-align: center;
     border-radius: 15%;
@@ -175,5 +176,5 @@ export const TitleMayorCreditH5 = styled.h5`
 export const TitleMinorCreditH6 = styled.h6`
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    color: ${gb.colorGrayCreditMinorTitle};
+    color: ${gb.colorGreen};
 `

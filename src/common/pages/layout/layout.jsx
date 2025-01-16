@@ -1,9 +1,10 @@
 
 import { useState } from "react"
 import { Outlet } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
-import * as hd from "../../styles/header.js"
-import * as sb from "../../styles/sidebarMenu.js"
+import * as hd from "./header.js"
+import * as sb from "./sidebarMenu.js"
 
 
 export const Layout = () => {
@@ -14,9 +15,17 @@ export const Layout = () => {
         setSidebarDisplayed(!sidebarDisplayed)
     }
 
-    return (<>
+    const navigate = useNavigate()
+    const closeSession = () => {
+        localStorage.removeItem('isAuthenticated');
+        navigate('')
+    }
+
+    return (
 
         <div style={{ display: 'flex' }}>
+
+            {/* SIDE BAR */}
             <sb.AsideSideNavigationBar display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                 <div>
                     <sb.IconHotel display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} />
@@ -27,36 +36,46 @@ export const Layout = () => {
                 </div>
 
                 <div>
-                    <sb.DivCtnNavOption>
-                        <sb.IconDashboard />
-                        <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                            Dashboard
-                        </sb.PNavOptionText>
-                    </sb.DivCtnNavOption>
-                    <sb.DivCtnNavOption>
-                        <sb.IconBooking />
-                        <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                            Bookings
-                        </sb.PNavOptionText>
-                    </sb.DivCtnNavOption>
-                    <sb.DivCtnNavOption>
-                        <sb.IconRooms />
-                        <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                            Rooms
-                        </sb.PNavOptionText>
-                    </sb.DivCtnNavOption>
-                    <sb.DivCtnNavOption>
-                        <sb.IconContact />
-                        <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                            Contact
-                        </sb.PNavOptionText>
-                    </sb.DivCtnNavOption>
-                    <sb.DivCtnNavOption>
-                        <sb.IconUsers />
-                        <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                            Users
-                        </sb.PNavOptionText>
-                    </sb.DivCtnNavOption>
+                    <a href="/dashboard">
+                        <sb.DivCtnNavOption>
+                            <sb.IconDashboard />
+                            <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                                Dashboard
+                            </sb.PNavOptionText>
+                        </sb.DivCtnNavOption>
+                    </a>
+                    <a href="/bookings">
+                        <sb.DivCtnNavOption>
+                            <sb.IconBooking />
+                            <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                                Bookings
+                            </sb.PNavOptionText>
+                        </sb.DivCtnNavOption>
+                    </a>
+                    <a href="/roomList">
+                        <sb.DivCtnNavOption>
+                            <sb.IconRooms />
+                            <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                                Rooms
+                            </sb.PNavOptionText>
+                        </sb.DivCtnNavOption>
+                    </a>
+                    <a href="/contact">
+                        <sb.DivCtnNavOption>
+                            <sb.IconContact />
+                            <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                                Contact
+                            </sb.PNavOptionText>
+                        </sb.DivCtnNavOption>
+                    </a>
+                    <a href="/users">
+                        <sb.DivCtnNavOption>
+                            <sb.IconUsers />
+                            <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                                Users
+                            </sb.PNavOptionText>
+                        </sb.DivCtnNavOption>
+                    </a>
                 </div>
 
                 <sb.DivCtnUser display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
@@ -72,6 +91,7 @@ export const Layout = () => {
                 </sb.DivCtnCredits>
             </sb.AsideSideNavigationBar>
 
+            {/* HEADER */}
             <div style={{ width: '100%' }}>
                 <hd.Header>
                     <div>
@@ -84,7 +104,7 @@ export const Layout = () => {
                     <div>
                         <hd.IconMail />
                         <hd.IconBell />
-                        <hd.IconLogOut />
+                        <hd.IconLogOut onClick={closeSession} />
                     </div>
                 </hd.Header>
 
@@ -94,5 +114,5 @@ export const Layout = () => {
             </div>
         </div>
 
-    </>)
+    )
 }

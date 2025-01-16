@@ -7,7 +7,7 @@ import { FaRegBell } from "react-icons/fa6";
 import { AiOutlineLogout } from "react-icons/ai";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 
-import * as gb from '../styles/globalVars.js'
+import * as gb from '../../styles/globalVars.js'
 
 
 export const Header = styled.header`

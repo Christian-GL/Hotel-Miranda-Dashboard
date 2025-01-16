@@ -11,7 +11,7 @@ export const Dashboard = () => {
         console.log("Secondary Button Clicked")
     }
 
-    return (<>
+    return (
 
         <db.SectionPageDashboard>
 
@@ -63,5 +63,5 @@ export const Dashboard = () => {
 
         </db.SectionPageDashboard>
 
-    </>)
+    )
 }
