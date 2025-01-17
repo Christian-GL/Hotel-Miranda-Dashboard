@@ -1,6 +1,8 @@
 
 import * as db from "./dashboard.js"
 
+import { ArticleReview } from "../../common/components/ArticleReview/articleReview.jsx"
+
 
 export const Dashboard = () => {
 
@@ -42,67 +44,24 @@ export const Dashboard = () => {
             <db.SectionReviews>
                 <db.TitleSectionReviewsH5>Latest Review by Customers</db.TitleSectionReviewsH5>
                 <db.DivCtnReviews>
-
-                    <db.ArticleReview>
-                        <db.PTextReview>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
-                        </db.PTextReview>
-                        <db.DivCtnDetails>
-                            <db.DivCtnReviewDetails>
-                                <db.ImgProfile src="src\common\media\img\PedroSanchez.png" />
-                                <db.DivCtnInfoDetails>
-                                    <db.TitleNameProfile>Pedro Sánchez</db.TitleNameProfile>
-                                    <db.TextH5>4m ago</db.TextH5>
-                                </db.DivCtnInfoDetails>
-                            </db.DivCtnReviewDetails>
-                            <db.DivCtnIcons>
-                                <db.IconCheckConfirm />
-                                <db.IconCheckCross />
-                            </db.DivCtnIcons>
-                        </db.DivCtnDetails>
-                    </db.ArticleReview>
-
-                    <db.ArticleReview>
-                        <db.PTextReview>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
-                        </db.PTextReview>
-                        <db.DivCtnDetails>
-                            <db.DivCtnReviewDetails>
-                                <db.ImgProfile src="src\common\media\img\PedroSanchez.png" />
-                                <db.DivCtnInfoDetails>
-                                    <db.TitleNameProfile>Pedro Sánchez</db.TitleNameProfile>
-                                    <db.TextH5>4m ago</db.TextH5>
-                                </db.DivCtnInfoDetails>
-                            </db.DivCtnReviewDetails>
-                            <db.DivCtnIcons>
-                                <db.IconCheckConfirm />
-                                <db.IconCheckCross />
-                            </db.DivCtnIcons>
-                        </db.DivCtnDetails>
-                    </db.ArticleReview>
-
-                    <db.ArticleReview>
-                        <db.PTextReview>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
-                        </db.PTextReview>
-                        <db.DivCtnDetails>
-                            <db.DivCtnReviewDetails>
-                                <db.ImgProfile src="src\common\media\img\PedroSanchez.png" />
-                                <db.DivCtnInfoDetails>
-                                    <db.TitleNameProfile>Pedro Sánchez</db.TitleNameProfile>
-                                    <db.TextH5>4m ago</db.TextH5>
-                                </db.DivCtnInfoDetails>
-                            </db.DivCtnReviewDetails>
-                            <db.DivCtnIcons>
-                                <db.IconCheckConfirm />
-                                <db.IconCheckCross />
-                            </db.DivCtnIcons>
-                        </db.DivCtnDetails>
-                    </db.ArticleReview>
-
+                    <ArticleReview
+                        nameprofile="Pedro Sánchez"
+                        timesince="4m"
+                        textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
+                    />
+                    <ArticleReview
+                        nameprofile="Perro Sánchez"
+                        timesince="5m"
+                        textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
+                    />
+                    <ArticleReview
+                        nameprofile="Pablo Sales"
+                        timesince="7m"
+                        textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
+                    />
                 </db.DivCtnReviews>
             </db.SectionReviews>
 

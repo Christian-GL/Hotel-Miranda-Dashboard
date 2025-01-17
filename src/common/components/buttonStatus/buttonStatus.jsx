@@ -4,8 +4,6 @@ import * as sb from "./buttonStatus.js"
 
 export const ButtonStatus = (props) => {
 
-    const theme = "dark"
-
     return (<>
 
         {props.status === true ?
