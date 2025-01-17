@@ -156,6 +156,7 @@ export const TitleH5 = styled.h5`
 
 export const ButtonContactUs = styled.button`
     padding: 1em 2em;
+    font-family: ${gb.fontPoppins};
     border: none;
     border-radius: 1rem;
     cursor: pointer;

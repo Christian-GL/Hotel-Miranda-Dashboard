@@ -1,5 +1,5 @@
 
-import * as db from "./dashboard.js"
+import * as dashboardJS from "./dashboard.js"
 
 import { ArticleReview } from "../../common/components/ArticleReview/articleReview.jsx"
 
@@ -8,42 +8,42 @@ export const Dashboard = () => {
 
     return (
 
-        <db.SectionPageDashboard>
+        <dashboardJS.SectionPageDashboard>
 
-            <db.SectionKPIs>
-                <db.ArticleKPI>
-                    <db.IconBooking />
-                    <db.DivCtnInfo>
-                        <db.NumberH4>8,461</db.NumberH4>
-                        <db.TextH5>New Booking</db.TextH5>
-                    </db.DivCtnInfo>
-                </db.ArticleKPI>
-                <db.ArticleKPI>
-                    <db.IconCalendar />
-                    <db.DivCtnInfo>
-                        <db.NumberH4>963</db.NumberH4>
-                        <db.TextH5>Scheduled Room</db.TextH5>
-                    </db.DivCtnInfo>
-                </db.ArticleKPI>
-                <db.ArticleKPI>
-                    <db.IconLogIn />
-                    <db.DivCtnInfo>
-                        <db.NumberH4>753</db.NumberH4>
-                        <db.TextH5>Check in</db.TextH5>
-                    </db.DivCtnInfo>
-                </db.ArticleKPI>
-                <db.ArticleKPI>
-                    <db.IconLogOut />
-                    <db.DivCtnInfo>
-                        <db.NumberH4>516</db.NumberH4>
-                        <db.TextH5>Check Out</db.TextH5>
-                    </db.DivCtnInfo>
-                </db.ArticleKPI>
-            </db.SectionKPIs>
+            <dashboardJS.SectionKPIs>
+                <dashboardJS.ArticleKPI>
+                    <dashboardJS.IconBooking />
+                    <dashboardJS.DivCtnInfo>
+                        <dashboardJS.NumberH4>8,461</dashboardJS.NumberH4>
+                        <dashboardJS.TextH5>New Booking</dashboardJS.TextH5>
+                    </dashboardJS.DivCtnInfo>
+                </dashboardJS.ArticleKPI>
+                <dashboardJS.ArticleKPI>
+                    <dashboardJS.IconCalendar />
+                    <dashboardJS.DivCtnInfo>
+                        <dashboardJS.NumberH4>963</dashboardJS.NumberH4>
+                        <dashboardJS.TextH5>Scheduled Room</dashboardJS.TextH5>
+                    </dashboardJS.DivCtnInfo>
+                </dashboardJS.ArticleKPI>
+                <dashboardJS.ArticleKPI>
+                    <dashboardJS.IconLogIn />
+                    <dashboardJS.DivCtnInfo>
+                        <dashboardJS.NumberH4>753</dashboardJS.NumberH4>
+                        <dashboardJS.TextH5>Check in</dashboardJS.TextH5>
+                    </dashboardJS.DivCtnInfo>
+                </dashboardJS.ArticleKPI>
+                <dashboardJS.ArticleKPI>
+                    <dashboardJS.IconLogOut />
+                    <dashboardJS.DivCtnInfo>
+                        <dashboardJS.NumberH4>516</dashboardJS.NumberH4>
+                        <dashboardJS.TextH5>Check Out</dashboardJS.TextH5>
+                    </dashboardJS.DivCtnInfo>
+                </dashboardJS.ArticleKPI>
+            </dashboardJS.SectionKPIs>
 
-            <db.SectionReviews>
-                <db.TitleSectionReviewsH5>Latest Review by Customers</db.TitleSectionReviewsH5>
-                <db.DivCtnReviews>
+            <dashboardJS.SectionReviews>
+                <dashboardJS.TitleSectionReviewsH5>Latest Review by Customers</dashboardJS.TitleSectionReviewsH5>
+                <dashboardJS.DivCtnReviews>
                     <ArticleReview
                         nameprofile="Pedro Sánchez"
                         timesince="4m"
@@ -62,10 +62,10 @@ export const Dashboard = () => {
                         textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                                     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
                     />
-                </db.DivCtnReviews>
-            </db.SectionReviews>
+                </dashboardJS.DivCtnReviews>
+            </dashboardJS.SectionReviews>
 
-        </db.SectionPageDashboard>
+        </dashboardJS.SectionPageDashboard>
 
     )
 }

@@ -3,8 +3,8 @@ import { useState } from "react"
 import { Outlet } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 
-import * as hd from "./header.js"
-import * as sb from "./sidebarMenu.js"
+import * as headerJS from "./header.js"
+import * as sidebarJS from "./sidebarMenu.js"
 
 
 export const Layout = () => {
@@ -25,88 +25,86 @@ export const Layout = () => {
 
         <div style={{ display: 'flex' }}>
 
-            {/* SIDE BAR */}
-            <sb.AsideSideNavigationBar display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+            <sidebarJS.AsideSideNavigationBar display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                 <div>
-                    <sb.IconHotel display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} />
-                    <sb.DivCtnTitle display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                        <sb.TitleH1>travl</sb.TitleH1>
-                        <sb.PTitleText>Hotel Admin Dashboard</sb.PTitleText>
-                    </sb.DivCtnTitle>
+                    <sidebarJS.IconHotel display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} />
+                    <sidebarJS.DivCtnTitle display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarJS.TitleH1>travl</sidebarJS.TitleH1>
+                        <sidebarJS.PTitleText>Hotel Admin Dashboard</sidebarJS.PTitleText>
+                    </sidebarJS.DivCtnTitle>
                 </div>
 
                 <div>
                     <a href="/dashboard">
-                        <sb.DivCtnNavOption>
-                            <sb.IconDashboard />
-                            <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarJS.DivCtnNavOption>
+                            <sidebarJS.IconDashboard />
+                            <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                                 Dashboard
-                            </sb.PNavOptionText>
-                        </sb.DivCtnNavOption>
+                            </sidebarJS.PNavOptionText>
+                        </sidebarJS.DivCtnNavOption>
                     </a>
                     <a href="/bookings">
-                        <sb.DivCtnNavOption>
-                            <sb.IconBooking />
-                            <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarJS.DivCtnNavOption>
+                            <sidebarJS.IconBooking />
+                            <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                                 Bookings
-                            </sb.PNavOptionText>
-                        </sb.DivCtnNavOption>
+                            </sidebarJS.PNavOptionText>
+                        </sidebarJS.DivCtnNavOption>
                     </a>
                     <a href="/roomList">
-                        <sb.DivCtnNavOption>
-                            <sb.IconRooms />
-                            <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarJS.DivCtnNavOption>
+                            <sidebarJS.IconRooms />
+                            <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                                 Rooms
-                            </sb.PNavOptionText>
-                        </sb.DivCtnNavOption>
+                            </sidebarJS.PNavOptionText>
+                        </sidebarJS.DivCtnNavOption>
                     </a>
                     <a href="/contact">
-                        <sb.DivCtnNavOption>
-                            <sb.IconContact />
-                            <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarJS.DivCtnNavOption>
+                            <sidebarJS.IconContact />
+                            <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                                 Contact
-                            </sb.PNavOptionText>
-                        </sb.DivCtnNavOption>
+                            </sidebarJS.PNavOptionText>
+                        </sidebarJS.DivCtnNavOption>
                     </a>
                     <a href="/users">
-                        <sb.DivCtnNavOption>
-                            <sb.IconUsers />
-                            <sb.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarJS.DivCtnNavOption>
+                            <sidebarJS.IconUsers />
+                            <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                                 Users
-                            </sb.PNavOptionText>
-                        </sb.DivCtnNavOption>
+                            </sidebarJS.PNavOptionText>
+                        </sidebarJS.DivCtnNavOption>
                     </a>
                 </div>
 
-                <sb.DivCtnUser display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                    <sb.ImgProfile src="src\common\media\img\HC.png" />
-                    <sb.TitleH4>Henry Cavill</sb.TitleH4>
-                    <sb.TitleH5>HenryCavill@gmail.com</sb.TitleH5>
-                    <sb.ButtonContactUs>Contact Us</sb.ButtonContactUs>
-                </sb.DivCtnUser>
+                <sidebarJS.DivCtnUser display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                    <sidebarJS.ImgProfile src="src\common\assets\img\HC.png" />
+                    <sidebarJS.TitleH4>Henry Cavill</sidebarJS.TitleH4>
+                    <sidebarJS.TitleH5>HenryCavill@gmail.com</sidebarJS.TitleH5>
+                    <sidebarJS.ButtonContactUs>Contact Us</sidebarJS.ButtonContactUs>
+                </sidebarJS.DivCtnUser>
 
-                <sb.DivCtnCredits display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                    <sb.TitleMayorCreditH5>Travl Hotel Admin Dashboard</sb.TitleMayorCreditH5>
-                    <sb.TitleMinorCreditH6>2025 All Rights Reserved</sb.TitleMinorCreditH6>
-                </sb.DivCtnCredits>
-            </sb.AsideSideNavigationBar>
+                <sidebarJS.DivCtnCredits display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                    <sidebarJS.TitleMayorCreditH5>Travl Hotel Admin Dashboard</sidebarJS.TitleMayorCreditH5>
+                    <sidebarJS.TitleMinorCreditH6>2025 All Rights Reserved</sidebarJS.TitleMinorCreditH6>
+                </sidebarJS.DivCtnCredits>
+            </sidebarJS.AsideSideNavigationBar>
 
-            {/* HEADER */}
             <div style={{ width: '100%' }}>
-                <hd.Header>
+                <headerJS.Header>
                     <div>
                         {sidebarDisplayed ?
-                            <hd.IconMenuCollapsed onClick={displaySidebarMenu} /> :
-                            <hd.IconMenuNotCollaped onClick={displaySidebarMenu} />
+                            <headerJS.IconMenuCollapsed onClick={displaySidebarMenu} /> :
+                            <headerJS.IconMenuNotCollaped onClick={displaySidebarMenu} />
                         }
-                        <hd.TitleH2>Dashboard</hd.TitleH2>
+                        <headerJS.TitleH2>Dashboard</headerJS.TitleH2>
                     </div>
                     <div>
-                        <hd.IconMail />
-                        <hd.IconBell />
-                        <hd.IconLogOut onClick={closeSession} />
+                        <headerJS.IconMail />
+                        <headerJS.IconBell />
+                        <headerJS.IconLogOut onClick={closeSession} />
                     </div>
-                </hd.Header>
+                </headerJS.Header>
 
                 <main>
                     <Outlet />

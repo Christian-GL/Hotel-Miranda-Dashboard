@@ -75,7 +75,8 @@ export const DivCtnIcons = styled.div`
 export const IconCheckConfirm = styled(FaRegCheckCircle)`
     display: inline-block;
     vertical-align: middle;
-    width: 1.75rem;
+    padding-right: 0.5em;
+    width: 2.25rem;
     height: auto;
     cursor: pointer;
     color: ${gb.colorGreen};

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import * as su from "./signUp.js"
+import * as signUpJS from "./signUp.js"
 
 
 export const SignUp = () => {
@@ -26,29 +26,29 @@ export const SignUp = () => {
 
     return (
 
-        <su.SectionPageSignUp>
+        <signUpJS.SectionPageSignUp>
 
-            <su.IconHotel />
+            <signUpJS.IconHotel />
 
-            <su.Form onSubmit={handleSubmit}>
-                <su.LabelUsername>Username
-                    <su.InputUsername
+            <signUpJS.Form onSubmit={handleSubmit}>
+                <signUpJS.LabelUsername>Username
+                    <signUpJS.InputUsername
                         placeholder="admin"
                         // value={userName}
                         onChange={(e) => setUserName(e.currentTarget.value)}
                     />
-                </su.LabelUsername>
-                <su.LabelPassword>Password
-                    <su.InputPassword
+                </signUpJS.LabelUsername>
+                <signUpJS.LabelPassword>Password
+                    <signUpJS.InputPassword
                         placeholder="1234"
                         // value={userPassword}
                         onChange={(e) => setUserPassword(e.currentTarget.value)}
                     />
-                </su.LabelPassword>
-                <su.ButtonSignUp type="submit">Sign Up</su.ButtonSignUp>
-            </su.Form>
+                </signUpJS.LabelPassword>
+                <signUpJS.ButtonSignUp type="submit">Sign Up</signUpJS.ButtonSignUp>
+            </signUpJS.Form>
 
-        </su.SectionPageSignUp>
+        </signUpJS.SectionPageSignUp>
 
     );
 }

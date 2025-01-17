@@ -1,29 +1,29 @@
 
-import * as ar from "./articleReview.js"
+import * as articleReviewJS from "./articleReview.js"
 
 
 export const ArticleReview = (props) => {
 
     return (<>
 
-        <ar.ArticleReview>
-            <ar.PTextReview>
+        <articleReviewJS.ArticleReview>
+            <articleReviewJS.PTextReview>
                 {props.textreview}
-            </ar.PTextReview>
-            <ar.DivCtnDetails>
-                <ar.DivCtnReviewDetails>
-                    <ar.ImgProfile src="src\common\media\img\PedroSanchez.png" />
-                    <ar.DivCtnInfoDetails>
-                        <ar.TitleNameProfile>{props.nameprofile}</ar.TitleNameProfile>
-                        <ar.TextH5>{props.timesince} ago</ar.TextH5>
-                    </ar.DivCtnInfoDetails>
-                </ar.DivCtnReviewDetails>
-                <ar.DivCtnIcons>
-                    <ar.IconCheckConfirm />
-                    <ar.IconCheckCross />
-                </ar.DivCtnIcons>
-            </ar.DivCtnDetails>
-        </ar.ArticleReview>
+            </articleReviewJS.PTextReview>
+            <articleReviewJS.DivCtnDetails>
+                <articleReviewJS.DivCtnReviewDetails>
+                    <articleReviewJS.ImgProfile src="src\common\assets\img\PedroSanchez.png" />
+                    <articleReviewJS.DivCtnInfoDetails>
+                        <articleReviewJS.TitleNameProfile>{props.nameprofile}</articleReviewJS.TitleNameProfile>
+                        <articleReviewJS.TextH5>{props.timesince} ago</articleReviewJS.TextH5>
+                    </articleReviewJS.DivCtnInfoDetails>
+                </articleReviewJS.DivCtnReviewDetails>
+                <articleReviewJS.DivCtnIcons>
+                    <articleReviewJS.IconCheckConfirm />
+                    <articleReviewJS.IconCheckCross />
+                </articleReviewJS.DivCtnIcons>
+            </articleReviewJS.DivCtnDetails>
+        </articleReviewJS.ArticleReview>
 
     </>)
 }
