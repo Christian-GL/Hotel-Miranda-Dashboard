@@ -1,5 +1,4 @@
 
-import { GiBabyBottle } from "react-icons/gi";
 import * as gb from '../../styles/globalVars.js'
 import * as tableJS from "./table.js"
 
@@ -13,6 +12,30 @@ export const Table = (props) => {
             wordsSplited[i] += ' '
         }
         return wordsSplited
+    }
+
+    const createTextStatus = (data) => {
+        switch (data) {
+            case 'check_in':
+                return <tableJS.PStatusBooking color={`${gb.colorGreen}`} backgroundcolor={`${gb.colorLightGreenButtonTable}`}>
+                    Check In
+                </tableJS.PStatusBooking>
+            case 'check_out':
+                return <tableJS.PStatusBooking color={`${gb.colorRed}`} backgroundcolor={`${gb.colorLightRedButtonTable}`}>
+                    Check Out
+                </tableJS.PStatusBooking>
+            case 'in_progress':
+                return <tableJS.PStatusBooking color={`${gb.colorLightRedButtonTable2}`} backgroundcolor={`${gb.colorLightGreenButtonTable2}`}>
+                    In Progress
+                </tableJS.PStatusBooking>
+            default:
+                return <></>
+        }
+    }
+
+    const callPopUp = (bookingData) => {
+        // popap(bookingdata)
+        console.log(bookingData)
     }
 
     const roomListDataPerRow = (roomData, index) => {
@@ -78,8 +101,14 @@ export const Table = (props) => {
 
             <tableJS.PTable key={index + '-7'}>
                 {userData.status_active === true ?
-                    <tableJS.PStatusAvailableUsers status={userData.status_active}>Active</tableJS.PStatusAvailableUsers> :
-                    <tableJS.PStatusAvailableUsers status={userData.status_active}>Inactive</tableJS.PStatusAvailableUsers>
+                    <tableJS.PStatusAvailableUsers status={userData.status_active}>
+                        Active
+                        <tableJS.IconOptions />
+                    </tableJS.PStatusAvailableUsers> :
+                    <tableJS.PStatusAvailableUsers status={userData.status_active}>
+                        Inactive
+                        <tableJS.IconOptions />
+                    </tableJS.PStatusAvailableUsers>
                 }
             </tableJS.PTable>
         ]
@@ -111,7 +140,7 @@ export const Table = (props) => {
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-6'} minwidth='10rem'>
-                <tableJS.ButtonViewNotes>View Notes</tableJS.ButtonViewNotes>
+                <tableJS.ButtonViewNotes onClick={() => callPopUp(bookingData)}>View Notes</tableJS.ButtonViewNotes>
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-7'} minwidth='11rem'>
@@ -120,40 +149,27 @@ export const Table = (props) => {
 
             <tableJS.PTable key={index + '-8'}>
                 {createTextStatus(bookingData.status)}
+                {/* {() => {
+                    switch (bookingData.status) {
+                        case 'check_in':
+                            return <tableJS.PStatusBooking color={`${gb.colorGreen}`} backgroundcolor={`${gb.colorLightGreenButtonTable}`}>
+                                Check In
+                            </tableJS.PStatusBooking>
+                        case 'check_out':
+                            return <tableJS.PStatusBooking color={`${gb.colorRed}`} backgroundcolor={`${gb.colorLightRedButtonTable}`}>
+                                Check Out
+                            </tableJS.PStatusBooking>
+                        case 'in_progress':
+                            return <tableJS.PStatusBooking color={`${gb.colorLightRedButtonTable2}`} backgroundcolor={`${gb.colorLightGreenButtonTable2}`}>
+                                In Progress
+                            </tableJS.PStatusBooking>
+                        default:
+                            return <></>
+                    }
+                }
+                } */}
             </tableJS.PTable>
         ]
-    }
-
-    const createTextStatus = (data) => {
-        switch (data) {
-            case 'check_in':
-                return <tableJS.PStatusBooking color={`${gb.colorGreen}`} backgroundcolor={`${gb.colorLightGreenButtonTable}`}>
-                    Check In
-                </tableJS.PStatusBooking>
-            case 'check_out':
-                return <tableJS.PStatusBooking color={`${gb.colorRed}`} backgroundcolor={`${gb.colorLightRedButtonTable}`}>
-                    Check Out
-                </tableJS.PStatusBooking>
-            case 'in_progress':
-                return <tableJS.PStatusBooking color={`${gb.colorLightRedButtonTable2}`} backgroundcolor={`${gb.colorLightGreenButtonTable2}`}>
-                    In Progress
-                </tableJS.PStatusBooking>
-            default:
-                return <></>
-        }
-    }
-
-    const createRows = (data, index) => {
-        switch (props.tableType) {
-            case 'roomList':
-                return roomListDataPerRow(data, index)
-            case 'users':
-                return usersDataPerRow(data, index)
-            case 'booking':
-                return roomBookingPerRow(data, index)
-            default:
-                return <></>
-        }
     }
 
 
@@ -162,8 +178,18 @@ export const Table = (props) => {
             {props.columnList.map((nameColumn, index) =>
                 <tableJS.THTable key={index}>{nameColumn}</tableJS.THTable>
             )}
-            {props.rowList.map((data, index) =>
-                createRows(data, index)
+            {props.rowList.map((data, index) => {
+                switch (props.tableType) {
+                    case 'roomList':
+                        return roomListDataPerRow(data, index)
+                    case 'users':
+                        return usersDataPerRow(data, index)
+                    case 'booking':
+                        return roomBookingPerRow(data, index)
+                    default:
+                        return <></>
+                }
+            }
             )}
         </tableJS.Table>
     )

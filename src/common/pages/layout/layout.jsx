@@ -78,7 +78,7 @@ export const Layout = () => {
                 </div>
 
                 <sidebarJS.DivCtnUser display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                    <sidebarJS.ImgProfile src="src\common\assets\img\HC.png" />
+                    <sidebarJS.ImgProfile src="src/common/assets/img/HC.png" />
                     <sidebarJS.TitleH4>Henry Cavill</sidebarJS.TitleH4>
                     <sidebarJS.TitleH5>HenryCavill@gmail.com</sidebarJS.TitleH5>
                     <sidebarJS.ButtonContactUs>Contact Us</sidebarJS.ButtonContactUs>

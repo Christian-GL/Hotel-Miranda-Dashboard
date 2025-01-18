@@ -1,7 +1,7 @@
 
 import * as dashboardJS from "./dashboard.js"
 
-import { ArticleReview } from "../../common/components/ArticleReview/articleReview.jsx"
+import { ArticleReview } from "../../common/components/articleReview/articleReview.jsx"
 
 
 export const Dashboard = () => {

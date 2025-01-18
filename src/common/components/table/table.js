@@ -2,6 +2,7 @@
 import { styled } from 'styled-components'
 
 import { ImPhone } from "react-icons/im";
+import { SlOptionsVertical } from "react-icons/sl";
 
 import * as gb from '../../styles/globalVars.js'
 
@@ -10,6 +11,7 @@ export const Table = styled.table`
     display: grid;
     grid-template-rows: repeat(${props => props.rowlistlength}, 1fr);
     grid-template-columns: repeat(${props => props.columnlistlength}, 1fr);
+    border-radius: 2.5rem;
     background-color: ${gb.colorWhiteFull};
 `
 
@@ -97,11 +99,25 @@ export const PStatusRoomList = styled.p`
 `
 
 export const PStatusAvailableUsers = styled.p`
-    padding: 1em 0;
+    position: relative;
+    padding: 1em 9em 1em 0;
     font-family: ${gb.fontPoppins};
     font-weight: 700;
     text-transform: uppercase;
     color: ${props => props.status === true ? '#5AD07A' : '#E23428'};
+    background-color: ${gb.colorWhiteFull};
+`
+
+export const IconOptions = styled(SlOptionsVertical)`
+    position: absolute;
+    top: 50%;
+    left: 7.55rem;
+    transform: translate(-50%, -50%);
+    padding: 0.5em;
+    width: 1.75rem;
+    height: auto;
+    cursor: pointer;
+    color: ${gb.colorGray39};
     background-color: ${gb.colorWhiteFull};
 `
 
