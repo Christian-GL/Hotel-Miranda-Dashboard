@@ -1,14 +1,14 @@
 
-import * as a from "./buttonCreate.js"
+import * as buttonCreateJS from "./buttonCreate.js"
 
 
 export const ButtonCreate = (props) => {
 
     return (<>
 
-        <a.Sss>
+        <buttonCreateJS.Sss fontsize={`${props.fontsize}`}>
             {props.text}
-        </a.Sss>
+        </buttonCreateJS.Sss>
 
     </>)
 }

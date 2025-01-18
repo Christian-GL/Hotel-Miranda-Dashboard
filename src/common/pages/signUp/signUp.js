@@ -36,7 +36,7 @@ export const Form = styled.form`
     width: 25rem;
 `
 
-export const LabelUsername = styled.label`
+export const LabelText = styled.label`
     font-family: ${gb.fontPoppins};
     font-size: 1.5em;
     font-weight: 700;
@@ -45,29 +45,7 @@ export const LabelUsername = styled.label`
     // -webkit-text-stroke: 1px red;    // Afecta también al imput.
 `
 
-export const LabelPassword = styled.label`
-    font-family: ${gb.fontPoppins};
-    font-size: 1.5em;
-    font-weight: 700;
-    color: ${gb.colorWhiteFull};
-    text-shadow: 3px 3px ${gb.colorBlack26};
-`
-
-export const InputUsername = styled.input`
-    display: block;
-    margin: 1rem 0;
-    padding: 0.75em;
-    text-align: center;
-    width: 100%;
-    font-family: ${gb.fontPoppins};
-    font-weight: 700;
-    border: none;
-    border-radius: 1rem;
-    outline: none;
-    color: ${gb.colorBlack26};
-`
-
-export const InputPassword = styled.input`
+export const InputText = styled.input`
     display: block;
     margin: 1rem 0;
     padding: 0.75em;

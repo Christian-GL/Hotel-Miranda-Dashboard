@@ -1,95 +1,111 @@
 
 import { styled } from 'styled-components'
 
-import { RiHotelFill } from "react-icons/ri";
+import { ImUserPlus } from "react-icons/im";
 
-import * as gb from '../../styles/globalVars.js'
+import * as gb from '../../../../common/styles/globalVars.js'
 
 
 export const SectionPageUserCreate = styled.section`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-
-    width: 100%;
-    height: 100vh;
-    background-image: url('src/common/assets/img/backgroundLogin.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    padding: 2em;
+    height: 100%;
+    overflow-y: auto;
+    border: 5px solid blue;
+    // background-color: ${gb.colorGrayBackgroundPage};
+    background-color: lightblue;
 `
 
-export const IconHotel = styled(RiHotelFill)`
-    padding: 0.75em;
-    width: 6rem;
+export const IconHotel = styled(ImUserPlus)`
+    width: 4rem;
     height: auto;
-    border-radius: 50%;
-    border: 2px solid ${gb.colorRed};
-    color: ${gb.colorRed};
-    background-color: ${gb.colorWhiteFull};
+    color: ${gb.colorBlack26};
 `
 
 export const Form = styled.form`
     margin-top: 2rem;
-    width: 25rem;
-`
-
-export const LabelUsername = styled.label`
-    font-family: ${gb.fontPoppins};
-    font-size: 1.5em;
-    font-weight: 700;
-    color: ${gb.colorWhiteFull};
-    text-shadow: 3px 3px ${gb.colorBlack26};
-    // -webkit-text-stroke: 1px red;    // Afecta también al imput.
-`
-
-export const LabelPassword = styled.label`
-    font-family: ${gb.fontPoppins};
-    font-size: 1.5em;
-    font-weight: 700;
-    color: ${gb.colorWhiteFull};
-    text-shadow: 3px 3px ${gb.colorBlack26};
-`
-
-export const InputUsername = styled.input`
-    display: block;
-    margin: 1rem 0;
-    padding: 0.75em;
-    text-align: center;
     width: 100%;
+`
+
+export const DivCtnEntry = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 1em 0;
+`
+
+export const LabelText = styled.label`
+    width: 10rem;
     font-family: ${gb.fontPoppins};
+    font-size: 1em;
     font-weight: 700;
-    border: none;
-    border-radius: 1rem;
-    outline: none;
     color: ${gb.colorBlack26};
 `
 
-export const InputPassword = styled.input`
-    display: block;
-    margin: 1rem 0;
-    padding: 0.75em;
-    text-align: center;
+export const InputText = styled.input`
+    margin-left: 2rem;
+    padding: 1em;
+    text-align: left;
     width: 100%;
     font-family: ${gb.fontPoppins};
-    font-weight: 700;
-    border: none;
-    border-radius: 1rem;
-    outline: none;
-    color: ${gb.colorBlack26};
-`
-
-export const ButtonSignUp = styled.button`
-    margin-top: 2rem;
-    padding: 0.5em 2em;
-    font-family: ${gb.fontPoppins};
-    font-size: 1.25em;
     font-weight: 400;
     border: none;
     border-radius: 1rem;
-    cursor: pointer;
-    color: ${gb.colorWhiteFull};
-    background-color: ${gb.colorRed};
+    outline: none;
+    color: ${gb.colorBlack26};
+`
+
+export const InputDate = styled.input`
+    margin-left: 2rem;
+    padding: 1em;
+    width: 100%;
+    font-family: ${gb.fontPoppins};
+    border: none;
+    border-radius: 1rem;
+    outline: none;
+    color: ${gb.colorBlack26};
+
+    // COMO APLICAR LO DE ABAJO ??? (ver home.scss del proyecto web)
+    // input {
+    //     position: relative;
+    // }
+
+    // input[type="date"]::-webkit-calendar-picker-indicator {
+    //     position: absolute;
+    //     top: 0;
+    //     right: 0;
+    //     bottom: 0;
+    //     left: 0;
+    //     width: auto;
+    //     height: auto;
+    //     background: transparent;
+    //     cursor: pointer;
+    // }
+`
+
+export const TextAreaJobDescription = styled.textarea`
+    margin-left: 2rem;
+    padding: 1em;
+    text-align: left;
+    width: 100%;
+    height: 7.5rem;
+    font-family: ${gb.fontPoppins};
+    font-weight: 400;
+    border: none;
+    border-radius: 1rem;
+    outline: none;
+    color: ${gb.colorBlack26};
+`
+
+export const SelectStatus = styled.select`
+    // margin-left: 0.5rem;
+    padding: 1em;
+    font-family: ${gb.fontPoppins};
+    font-weight: 700;
+    border: none;
+    border-radius: 1rem;
+    color: ${gb.colorBlack26};
+`
+
+export const OptionStatus = styled.option`
+    padding: 0em;
 `

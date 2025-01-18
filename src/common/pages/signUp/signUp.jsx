@@ -31,20 +31,20 @@ export const SignUp = () => {
             <signUpJS.IconHotel />
 
             <signUpJS.Form onSubmit={handleSubmit}>
-                <signUpJS.LabelUsername>Username
-                    <signUpJS.InputUsername
+                <signUpJS.LabelText>Username
+                    <signUpJS.InputText
                         placeholder="admin"
                         // value={userName}
                         onChange={(e) => setUserName(e.currentTarget.value)}
                     />
-                </signUpJS.LabelUsername>
-                <signUpJS.LabelPassword>Password
-                    <signUpJS.InputPassword
+                </signUpJS.LabelText>
+                <signUpJS.LabelText>Password
+                    <signUpJS.InputText
                         placeholder="1234"
                         // value={userPassword}
                         onChange={(e) => setUserPassword(e.currentTarget.value)}
                     />
-                </signUpJS.LabelPassword>
+                </signUpJS.LabelText>
                 <signUpJS.ButtonSignUp type="submit">Sign Up</signUpJS.ButtonSignUp>
             </signUpJS.Form>
 
