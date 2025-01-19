@@ -1,12 +1,13 @@
 
 import { styled } from 'styled-components'
 
-import { ImUserPlus } from "react-icons/im";
+import { MdOutlineBedroomParent } from "react-icons/md";
+import { BiSolidPlusCircle } from "react-icons/bi";
 
 import * as gb from '../../../../common/styles/globalVars.js'
 
 
-export const SectionPageRoomCreate = styled.section`
+export const SectionPageUserCreate = styled.section`
     margin: 0 2em;
     padding: 2em;
     height: 100%;
@@ -23,10 +24,30 @@ export const DivIcon = styled.div`
     background-color: ${gb.colorWhiteFull};
 `
 
-export const IconHotel = styled(ImUserPlus)`
-    width: 4rem;
+export const DivCtnIcons = styled.div`
+    position: relative;
+    margin: 0 auto;
+    width: 5rem;
+    text-align: center;
+    position: relative;
+`
+
+export const IconHotel = styled(MdOutlineBedroomParent)`
+    width: 5rem;
     height: auto;
     color: ${gb.colorBlack26};
+`
+
+export const IconPlus = styled(BiSolidPlusCircle)`
+    position: absolute;
+    top: 50%;
+    transform: translate(-75%, 0%);
+    padding: 0.1em;
+    width: 3rem;
+    height: auto;
+    border-radius: 50%;
+    color: ${gb.colorBlack26};
+    background-color: ${gb.colorWhiteFull};
 `
 
 export const Form = styled.form`
@@ -113,6 +134,15 @@ export const SelectStatus = styled.select`
     font-weight: 700;
     border: 1px solid ${gb.colorBlack26};
     border-radius: 1rem;
+    color: ${gb.colorBlack26};
+`
+
+export const SelectAmenities = styled.select`
+    padding: 1em;
+    height: 10rem;
+    font-family: ${gb.fontPoppins};
+    border: 1px solid ${gb.colorBlack26};
+    border-radius: 0.5rem;
     color: ${gb.colorBlack26};
 `
 

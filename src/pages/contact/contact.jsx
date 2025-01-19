@@ -43,7 +43,7 @@ export const Contact = () => {
 
             <contactJS.DivCtnTableDisplayFilter>
                 <TableDisplayIndicator text='All Contacts' />
-                <TableDisplayIndicator text='Actived' />
+                <TableDisplayIndicator text='Archived' />
             </contactJS.DivCtnTableDisplayFilter>
 
             <Table tableType='contact' rowList={contacts} columnList={nameColumnList}></Table>

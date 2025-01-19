@@ -11,11 +11,11 @@ import usersData from "../../common/data/usersData.json"
 
 export const Users = () => {
 
-    const nameColumnList = ['', 'Name', 'Start Date', 'Description', 'Phone number', 'Status']
+    const nameColumnList = ['', 'Name', 'Start Date', 'Job Description', 'Contact', 'Status']
     const [userList, setUserList] = useState(usersData)
 
     const navigate = useNavigate()
-    const sss = () => {
+    const navigateToUserCreate = () => {
         navigate('./create-user')
     }
 
@@ -36,7 +36,7 @@ export const Users = () => {
                 </usersJS.DivCtnSearch>
 
                 <usersJS.DivCtnButton>
-                    <ButtonCreate onclick={sss} text='+ New Employee' />
+                    <ButtonCreate onclick={navigateToUserCreate} text='+ New Employee' />
                 </usersJS.DivCtnButton>
             </usersJS.DivCtnFuncionality>
 

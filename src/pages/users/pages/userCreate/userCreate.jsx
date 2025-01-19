@@ -12,7 +12,7 @@ export const UserCreate = () => {
 
     return (
 
-        <userCreateJS.SectionPageUserCreate>
+        <userCreateJS.SectionPageRoomCreate>
 
 
             <userCreateJS.DivIcon>
@@ -68,7 +68,7 @@ export const UserCreate = () => {
                 </userCreateJS.DivButtonCreateUser>
             </userCreateJS.Form>
 
-        </userCreateJS.SectionPageUserCreate>
+        </userCreateJS.SectionPageRoomCreate>
 
     );
 }

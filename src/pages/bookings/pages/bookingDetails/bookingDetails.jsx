@@ -83,7 +83,7 @@ export const BookingDetails = () => {
                         <bookingDetailsJS.IconBed />
                     </bookingDetailsJS.ButtonFacility>
                     <bookingDetailsJS.ButtonFacility withicon='true'>
-                        24 Gours Guard
+                        24 Hours Guard
                         <bookingDetailsJS.IconShieldCheck />
                     </bookingDetailsJS.ButtonFacility>
                     <bookingDetailsJS.ButtonFacility withicon='true'>

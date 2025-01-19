@@ -11,10 +11,10 @@ import { Dashboard } from './pages/dashboard/dashboard.jsx'
 import { Bookings } from './pages/bookings/booking.jsx'
 import { BookingDetails } from './pages/bookings/pages/bookingDetails/bookingDetails.jsx'
 import { RoomList } from './pages/roomList/roomList.jsx'
+import { RoomCreate } from './pages/roomList/pages/roomCreate/roomCreate.jsx'
 import { Contact } from './pages/contact/contact.jsx'
 import { Users } from './pages/users/users.jsx'
 import { UserCreate } from './pages/users/pages/userCreate/userCreate.jsx'
-
 
 
 createRoot(document.getElementById('root')).render(
@@ -28,7 +28,10 @@ createRoot(document.getElementById('root')).render(
                     <Route path="bookingDetail" element={<BookingDetails />} />
                 </Route>
                 <Route path="/bookings" element={<BookingDetails />} />
-                <Route path="/roomList" element={<RoomList />} />
+                <Route path="/roomList" element={<Root />}>
+                    <Route path="" element={<RoomList />} />
+                    <Route path="create-room" element={<RoomCreate />} />
+                </Route>
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/users" element={<Root />}>
                     <Route path="" element={<Users />} />

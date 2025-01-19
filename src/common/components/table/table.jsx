@@ -47,8 +47,10 @@ export const Table = (props) => {
             </tableJS.DivImgTable>,
 
             <tableJS.PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                <div>{roomData.number}</div>
-                <div>{roomData.id}</div>
+                <div style={{ color: `${gb.colorGreen}` }}>
+                    <b>{roomData.number}</b>
+                </div>
+                <div><b>{roomData.id}</b></div>
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-3'}>
@@ -83,8 +85,10 @@ export const Table = (props) => {
             </tableJS.DivImgTable>,
 
             <tableJS.PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                <div>{userData.full_name}</div>
-                <div>{userData.id_employee}</div>
+                <div style={{ color: `${gb.colorGreen}` }}>
+                    <b>{userData.full_name}</b>
+                </div>
+                <div><b>{userData.id_employee}</b></div>
                 <div>{userData.email}</div>
             </tableJS.PTable>,
 
@@ -123,8 +127,10 @@ export const Table = (props) => {
             </tableJS.DivImgTable>,
 
             <tableJS.PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                <div>{bookingData.full_name}</div>
-                <div>{bookingData.id_booking}</div>
+                <div style={{ color: `${gb.colorGreen}` }}>
+                    <b>{bookingData.full_name}</b>
+                </div>
+                <div><b>{bookingData.id_booking}</b></div>
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-3'} >
@@ -185,7 +191,9 @@ export const Table = (props) => {
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center'>
-                <div style={{ color: `${gb.colorGreen}` }}>{contactData.full_name}</div>
+                <div style={{ color: `${gb.colorGreen}` }}>
+                    <b>{contactData.full_name}</b>
+                </div>
                 <div>{contactData.email}</div>
                 <div>{contactData.contact}</div>
             </tableJS.PTable>,

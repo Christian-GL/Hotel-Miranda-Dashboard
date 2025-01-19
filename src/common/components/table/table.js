@@ -52,6 +52,8 @@ export const ImgTable = styled.img`
     min-width: 10rem;
     max-width: 20rem;
     height: auto;
+    min-height: 7.5rem;
+    max-height: 15rem;
 `
 
 export const IconPhone = styled(ImPhone)`
