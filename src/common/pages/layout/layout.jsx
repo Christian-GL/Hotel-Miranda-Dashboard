@@ -20,6 +20,9 @@ export const Layout = () => {
         localStorage.removeItem('isAuthenticated');
         navigate('')
     }
+    const navigateToDashboard = () => {
+        navigate('/dashboard')
+    }
 
     return (
 
@@ -27,7 +30,7 @@ export const Layout = () => {
 
             <sidebarJS.AsideSideNavigationBar display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                 <div>
-                    <sidebarJS.IconHotel display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} />
+                    <sidebarJS.IconHotel display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} onClick={navigateToDashboard} />
                     <sidebarJS.DivCtnTitle display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                         <sidebarJS.TitleH1>travl</sidebarJS.TitleH1>
                         <sidebarJS.PTitleText>Hotel Admin Dashboard</sidebarJS.PTitleText>

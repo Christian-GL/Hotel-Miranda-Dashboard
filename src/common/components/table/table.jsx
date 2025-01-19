@@ -195,7 +195,10 @@ export const Table = (props) => {
                     <b>{contactData.full_name}</b>
                 </div>
                 <div>{contactData.email}</div>
-                <div>{contactData.contact}</div>
+                <div style={{ display: 'flex', alignItems: 'bottom' }}>
+                    <tableJS.IconPhone width='1.3rem' />
+                    <div>{contactData.contact}</div>
+                </div>
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-4'} >

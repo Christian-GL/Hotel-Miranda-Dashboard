@@ -32,7 +32,12 @@ export const IconHotel = styled(RiHotelFill)`
     width: 3.5rem;
     height: auto;
     text-align: center;
+    cursor: pointer;
     color: ${gb.colorGrayIconHotel};
+
+    &:hover {
+        color: ${gb.colorRed};
+    }
 `
 
 export const DivCtnTitle = styled.div`

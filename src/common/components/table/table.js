@@ -59,6 +59,7 @@ export const ImgTable = styled.img`
 export const IconPhone = styled(ImPhone)`
     padding-right: 0.5em;
     width: 2rem;
+    width: ${props => props.width};
     height: auto;
     color: ${gb.colorGray39};
     background-color: ${gb.colorWhiteFull};
