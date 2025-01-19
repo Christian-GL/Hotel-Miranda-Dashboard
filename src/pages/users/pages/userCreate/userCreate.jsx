@@ -1,6 +1,5 @@
 
-import * as a from "./userCreate.js"
-// KAMBIAR AL FINAL POR "userCreateJS"          <---- !!
+import * as userCreateJS from "./userCreate.js"
 import { ButtonCreate } from "../../../../common/components/buttonCreate/buttonCreate.jsx"
 
 
@@ -13,62 +12,63 @@ export const UserCreate = () => {
 
     return (
 
-        <a.SectionPageUserCreate>
+        <userCreateJS.SectionPageUserCreate>
 
-            <div style={{ textAlign: 'center' }}>
-                <a.IconHotel />
-            </div>
 
-            <a.Form onSubmit={handleSubmit}>
-                <a.DivCtnEntry>
-                    <a.LabelText>Photo</a.LabelText>
-                    <a.InputText type='file' />
-                </a.DivCtnEntry>
+            <userCreateJS.DivIcon>
+                <userCreateJS.IconHotel />
+            </userCreateJS.DivIcon>
 
-                <a.DivCtnEntry>
-                    <a.LabelText>Full name</a.LabelText>
-                    <a.InputText />
-                </a.DivCtnEntry>
+            <userCreateJS.Form onSubmit={handleSubmit}>
+                <userCreateJS.DivCtnEntry>
+                    <userCreateJS.LabelText>Photo</userCreateJS.LabelText>
+                    <userCreateJS.InputText type='file' />
+                </userCreateJS.DivCtnEntry>
 
-                <a.DivCtnEntry>
-                    <a.LabelText>ID Employee</a.LabelText>
-                    <a.InputText />
-                </a.DivCtnEntry>
+                <userCreateJS.DivCtnEntry>
+                    <userCreateJS.LabelText>Full name</userCreateJS.LabelText>
+                    <userCreateJS.InputText />
+                </userCreateJS.DivCtnEntry>
 
-                <a.DivCtnEntry>
-                    <a.LabelText>Email</a.LabelText>
-                    <a.InputText />
-                </a.DivCtnEntry>
+                <userCreateJS.DivCtnEntry>
+                    <userCreateJS.LabelText>ID Employee</userCreateJS.LabelText>
+                    <userCreateJS.InputText />
+                </userCreateJS.DivCtnEntry>
 
-                <a.DivCtnEntry>
-                    <a.LabelText>Start Date</a.LabelText>
-                    <a.InputDate type="date" />
-                </a.DivCtnEntry>
+                <userCreateJS.DivCtnEntry>
+                    <userCreateJS.LabelText>Email</userCreateJS.LabelText>
+                    <userCreateJS.InputText />
+                </userCreateJS.DivCtnEntry>
 
-                <a.DivCtnEntry>
-                    <a.LabelText>Job Description</a.LabelText>
-                    <a.TextAreaJobDescription type='text'></a.TextAreaJobDescription>
-                </a.DivCtnEntry>
+                <userCreateJS.DivCtnEntry>
+                    <userCreateJS.LabelText>Start Date</userCreateJS.LabelText>
+                    <userCreateJS.InputDate type="date" />
+                </userCreateJS.DivCtnEntry>
 
-                <a.DivCtnEntry>
-                    <a.LabelText>Contact</a.LabelText>
-                    <a.InputText />
-                </a.DivCtnEntry>
+                <userCreateJS.DivCtnEntry>
+                    <userCreateJS.LabelText>Job Description</userCreateJS.LabelText>
+                    <userCreateJS.TextAreaJobDescription type='text'></userCreateJS.TextAreaJobDescription>
+                </userCreateJS.DivCtnEntry>
 
-                <a.DivCtnEntry>
-                    <a.LabelText>Status</a.LabelText>
-                    <a.SelectStatus>
-                        <a.OptionStatus>Active</a.OptionStatus>
-                        <a.OptionStatus>Inactive</a.OptionStatus>
-                    </a.SelectStatus>
-                </a.DivCtnEntry>
+                <userCreateJS.DivCtnEntry>
+                    <userCreateJS.LabelText>Contact</userCreateJS.LabelText>
+                    <userCreateJS.InputText />
+                </userCreateJS.DivCtnEntry>
 
-                <div style={{ textAlign: 'center' }}>
+                <userCreateJS.DivCtnEntry>
+                    <userCreateJS.LabelText>Status</userCreateJS.LabelText>
+                    <userCreateJS.SelectStatus>
+                        <userCreateJS.OptionStatus>Active</userCreateJS.OptionStatus>
+                        <userCreateJS.OptionStatus>Inactive</userCreateJS.OptionStatus>
+                    </userCreateJS.SelectStatus>
+                </userCreateJS.DivCtnEntry>
+
+                <userCreateJS.DivButtonCreateUser>
                     <ButtonCreate type="submit" text='+ Create User' fontsize='1.25em'></ButtonCreate>
-                </div>
-            </a.Form>
+                </userCreateJS.DivButtonCreateUser>
+            </userCreateJS.Form>
 
-        </a.SectionPageUserCreate>
+        </userCreateJS.SectionPageUserCreate>
 
     );
 }

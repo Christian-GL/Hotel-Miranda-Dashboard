@@ -1,4 +1,6 @@
 
+import { useNavigate } from "react-router-dom";
+
 import * as gb from '../../styles/globalVars.js'
 import * as tableJS from "./table.js"
 
@@ -33,9 +35,9 @@ export const Table = (props) => {
         }
     }
 
-    const callPopUp = (bookingData) => {
-        // popap(bookingdata)
-        console.log(bookingData)
+    const navigate = useNavigate()
+    const navigateToBookingDetail = () => {
+        navigate('./bookingDetail')
     }
 
     const roomListDataPerRow = (roomData, index) => {
@@ -45,11 +47,11 @@ export const Table = (props) => {
             </tableJS.DivImgTable>,
 
             <tableJS.PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                <tableJS.TextGreenTableH6>{roomData.number}</tableJS.TextGreenTableH6>
-                <tableJS.TextGrayTableH6>{roomData.id}</tableJS.TextGrayTableH6>
+                <div>{roomData.number}</div>
+                <div>{roomData.id}</div>
             </tableJS.PTable>,
 
-            <tableJS.PTable key={index + '-3'} minwidth='7rem'>
+            <tableJS.PTable key={index + '-3'}>
                 {formatToTerm(roomData.type)}
             </tableJS.PTable>,
 
@@ -58,11 +60,11 @@ export const Table = (props) => {
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-5'} flexdirection='row'>
-                <b>${roomData.price}</b> <tableJS.PTextPerNight>&nbsp;/night</tableJS.PTextPerNight>
+                <b>${roomData.price}</b> <div>&nbsp;/night</div>
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-6'} flexdirection='row'>
-                <b>${roomData.offer_price}</b> <tableJS.PTextPerNight>&nbsp;/night</tableJS.PTextPerNight>
+                <b>${roomData.offer_price}</b> <div>&nbsp;/night</div>
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-7'}>
@@ -81,20 +83,20 @@ export const Table = (props) => {
             </tableJS.DivImgTable>,
 
             <tableJS.PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                <tableJS.TextBlackTableH6>{userData.full_name}</tableJS.TextBlackTableH6>
-                <tableJS.TextGrayTableH6>{userData.id_employee}</tableJS.TextGrayTableH6>
-                <tableJS.TextGrayTableH6>{userData.email}</tableJS.TextGrayTableH6>
+                <div>{userData.full_name}</div>
+                <div>{userData.id_employee}</div>
+                <div>{userData.email}</div>
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-3'}>
                 {userData.start_date}
             </tableJS.PTable>,
 
-            <tableJS.PTable key={index + '-4'} minwidth='30rem'>
+            <tableJS.PTable key={index + '-4'}>
                 {userData.description}
             </tableJS.PTable>,
 
-            <tableJS.PTable key={index + '-4'} flexdirection='row' minwidth='10rem'>
+            <tableJS.PTable key={index + '-4'} flexdirection='row'>
                 <tableJS.IconPhone />
                 {userData.phone_number}
             </tableJS.PTable>,
@@ -121,29 +123,29 @@ export const Table = (props) => {
             </tableJS.DivImgTable>,
 
             <tableJS.PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                <tableJS.TextGreenTableH6>{bookingData.full_name}</tableJS.TextGreenTableH6>
-                <tableJS.TextGrayTableH6>{bookingData.id_booking}</tableJS.TextGrayTableH6>
+                <div>{bookingData.full_name}</div>
+                <div>{bookingData.id_booking}</div>
             </tableJS.PTable>,
 
-            <tableJS.PTable key={index + '-3'} minwidth='10rem'>
+            <tableJS.PTable key={index + '-3'} >
                 {bookingData.order_date} {bookingData.order_time}
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center'>
-                <tableJS.TextGreenTableH6>{bookingData.check_in_date}</tableJS.TextGreenTableH6>
-                <tableJS.TextGreenTableH6>{bookingData.check_in_time}</tableJS.TextGreenTableH6>
+                <div>{bookingData.check_in_date}</div>
+                <div>{bookingData.check_in_time}</div>
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
-                <tableJS.TextGreenTableH6>{bookingData.check_out_date}</tableJS.TextGreenTableH6>
-                <tableJS.TextGreenTableH6>{bookingData.check_out_time}</tableJS.TextGreenTableH6>
+                <div>{bookingData.check_out_date}</div>
+                <div>{bookingData.check_out_time}</div>
             </tableJS.PTable>,
 
-            <tableJS.PTable key={index + '-6'} minwidth='10rem'>
-                <tableJS.ButtonViewNotes onClick={() => callPopUp(bookingData)}>View Notes</tableJS.ButtonViewNotes>
+            <tableJS.PTable key={index + '-6'}>
+                <tableJS.ButtonViewNotes onClick={() => navigateToBookingDetail()}>View Notes</tableJS.ButtonViewNotes>
             </tableJS.PTable>,
 
-            <tableJS.PTable key={index + '-7'} minwidth='11rem'>
+            <tableJS.PTable key={index + '-7'}>
                 {formatToTerm(bookingData.room_type)} - {bookingData.room_number}
             </tableJS.PTable>,
 
@@ -172,11 +174,38 @@ export const Table = (props) => {
         ]
     }
 
+    const contactDataPerRow = (contactData, index) => {
+        return [
+            <tableJS.PTable key={index + '-1'}>
+                {contactData.id_comment}
+            </tableJS.PTable>,
+
+            <tableJS.PTable key={index + '-2'} >
+                {contactData.publish_date} {contactData.publish_time}
+            </tableJS.PTable>,
+
+            <tableJS.PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center'>
+                <div style={{ color: `${gb.colorGreen}` }}>{contactData.full_name}</div>
+                <div>{contactData.email}</div>
+                <div>{contactData.contact}</div>
+            </tableJS.PTable>,
+
+            <tableJS.PTable key={index + '-4'} >
+                {contactData.comment}
+            </tableJS.PTable>,
+
+            <tableJS.PTable key={index + '-5'}>
+                <tableJS.ButtonPublishArchive color={`${gb.colorGreen}`}>Publish</tableJS.ButtonPublishArchive>
+                <tableJS.ButtonPublishArchive color={`${gb.colorRed}`}>Archive</tableJS.ButtonPublishArchive>
+            </tableJS.PTable>,
+        ]
+    }
+
 
     return (
         <tableJS.Table rowlistlength={`${props.rowList.length + 1}`} columnlistlength={`${props.columnList.length}`} >
             {props.columnList.map((nameColumn, index) =>
-                <tableJS.THTable key={index}>{nameColumn}</tableJS.THTable>
+                <tableJS.TRTable key={index}>{nameColumn}</tableJS.TRTable>
             )}
             {props.rowList.map((data, index) => {
                 switch (props.tableType) {
@@ -186,6 +215,8 @@ export const Table = (props) => {
                         return usersDataPerRow(data, index)
                     case 'booking':
                         return roomBookingPerRow(data, index)
+                    case 'contact':
+                        return contactDataPerRow(data, index)
                     default:
                         return <></>
                 }

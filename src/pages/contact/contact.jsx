@@ -1,11 +1,18 @@
 
+import { useState } from "react"
+
 import * as contactJS from "./contact.js"
 
 import { ArticleReview } from "../../common/components/articleReview/articleReview.jsx"
+import { TableDisplayIndicator } from "../../common/components/tableDisplayIndicador/tableDisplayIndicator.jsx"
+import { Table } from "../../common/components/table/table.jsx"
+import contactData from '../../common/data/contactData.json'
 
 
 export const Contact = () => {
 
+    const nameColumnList = ['Order Id', 'Date', 'Customer', 'Comment', 'Action']
+    const [contacts, setContacts] = useState(contactData)
 
     return (
 
@@ -33,6 +40,13 @@ export const Contact = () => {
                     />
                 </contactJS.DivCtnReviews>
             </contactJS.SectionReviews>
+
+            <contactJS.DivCtnTableDisplayFilter>
+                <TableDisplayIndicator text='All Contacts' />
+                <TableDisplayIndicator text='Actived' />
+            </contactJS.DivCtnTableDisplayFilter>
+
+            <Table tableType='contact' rowList={contacts} columnList={nameColumnList}></Table>
 
         </contactJS.SectionPageBookings >
 

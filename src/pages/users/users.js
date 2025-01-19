@@ -18,7 +18,7 @@ export const DivCtnFuncionality = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0 1em 1em;
+    padding: 0 2em 1em;
     min-width: 50rem;
 `
 

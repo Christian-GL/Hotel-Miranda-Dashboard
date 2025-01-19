@@ -6,7 +6,7 @@ export const ButtonCreate = (props) => {
 
     return (<>
 
-        <buttonCreateJS.Sss fontsize={`${props.fontsize}`}>
+        <buttonCreateJS.Sss onClick={props.onclick} fontsize={`${props.fontsize}`}>
             {props.text}
         </buttonCreateJS.Sss>
 

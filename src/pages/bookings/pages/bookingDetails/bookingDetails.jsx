@@ -2,6 +2,8 @@
 import * as gb from '../../../../common/styles/globalVars.js'
 import * as bookingDetailsJS from "./bookingDetails.js"
 
+import HC from '../../../../common/assets/img/HC.png'
+
 
 export const BookingDetails = () => {
 
@@ -11,7 +13,7 @@ export const BookingDetails = () => {
         <bookingDetailsJS.SectionPageBookingDetails>
             <bookingDetailsJS.DivSection padding='2em'>
                 <bookingDetailsJS.DivCtnImgAndMainData>
-                    <bookingDetailsJS.ImgProfile src="src/common/assets/img/HC.png" />
+                    <bookingDetailsJS.ImgProfile src={HC} />
                     <bookingDetailsJS.DivCtnMainData>
                         <bookingDetailsJS.DivCtnNameId>
                             <bookingDetailsJS.NameProfileH2>Henry Cavill</bookingDetailsJS.NameProfileH2>

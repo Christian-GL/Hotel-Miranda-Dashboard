@@ -7,12 +7,20 @@ import * as gb from '../../../../common/styles/globalVars.js'
 
 
 export const SectionPageUserCreate = styled.section`
+    margin: 0 2em;
     padding: 2em;
     height: 100%;
     overflow-y: auto;
     border: 5px solid blue;
-    // background-color: ${gb.colorGrayBackgroundPage};
-    background-color: lightblue;
+    background-color: ${gb.colorGrayBackgroundPage};
+`
+
+export const DivIcon = styled.div`
+    padding-top: 2em;
+    text-align: center;
+    border-top-left-radius: 2.5rem;
+    border-top-right-radius: 2.5rem;
+    background-color: ${gb.colorWhiteFull};
 `
 
 export const IconHotel = styled(ImUserPlus)`
@@ -22,8 +30,11 @@ export const IconHotel = styled(ImUserPlus)`
 `
 
 export const Form = styled.form`
-    margin-top: 2rem;
+    padding: 2em;
     width: 100%;
+    border-bottom-left-radius: 2.5rem;
+    border-bottom-right-radius: 2.5rem;
+    background-color: ${gb.colorWhiteFull};
 `
 
 export const DivCtnEntry = styled.div`
@@ -42,24 +53,24 @@ export const LabelText = styled.label`
 `
 
 export const InputText = styled.input`
-    margin-left: 2rem;
+    margin-left: 1rem;
     padding: 1em;
     text-align: left;
     width: 100%;
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    border: none;
+    border: 1px solid ${gb.colorBlack26};
     border-radius: 1rem;
     outline: none;
     color: ${gb.colorBlack26};
 `
 
 export const InputDate = styled.input`
-    margin-left: 2rem;
+    margin-left: 1rem;
     padding: 1em;
     width: 100%;
     font-family: ${gb.fontPoppins};
-    border: none;
+    border: 1px solid ${gb.colorBlack26};
     border-radius: 1rem;
     outline: none;
     color: ${gb.colorBlack26};
@@ -83,29 +94,34 @@ export const InputDate = styled.input`
 `
 
 export const TextAreaJobDescription = styled.textarea`
-    margin-left: 2rem;
+    margin-left: 1rem;
     padding: 1em;
     text-align: left;
     width: 100%;
     height: 7.5rem;
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    border: none;
+    border: 1px solid ${gb.colorBlack26};
     border-radius: 1rem;
     outline: none;
     color: ${gb.colorBlack26};
 `
 
 export const SelectStatus = styled.select`
-    // margin-left: 0.5rem;
     padding: 1em;
     font-family: ${gb.fontPoppins};
     font-weight: 700;
-    border: none;
+    border: 1px solid ${gb.colorBlack26};
     border-radius: 1rem;
     color: ${gb.colorBlack26};
 `
 
 export const OptionStatus = styled.option`
     padding: 0em;
+`
+
+export const DivButtonCreateUser = styled.div`
+    padding-top: 2em;
+    text-align: center;
+    background-color: ${gb.colorWhiteFull};
 `
