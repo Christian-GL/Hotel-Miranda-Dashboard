@@ -1,12 +1,10 @@
 
 import { styled } from 'styled-components'
 
-// ICONS
-
 import * as gb from '../../common/styles/globalVars.js'
 
 
-export const SectionPageBookings = styled.section`
+export const SectionPageContact = styled.section`
     padding: 2em;
     height: 100%;
     overflow-y: auto;
@@ -22,9 +20,28 @@ export const DivCtnReviews = styled.div`
     display: flex;
 `
 
+export const DivCtnFuncionality = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2em 1em;
+    min-width: 50rem;
+`
+
 export const DivCtnTableDisplayFilter = styled.div`
     display: flex;
-    margin: 4rem 0 2rem;
-    padding-left: 2em;
-    width: 25%;
+    padding-bottom: 1em;
+    width: 30%;
+`
+
+export const DivCtnSearch = styled.div`
+    position: relative;
+    padding: 1em;
+    width: 40%;
+`
+
+export const DivCtnButton = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `

@@ -1,9 +1,12 @@
 
 import { useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 import * as bookingsJS from "./bookings.js"
-import { TableDisplayIndicator } from "../../common/components/tableDisplayIndicador/tableDisplayIndicator.jsx"
-import { Table } from "../../common/components/table/table.jsx"
+import { TableDisplayIndicator } from "../../common/components/table/tableDisplaySelector/tableDisplaySelector.jsx"
+import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/tableSearchTerm.jsx";
+import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
+import { Table } from "../../common/components/table/createTable/createTable.jsx"
 import bookingData from "../../common/data/bookingData.json"
 
 
@@ -11,6 +14,12 @@ export const Bookings = () => {
 
     const nameColumnList = ['', 'Guest', 'Order Date', 'Check In', 'Check Out', 'Special Request', 'Room Type', 'Status']
     const [bookingList, setBookingList] = useState(bookingData)
+
+    const navigate = useNavigate()
+    const navigateToBookingCreate = () => {
+        // navigate('./create-user')
+        console.log('ola')
+    }
 
     return (
 
@@ -24,9 +33,12 @@ export const Bookings = () => {
                 </bookingsJS.DivCtnTableDisplayFilter>
 
                 <bookingsJS.DivCtnSearch>
-                    <bookingsJS.IconMagnifyingGlass />
-                    <bookingsJS.InputSearchEmployee placeholder="Search Booking" />
+                    <TableSearchTerm placeholder='Search Booking' />
                 </bookingsJS.DivCtnSearch>
+
+                <bookingsJS.DivCtnButton>
+                    <ButtonCreate onclick={navigateToBookingCreate} text='+ New Booking' />
+                </bookingsJS.DivCtnButton>
             </bookingsJS.DivCtnFuncionality>
 
             <Table tableType='booking' rowList={bookingList} columnList={nameColumnList}></Table>

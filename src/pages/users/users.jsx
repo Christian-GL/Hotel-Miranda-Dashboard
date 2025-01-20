@@ -3,9 +3,11 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 import * as usersJS from "./users.js"
-import { TableDisplayIndicator } from "../../common/components/tableDisplayIndicador/tableDisplayIndicator.jsx"
+
+import { TableDisplayIndicator } from "../../common/components/table/tableDisplaySelector/tableDisplaySelector.jsx"
+import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
-import { Table } from "../../common/components/table/table.jsx"
+import { Table } from "../../common/components/table/createTable/createTable.jsx"
 import usersData from "../../common/data/usersData.json"
 
 
@@ -31,8 +33,7 @@ export const Users = () => {
                 </usersJS.DivCtnTableDisplayFilter>
 
                 <usersJS.DivCtnSearch>
-                    <usersJS.IconMagnifyingGlass />
-                    <usersJS.InputSearchEmployee placeholder="Search Employee" />
+                    <TableSearchTerm placeholder='Search Employee' />
                 </usersJS.DivCtnSearch>
 
                 <usersJS.DivCtnButton>

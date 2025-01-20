@@ -1,5 +1,5 @@
 
-import * as tableDisplayIndicatorJS from "./tableDisplayIndicator.js"
+import * as tableDisplayIndicatorJS from "./tableDisplaySelector.js"
 
 
 export const TableDisplayIndicator = (props) => {

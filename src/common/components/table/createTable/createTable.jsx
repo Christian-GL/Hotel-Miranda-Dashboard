@@ -2,8 +2,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
-import * as gb from '../../styles/globalVars.js'
-import * as tableJS from "./table.js"
+import * as gb from '../../../styles/globalVars.js'
+import * as tableJS from "./createTable.js"
 
 
 export const Table = (props) => {

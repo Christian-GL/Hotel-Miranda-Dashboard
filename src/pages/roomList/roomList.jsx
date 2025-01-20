@@ -3,9 +3,10 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 import * as roomListJS from "./roomList.js"
-import { TableDisplayIndicator } from "../../common/components/tableDisplayIndicador/tableDisplayIndicator.jsx"
+import { TableDisplayIndicator } from "../../common/components/table/tableDisplaySelector/tableDisplaySelector.jsx"
+import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
-import { Table } from "../../common/components/table/table.jsx"
+import { Table } from "../../common/components/table/createTable/createTable.jsx"
 import roomListData from "../../common/data/roomListData.json"
 
 
@@ -31,8 +32,7 @@ export const RoomList = () => {
                 </roomListJS.DivCtnTableDisplayFilter>
 
                 <roomListJS.DivCtnSearch>
-                    <roomListJS.IconMagnifyingGlass />
-                    <roomListJS.InputSearchEmployee placeholder="Search Room" />
+                    <TableSearchTerm placeholder='Search Room' />
                 </roomListJS.DivCtnSearch>
 
                 <roomListJS.DivCtnButton>
