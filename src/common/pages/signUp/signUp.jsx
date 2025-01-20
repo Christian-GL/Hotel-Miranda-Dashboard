@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import * as signUpJS from "./signUp.js"
+import accountsData from '../../../common/data/accountsData.json'
 
 
 export const SignUp = () => {
@@ -11,15 +12,19 @@ export const SignUp = () => {
     const [userPassword, setUserPassword] = useState('1234');       // PARA AGILIZAR EL LOGIN:
     // const [userName, setUserName] = useState('');
     // const [userPassword, setUserPassword] = useState('');
-    const navigate = useNavigate()
+    const [listUsers, setListUsers] = useState(accountsData)
 
+
+    const navigate = useNavigate()
     const handleSubmit = e => {
         e.preventDefault();
-        if (userName === 'admin' && userPassword === '1234') {
-            navigate('/dashboard')
-            localStorage.setItem('isAuthenticated', 'true');
-        } else {
-            localStorage.removeItem('isAuthenticated');
+        listUsers.map((user) => {
+            if (userName === user.email && userPassword === user.password) {
+                localStorage.setItem('isAuthenticated', 'true');
+                navigate('/dashboard')
+            }
+        })
+        if (localStorage.getItem('isAuthenticated') === null) {
             alert('tas ekivokao')
         }
     }
@@ -39,7 +44,7 @@ export const SignUp = () => {
                     />
                 </signUpJS.LabelText>
                 <signUpJS.LabelText>Password
-                    <signUpJS.InputText
+                    <signUpJS.InputText type="password"
                         placeholder="1234"
                         // value={userPassword}
                         onChange={(e) => setUserPassword(e.currentTarget.value)}

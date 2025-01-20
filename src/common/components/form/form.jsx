@@ -26,7 +26,10 @@ export const Form = (props) => {
     const userCreateForm = () => {
         return [
             <formJS.DivIcon>
-                <formJS.IconHotel />
+                <formJS.DivCtnIcons>
+                    <formJS.IconUser />
+                    <formJS.IconPlus />
+                </formJS.DivCtnIcons>
             </formJS.DivIcon>,
 
             <formJS.Form onSubmit={handleSubmit}>
@@ -107,7 +110,12 @@ export const Form = (props) => {
 
                 <formJS.DivCtnEntry>
                     <formJS.LabelText>Room Type</formJS.LabelText>
-                    <formJS.InputText />
+                    <formJS.SelectStatus>
+                        <formJS.OptionStatus>Suite</formJS.OptionStatus>
+                        <formJS.OptionStatus>Single Bed</formJS.OptionStatus>
+                        <formJS.OptionStatus>Double Bed</formJS.OptionStatus>
+                        <formJS.OptionStatus>Double Superior</formJS.OptionStatus>
+                    </formJS.SelectStatus>
                 </formJS.DivCtnEntry>
 
                 <formJS.DivCtnEntry>
@@ -220,7 +228,7 @@ export const Form = (props) => {
                 </formJS.DivCtnEntry>
 
                 <formJS.DivCtnEntry>
-                    <formJS.LabelText>Status</formJS.LabelText>
+                    <formJS.LabelText>Room Type</formJS.LabelText>
                     <formJS.SelectStatus>
                         <formJS.OptionStatus>Suite</formJS.OptionStatus>
                         <formJS.OptionStatus>Single Bed</formJS.OptionStatus>

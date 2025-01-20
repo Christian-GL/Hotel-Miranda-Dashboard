@@ -1,7 +1,7 @@
 
 import { styled } from 'styled-components'
 
-import { ImUserPlus } from "react-icons/im";
+import { FaUser } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdOutlineBedroomParent } from "react-icons/md";
 import { BiSolidPlusCircle } from "react-icons/bi";
@@ -31,7 +31,7 @@ export const DivCtnIcons = styled.div`
     position: relative;
 `
 
-export const IconHotel = styled(ImUserPlus)`
+export const IconUser = styled(FaUser)`
     width: 4rem;
     height: auto;
     color: ${gb.colorBlack26};
