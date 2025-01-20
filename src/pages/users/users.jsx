@@ -18,7 +18,7 @@ export const Users = () => {
 
     const navigate = useNavigate()
     const navigateToUserCreate = () => {
-        navigate('./create-user')
+        navigate('./user-create')
     }
 
     return (

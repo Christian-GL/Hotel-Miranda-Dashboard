@@ -10,11 +10,17 @@ export const Form = (props) => {
         switch (props.formType) {
             case 'user':
                 console.log('creado user')
-
+                break
             case 'room':
                 console.log('creada room')
+                break
+            case 'contact':
+                console.log('creado contacto')
+                break
+            case 'booking':
+                console.log('creada booking')
+                break
         }
-        console.log('Aquí crear usuario')
     }
 
     const userCreateForm = () => {
@@ -141,14 +147,116 @@ export const Form = (props) => {
         ]
     }
 
+    const contactCreateForm = () => {
+        return [
+            <formJS.DivIcon>
+                <formJS.DivCtnIcons>
+                    <formJS.IconContact />
+                    <formJS.IconPlus />
+                </formJS.DivCtnIcons>
+            </formJS.DivIcon>,
+
+            <formJS.Form onSubmit={handleSubmit}>
+                <formJS.DivCtnEntry>
+                    <formJS.LabelText>Contact ID</formJS.LabelText>
+                    <formJS.InputText />
+                </formJS.DivCtnEntry>
+
+                <formJS.DivCtnEntry>
+                    <formJS.LabelText>Full Name</formJS.LabelText>
+                    <formJS.InputText />
+                </formJS.DivCtnEntry>
+
+                <formJS.DivCtnEntry>
+                    <formJS.LabelText>Email</formJS.LabelText>
+                    <formJS.InputText />
+                </formJS.DivCtnEntry>
+
+                <formJS.DivCtnEntry>
+                    <formJS.LabelText>Phone Number</formJS.LabelText>
+                    <formJS.InputText />
+                </formJS.DivCtnEntry>
+
+                <formJS.DivCtnEntry>
+                    <formJS.LabelText>Comment</formJS.LabelText>
+                    <formJS.TextAreaJobDescription type='text'></formJS.TextAreaJobDescription>
+                </formJS.DivCtnEntry>
+
+                <formJS.DivButtonCreateUser>
+                    <ButtonCreate type="submit" text='+ Create Contact' fontsize='1.25em'></ButtonCreate>
+                </formJS.DivButtonCreateUser>
+            </formJS.Form>
+        ]
+    }
+
+    const bookingCreateForm = () => {
+        return [
+            <formJS.DivIcon>
+                <formJS.DivCtnIcons>
+                    <formJS.IconCalendar />
+                    <formJS.IconPlus />
+                </formJS.DivCtnIcons>
+            </formJS.DivIcon>,
+
+            <formJS.Form onSubmit={handleSubmit}>
+                <formJS.DivCtnEntry>
+                    <formJS.LabelText>Booking ID</formJS.LabelText>
+                    <formJS.InputText />
+                </formJS.DivCtnEntry>
+
+                <formJS.DivCtnEntry>
+                    <formJS.LabelText>Guest Full Name</formJS.LabelText>
+                    <formJS.InputText />
+                </formJS.DivCtnEntry>
+
+                <formJS.DivCtnEntry>
+                    <formJS.LabelText>Check In</formJS.LabelText>
+                    <formJS.InputDate type="date" />
+                </formJS.DivCtnEntry>
+
+                <formJS.DivCtnEntry>
+                    <formJS.LabelText>Check Out</formJS.LabelText>
+                    <formJS.InputDate type="date" />
+                </formJS.DivCtnEntry>
+
+                <formJS.DivCtnEntry>
+                    <formJS.LabelText>Status</formJS.LabelText>
+                    <formJS.SelectStatus>
+                        <formJS.OptionStatus>Suite</formJS.OptionStatus>
+                        <formJS.OptionStatus>Single Bed</formJS.OptionStatus>
+                        <formJS.OptionStatus>Double Bed</formJS.OptionStatus>
+                        <formJS.OptionStatus>Double Superior</formJS.OptionStatus>
+                    </formJS.SelectStatus>
+                </formJS.DivCtnEntry>
+
+                <formJS.DivCtnEntry>
+                    <formJS.LabelText>Status</formJS.LabelText>
+                    <formJS.SelectStatus>
+                        <formJS.OptionStatus>Check In</formJS.OptionStatus>
+                        <formJS.OptionStatus>Check Out</formJS.OptionStatus>
+                        <formJS.OptionStatus>In Progress</formJS.OptionStatus>
+                    </formJS.SelectStatus>
+                </formJS.DivCtnEntry>
+
+                <formJS.DivButtonCreateUser>
+                    <ButtonCreate type="submit" text='+ Create Booking' fontsize='1.25em'></ButtonCreate>
+                </formJS.DivButtonCreateUser>
+            </formJS.Form>
+        ]
+    }
+
     const selectFormType = (formType) => {
         switch (formType) {
             case 'user':
                 return userCreateForm()
             case 'room':
                 return roomCreateForm()
+            case 'contact':
+                return contactCreateForm()
+            case 'booking':
+                return bookingCreateForm()
             default:
-                alert('Tipo de form no valido')
+                alert('Tipo de form introducido no valido')
         }
     }
 

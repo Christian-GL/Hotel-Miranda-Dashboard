@@ -17,7 +17,7 @@ export const RoomList = () => {
 
     const navigate = useNavigate()
     const navigateToRoomCreate = () => {
-        navigate('./create-room')
+        navigate('./room-create')
     }
 
 

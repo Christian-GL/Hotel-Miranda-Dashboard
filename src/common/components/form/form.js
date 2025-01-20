@@ -2,8 +2,10 @@
 import { styled } from 'styled-components'
 
 import { ImUserPlus } from "react-icons/im";
+import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdOutlineBedroomParent } from "react-icons/md";
 import { BiSolidPlusCircle } from "react-icons/bi";
+import { MdContacts } from "react-icons/md";
 
 import * as gb from '../../styles/globalVars.js'
 
@@ -35,8 +37,20 @@ export const IconHotel = styled(ImUserPlus)`
     color: ${gb.colorBlack26};
 `
 
+export const IconCalendar = styled(FaRegCalendarAlt)`
+    width: 4.5rem;
+    height: auto;
+    color: ${gb.colorBlack26};
+`
+
 export const IconBed = styled(MdOutlineBedroomParent)`
     width: 5rem;
+    height: auto;
+    color: ${gb.colorBlack26};
+`
+
+export const IconContact = styled(MdContacts)`
+    width: 4.5rem;
     height: auto;
     color: ${gb.colorBlack26};
 `

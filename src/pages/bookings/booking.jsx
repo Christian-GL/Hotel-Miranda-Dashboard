@@ -17,8 +17,7 @@ export const Bookings = () => {
 
     const navigate = useNavigate()
     const navigateToBookingCreate = () => {
-        // navigate('./create-user')
-        console.log('ola')
+        navigate('./booking-create')
     }
 
     return (

@@ -40,7 +40,7 @@ export const Table = (props) => {
 
     const navigate = useNavigate()
     const navigateToBookingDetail = () => {
-        navigate('./bookingDetail')
+        navigate('./booking-detail')
     }
 
     const sss = () => {

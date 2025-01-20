@@ -19,8 +19,7 @@ export const Contact = () => {
 
     const navigate = useNavigate()
     const navigateToContactCreate = () => {
-        // navigate('./create-user')
-        console.log('ola')
+        navigate('./contact-create')
     }
 
     return (
