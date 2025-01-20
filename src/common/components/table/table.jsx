@@ -1,4 +1,5 @@
 
+import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 import * as gb from '../../styles/globalVars.js'
@@ -6,6 +7,8 @@ import * as tableJS from "./table.js"
 
 
 export const Table = (props) => {
+
+    const [optionsDisplayed, setOptionsDisplayed] = useState(false);
 
     const formatToTerm = (phrase) => {
         const wordsSplited = phrase.replace('_', ' ').split(' ');
@@ -40,10 +43,14 @@ export const Table = (props) => {
         navigate('./bookingDetail')
     }
 
+    const sss = () => {
+        setOptionsDisplayed(!optionsDisplayed)
+    }
+
     const roomListDataPerRow = (roomData, index) => {
         return [
             <tableJS.DivImgTable>
-                <tableJS.ImgTable src={`${roomData.photo}`} />
+                <tableJS.ImgTableRoom src={`${roomData.photo}`} />
             </tableJS.DivImgTable>,
 
             <tableJS.PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
@@ -81,7 +88,7 @@ export const Table = (props) => {
     const usersDataPerRow = (userData, index) => {
         return [
             <tableJS.DivImgTable>
-                <tableJS.ImgTable src={`${userData.photo}`} />
+                <tableJS.ImgTableUser src={`${userData.photo}`} />
             </tableJS.DivImgTable>,
 
             <tableJS.PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
@@ -109,11 +116,23 @@ export const Table = (props) => {
                 {userData.status_active === true ?
                     <tableJS.PStatusAvailableUsers status={userData.status_active}>
                         Active
-                        <tableJS.IconOptions />
+                        <tableJS.DivCtnAllOptions>
+                            <tableJS.IconOptions onClick={sss} />
+                            <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
+                                <tableJS.ButtonOption>Make Inactive</tableJS.ButtonOption>
+                                <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
+                            </tableJS.DivCtnOptions>
+                        </tableJS.DivCtnAllOptions>
                     </tableJS.PStatusAvailableUsers> :
                     <tableJS.PStatusAvailableUsers status={userData.status_active}>
                         Inactive
-                        <tableJS.IconOptions />
+                        <tableJS.DivCtnAllOptions>
+                            <tableJS.IconOptions onClick={sss} />
+                            <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
+                                <tableJS.ButtonOption>Make Active</tableJS.ButtonOption>
+                                <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
+                            </tableJS.DivCtnOptions>
+                        </tableJS.DivCtnAllOptions>
                     </tableJS.PStatusAvailableUsers>
                 }
             </tableJS.PTable>
@@ -123,7 +142,7 @@ export const Table = (props) => {
     const roomBookingPerRow = (bookingData, index) => {
         return [
             <tableJS.DivImgTable>
-                <tableJS.ImgTable src={`${bookingData.photo}`} />
+                <tableJS.ImgTableUser src={`${bookingData.photo}`} />
             </tableJS.DivImgTable>,
 
             <tableJS.PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>

@@ -42,18 +42,27 @@ export const PTable = styled.p`
 `
 
 export const DivImgTable = styled.div`
+    display: flex;
+    align-items: center;
     padding: 1em;
     text-align: right;
     border-bottom: 1px solid ${gb.colorLightGray};
 `
 
-export const ImgTable = styled.img`
+export const ImgTableRoom = styled.img`
     width: 100%;
-    min-width: 10rem;
-    max-width: 20rem;
     height: auto;
+    min-width: 10rem;
     min-height: 7.5rem;
+    max-width: 20rem;  
     max-height: 15rem;
+`
+
+export const ImgTableUser = styled.img`
+    width: 100%;
+    min-width: 5rem;
+    max-width: 7.5rem;
+    aspect-ratio: 1 / 1;
 `
 
 export const IconPhone = styled(ImPhone)`
@@ -85,16 +94,46 @@ export const PStatusAvailableUsers = styled.p`
     background-color: ${gb.colorWhiteFull};
 `
 
+export const DivCtnAllOptions = styled.div`
+    position: relative;
+`
+
 export const IconOptions = styled(SlOptionsVertical)`
     position: absolute;
     top: 50%;
     left: 7.55rem;
-    transform: translate(-50%, -50%);
+    // transform: translate(-50%, -50%);
+    transform: translate(-50%, -80%);
     padding: 0.5em;
     width: 1.75rem;
     height: auto;
     cursor: pointer;
     color: ${gb.colorGray39};
+    background-color: ${gb.colorWhiteFull};
+`
+
+export const DivCtnOptions = styled.div`
+    display: ${props => props.display};
+    flex-direction: column;
+    gap: 0.5rem;
+    position: absolute;
+    // top: 1rem;
+    // left: 3rem;
+    transform: translate(32.5%, 15%);
+    padding: 1em;
+    font-family: ${gb.fontPoppins};
+    border-radius: 0.5rem;
+    background-color: ${gb.colorGrayBackgroundPage};
+`
+
+export const ButtonOption = styled.button`
+    padding: 0.5em;
+    width: 7.5rem;
+    height: auto;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: ${gb.colorBlack26};
     background-color: ${gb.colorWhiteFull};
 `
 
