@@ -60,8 +60,8 @@ export const ImgTableRoom = styled.img`
 
 export const ImgTableUser = styled.img`
     width: 100%;
-    min-width: 5rem;
-    max-width: 7.5rem;
+    min-width: 4rem;
+    max-width: 6rem;
     aspect-ratio: 1 / 1;
 `
 

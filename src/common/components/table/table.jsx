@@ -19,8 +19,8 @@ export const Table = (props) => {
         return wordsSplited
     }
 
-    const createTextStatus = (data) => {
-        switch (data) {
+    const createTextStatus = (bookingDataStatus) => {
+        switch (bookingDataStatus) {
             case 'check_in':
                 return <tableJS.PStatusBooking color={`${gb.colorGreen}`} backgroundcolor={`${gb.colorLightGreenButtonTable}`}>
                     Check In
