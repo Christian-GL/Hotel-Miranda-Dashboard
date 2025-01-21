@@ -1,24 +1,80 @@
 
+import { useState, useEffect } from "react"
+import { useRef } from "react"
+import { useSelector, useDispatch } from "react-redux"
+
 import * as formJS from "./form.js"
 import { ButtonCreate } from '../buttonCreate/buttonCreate.jsx'
+import { getContactAllData, getContactAllStatus } from "../../../pages/contact/features/contactSlice.js"
+import { ContactFetchAllThunk } from "../../../pages/contact/features/thunks/contactFetchAllThunk.js"
+import { ContactCreateThunk } from "../../../pages/contact/features/thunks/contactCreateThunk.js"
 
+
+const checkFirstIDAvailable = (list) => {
+    for (let i = 0; i < list.length - 1; i++) {
+        const currentId = list[i].id
+        const nextId = list[i + 1].id
+
+        if (nextId - currentId > 1) {
+            return currentId + 1
+        }
+    }
+
+    // Si no encontramos hueco, el siguiente ID disponible es el siguiente número después del último ID
+    return list[list.length - 1].id + 1
+}
 
 export const Form = (props) => {
 
+    const contactAll = useSelector(getContactAllData) || []
+    const contactAllLoading = useSelector(getContactAllStatus)
+
+    const [nextId, setNextId] = useState(null);
+    const fullNameRef = useRef()
+    const emailRef = useRef()
+    const phoneNumberRef = useRef()
+    const commentRef = useRef()
+
+    const dispatch = useDispatch()
+    useEffect(() => {
+        if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
+        else if (contactAllLoading === "fulfilled") {
+            if (contactAll.length > 0) {
+                const id = checkFirstIDAvailable(contactAll);
+                setNextId(id);
+            } else {
+                setNextId(1);
+            }
+        }
+        else if (contactAllLoading === "rejected") { alert("Error en la api") }
+    }, [contactAllLoading, contactAll])
+
+
     const handleSubmit = e => {
         e.preventDefault();
+
         switch (props.formType) {
             case 'user':
-                console.log('creado user')
+                alert('creado user')
                 break
             case 'room':
-                console.log('creada room')
+                alert('creada room')
                 break
             case 'contact':
-                console.log('creado contacto')
+                const newContact = {
+                    id: nextId,
+                    publish_date: '23/05/2024',
+                    publish_time: '11:46 AM',
+                    fullname: fullNameRef.current.value,
+                    email: emailRef.current.value,
+                    contact: phoneNumberRef.current.value,
+                    comment: commentRef.current.value
+                }
+                dispatch(ContactCreateThunk(newContact))
+                alert('creado contacto')
                 break
             case 'booking':
-                console.log('creada booking')
+                alert('creada booking')
                 break
         }
     }
@@ -166,28 +222,23 @@ export const Form = (props) => {
 
             <formJS.Form onSubmit={handleSubmit}>
                 <formJS.DivCtnEntry>
-                    <formJS.LabelText>Contact ID</formJS.LabelText>
-                    <formJS.InputText />
-                </formJS.DivCtnEntry>
-
-                <formJS.DivCtnEntry>
                     <formJS.LabelText>Full Name</formJS.LabelText>
-                    <formJS.InputText />
+                    <formJS.InputText ref={fullNameRef} />
                 </formJS.DivCtnEntry>
 
                 <formJS.DivCtnEntry>
                     <formJS.LabelText>Email</formJS.LabelText>
-                    <formJS.InputText />
+                    <formJS.InputText ref={emailRef} />
                 </formJS.DivCtnEntry>
 
                 <formJS.DivCtnEntry>
                     <formJS.LabelText>Phone Number</formJS.LabelText>
-                    <formJS.InputText />
+                    <formJS.InputText ref={phoneNumberRef} />
                 </formJS.DivCtnEntry>
 
                 <formJS.DivCtnEntry>
                     <formJS.LabelText>Comment</formJS.LabelText>
-                    <formJS.TextAreaJobDescription type='text'></formJS.TextAreaJobDescription>
+                    <formJS.TextAreaJobDescription type='text' ref={commentRef}></formJS.TextAreaJobDescription>
                 </formJS.DivCtnEntry>
 
                 <formJS.DivButtonCreateUser>

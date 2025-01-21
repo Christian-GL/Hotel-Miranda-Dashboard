@@ -28,18 +28,18 @@ export const Contact = () => {
     const [contactDisplayed, setContactDisplayed] = useState([])
     const contactAll = useSelector(getContactAllData) || []
     const contactById = useSelector(getContactIdData) || []
-    const contactListLoading = useSelector(getContactAllStatus)
+    const contactAllLoading = useSelector(getContactAllStatus)
 
     const dispatch = useDispatch()
     useEffect(() => {
-        if (contactListLoading === "idle") { dispatch(ContactFetchAllThunk()) }
-        else if (contactListLoading === "fulfilled") {
+        if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
+        else if (contactAllLoading === "fulfilled") {
             contactById.length !== 0 ?
                 setContactDisplayed(contactById) :
                 setContactDisplayed(contactAll)
         }
-        else if (contactListLoading === "rejected") { alert("Error en la api") }
-    }, [contactListLoading, contactAll, contactById])
+        else if (contactAllLoading === "rejected") { alert("Error en la api") }
+    }, [contactAllLoading, contactAll, contactById])
 
     const handleInputTerm = (e) => {
         const inputText = parseInt(e.target.value)
@@ -50,7 +50,6 @@ export const Contact = () => {
             dispatch(ContactFetchByIDThunk(inputText))
         }
     }
-
 
     return (
 

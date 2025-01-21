@@ -2,6 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ContactFetchAllThunk } from './thunks/contactFetchAllThunk';
 import { ContactFetchByIDThunk } from './thunks/contactFetchByIDThunk';
+import { ContactCreateThunk } from './thunks/contactCreateThunk';
 
 export const ContactSlice = createSlice({
     name: 'contactSlice',
@@ -10,9 +11,12 @@ export const ContactSlice = createSlice({
         idData: null,
         allStatus: 'idle',
         idStatus: 'idle',
+        createStatus: 'idle',
         allError: false,
-        idError: false
+        idError: false,
+        createError: false
     },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(ContactFetchAllThunk.pending, (state) => {
@@ -38,6 +42,18 @@ export const ContactSlice = createSlice({
                 state.idError = true
                 state.idStatus = 'rejected'
             })
+
+            .addCase(ContactCreateThunk.pending, (state) => {
+                state.contactCreateStatus = 'loading';
+            })
+            .addCase(ContactCreateThunk.fulfilled, (state, action) => {
+                state.contactCreateStatus = 'succeeded';
+                state.allData.push(action.payload);
+            })
+            .addCase(ContactCreateThunk.rejected, (state, action) => {
+                state.contactCreateStatus = 'failed';
+                state.contactCreateError = action.payload;
+            })
     }
 })
 
@@ -48,3 +64,6 @@ export const getContactAllError = (state) => state.contactSlice.allError
 export const getContactIdData = (state) => state.contactSlice.idData
 export const getContactIdStatus = (state) => state.contactSlice.idStatus
 export const getContactIdError = (state) => state.contactSlice.idError
+
+export const getContactCreateStatus = (state) => state.contactSlice.createStatus
+export const getContactCreateError = (state) => state.contactSlice.createError
