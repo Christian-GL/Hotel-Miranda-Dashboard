@@ -213,7 +213,7 @@ export const Table = (props) => {
     const contactDataPerRow = (contactData, index) => {
         return [
             <tableJS.PTable key={index + '-1'}>
-                {contactData.id_comment}
+                {contactData.id}
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-2'} >

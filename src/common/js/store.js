@@ -1,10 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import { ApiPhotoListSlice } from "./features/apiSlice/apiPhotoListSlice";
-// import { FavoritePhotoListSlice } from "./features/favoriteSlice/favoritePhotoSlice";
+import { ContactSlice } from "../../pages/contact/features/contactSlice";
 
 export const store = configureStore({
     reducer: {
-        // apiPhotoList: ApiPhotoListSlice.reducer,
-        // favoritePhotoList: FavoritePhotoListSlice.reducer
+        contactSlice: ContactSlice.reducer
     }
 })

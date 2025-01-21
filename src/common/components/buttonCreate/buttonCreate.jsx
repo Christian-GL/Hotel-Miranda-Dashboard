@@ -6,9 +6,9 @@ export const ButtonCreate = (props) => {
 
     return (<>
 
-        <buttonCreateJS.Sss onClick={props.onclick} fontsize={`${props.fontsize}`}>
+        <buttonCreateJS.ButtonCreate onClick={props.onclick} fontsize={`${props.fontsize}`}>
             {props.text}
-        </buttonCreateJS.Sss>
+        </buttonCreateJS.ButtonCreate>
 
     </>)
 }

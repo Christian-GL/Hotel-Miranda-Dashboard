@@ -6,7 +6,7 @@ import { styled } from 'styled-components'
 import * as gb from '../../styles/globalVars.js'
 
 
-export const Sss = styled.button`
+export const ButtonCreate = styled.button`
     padding: 1em 2em;
     font-family: ${gb.fontPoppins};
     font-size: 0.75em;

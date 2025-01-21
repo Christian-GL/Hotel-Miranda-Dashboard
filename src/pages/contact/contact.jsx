@@ -1,26 +1,56 @@
 
-import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
 
 import * as contactJS from "./contact.js"
-
 import { ArticleReview } from "../../common/components/articleReview/articleReview.jsx"
 import { TableDisplayIndicator } from "../../common/components/table/tableDisplaySelector/tableDisplaySelector.jsx"
-import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/tableSearchTerm.jsx";
+import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/tableSearchTerm.jsx"
 import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
 import { Table } from "../../common/components/table/createTable/createTable.jsx"
-import contactData from '../../common/data/contactData.json'
+import { ContactFetchAllThunk } from "./features/thunks/contactFetchAllThunk.js"
+import { ContactFetchByIDThunk } from "./features/thunks/contactFetchByIDThunk.js"
+import {
+    getContactAllData, getContactAllStatus, getContactAllError,
+    getContactIdData, getContactIdStatus, getContactIdError
+} from "./features/contactSlice.js"
 
 
 export const Contact = () => {
-
-    const nameColumnList = ['Order Id', 'Date', 'Customer', 'Comment', 'Action', '']
-    const [contacts, setContacts] = useState(contactData)
 
     const navigate = useNavigate()
     const navigateToContactCreate = () => {
         navigate('./contact-create')
     }
+
+    const nameColumnList = ['Order Id', 'Date', 'Customer', 'Comment', 'Action', '']
+    const [contactDisplayed, setContactDisplayed] = useState([])
+    const contactAll = useSelector(getContactAllData) || []
+    const contactById = useSelector(getContactIdData) || []
+    const contactListLoading = useSelector(getContactAllStatus)
+
+    const dispatch = useDispatch()
+    useEffect(() => {
+        if (contactListLoading === "idle") { dispatch(ContactFetchAllThunk()) }
+        else if (contactListLoading === "fulfilled") {
+            contactById.length !== 0 ?
+                setContactDisplayed(contactById) :
+                setContactDisplayed(contactAll)
+        }
+        else if (contactListLoading === "rejected") { alert("Error en la api") }
+    }, [contactListLoading, contactAll, contactById])
+
+    const handleInputTerm = (e) => {
+        const inputText = parseInt(e.target.value)
+        if (inputText === '') {
+            dispatch(ContactFetchAllThunk())
+        }
+        else {
+            dispatch(ContactFetchByIDThunk(inputText))
+        }
+    }
+
 
     return (
 
@@ -56,7 +86,7 @@ export const Contact = () => {
                 </contactJS.DivCtnTableDisplayFilter>
 
                 <contactJS.DivCtnSearch>
-                    <TableSearchTerm placeholder='Search Contact' />
+                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search Contact' />
                 </contactJS.DivCtnSearch>
 
                 <contactJS.DivCtnButton>
@@ -64,7 +94,7 @@ export const Contact = () => {
                 </contactJS.DivCtnButton>
             </contactJS.DivCtnFuncionality>
 
-            <Table tableType='contact' rowList={contacts} columnList={nameColumnList}></Table>
+            <Table tableType='contact' rowList={contactDisplayed} columnList={nameColumnList}></Table>
 
         </contactJS.SectionPageContact >
 

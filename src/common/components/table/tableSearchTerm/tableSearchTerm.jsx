@@ -7,7 +7,7 @@ export const TableSearchTerm = (props) => {
     return (<>
 
         <tableSearchTermJS.IconMagnifyingGlass />
-        <tableSearchTermJS.InputSearchEmployee placeholder={`${props.placeholder}`} />
+        <tableSearchTermJS.InputSearchEmployee onChange={props.onchange} placeholder={`${props.placeholder}`} />
 
     </>)
 }
