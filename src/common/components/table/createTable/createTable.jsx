@@ -43,7 +43,8 @@ export const Table = (props) => {
         navigate('./booking-detail')
     }
 
-    const sss = () => {
+    const displayMenuOptions = () => {
+        // console.log(index)
         setOptionsDisplayed(!optionsDisplayed)
     }
 
@@ -117,19 +118,20 @@ export const Table = (props) => {
                     <tableJS.PStatusAvailableUsers status={userData.status_active}>
                         Active
                         <tableJS.DivCtnAllOptions>
-                            <tableJS.IconOptions onClick={sss} />
+                            <tableJS.IconOptions onClick={displayMenuOptions} />
                             <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
-                                <tableJS.ButtonOption>Make Inactive</tableJS.ButtonOption>
+                                <tableJS.ButtonOption>Update</tableJS.ButtonOption>
                                 <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
                             </tableJS.DivCtnOptions>
                         </tableJS.DivCtnAllOptions>
                     </tableJS.PStatusAvailableUsers> :
+
                     <tableJS.PStatusAvailableUsers status={userData.status_active}>
                         Inactive
                         <tableJS.DivCtnAllOptions>
-                            <tableJS.IconOptions onClick={sss} />
+                            <tableJS.IconOptions onClick={displayMenuOptions} />
                             <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
-                                <tableJS.ButtonOption>Make Active</tableJS.ButtonOption>
+                                <tableJS.ButtonOption>Update</tableJS.ButtonOption>
                                 <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
                             </tableJS.DivCtnOptions>
                         </tableJS.DivCtnAllOptions>
