@@ -44,7 +44,6 @@ export const Table = (props) => {
     }
 
     const displayMenuOptions = () => {
-        // console.log(index)
         setOptionsDisplayed(!optionsDisplayed)
     }
 
@@ -82,6 +81,14 @@ export const Table = (props) => {
                     <tableJS.PStatusRoomList status={roomData.status}>Available</tableJS.PStatusRoomList> :
                     <tableJS.PStatusRoomList status={roomData.status}>Booking</tableJS.PStatusRoomList>
                 }
+            </tableJS.PTable>,
+
+            <tableJS.PTable key={index + '-8'}>
+                <tableJS.IconOptions onClick={displayMenuOptions} />
+                <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
+                    <tableJS.ButtonOption>Update</tableJS.ButtonOption>
+                    <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
+                </tableJS.DivCtnOptions>
             </tableJS.PTable>
         ]
     }
@@ -117,26 +124,20 @@ export const Table = (props) => {
                 {userData.status_active === true ?
                     <tableJS.PStatusAvailableUsers status={userData.status_active}>
                         Active
-                        <tableJS.DivCtnAllOptions>
-                            <tableJS.IconOptions onClick={displayMenuOptions} />
-                            <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
-                                <tableJS.ButtonOption>Update</tableJS.ButtonOption>
-                                <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
-                            </tableJS.DivCtnOptions>
-                        </tableJS.DivCtnAllOptions>
                     </tableJS.PStatusAvailableUsers> :
 
                     <tableJS.PStatusAvailableUsers status={userData.status_active}>
                         Inactive
-                        <tableJS.DivCtnAllOptions>
-                            <tableJS.IconOptions onClick={displayMenuOptions} />
-                            <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
-                                <tableJS.ButtonOption>Update</tableJS.ButtonOption>
-                                <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
-                            </tableJS.DivCtnOptions>
-                        </tableJS.DivCtnAllOptions>
                     </tableJS.PStatusAvailableUsers>
                 }
+            </tableJS.PTable>,
+
+            <tableJS.PTable key={index + '-8'}>
+                <tableJS.IconOptions onClick={displayMenuOptions} />
+                <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
+                    <tableJS.ButtonOption>Update</tableJS.ButtonOption>
+                    <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
+                </tableJS.DivCtnOptions>
             </tableJS.PTable>
         ]
     }
@@ -197,6 +198,14 @@ export const Table = (props) => {
                     }
                 }
                 } */}
+            </tableJS.PTable>,
+
+            <tableJS.PTable key={index + '-8'}>
+                <tableJS.IconOptions onClick={displayMenuOptions} />
+                <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
+                    <tableJS.ButtonOption>Update</tableJS.ButtonOption>
+                    <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
+                </tableJS.DivCtnOptions>
             </tableJS.PTable>
         ]
     }
@@ -230,6 +239,14 @@ export const Table = (props) => {
                 <tableJS.ButtonPublishArchive color={`${gb.colorGreen}`}>Publish</tableJS.ButtonPublishArchive>
                 <tableJS.ButtonPublishArchive color={`${gb.colorRed}`}>Archive</tableJS.ButtonPublishArchive>
             </tableJS.PTable>,
+
+            <tableJS.PTable key={index + '-8'}>
+                <tableJS.IconOptions onClick={displayMenuOptions} />
+                <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
+                    <tableJS.ButtonOption>Update</tableJS.ButtonOption>
+                    <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
+                </tableJS.DivCtnOptions>
+            </tableJS.PTable>
         ]
     }
 

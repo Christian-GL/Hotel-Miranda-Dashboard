@@ -12,7 +12,7 @@ import roomListData from "../../common/data/roomListData.json"
 
 export const RoomList = () => {
 
-    const nameColumnList = ['', 'Room name', 'Room type', 'Amenities', 'Price', 'Offer Price', 'Status']
+    const nameColumnList = ['', 'Room name', 'Room type', 'Amenities', 'Price', 'Offer Price', 'Status', '']
     const [roomList, setRoomList] = useState(roomListData)
 
     const navigate = useNavigate()

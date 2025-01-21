@@ -13,7 +13,7 @@ import usersData from "../../common/data/usersData.json"
 
 export const Users = () => {
 
-    const nameColumnList = ['', 'Name', 'Start Date', 'Job Description', 'Contact', 'Status']
+    const nameColumnList = ['', 'Name', 'Start Date', 'Job Description', 'Contact', 'Status', '']
     const [userList, setUserList] = useState(usersData)
 
     const navigate = useNavigate()

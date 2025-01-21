@@ -12,7 +12,7 @@ import bookingData from "../../common/data/bookingData.json"
 
 export const Bookings = () => {
 
-    const nameColumnList = ['', 'Guest', 'Order Date', 'Check In', 'Check Out', 'Special Request', 'Room Type', 'Status']
+    const nameColumnList = ['', 'Guest', 'Order Date', 'Check In', 'Check Out', 'Special Request', 'Room Type', 'Status', '']
     const [bookingList, setBookingList] = useState(bookingData)
 
     const navigate = useNavigate()

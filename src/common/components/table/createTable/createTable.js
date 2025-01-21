@@ -29,6 +29,7 @@ export const TRTable = styled.tr`
 `
 
 export const PTable = styled.p`
+    position: relative;
     display: flex;
     justify-content: ${props => props.justifycontent === 'center' ? 'center' : 'flex-start'};
     align-items: ${props => props.alignitems === 'left' ? 'left' : 'center'};
@@ -86,7 +87,7 @@ export const PStatusRoomList = styled.p`
 
 export const PStatusAvailableUsers = styled.p`
     position: relative;
-    padding: 1em 9em 1em 0;
+    padding: 1em;
     font-family: ${gb.fontPoppins};
     font-weight: 700;
     text-transform: uppercase;
@@ -94,16 +95,7 @@ export const PStatusAvailableUsers = styled.p`
     background-color: ${gb.colorWhiteFull};
 `
 
-export const DivCtnAllOptions = styled.div`
-    position: relative;
-`
-
 export const IconOptions = styled(SlOptionsVertical)`
-    position: absolute;
-    top: 50%;
-    left: 7.55rem;
-    // transform: translate(-50%, -50%);
-    transform: translate(-50%, -80%);
     padding: 0.5em;
     width: 1.75rem;
     height: auto;
@@ -113,16 +105,17 @@ export const IconOptions = styled(SlOptionsVertical)`
 `
 
 export const DivCtnOptions = styled.div`
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, 25%);
     display: ${props => props.display};
     flex-direction: column;
     gap: 0.5rem;
-    position: absolute;
-    // top: 1rem;
-    // left: 3rem;
-    transform: translate(32.5%, 15%);
     padding: 1em;
     font-family: ${gb.fontPoppins};
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     background-color: ${gb.colorGrayBackgroundPage};
 `
 

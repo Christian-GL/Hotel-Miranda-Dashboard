@@ -14,7 +14,7 @@ import contactData from '../../common/data/contactData.json'
 
 export const Contact = () => {
 
-    const nameColumnList = ['Order Id', 'Date', 'Customer', 'Comment', 'Action']
+    const nameColumnList = ['Order Id', 'Date', 'Customer', 'Comment', 'Action', '']
     const [contacts, setContacts] = useState(contactData)
 
     const navigate = useNavigate()
