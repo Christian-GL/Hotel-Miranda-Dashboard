@@ -34,7 +34,7 @@ export const Contact = () => {
     useEffect(() => {
         if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
         else if (contactAllLoading === "fulfilled") {
-            console.log('-->',contactById.length)
+            // console.log('-->',contactById.length)
             contactById.length === 0 ?
                 setContactDisplayed(contactAll) :
                 setContactDisplayed(contactById)

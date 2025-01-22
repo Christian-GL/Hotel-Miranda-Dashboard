@@ -70,6 +70,8 @@ export const Form = (props) => {
     const handleSubmit = e => {
         e.preventDefault();
 
+        props.create()
+
         switch (props.formType) {
             case 'user':
                 alert('creado user')

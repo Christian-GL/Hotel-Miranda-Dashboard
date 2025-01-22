@@ -8,7 +8,7 @@ import * as tableJS from "./createTable.js"
 
 export const Table = (props) => {
 
-    const [optionsDisplayed, setOptionsDisplayed] = useState(false);
+    const [optionsDisplayed, setOptionsDisplayed] = useState();
 
     const formatToTerm = (phrase) => {
         const wordsSplited = phrase.replace('_', ' ').split(' ');
@@ -41,10 +41,6 @@ export const Table = (props) => {
     const navigate = useNavigate()
     const navigateToBookingDetail = () => {
         navigate('./booking-detail')
-    }
-
-    const displayMenuOptions = () => {
-        setOptionsDisplayed(!optionsDisplayed)
     }
 
     const roomListDataPerRow = (roomData, index) => {
@@ -84,7 +80,8 @@ export const Table = (props) => {
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-8'}>
-                <tableJS.IconOptions onClick={displayMenuOptions} />
+                {/* <tableJS.IconOptions onClick={displayMenuOptions} /> */}
+                <tableJS.IconOptions onClick={displayMenuOptions(index)} />
                 <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
                     <tableJS.ButtonOption>Update</tableJS.ButtonOption>
                     <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
@@ -241,8 +238,12 @@ export const Table = (props) => {
             </tableJS.PTable>,
 
             <tableJS.PTable key={index + '-8'}>
-                <tableJS.IconOptions onClick={displayMenuOptions} />
-                <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
+                <tableJS.IconOptions onClick={() => {
+                    optionsDisplayed === index ?
+                        setOptionsDisplayed() :
+                        setOptionsDisplayed(index)
+                }} />
+                <tableJS.DivCtnOptions display={`${optionsDisplayed === index ? 'flex' : 'none'}`} >
                     <tableJS.ButtonOption>Update</tableJS.ButtonOption>
                     <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
                 </tableJS.DivCtnOptions>
