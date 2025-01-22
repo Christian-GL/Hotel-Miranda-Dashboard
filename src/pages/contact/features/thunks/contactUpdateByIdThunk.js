@@ -2,10 +2,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
-export const ContactCreateThunk = createAsyncThunk("contact/Create", async (newContactData) => {
+export const ContactUpdateByIdThunk = createAsyncThunk("contact/UpdateById", async (ContactIdToUpdate) => {
 
     try {
-        return newContactData;
+        return ContactIdToUpdate;
     }
     catch (error) {
         console.log(error)

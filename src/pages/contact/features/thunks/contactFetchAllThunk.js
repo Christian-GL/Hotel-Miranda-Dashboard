@@ -4,7 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit"
 import contactJSON from '../../../../common/data/contactData.json'
 
 
-export const ContactFetchAllThunk = createAsyncThunk("contactFetchAllThunk", async () => {
+export const ContactFetchAllThunk = createAsyncThunk("contact/FetchAll", async () => {
 
     try {
         const request = await new Promise((resolve) => {

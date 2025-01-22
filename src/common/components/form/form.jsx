@@ -10,7 +10,7 @@ import { ContactFetchAllThunk } from "../../../pages/contact/features/thunks/con
 import { ContactCreateThunk } from "../../../pages/contact/features/thunks/contactCreateThunk.js"
 
 
-const checkFirstIDAvailable = (list) => {
+export const checkFirstIDAvailable = (list) => {
     for (let i = 0; i < list.length - 1; i++) {
         const currentId = list[i].id
         const nextId = list[i + 1].id
@@ -23,7 +23,7 @@ const checkFirstIDAvailable = (list) => {
     return list[list.length - 1].id + 1
 }
 
-const getActualDate = () => {
+export const getActualDate = () => {
     let time = new Date()
     return time.toLocaleString('en-GB', {
         day: '2-digit',
@@ -32,7 +32,7 @@ const getActualDate = () => {
     }).replace(',', '')
 }
 
-const getActualTime = () => {
+export const getActualTime = () => {
     let time = new Date()
     return time.toLocaleString('en-US', {
         hour: '2-digit',
@@ -43,34 +43,8 @@ const getActualTime = () => {
 
 export const Form = (props) => {
 
-    const contactAll = useSelector(getContactAllData) || []
-    const contactAllLoading = useSelector(getContactAllStatus)
-
-    const [nextIdAvailable, setNextIdAvailable] = useState(null);
-    const fullNameRef = useRef()
-    const emailRef = useRef()
-    const phoneNumberRef = useRef()
-    const commentRef = useRef()
-
-    const dispatch = useDispatch()
-    useEffect(() => {
-        if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
-        else if (contactAllLoading === "fulfilled") {
-            if (contactAll.length > 0) {
-                const id = checkFirstIDAvailable(contactAll);
-                setNextIdAvailable(id);
-            } else {
-                setNextIdAvailable(1);
-            }
-        }
-        else if (contactAllLoading === "rejected") { alert("Error en la api") }
-    }, [contactAllLoading, contactAll])
-
-
     const handleSubmit = e => {
         e.preventDefault();
-
-        props.create()
 
         switch (props.formType) {
             case 'user':
@@ -80,16 +54,6 @@ export const Form = (props) => {
                 alert('creada room')
                 break
             case 'contact':
-                const newContact = {
-                    id: nextIdAvailable,
-                    publish_date: getActualDate(),
-                    publish_time: getActualTime(),
-                    fullname: fullNameRef.current.value,
-                    email: emailRef.current.value,
-                    contact: phoneNumberRef.current.value,
-                    comment: commentRef.current.value
-                }
-                dispatch(ContactCreateThunk(newContact))
                 alert('creado contacto')
                 break
             case 'booking':

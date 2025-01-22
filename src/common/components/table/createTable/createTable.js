@@ -16,7 +16,7 @@ export const Table = styled.table`
     background-color: ${gb.colorWhiteFull};
 `
 
-export const TRTable = styled.tr`
+export const THTable = styled.th`
     display: flex;
     justify-content: flex-start;
     align-items: center;

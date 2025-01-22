@@ -15,11 +15,11 @@ import { RoomList } from './pages/roomList/roomList.jsx'
 import { RoomCreate } from './pages/roomList/pages/roomCreate/roomCreate.jsx'
 import { Contact } from './pages/contact/contact.jsx'
 import { ContactCreate } from './pages/contact/contactCreate/contactCreate.jsx'
+import { ContactUpdate } from './pages/contact/contactUpdate/contactUpdate.jsx'
 import { Users } from './pages/users/users.jsx'
 import { UserCreate } from './pages/users/pages/userCreate/userCreate.jsx'
 
 import { LoginProvider } from './common/pages/signUp/features/loginProvider.jsx'
-
 
 
 createRoot(document.getElementById('root')).render(
@@ -42,6 +42,7 @@ createRoot(document.getElementById('root')).render(
                         <Route path="/contact" element={<Root />}>
                             <Route path="" element={<Contact />} />
                             <Route path="contact-create" element={<ContactCreate />} />
+                            <Route path="contact-update/:id" element={<ContactUpdate />} />
                         </Route>
                         <Route path="/users" element={<Root />}>
                             <Route path="" element={<Users />} />

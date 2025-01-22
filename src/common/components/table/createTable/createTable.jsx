@@ -10,6 +10,10 @@ export const Table = (props) => {
 
     const [optionsDisplayed, setOptionsDisplayed] = useState();
 
+    const displayMenuOptions = () => {
+        console.log('eliminar esta funcion luego')
+    }
+
     const formatToTerm = (phrase) => {
         const wordsSplited = phrase.replace('_', ' ').split(' ');
         for (let i = 0; i < wordsSplited.length; i++) {
@@ -81,7 +85,7 @@ export const Table = (props) => {
 
             <tableJS.PTable key={index + '-8'}>
                 {/* <tableJS.IconOptions onClick={displayMenuOptions} /> */}
-                <tableJS.IconOptions onClick={displayMenuOptions(index)} />
+                <tableJS.IconOptions onClick={displayMenuOptions} />
                 <tableJS.DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} >
                     <tableJS.ButtonOption>Update</tableJS.ButtonOption>
                     <tableJS.ButtonOption>Delete</tableJS.ButtonOption>
@@ -255,7 +259,7 @@ export const Table = (props) => {
     return (
         <tableJS.Table rowlistlength={`${props.rowList.length + 1}`} columnlistlength={`${props.columnList.length}`} >
             {props.columnList.map((nameColumn, index) =>
-                <tableJS.TRTable key={index}>{nameColumn}</tableJS.TRTable>
+                <tableJS.THTable key={index}>{nameColumn}</tableJS.THTable>
             )}
             {props.rowList.map((data, index) => {
                 switch (props.tableType) {

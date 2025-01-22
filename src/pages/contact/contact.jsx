@@ -4,13 +4,15 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as contactJS from "./contact.js"
+import * as gb from '../../common/styles/globalVars.js'
 import { ArticleReview } from "../../common/components/articleReview/articleReview.jsx"
 import { TableDisplayIndicator } from "../../common/components/table/tableDisplaySelector/tableDisplaySelector.jsx"
 import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/tableSearchTerm.jsx"
 import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
-import { Table } from "../../common/components/table/createTable/createTable.jsx"
+import { Table, THTable, PTable, IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption } from "../../common/components/table/createTable/createTable.js"
 import { ContactFetchAllThunk } from "./features/thunks/contactFetchAllThunk.js"
 import { ContactFetchByIDThunk } from "./features/thunks/contactFetchByIDThunk.js"
+import { ContactDeleteByIdThunk } from "./features/thunks/contactDeleteByIdThunk.js"
 import {
     getContactAllData, getContactAllStatus, getContactAllError,
     getContactIdData, getContactIdStatus, getContactIdError
@@ -29,12 +31,12 @@ export const Contact = () => {
     const contactAll = useSelector(getContactAllData) || []
     const contactById = useSelector(getContactIdData) || []
     const contactAllLoading = useSelector(getContactAllStatus)
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState();
 
     const dispatch = useDispatch()
     useEffect(() => {
         if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
         else if (contactAllLoading === "fulfilled") {
-            console.log(contactById.length)
             contactById.length !== 0 ?
                 setContactDisplayed(contactById) :
                 setContactDisplayed(contactAll)
@@ -94,7 +96,61 @@ export const Contact = () => {
                 </contactJS.DivCtnButton>
             </contactJS.DivCtnFuncionality>
 
-            <Table tableType='contact' rowList={contactDisplayed} columnList={nameColumnList}></Table>
+            <Table rowlistlength={`${contactDisplayed.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
+                {/* <thead>
+                    <tr> */}
+                {nameColumnList.map((nameColumn, index) =>
+                    <THTable key={index}>{nameColumn}</THTable>
+                )}
+                {/* </tr>
+                </thead>
+                <tbody> */}
+                {contactDisplayed.map((contactData, index) => {
+                    return [
+                        <PTable key={index + '-1'}>
+                            #{contactData.id}
+                        </PTable>,
+
+                        <PTable key={index + '-2'} >
+                            {contactData.publish_date} {contactData.publish_time}
+                        </PTable>,
+
+                        <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <div style={{ color: `${gb.colorGreen}` }}>
+                                <b>{contactData.full_name}</b>
+                            </div>
+                            <div>{contactData.email}</div>
+                            <div style={{ display: 'flex', alignItems: 'bottom' }}>
+                                <IconPhone width='1.3rem' />
+                                <div>{contactData.contact}</div>
+                            </div>
+                        </PTable>,
+
+                        <PTable key={index + '-4'} >
+                            {contactData.comment}
+                        </PTable>,
+
+                        <PTable key={index + '-5'}>
+                            <ButtonPublishArchive color={`${gb.colorGreen}`}>Publish</ButtonPublishArchive>
+                            <ButtonPublishArchive color={`${gb.colorRed}`}>Archive</ButtonPublishArchive>
+                        </PTable>,
+
+                        <PTable key={index + '-8'}>
+                            <IconOptions onClick={() => {
+                                tableOptionsDisplayed === index ?
+                                    setTableOptionsDisplayed() :
+                                    setTableOptionsDisplayed(index)
+                            }} />
+                            <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
+                                <ButtonOption onClick={() => { navigate(`./contact-update/${contactData.id}`) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { dispatch(ContactDeleteByIdThunk(parseInt(contactData.id))) }}>Delete</ButtonOption>
+                            </DivCtnOptions>
+                        </PTable>
+                    ]
+                }
+                )}
+                {/* </tbody> */}
+            </Table>
 
         </contactJS.SectionPageContact >
 
