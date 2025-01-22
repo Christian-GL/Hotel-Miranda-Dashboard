@@ -20,8 +20,25 @@ const checkFirstIDAvailable = (list) => {
         }
     }
 
-    // Si no encontramos hueco, el siguiente ID disponible es el siguiente número después del último ID
     return list[list.length - 1].id + 1
+}
+
+const getActualDate = () => {
+    let time = new Date()
+    return time.toLocaleString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    }).replace(',', '')
+}
+
+const getActualTime = () => {
+    let time = new Date()
+    return time.toLocaleString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    }).toUpperCase()
 }
 
 export const Form = (props) => {
@@ -29,7 +46,7 @@ export const Form = (props) => {
     const contactAll = useSelector(getContactAllData) || []
     const contactAllLoading = useSelector(getContactAllStatus)
 
-    const [nextId, setNextId] = useState(null);
+    const [nextIdAvailable, setNextIdAvailable] = useState(null);
     const fullNameRef = useRef()
     const emailRef = useRef()
     const phoneNumberRef = useRef()
@@ -41,9 +58,9 @@ export const Form = (props) => {
         else if (contactAllLoading === "fulfilled") {
             if (contactAll.length > 0) {
                 const id = checkFirstIDAvailable(contactAll);
-                setNextId(id);
+                setNextIdAvailable(id);
             } else {
-                setNextId(1);
+                setNextIdAvailable(1);
             }
         }
         else if (contactAllLoading === "rejected") { alert("Error en la api") }
@@ -62,9 +79,9 @@ export const Form = (props) => {
                 break
             case 'contact':
                 const newContact = {
-                    id: nextId,
-                    publish_date: '23/05/2024',
-                    publish_time: '11:46 AM',
+                    id: nextIdAvailable,
+                    publish_date: getActualDate(),
+                    publish_time: getActualTime(),
                     fullname: fullNameRef.current.value,
                     email: emailRef.current.value,
                     contact: phoneNumberRef.current.value,

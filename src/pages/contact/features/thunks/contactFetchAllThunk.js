@@ -8,9 +8,9 @@ export const ContactFetchAllThunk = createAsyncThunk("contactFetchAllThunk", asy
 
     try {
         const request = await new Promise((resolve) => {
-            setTimeout(() => resolve({             // Tiempo necesario para manejar la promesa
-                ok: true,                          // Como es una simulación decimos que siempre es "ok"
-                json: () => contactJSON            // Resolvemos la promesa pasandole directamente el contenido
+            setTimeout(() => resolve({
+                ok: true,
+                json: () => contactJSON
             }), 200)
         })
 
