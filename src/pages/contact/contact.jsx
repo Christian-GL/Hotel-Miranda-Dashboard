@@ -34,17 +34,17 @@ export const Contact = () => {
     useEffect(() => {
         if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
         else if (contactAllLoading === "fulfilled") {
-            // console.log('-->',contactById.length)
-            contactById.length === 0 ?
-                setContactDisplayed(contactAll) :
-                setContactDisplayed(contactById)
+            console.log(contactById.length)
+            contactById.length !== 0 ?
+                setContactDisplayed(contactById) :
+                setContactDisplayed(contactAll)
         }
         else if (contactAllLoading === "rejected") { alert("Error en la api") }
     }, [contactAllLoading, contactAll, contactById])
 
     const handleInputTerm = (e) => {
         const inputText = parseInt(e.target.value)
-        if (inputText === '') {    
+        if (inputText === '') {
             dispatch(ContactFetchAllThunk())
         }
         else {
