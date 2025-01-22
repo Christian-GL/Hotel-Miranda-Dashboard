@@ -10,7 +10,7 @@ export const ContactSlice = createSlice({
     name: 'contact',
     initialState: {
         allData: [],
-        idData: null,
+        idData: {},
         allStatus: 'idle',
         idStatus: 'idle',
         allError: false,

@@ -29,7 +29,7 @@ export const Contact = () => {
     const nameColumnList = ['Order Id', 'Date', 'Customer', 'Comment', 'Action', '']
     const [contactDisplayed, setContactDisplayed] = useState([])
     const contactAll = useSelector(getContactAllData) || []
-    const contactById = useSelector(getContactIdData) || []
+    const contactById = useSelector(getContactIdData) || {}
     const contactAllLoading = useSelector(getContactAllStatus)
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState();
 
@@ -37,8 +37,8 @@ export const Contact = () => {
     useEffect(() => {
         if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
         else if (contactAllLoading === "fulfilled") {
-            contactById.length !== 0 ?
-                setContactDisplayed(contactById) :
+            Object.keys(contactById).length !== 0 ?
+                setContactDisplayed([contactById]) :
                 setContactDisplayed(contactAll)
         }
         else if (contactAllLoading === "rejected") { alert("Error en la api") }

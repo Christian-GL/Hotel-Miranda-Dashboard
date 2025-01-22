@@ -26,9 +26,9 @@ export const ContactFetchByIDThunk = createAsyncThunk("contact/FetchById", async
 
         if (request.ok) {
             const contactFinded = await request.json()
-            return [contactFinded]
+            return contactFinded
         }
-        else return []
+        else return {}
     }
     catch (error) {
         console.log(error)

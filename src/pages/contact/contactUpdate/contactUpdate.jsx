@@ -18,7 +18,7 @@ import { ContactUpdateByIdThunk } from '../features/thunks/contactUpdateByIdThun
 export const ContactUpdate = () => {
 
     const { id } = useParams()
-    const contactById = useSelector(getContactIdData) || []
+    const contactById = useSelector(getContactIdData) || {}
     const contactByIdLoading = useSelector(getContactIdStatus)
     const [contactUpdated, setContactUpdated] = useState({
         id: id || 0,
@@ -33,15 +33,15 @@ export const ContactUpdate = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         if (contactByIdLoading === "idle") { dispatch(ContactFetchByIDThunk(parseInt(id))) }
-        else if (contactByIdLoading === "fulfilled" && contactById.length > 0) {
+        else if (contactByIdLoading === "fulfilled" && Object.keys(contactById).length !== 0) {
             setContactUpdated({
-                id: contactById[0].id,
-                publish_date: contactById[0].publish_date || '',
-                publish_time: contactById[0].publish_time || '',
-                fullname: contactById[0].full_name || '',
-                email: contactById[0].email || '',
-                contact: contactById[0].contact || '',
-                comment: contactById[0].comment || ''
+                id: contactById.id,
+                publish_date: contactById.publish_date || '',
+                publish_time: contactById.publish_time || '',
+                fullname: contactById.full_name || '',
+                email: contactById.email || '',
+                contact: contactById.contact || '',
+                comment: contactById.comment || ''
             })
         }
         else if (contactByIdLoading === "rejected") { alert("Error en la api") }
