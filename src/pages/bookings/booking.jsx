@@ -10,9 +10,8 @@ import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/t
 import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
 import { formatToTerm } from "../../common/components/table/createTable/createTable.jsx";
 import { Table, THTable, DivImgTable, ImgTableUser, PTable, IconOptions, ButtonViewNotes, PStatusBooking, DivCtnOptions, ButtonOption } from "../../common/components/table/createTable/createTable.js"
-import { getBookingAllData, getBookingAllStatus, getBookingIdData, getBookingIdStatus, getBookingError } from "./features/bookingSlice.js";
+import { getBookingAllData, getBookingAllStatus, getBookingError } from "./features/bookingSlice.js";
 import { BookingFetchAllThunk } from "./features/thunks/bookingFetchAllThunk.js";
-import { BookingFetchByIDThunk } from "./features/thunks/bookingFetchByIDThunk.js";
 import { BookingDeleteByIdThunk } from "./features/thunks/bookingDeleteByIdThunk.js";
 
 
@@ -29,30 +28,29 @@ export const Bookings = () => {
     const nameColumnList = ['', 'Guest', 'Order date', 'Check in', 'Check out', 'Special request', 'Room type', 'Status', '']
     const [bookingDisplayed, setBookingDisplayed] = useState([])
     const bookingAll = useSelector(getBookingAllData) || []
-    const bookingById = useSelector(getBookingIdData) || {}
     const bookingAllLoading = useSelector(getBookingAllStatus)
-    const bookingIdLoading = useSelector(getBookingIdStatus)
+    const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState();
 
     const dispatch = useDispatch()
     useEffect(() => {
         if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === "fulfilled") {
-            Object.keys(bookingById).length !== 0 ?
-                setBookingDisplayed([bookingById]) :
+            if (inputText === '') {
                 setBookingDisplayed(bookingAll)
+            }
+            else {
+                const filteredClients = bookingAll.filter(client =>
+                    client.full_name_guest.toLowerCase().includes(inputText.toLowerCase())
+                )
+                setBookingDisplayed(filteredClients)
+            }
         }
         else if (bookingAllLoading === "rejected") { alert("Error en la api") }
-    }, [bookingAllLoading, bookingIdLoading, bookingAll, bookingById])
+    }, [bookingAllLoading, bookingAll, inputText])
 
     const handleInputTerm = (e) => {
-        const inputText = parseInt(e.target.value)
-        if (inputText === '') {
-            dispatch(BookingFetchAllThunk())
-        }
-        else {
-            dispatch(BookingFetchByIDThunk(inputText))
-        }
+        setInputText(e.target.value)
     }
     const deleteBookingById = (id, index) => {
         dispatch(BookingDeleteByIdThunk(parseInt(id)))
@@ -77,7 +75,7 @@ export const Bookings = () => {
                 </bookingsJS.DivCtnTableDisplayFilter>
 
                 <bookingsJS.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search Booking' />
+                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search booking by client name' />
                 </bookingsJS.DivCtnSearch>
 
                 <bookingsJS.DivCtnButton>

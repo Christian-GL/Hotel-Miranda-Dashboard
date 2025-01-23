@@ -10,9 +10,8 @@ import { TableDisplayIndicator } from "../../common/components/table/tableDispla
 import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
 import { Table, THTable, DivImgTable, ImgTableUser, PTable, PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption } from "../../common/components/table/createTable/createTable.js"
-import { getUserAllData, getUserAllStatus, getUserIdData, getUserIdStatus, getUserError } from "./features/userSlice.js";
+import { getUserAllData, getUserAllStatus, getUserError } from "./features/userSlice.js";
 import { UserFetchAllThunk } from "./features/thunks/userFetchAllThunk.js";
-import { UserFetchByIDThunk } from "./features/thunks/userFetchByIDThunk.js";
 import { UserDeleteByIdThunk } from "./features/thunks/userDeleteByIdThunk.js";
 
 
@@ -28,31 +27,31 @@ export const User = () => {
 
     const nameColumnList = ['', 'Name', 'Start date', 'Job description', 'Contact', 'Status', '']
     const [userDisplayed, setUserDisplayed] = useState([])
-    const userAll = useSelector(getUserAllData) || []
-    const userById = useSelector(getUserIdData) || {}
-    const userAllLoading = useSelector(getUserAllStatus)
-    const userIdLoading = useSelector(getUserIdStatus)
-    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState();
+    const usersAll = useSelector(getUserAllData) || []
+    const usersAllLoading = useSelector(getUserAllStatus)
+    const [inputText, setInputText] = useState('')
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
 
     const dispatch = useDispatch()
     useEffect(() => {
-        if (userAllLoading === "idle") { dispatch(UserFetchAllThunk()) }
-        else if (userAllLoading === "fulfilled") {
-            Object.keys(userById).length !== 0 ?
-                setUserDisplayed([userById]) :
-                setUserDisplayed(userAll)
+        if (usersAllLoading === "idle") { dispatch(UserFetchAllThunk()) }
+        else if (usersAllLoading === "fulfilled") {
+            if (inputText === '') {
+                setUserDisplayed(usersAll)
+            }
+            else {
+                const filteredEmployees = usersAll.filter(employee =>
+                    employee.full_name.toLowerCase().includes(inputText.toLowerCase())
+                )
+                setUserDisplayed(filteredEmployees)
+            }
+
         }
-        else if (userAllLoading === "rejected") { alert("Error en la api") }
-    }, [userAllLoading, userIdLoading, userAll, userById])
+        else if (usersAllLoading === "rejected") { alert("Error en la api") }
+    }, [usersAllLoading, usersAll, inputText])
 
     const handleInputTerm = (e) => {
-        const inputText = parseInt(e.target.value)
-        if (inputText === '') {
-            dispatch(UserFetchAllThunk())
-        }
-        else {
-            dispatch(UserFetchByIDThunk(inputText))
-        }
+        setInputText(e.target.value)
     }
     const deleteUserById = (id, index) => {
         dispatch(UserDeleteByIdThunk(parseInt(id)))
@@ -76,7 +75,7 @@ export const User = () => {
                 </userJS.DivCtnTableDisplayFilter>
 
                 <userJS.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search Employee' />
+                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search employee by name' />
                 </userJS.DivCtnSearch>
 
                 <userJS.DivCtnButton>

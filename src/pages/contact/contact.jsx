@@ -53,9 +53,6 @@ export const Contact = () => {
         }
         else {
             dispatch(ContactFetchByIDThunk(inputText))
-            // if (contactIdLoading === "idle") { dispatch(ContactFetchByIDThunk(inputText)) }
-            // else if (contactIdLoading === "fulfilled") { }
-            // else if (contactIdLoading === "rejected") { alert("Error en la api") }
         }
     }
     const deleteContactById = (id, index) => {
@@ -102,7 +99,7 @@ export const Contact = () => {
                 </contactJS.DivCtnTableDisplayFilter>
 
                 <contactJS.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search Contact' />
+                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search contact by ID' />
                 </contactJS.DivCtnSearch>
 
                 <contactJS.DivCtnButton>

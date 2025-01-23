@@ -76,7 +76,7 @@ export const Room = () => {
                 </roomJS.DivCtnTableDisplayFilter>
 
                 <roomJS.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search Room' />
+                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search room by ID' />
                 </roomJS.DivCtnSearch>
 
                 <roomJS.DivCtnButton>
