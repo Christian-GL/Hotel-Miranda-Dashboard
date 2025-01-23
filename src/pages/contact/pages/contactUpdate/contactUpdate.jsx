@@ -44,7 +44,7 @@ export const ContactUpdate = () => {
             })
         }
         else if (contactByIdLoading === "rejected") { alert("Error en la api") }
-    }, [contactByIdLoading, contactById, id])
+    }, [contactByIdLoading, contactById])
 
     const handleFullNameChange = (e) => {
         const { name, value } = e.target
@@ -77,7 +77,13 @@ export const ContactUpdate = () => {
     const handleSubmit = e => {
         e.preventDefault();
         dispatch(ContactUpdateByIdThunk(contactUpdated))
-        alert(`Contact #${contactUpdated.id} updated`)
+
+            .then(() => {
+                alert(`Contact #${contactUpdated.id} updated`)
+            })
+            .catch((error) => {
+                alert(`Error updating the contact #${contactUpdated.id}: `, error)
+            })
     }
 
     return (

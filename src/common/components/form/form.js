@@ -106,6 +106,14 @@ export const ImgRoom = styled.img`
     max-height: 15rem;
 `
 
+export const ImgUser = styled.img`
+    padding-left: 2em;
+    width: 100%;
+    height: auto;
+    max-width: 10rem;
+    max-height: 10rem;
+`
+
 export const DivCtnEntry = styled.div`
     display: flex;
     flex-direction: row;

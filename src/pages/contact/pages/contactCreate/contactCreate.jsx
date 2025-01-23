@@ -27,25 +27,25 @@ export const ContactCreate = () => {
         email: '',
         contact: '',
         comment: ''
-    });
-    const [nextIdAvailable, setNextIdAvailable] = useState(null);
+    })
+    const [nextIdAvailable, setNextIdAvailable] = useState(null)
 
     const dispatch = useDispatch()
     useEffect(() => {
         if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
         else if (contactAllLoading === "fulfilled") {
             if (contactAll.length > 0) {
-                const id = checkFirstIDAvailable(contactAll);
-                setNextIdAvailable(id);
+                const id = checkFirstIDAvailable(contactAll)
+                setNextIdAvailable(id)
             }
             else {
-                setNextIdAvailable(1);
+                setNextIdAvailable(1)
             }
         }
         else if (contactAllLoading === "rejected") { alert("Error en la api") }
     }, [contactAllLoading, contactAll])
 
-    
+
     const handleFullNameChange = (e) => {
         const { name, value } = e.target
         setNewContact({
@@ -75,15 +75,20 @@ export const ContactCreate = () => {
         })
     }
     const handleSubmit = e => {
-        e.preventDefault();
+        e.preventDefault()
         const newContactToDispatch = {
             ...newContact,
             id: nextIdAvailable,
             publish_date: getActualDate(),
             publish_time: getActualTime()
-        };
+        }
         dispatch(ContactCreateThunk(newContactToDispatch))
-        alert(`Contact #${newContactToDispatch.id} created`)
+            .then(() => {
+                alert(`Contact #${newContactToDispatch.id} created`)
+            })
+            .catch((error) => {
+                alert('Error creating the contact: ', error)
+            })
     }
 
 

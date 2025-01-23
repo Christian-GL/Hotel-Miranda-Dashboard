@@ -29,7 +29,7 @@ export const RoomUpdate = () => {
         price: 0,
         offer_price: 0,
         booking_status: false
-    });
+    })
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -47,7 +47,7 @@ export const RoomUpdate = () => {
             })
         }
         else if (roomByIdLoading === "rejected") { alert("Error en la api") }
-    }, [roomByIdLoading, roomById, id])
+    }, [roomByIdLoading, roomById])
 
 
     // QUE URL DE FOTO DEBE GUARDAR EN REDUX ???
@@ -110,9 +110,14 @@ export const RoomUpdate = () => {
         })
     }
     const handleSubmit = e => {
-        e.preventDefault();
+        e.preventDefault()
         dispatch(RoomUpdateByIdThunk(roomUpdated))
-        alert(`Room #${roomUpdated.id} updated`)
+            .then(() => {
+                alert(`Room #${roomUpdated.id} updated`)
+            })
+            .catch((error) => {
+                alert(`Error updating the room #${roomUpdated.id}: `, error)
+            })
     }
 
     return (

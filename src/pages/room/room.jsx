@@ -90,7 +90,7 @@ export const Room = () => {
                 )}
                 {roomDisplayed.map((roomData, index) => {
                     return [
-                        <DivImgTable>
+                        <DivImgTable key={index + '-1'}>
                             <ImgTableRoom src={`${roomData.photo}`} />
                         </DivImgTable>,
 

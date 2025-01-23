@@ -27,19 +27,19 @@ export const RoomCreate = () => {
         price: 0,
         offer_price: 0,
         booking_status: false
-    });
-    const [nextIdAvailable, setNextIdAvailable] = useState(null);
+    })
+    const [nextIdAvailable, setNextIdAvailable] = useState(null)
 
     const dispatch = useDispatch()
     useEffect(() => {
         if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === "fulfilled") {
             if (roomAll.length > 0) {
-                const id = checkFirstIDAvailable(roomAll);
-                setNextIdAvailable(id);
+                const id = checkFirstIDAvailable(roomAll)
+                setNextIdAvailable(id)
             }
             else {
-                setNextIdAvailable(1);
+                setNextIdAvailable(1)
             }
         }
         else if (roomAllLoading === "rejected") { alert("Error en la api") }
@@ -88,14 +88,14 @@ export const RoomCreate = () => {
         const { name, value } = e.target
         setNewRoom({
             ...newRoom,
-            [name]: parseInt(value)
+            [name]: parseFloat(value)
         })
     }
     const handleOfferPriceChange = (e) => {
         const { name, value } = e.target
         setNewRoom({
             ...newRoom,
-            [name]: parseInt(value)
+            [name]: parseFloat(value)
         })
     }
     const handleBookingStatusChange = (e) => {
@@ -106,13 +106,18 @@ export const RoomCreate = () => {
         })
     }
     const handleSubmit = e => {
-        e.preventDefault();
+        e.preventDefault()
         const newRoomToDispatch = {
             ...newRoom,
             id: nextIdAvailable
-        };
+        }
         dispatch(RoomCreateThunk(newRoomToDispatch))
-        alert(`Room #${newRoomToDispatch.id} created`)
+            .then(() => {
+                alert(`Room #${newRoomToDispatch.id} created`)
+            })
+            .catch((error) => {
+                alert('Error creating the room: ', error)
+            })
     }
 
     return (

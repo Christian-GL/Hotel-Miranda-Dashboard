@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 import * as gb from '../../common/styles/globalVars.js'
 
 
-export const SectionPageUsers = styled.section`
+export const SectionPageUser = styled.section`
     padding: 2em;
     height: 100%;
     overflow-y: auto;

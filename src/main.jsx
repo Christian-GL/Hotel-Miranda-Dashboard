@@ -17,8 +17,9 @@ import { RoomUpdate } from './pages/room/pages/roomUpdate/roomUpdate.jsx'
 import { Contact } from './pages/contact/contact.jsx'
 import { ContactCreate } from './pages/contact/pages/contactCreate/contactCreate.jsx'
 import { ContactUpdate } from './pages/contact/pages/contactUpdate/contactUpdate.jsx'
-import { Users } from './pages/users/users.jsx'
-import { UserCreate } from './pages/users/pages/userCreate/userCreate.jsx'
+import { User } from './pages/user/user.jsx'
+import { UserCreate } from './pages/user/pages/userCreate/userCreate.jsx'
+import { UserUpdate } from './pages/user/pages/userUpdate/userUpdate.jsx'
 
 import { LoginProvider } from './common/pages/signUp/features/loginProvider.jsx'
 
@@ -47,8 +48,9 @@ createRoot(document.getElementById('root')).render(
                             <Route path="contact-update/:id" element={<ContactUpdate />} />
                         </Route>
                         <Route path="/users" element={<Root />}>
-                            <Route path="" element={<Users />} />
+                            <Route path="" element={<User />} />
                             <Route path="user-create" element={<UserCreate />} />
+                            <Route path="user-update/:id" element={<UserUpdate />} />
                         </Route>
                     </Route>
                 </Routes>
