@@ -1,8 +1,6 @@
 
 import { styled } from 'styled-components'
 
-import { HiMiniMagnifyingGlass } from "react-icons/hi2";
-
 import * as gb from '../../common/styles/globalVars.js'
 
 

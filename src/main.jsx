@@ -10,6 +10,7 @@ import { Layout } from './common/pages/layout/layout.jsx'
 import { Dashboard } from './pages/dashboard/dashboard.jsx'
 import { Bookings } from './pages/bookings/booking.jsx'
 import { BookingCreate } from './pages/bookings/pages/bookingCreate/bookingCreate.jsx'
+import { BookingUpdate } from './pages/bookings/pages/bookingUpdate/bookingUpdate.jsx'
 import { BookingDetails } from './pages/bookings/pages/bookingDetails/bookingDetails.jsx'
 import { Room } from './pages/room/room.jsx'
 import { RoomCreate } from './pages/room/pages/roomCreate/roomCreate.jsx'
@@ -24,6 +25,7 @@ import { UserUpdate } from './pages/user/pages/userUpdate/userUpdate.jsx'
 import { LoginProvider } from './common/pages/signUp/features/loginProvider.jsx'
 
 
+
 createRoot(document.getElementById('root')).render(
     <LoginProvider>
         <BrowserRouter>
@@ -35,6 +37,7 @@ createRoot(document.getElementById('root')).render(
                         <Route path="/bookings" element={<Root />}>
                             <Route path="" element={<Bookings />} />
                             <Route path="booking-create" element={<BookingCreate />} />
+                            <Route path="booking-update/:id" element={<BookingUpdate />} />
                             <Route path="booking-detail" element={<BookingDetails />} />
                         </Route>
                         <Route path="/room" element={<Root />}>

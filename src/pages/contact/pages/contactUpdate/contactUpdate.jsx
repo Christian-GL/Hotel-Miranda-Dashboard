@@ -20,13 +20,13 @@ export const ContactUpdate = () => {
     const contactById = useSelector(getContactIdData) || {}
     const contactByIdLoading = useSelector(getContactIdStatus)
     const [contactUpdated, setContactUpdated] = useState({
-        id: id || 0,
-        publish_date: 'sss',
-        publish_time: 'sss',
-        fullname: 'sss',
-        email: 'sss',
-        contact: 'sss',
-        comment: 'sss'
+        id: 0,
+        publish_date: '',
+        publish_time: '',
+        fullname: '',
+        email: '',
+        contact: '',
+        comment: ''
     });
 
     const dispatch = useDispatch()

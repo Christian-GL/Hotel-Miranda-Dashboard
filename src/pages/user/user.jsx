@@ -9,7 +9,6 @@ import * as gb from '../../common/styles/globalVars.js'
 import { TableDisplayIndicator } from "../../common/components/table/tableDisplaySelector/tableDisplaySelector.jsx"
 import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
-
 import { Table, THTable, DivImgTable, ImgTableUser, PTable, PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption } from "../../common/components/table/createTable/createTable.js"
 import { getUserAllData, getUserAllStatus, getUserIdData, getUserIdStatus, getUserError } from "./features/userSlice.js";
 import { UserFetchAllThunk } from "./features/thunks/userFetchAllThunk.js";

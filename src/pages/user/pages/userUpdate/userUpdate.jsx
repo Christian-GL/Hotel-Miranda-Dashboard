@@ -15,9 +15,14 @@ import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk.js"
 import { UserUpdateByIdThunk } from "../../features/thunks/userUpdateByIdThunk.js"
 
 
-const convertDateToInputFormat = (date) => {
+const formatDateToYYYYMMDD = (date) => {
     const [day, month, year] = date.split('/')
     return `${year}-${month}-${day}`
+}
+
+const formatDateToDDMMYYYY = (date) => {
+    const [year, month, day] = date.split('-')
+    return`${day}/${month}/${year}`
 }
 
 export const UserUpdate = () => {
@@ -82,14 +87,12 @@ export const UserUpdate = () => {
         })
     }
     const handleStartDateChange = (e) => {
-        const { name, value } = e.target;
-        const [year, month, day] = value.split('-');
-        const dateFormatted = `${day}/${month}/${year}`;
+        const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
-            [name]: dateFormatted,
-        });
-    };
+            [name]: formatDateToDDMMYYYY(value),
+        })
+    }
     const handleDescriptionChange = (e) => {
         const { name, value } = e.target
         setUserUpdated({
@@ -153,7 +156,7 @@ export const UserUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Start Date</LabelText>
-                        <InputDate name="start_date" type="date" value={convertDateToInputFormat(userUpdated.start_date)} onChange={handleStartDateChange} />
+                        <InputDate name="start_date" type="date" value={formatDateToYYYYMMDD(userUpdated.start_date)} onChange={handleStartDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>

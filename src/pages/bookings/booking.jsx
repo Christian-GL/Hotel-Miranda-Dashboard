@@ -1,24 +1,69 @@
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux"
 
-import * as bookingsJS from "./bookings.js"
+import * as bookingsJS from "./booking.js"
+import * as gb from '../../common/styles/globalVars.js'
 import { TableDisplayIndicator } from "../../common/components/table/tableDisplaySelector/tableDisplaySelector.jsx"
 import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
-import { Table } from "../../common/components/table/createTable/createTable.jsx"
-import bookingData from "../../common/data/bookingData.json"
+import { formatToTerm } from "../../common/components/table/createTable/createTable.jsx";
+import { Table, THTable, DivImgTable, ImgTableUser, PTable, IconOptions, ButtonViewNotes, PStatusBooking, DivCtnOptions, ButtonOption } from "../../common/components/table/createTable/createTable.js"
+import { getBookingAllData, getBookingAllStatus, getBookingIdData, getBookingIdStatus, getBookingError } from "./features/bookingSlice.js";
+import { BookingFetchAllThunk } from "./features/thunks/bookingFetchAllThunk.js";
+import { BookingFetchByIDThunk } from "./features/thunks/bookingFetchByIDThunk.js";
+import { BookingDeleteByIdThunk } from "./features/thunks/bookingDeleteByIdThunk.js";
 
 
 export const Bookings = () => {
-
-    const nameColumnList = ['', 'Guest', 'Order Date', 'Check In', 'Check Out', 'Special Request', 'Room Type', 'Status', '']
-    const [bookingList, setBookingList] = useState(bookingData)
 
     const navigate = useNavigate()
     const navigateToBookingCreate = () => {
         navigate('./booking-create')
     }
+    const navigateToBookingUpdate = (id) => {
+        navigate(`./booking-update/${id}`)
+    }
+
+    const nameColumnList = ['', 'Guest', 'Order date', 'Check in', 'Check out', 'Special request', 'Room type', 'Status', '']
+    const [bookingDisplayed, setBookingDisplayed] = useState([])
+    const bookingAll = useSelector(getBookingAllData) || []
+    const bookingById = useSelector(getBookingIdData) || {}
+    const bookingAllLoading = useSelector(getBookingAllStatus)
+    const bookingIdLoading = useSelector(getBookingIdStatus)
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState();
+
+    const dispatch = useDispatch()
+    useEffect(() => {
+        if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
+        else if (bookingAllLoading === "fulfilled") {
+            Object.keys(bookingById).length !== 0 ?
+                setBookingDisplayed([bookingById]) :
+                setBookingDisplayed(bookingAll)
+        }
+        else if (bookingAllLoading === "rejected") { alert("Error en la api") }
+    }, [bookingAllLoading, bookingIdLoading, bookingAll, bookingById])
+
+    const handleInputTerm = (e) => {
+        const inputText = parseInt(e.target.value)
+        if (inputText === '') {
+            dispatch(BookingFetchAllThunk())
+        }
+        else {
+            dispatch(BookingFetchByIDThunk(inputText))
+        }
+    }
+    const deleteBookingById = (id, index) => {
+        dispatch(BookingDeleteByIdThunk(parseInt(id)))
+        displayMenuOptions(index)
+    }
+    const displayMenuOptions = (index) => {
+        tableOptionsDisplayed === index ?
+            setTableOptionsDisplayed() :
+            setTableOptionsDisplayed(index)
+    }
+
 
     return (
 
@@ -32,7 +77,7 @@ export const Bookings = () => {
                 </bookingsJS.DivCtnTableDisplayFilter>
 
                 <bookingsJS.DivCtnSearch>
-                    <TableSearchTerm placeholder='Search Booking' />
+                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search Booking' />
                 </bookingsJS.DivCtnSearch>
 
                 <bookingsJS.DivCtnButton>
@@ -40,7 +85,80 @@ export const Bookings = () => {
                 </bookingsJS.DivCtnButton>
             </bookingsJS.DivCtnFuncionality>
 
-            <Table tableType='booking' rowList={bookingList} columnList={nameColumnList}></Table>
+            <Table rowlistlength={`${bookingDisplayed.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
+                {nameColumnList.map((nameColumn, index) =>
+                    <THTable key={index}>{nameColumn}</THTable>
+                )}
+                {bookingDisplayed.map((bookingData, index) => {
+                    return [
+                        <DivImgTable key={index + '-1'}>
+                            <ImgTableUser src={`${bookingData.photo}`} />
+                        </DivImgTable>,
+
+                        <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <div style={{ color: `${gb.colorGreen}` }}>
+                                <b>{bookingData.full_name_guest}</b>
+                            </div>
+                            <div><b>{bookingData.id}</b></div>
+                        </PTable>,
+
+                        <PTable key={index + '-3'} >
+                            {bookingData.order_date} {bookingData.order_time}
+                        </PTable>,
+
+                        <PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <div>{bookingData.check_in_date}</div>
+                            <div>{bookingData.check_in_time}</div>
+                        </PTable>,
+
+                        <PTable key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <div>{bookingData.check_out_date}</div>
+                            <div>{bookingData.check_out_time}</div>
+                        </PTable>,
+
+                        <PTable key={index + '-6'}>
+                            <ButtonViewNotes onClick={() => navigateToBookingDetail()}>View Notes</ButtonViewNotes>
+                        </PTable>,
+
+                        <PTable key={index + '-7'}>
+                            {formatToTerm(bookingData.room_type)} - {bookingData.room_number}
+                        </PTable>,
+
+                        <PTable key={index + '-8'}>
+                            {
+                                (() => {
+                                    switch (bookingData.status) {
+                                        case 'check_in':
+                                            return <PStatusBooking color={`${gb.colorGreen}`} backgroundcolor={`${gb.colorLightGreenButtonTable}`}>
+                                                Check In
+                                            </PStatusBooking>;
+                                        case 'check_out':
+                                            return <PStatusBooking color={`${gb.colorRed}`} backgroundcolor={`${gb.colorLightRedButtonTable}`}>
+                                                Check Out
+                                            </PStatusBooking>;
+                                        case 'in_progress':
+                                            return <PStatusBooking color={`${gb.colorLightRedButtonTable2}`} backgroundcolor={`${gb.colorLightGreenButtonTable2}`}>
+                                                In Progress
+                                            </PStatusBooking>;
+                                        default:
+                                            return <></>;
+                                    }
+                                }
+                                )()
+                            }
+                        </PTable>,
+
+                        <PTable key={index + '-9'}>
+                            <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                            <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
+                                <ButtonOption onClick={() => { navigateToBookingUpdate(bookingData.id) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { deleteBookingById(bookingData.id, index) }}>Delete</ButtonOption>
+                            </DivCtnOptions>
+                        </PTable>
+                    ]
+                }
+                )}
+            </Table>
         </bookingsJS.SectionPageBookings>
 
     )
