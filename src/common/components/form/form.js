@@ -5,6 +5,7 @@ import { FaUser } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdOutlineBedroomParent } from "react-icons/md";
 import { BiSolidPlusCircle } from "react-icons/bi";
+import { RiExchangeFill } from "react-icons/ri";
 import { MdContacts } from "react-icons/md";
 
 import * as gb from '../../styles/globalVars.js'
@@ -63,6 +64,28 @@ export const IconPlus = styled(BiSolidPlusCircle)`
     width: 3rem;
     height: auto;
     border-radius: 50%;
+    color: ${gb.colorBlack26};
+    background-color: ${gb.colorWhiteFull};
+`
+
+export const IconUpdate = styled(RiExchangeFill)`
+    position: absolute;
+    top: 50%;
+    transform: translate(-75%, 0%);
+    padding: 0.1em;
+    width: 3rem;
+    height: auto;
+    border-radius: 50%;
+    color: ${gb.colorBlack26};
+    background-color: ${gb.colorWhiteFull};
+`
+
+export const TitleForm = styled.h2`
+    padding-top: 1.5rem;
+    text-align: center;
+    font-family: ${gb.fontPoppins};
+    font-size: 1.75em;
+    font-weight: 600;
     color: ${gb.colorBlack26};
     background-color: ${gb.colorWhiteFull};
 `

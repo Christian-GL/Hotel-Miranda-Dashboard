@@ -6,11 +6,11 @@ import { useParams } from "react-router-dom"
 
 import * as contactCreateJS from "./contactUpdate.js"
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconPlus, Form, DivCtnEntry,
+    DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconUpdate, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
-} from '../../../common/styles/form.js'
+} from "../../../common/components/form/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
-import { getContactIdData, getContactIdStatus, getContactIdError } from "../features/contactSlice.js"
+import { getContactIdData, getContactIdStatus, getContactError } from "../features/contactSlice.js"
 import { ContactFetchByIDThunk } from "../features/thunks/contactFetchByIDThunk.js"
 import { ContactUpdateByIdThunk } from '../features/thunks/contactUpdateByIdThunk.js'
 
@@ -88,9 +88,10 @@ export const ContactUpdate = () => {
                 <DivIcon>
                     <DivCtnIcons>
                         <IconContact />
-                        <IconPlus />
+                        <IconUpdate />
                     </DivCtnIcons>
                 </DivIcon>
+                <TitleForm>Update Contact #{contactUpdated.id}</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>

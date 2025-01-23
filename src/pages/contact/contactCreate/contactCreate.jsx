@@ -6,11 +6,11 @@ import { useSelector, useDispatch } from "react-redux"
 import * as contactCreateJS from "./contactCreate.js"
 import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/components/form/form.jsx'
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconPlus, Form, DivCtnEntry,
+    DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconPlus, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
-} from '../../../common/styles/form.js'
+} from '../../../common/components/form/form.js'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
-import { getContactAllData, getContactAllStatus, getContactAllError } from "../features/contactSlice.js"
+import { getContactAllData, getContactAllStatus, getContactError } from "../features/contactSlice.js"
 import { ContactFetchAllThunk } from "../features/thunks/contactFetchAllThunk.js"
 import { ContactCreateThunk } from "../features/thunks/contactCreateThunk.js"
 
@@ -96,6 +96,7 @@ export const ContactCreate = () => {
                         <IconPlus />
                     </DivCtnIcons>
                 </DivIcon>
+                <TitleForm>Create Contact</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
