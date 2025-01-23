@@ -2,14 +2,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
-export const ContactDeleteByIdThunk = createAsyncThunk("contact/deleteById", async (contactIdToDelete) => {
+export const RoomUpdateByIdThunk = createAsyncThunk("room/updateById", async (roomIdToUpdate) => {
 
     try {
         const request = await new Promise((resolve) => {
-            if (contactIdToDelete) {
+            if (roomIdToUpdate) {
                 setTimeout(() => resolve({
                     ok: true,
-                    json: () => contactIdToDelete
+                    json: () => roomIdToUpdate
                 }), 200)
             }
             else {
@@ -22,8 +22,8 @@ export const ContactDeleteByIdThunk = createAsyncThunk("contact/deleteById", asy
         })
 
         if (request.ok) {
-            const contactDataDeleted = await request.json()
-            return contactDataDeleted
+            const roomDataUpdated = await request.json()
+            return roomDataUpdated
         }
         else return {}
     }

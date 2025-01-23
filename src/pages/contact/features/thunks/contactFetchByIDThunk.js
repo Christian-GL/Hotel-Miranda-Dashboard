@@ -1,14 +1,14 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
-import contactJSON from '../../../../common/data/contactData.json'
+import contactJSON from '../../data/contactData.json'
 
 
-export const ContactFetchByIDThunk = createAsyncThunk("contact/FetchById", async (contactID) => {
+export const ContactFetchByIDThunk = createAsyncThunk("contact/fetchById", async (contactId) => {
 
     try {
         const request = await new Promise((resolve) => {
-            const contact = contactJSON.find((contact) => contact.id === contactID);
+            const contact = contactJSON.find((contact) => contact.id === contactId);
             if (contact) {
                 setTimeout(() => resolve({
                     ok: true,

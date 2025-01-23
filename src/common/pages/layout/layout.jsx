@@ -59,7 +59,7 @@ export const Layout = () => {
                                 </sidebarJS.PNavOptionText>
                             </sidebarJS.DivCtnNavOption>
                         </a>
-                        <a href="/roomList">
+                        <a href="/room">
                             <sidebarJS.DivCtnNavOption>
                                 <sidebarJS.IconRooms />
                                 <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >

@@ -6,22 +6,24 @@ import * as gb from '../../../styles/globalVars.js'
 import * as tableJS from "./createTable.js"
 
 
+
+
+export const displayMenuOptions = () => {
+    console.log('eliminar esta funcion luego')
+}
+
+export const formatToTerm = (phrase) => {
+    const wordsSplited = phrase.replace('_', ' ').split(' ');
+    for (let i = 0; i < wordsSplited.length; i++) {
+        wordsSplited[i] = wordsSplited[i][0].toUpperCase() + wordsSplited[i].substr(1);
+        wordsSplited[i] += ' '
+    }
+    return wordsSplited
+}
+
 export const Table = (props) => {
 
     const [optionsDisplayed, setOptionsDisplayed] = useState();
-
-    const displayMenuOptions = () => {
-        console.log('eliminar esta funcion luego')
-    }
-
-    const formatToTerm = (phrase) => {
-        const wordsSplited = phrase.replace('_', ' ').split(' ');
-        for (let i = 0; i < wordsSplited.length; i++) {
-            wordsSplited[i] = wordsSplited[i][0].toUpperCase() + wordsSplited[i].substr(1);
-            wordsSplited[i] += ' '
-        }
-        return wordsSplited
-    }
 
     const createTextStatus = (bookingDataStatus) => {
         switch (bookingDataStatus) {

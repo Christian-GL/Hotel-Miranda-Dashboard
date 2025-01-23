@@ -6,7 +6,7 @@ import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import * as gb from '../../common/styles/globalVars.js'
 
 
-export const SectionPageRoomList = styled.section`
+export const SectionPageRoom = styled.section`
     padding: 2em;
     height: 100%;
     overflow-y: auto;

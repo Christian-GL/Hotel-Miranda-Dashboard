@@ -11,11 +11,12 @@ import { Dashboard } from './pages/dashboard/dashboard.jsx'
 import { Bookings } from './pages/bookings/booking.jsx'
 import { BookingCreate } from './pages/bookings/pages/bookingCreate/bookingCreate.jsx'
 import { BookingDetails } from './pages/bookings/pages/bookingDetails/bookingDetails.jsx'
-import { RoomList } from './pages/roomList/roomList.jsx'
-import { RoomCreate } from './pages/roomList/pages/roomCreate/roomCreate.jsx'
+import { Room } from './pages/room/room.jsx'
+import { RoomCreate } from './pages/room/pages/roomCreate/roomCreate.jsx'
+import { RoomUpdate } from './pages/room/pages/roomUpdate/roomUpdate.jsx'
 import { Contact } from './pages/contact/contact.jsx'
-import { ContactCreate } from './pages/contact/contactCreate/contactCreate.jsx'
-import { ContactUpdate } from './pages/contact/contactUpdate/contactUpdate.jsx'
+import { ContactCreate } from './pages/contact/pages/contactCreate/contactCreate.jsx'
+import { ContactUpdate } from './pages/contact/pages/contactUpdate/contactUpdate.jsx'
 import { Users } from './pages/users/users.jsx'
 import { UserCreate } from './pages/users/pages/userCreate/userCreate.jsx'
 
@@ -35,9 +36,10 @@ createRoot(document.getElementById('root')).render(
                             <Route path="booking-create" element={<BookingCreate />} />
                             <Route path="booking-detail" element={<BookingDetails />} />
                         </Route>
-                        <Route path="/roomList" element={<Root />}>
-                            <Route path="" element={<RoomList />} />
+                        <Route path="/room" element={<Root />}>
+                            <Route path="" element={<Room />} />
                             <Route path="room-create" element={<RoomCreate />} />
+                            <Route path="room-update/:id" element={<RoomUpdate />} />
                         </Route>
                         <Route path="/contact" element={<Root />}>
                             <Route path="" element={<Contact />} />

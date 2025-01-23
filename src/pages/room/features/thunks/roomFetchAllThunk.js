@@ -1,22 +1,22 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
-import contactJSON from '../../data/contactData.json'
+import roomJSON from '../../data/roomData.json'
 
 
-export const ContactFetchAllThunk = createAsyncThunk("contact/fetchAll", async () => {
+export const RoomFetchAllThunk = createAsyncThunk("room/fetchAll", async () => {
 
     try {
         const request = await new Promise((resolve) => {
             setTimeout(() => resolve({
                 ok: true,
-                json: () => contactJSON
+                json: () => roomJSON
             }), 200)
         })
 
         if (request.ok) {
-            const allContacts = await request.json()
-            return allContacts
+            const allRooms = await request.json()
+            return allRooms
         }
         else return []
     }

@@ -4,15 +4,15 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as contactCreateJS from "./contactCreate.js"
-import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/components/form/form.jsx'
+import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../../common/components/form/form.jsx'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconPlus, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
-} from '../../../common/components/form/form.js'
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
-import { getContactAllData, getContactAllStatus, getContactError } from "../features/contactSlice.js"
-import { ContactFetchAllThunk } from "../features/thunks/contactFetchAllThunk.js"
-import { ContactCreateThunk } from "../features/thunks/contactCreateThunk.js"
+} from '../../../../common/components/form/form.js'
+import { ButtonCreate } from '../../../../common/components/buttonCreate/buttonCreate.jsx'
+import { getContactAllData, getContactAllStatus, getContactError } from "../../features/contactSlice.js"
+import { ContactFetchAllThunk } from "../../features/thunks/contactFetchAllThunk.js"
+import { ContactCreateThunk } from "../../features/thunks/contactCreateThunk.js"
 
 
 export const ContactCreate = () => {
@@ -45,6 +45,7 @@ export const ContactCreate = () => {
         else if (contactAllLoading === "rejected") { alert("Error en la api") }
     }, [contactAllLoading, contactAll])
 
+    
     const handleFullNameChange = (e) => {
         const { name, value } = e.target
         setNewContact({

@@ -10,10 +10,7 @@ import { TableDisplayIndicator } from "../../common/components/table/tableDispla
 import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/tableSearchTerm.jsx"
 import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
 import { Table, THTable, PTable, IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption } from "../../common/components/table/createTable/createTable.js"
-import {
-    getContactAllData, getContactAllStatus, getContactError,
-    getContactIdData, getContactIdStatus
-} from "./features/contactSlice.js"
+import { getContactAllData, getContactAllStatus, getContactIdData, getContactIdStatus, getContactError } from "./features/contactSlice.js"
 import { ContactFetchAllThunk } from "./features/thunks/contactFetchAllThunk.js"
 import { ContactFetchByIDThunk } from "./features/thunks/contactFetchByIDThunk.js"
 import { ContactDeleteByIdThunk } from "./features/thunks/contactDeleteByIdThunk.js"
@@ -29,11 +26,8 @@ export const Contact = () => {
     const navigateToContactUpdate = (id) => {
         navigate(`./contact-update/${id}`)
     }
-    const deleteContactById = (id) => {
-        dispatch(ContactDeleteByIdThunk(parseInt(id)))
-    }
 
-    const nameColumnList = ['Order Id', 'Date', 'Customer', 'Comment', 'Action', '']
+    const nameColumnList = ['Order ID', 'Date', 'Customer', 'Comment', 'Action', '']
     const [contactDisplayed, setContactDisplayed] = useState([])
     const contactAll = useSelector(getContactAllData) || []
     const contactById = useSelector(getContactIdData) || {}
@@ -63,6 +57,15 @@ export const Contact = () => {
             // else if (contactIdLoading === "fulfilled") { }
             // else if (contactIdLoading === "rejected") { alert("Error en la api") }
         }
+    }
+    const deleteContactById = (id, index) => {
+        dispatch(ContactDeleteByIdThunk(parseInt(id)))
+        displayMenuOptions(index)
+    }
+    const displayMenuOptions = (index) => {
+        tableOptionsDisplayed === index ?
+            setTableOptionsDisplayed() :
+            setTableOptionsDisplayed(index)
     }
 
     return (
@@ -119,7 +122,7 @@ export const Contact = () => {
                 {contactDisplayed.map((contactData, index) => {
                     return [
                         <PTable key={index + '-1'}>
-                            #{contactData.id}
+                            #<b>{contactData.id}</b>
                         </PTable>,
 
                         <PTable key={index + '-2'} >
@@ -147,14 +150,10 @@ export const Contact = () => {
                         </PTable>,
 
                         <PTable key={index + '-8'}>
-                            <IconOptions onClick={() => {
-                                tableOptionsDisplayed === index ?
-                                    setTableOptionsDisplayed() :
-                                    setTableOptionsDisplayed(index)
-                            }} />
+                            <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
                                 <ButtonOption onClick={() => { navigateToContactUpdate(contactData.id) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteContactById(contactData.id) }}>Delete</ButtonOption>
+                                <ButtonOption onClick={() => { deleteContactById(contactData.id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>
                     ]

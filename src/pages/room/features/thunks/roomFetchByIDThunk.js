@@ -1,29 +1,32 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
+import roomJSON from '../../data/roomData.json'
 
-export const ContactDeleteByIdThunk = createAsyncThunk("contact/deleteById", async (contactIdToDelete) => {
+
+export const RoomFetchByIDThunk = createAsyncThunk("room/fetchById", async (roomId) => {
 
     try {
         const request = await new Promise((resolve) => {
-            if (contactIdToDelete) {
+            const room = roomJSON.find((room) => room.id === roomId);
+            if (room) {
                 setTimeout(() => resolve({
                     ok: true,
-                    json: () => contactIdToDelete
+                    json: () => room
                 }), 200)
             }
             else {
                 setTimeout(() => resolve({
                     ok: false,
-                    json: () => { }
+                    json: () => {}
                 }), 200)
             }
 
         })
 
         if (request.ok) {
-            const contactDataDeleted = await request.json()
-            return contactDataDeleted
+            const roomFinded = await request.json()
+            return roomFinded
         }
         else return {}
     }

@@ -1,5 +1,4 @@
 
-
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
@@ -8,11 +7,11 @@ import * as contactCreateJS from "./contactUpdate.js"
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconUpdate, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
-} from "../../../common/components/form/form.js"
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
-import { getContactIdData, getContactIdStatus, getContactError } from "../features/contactSlice.js"
-import { ContactFetchByIDThunk } from "../features/thunks/contactFetchByIDThunk.js"
-import { ContactUpdateByIdThunk } from '../features/thunks/contactUpdateByIdThunk.js'
+} from "../../../../common/components/form/form.js"
+import { ButtonCreate } from '../../../../common/components/buttonCreate/buttonCreate.jsx'
+import { getContactIdData, getContactIdStatus, getContactError } from "../../features/contactSlice.js"
+import { ContactFetchByIDThunk } from "../../features/thunks/contactFetchByIDThunk.js"
+import { ContactUpdateByIdThunk } from '../../features/thunks/contactUpdateByIdThunk.js'
 
 
 export const ContactUpdate = () => {
@@ -115,7 +114,7 @@ export const ContactUpdate = () => {
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
-                        <ButtonCreate type="submit" text='Update Contact' fontsize='1.25em'></ButtonCreate>
+                        <ButtonCreate type="submit" text='⮂ Update Contact' fontsize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>

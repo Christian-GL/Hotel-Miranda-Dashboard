@@ -109,10 +109,10 @@ export const Form = (props) => {
 
                 <formJS.DivCtnEntry>
                     <formJS.LabelText>Status</formJS.LabelText>
-                    <formJS.SelectStatus>
-                        <formJS.OptionStatus>Active</formJS.OptionStatus>
-                        <formJS.OptionStatus>Inactive</formJS.OptionStatus>
-                    </formJS.SelectStatus>
+                    <formJS.Select>
+                        <formJS.Option>Active</formJS.Option>
+                        <formJS.Option>Inactive</formJS.Option>
+                    </formJS.Select>
                 </formJS.DivCtnEntry>
 
                 <formJS.DivButtonCreateUser>
@@ -149,23 +149,23 @@ export const Form = (props) => {
 
                 <formJS.DivCtnEntry>
                     <formJS.LabelText>Room Type</formJS.LabelText>
-                    <formJS.SelectStatus>
-                        <formJS.OptionStatus>Suite</formJS.OptionStatus>
-                        <formJS.OptionStatus>Single Bed</formJS.OptionStatus>
-                        <formJS.OptionStatus>Double Bed</formJS.OptionStatus>
-                        <formJS.OptionStatus>Double Superior</formJS.OptionStatus>
-                    </formJS.SelectStatus>
+                    <formJS.Select>
+                        <formJS.Option>Suite</formJS.Option>
+                        <formJS.Option>Single Bed</formJS.Option>
+                        <formJS.Option>Double Bed</formJS.Option>
+                        <formJS.Option>Double Superior</formJS.Option>
+                    </formJS.Select>
                 </formJS.DivCtnEntry>
 
                 <formJS.DivCtnEntry>
                     <formJS.LabelText>Amenities</formJS.LabelText>
                     <formJS.SelectAmenities multiple={true}>
-                        <formJS.OptionStatus>3 Bed Space</formJS.OptionStatus>
-                        <formJS.OptionStatus>24 Hours Guard</formJS.OptionStatus>
-                        <formJS.OptionStatus>Free WiFi</formJS.OptionStatus>
-                        <formJS.OptionStatus>2 Bathroom</formJS.OptionStatus>
-                        <formJS.OptionStatus>Air conditioner</formJS.OptionStatus>
-                        <formJS.OptionStatus>Television</formJS.OptionStatus>
+                        <formJS.Option>3 Bed Space</formJS.Option>
+                        <formJS.Option>24 Hours Guard</formJS.Option>
+                        <formJS.Option>Free WiFi</formJS.Option>
+                        <formJS.Option>2 Bathroom</formJS.Option>
+                        <formJS.Option>Air conditioner</formJS.Option>
+                        <formJS.Option>Television</formJS.Option>
                     </formJS.SelectAmenities>
                 </formJS.DivCtnEntry>
 
@@ -181,10 +181,10 @@ export const Form = (props) => {
 
                 <formJS.DivCtnEntry>
                     <formJS.LabelText>Status</formJS.LabelText>
-                    <formJS.SelectStatus>
-                        <formJS.OptionStatus>Available</formJS.OptionStatus>
-                        <formJS.OptionStatus>Booked</formJS.OptionStatus>
-                    </formJS.SelectStatus>
+                    <formJS.Select>
+                        <formJS.Option>Available</formJS.Option>
+                        <formJS.Option>Booked</formJS.Option>
+                    </formJS.Select>
                 </formJS.DivCtnEntry>
 
                 <formJS.DivButtonCreateUser>
@@ -263,21 +263,21 @@ export const Form = (props) => {
 
                 <formJS.DivCtnEntry>
                     <formJS.LabelText>Room Type</formJS.LabelText>
-                    <formJS.SelectStatus>
-                        <formJS.OptionStatus>Suite</formJS.OptionStatus>
-                        <formJS.OptionStatus>Single Bed</formJS.OptionStatus>
-                        <formJS.OptionStatus>Double Bed</formJS.OptionStatus>
-                        <formJS.OptionStatus>Double Superior</formJS.OptionStatus>
-                    </formJS.SelectStatus>
+                    <formJS.Select>
+                        <formJS.Option>Suite</formJS.Option>
+                        <formJS.Option>Single Bed</formJS.Option>
+                        <formJS.Option>Double Bed</formJS.Option>
+                        <formJS.Option>Double Superior</formJS.Option>
+                    </formJS.Select>
                 </formJS.DivCtnEntry>
 
                 <formJS.DivCtnEntry>
                     <formJS.LabelText>Status</formJS.LabelText>
-                    <formJS.SelectStatus>
-                        <formJS.OptionStatus>Check In</formJS.OptionStatus>
-                        <formJS.OptionStatus>Check Out</formJS.OptionStatus>
-                        <formJS.OptionStatus>In Progress</formJS.OptionStatus>
-                    </formJS.SelectStatus>
+                    <formJS.Select>
+                        <formJS.Option>Check In</formJS.Option>
+                        <formJS.Option>Check Out</formJS.Option>
+                        <formJS.Option>In Progress</formJS.Option>
+                    </formJS.Select>
                 </formJS.DivCtnEntry>
 
                 <formJS.DivButtonCreateUser>

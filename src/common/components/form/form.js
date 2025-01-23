@@ -98,6 +98,14 @@ export const Form = styled.form`
     background-color: ${gb.colorWhiteFull};
 `
 
+export const ImgRoom = styled.img`
+    padding-left: 2em;
+    width: 100%;
+    height: auto;
+    max-width: 20rem;  
+    max-height: 15rem;
+`
+
 export const DivCtnEntry = styled.div`
     display: flex;
     flex-direction: row;
@@ -106,7 +114,7 @@ export const DivCtnEntry = styled.div`
 `
 
 export const LabelText = styled.label`
-    width: 10rem;
+    min-width: 10rem;
     font-family: ${gb.fontPoppins};
     font-size: 1em;
     font-weight: 700;
@@ -114,10 +122,10 @@ export const LabelText = styled.label`
 `
 
 export const InputText = styled.input`
-    margin-left: 1rem;
     padding: 1em;
     text-align: left;
     width: 100%;
+    min-width: 10rem;
     font-family: ${gb.fontPoppins};
     font-weight: 400;
     border: 1px solid ${gb.colorBlack26};
@@ -126,8 +134,13 @@ export const InputText = styled.input`
     color: ${gb.colorBlack26};
 `
 
+export const InputTextPhoto = styled.input`
+    font-family: ${gb.fontPoppins};
+    font-weight: 400;
+    color: ${gb.colorBlack26};
+`
+
 export const InputDate = styled.input`
-    margin-left: 1rem;
     padding: 1em;
     width: 100%;
     font-family: ${gb.fontPoppins};
@@ -155,7 +168,6 @@ export const InputDate = styled.input`
 `
 
 export const TextAreaJobDescription = styled.textarea`
-    margin-left: 1rem;
     padding: 1em;
     text-align: left;
     width: 100%;
@@ -169,24 +181,25 @@ export const TextAreaJobDescription = styled.textarea`
 `
 
 export const SelectAmenities = styled.select`
+    min-width: 10rem;
     padding: 1em;
     height: 10rem;
     font-family: ${gb.fontPoppins};
     border: 1px solid ${gb.colorBlack26};
-    border-radius: 0.5rem;
     color: ${gb.colorBlack26};
 `
 
-export const SelectStatus = styled.select`
+export const Select = styled.select`
     padding: 1em;
+    min-width: 10rem;
     font-family: ${gb.fontPoppins};
-    font-weight: 700;
+    font-weight: 500;
     border: 1px solid ${gb.colorBlack26};
     border-radius: 1rem;
     color: ${gb.colorBlack26};
 `
 
-export const OptionStatus = styled.option`
+export const Option = styled.option`
     padding: 0em;
 `
 

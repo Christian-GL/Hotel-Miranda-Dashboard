@@ -2,7 +2,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
-export const ContactCreateThunk = createAsyncThunk("contact/Create", async (newContactData) => {
+export const ContactCreateThunk = createAsyncThunk("contact/create", async (newContactData) => {
 
     try {
         const request = await new Promise((resolve) => {
