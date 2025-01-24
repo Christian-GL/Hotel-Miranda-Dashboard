@@ -5,25 +5,16 @@ import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
 import * as userUpdateJS from "./userUpdate.js"
+import { dateFormatToYYYYMMDD, dateFormatToDDMMYYYY } from '../../../common/utils/formUtils.jsx'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
-} from '../../../common/components/form/form.js'
+} from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getUserIdData, getUserIdStatus, getUserError } from "../../features/userSlice.js"
 import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk.js"
 import { UserUpdateByIdThunk } from "../../features/thunks/userUpdateByIdThunk.js"
 
-
-const formatDateToYYYYMMDD = (date) => {
-    const [day, month, year] = date.split('/')
-    return `${year}-${month}-${day}`
-}
-
-const formatDateToDDMMYYYY = (date) => {
-    const [year, month, day] = date.split('-')
-    return`${day}/${month}/${year}`
-}
 
 export const UserUpdate = () => {
 
@@ -90,7 +81,7 @@ export const UserUpdate = () => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
-            [name]: formatDateToDDMMYYYY(value),
+            [name]: dateFormatToDDMMYYYY(value),
         })
     }
     const handleDescriptionChange = (e) => {
@@ -156,7 +147,7 @@ export const UserUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Start Date</LabelText>
-                        <InputDate name="start_date" type="date" value={formatDateToYYYYMMDD(userUpdated.start_date)} onChange={handleStartDateChange} />
+                        <InputDate name="start_date" type="date" value={dateFormatToYYYYMMDD(userUpdated.start_date)} onChange={handleStartDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>

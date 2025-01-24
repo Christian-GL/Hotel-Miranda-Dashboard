@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 
-import * as gb from '../../../styles/globalVars.js'
+import * as gb from '../../styles/globalVars.js'
 
 
 export const InputSearchEmployee = styled.input`

@@ -5,10 +5,10 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as userJS from "./user.js"
 import * as gb from '../common/styles/globalVars.js'
-import { TableDisplayIndicator } from "../common/components/table/tableDisplaySelector/tableDisplaySelector.jsx"
-import { TableSearchTerm } from "../common/components/table/tableSearchTerm/tableSearchTerm.jsx";
+import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
+import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
-import { Table, THTable, DivImgTable, ImgTableUser, PTable, PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption } from "../common/components/table/createTable/createTable.js"
+import { Table, THTable, DivImgTable, ImgTableUser, PTable, PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { getUserAllData, getUserAllStatus, getUserError } from "./features/userSlice.js";
 import { UserFetchAllThunk } from "./features/thunks/userFetchAllThunk.js";
 import { UserDeleteByIdThunk } from "./features/thunks/userDeleteByIdThunk.js";

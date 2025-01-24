@@ -5,11 +5,11 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as bookingsJS from "./booking.js"
 import * as gb from '../common/styles/globalVars.js'
-import { TableDisplayIndicator } from "../common/components/table/tableDisplaySelector/tableDisplaySelector.jsx"
-import { TableSearchTerm } from "../common/components/table/tableSearchTerm/tableSearchTerm.jsx";
+import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
+import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
-import { formatToTerm } from "../common/components/table/createTable/createTable.jsx";
-import { Table, THTable, DivImgTable, ImgTableUser, PTable, IconOptions, ButtonViewNotes, PStatusBooking, DivCtnOptions, ButtonOption } from "../common/components/table/createTable/createTable.js"
+import { formatToTerm } from "../common/utils/tableUtils.jsx";
+import { Table, THTable, DivImgTable, ImgTableUser, PTable, IconOptions, ButtonViewNotes, PStatusBooking, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "./features/bookingSlice.js";
 import { BookingFetchAllThunk } from "./features/thunks/bookingFetchAllThunk.js";
 import { BookingDeleteByIdThunk } from "./features/thunks/bookingDeleteByIdThunk.js";

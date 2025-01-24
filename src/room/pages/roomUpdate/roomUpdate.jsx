@@ -8,7 +8,7 @@ import * as roomCreateJS from "./roomUpdate.js"
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form, ImgRoom, DivCtnEntry,
     LabelText, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
-} from '../../../common/components/form/form.js'
+} from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getRoomIdData, getRoomIdStatus, getRoomError } from "../../features/roomSlice.js"
 import { RoomFetchByIDThunk } from "../../features/thunks/roomFetchByIDThunk.js"

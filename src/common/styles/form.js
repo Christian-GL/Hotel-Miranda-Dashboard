@@ -8,7 +8,7 @@ import { BiSolidPlusCircle } from "react-icons/bi";
 import { RiExchangeFill } from "react-icons/ri";
 import { MdContacts } from "react-icons/md";
 
-import * as gb from '../../styles/globalVars.js'
+import * as gb from './globalVars.js'
 
 
 export const DivCtnForm = styled.div`

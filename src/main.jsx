@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 
-import { store } from './common/components/reduxStore/store.js'
+import { store } from './common/redux/store.js'
 import { Root } from './common/components/signUp/root/root.jsx'
 import { SignUp } from './common/components/signUp/signUp.jsx'
 import { Layout } from './common/components/layout/layout.jsx'

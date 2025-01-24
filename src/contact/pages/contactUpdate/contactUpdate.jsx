@@ -7,7 +7,7 @@ import * as contactCreateJS from "./contactUpdate.js"
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconUpdate, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
-} from "../../../common/components/form/form.js"
+} from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getContactIdData, getContactIdStatus, getContactError } from "../../../contact/features/contactSlice.js"
 import { ContactFetchByIDThunk } from "../../../contact/features/thunks/contactFetchByIDThunk.js"

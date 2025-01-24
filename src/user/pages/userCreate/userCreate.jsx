@@ -3,11 +3,11 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as userCreateJS from "./userCreate.js"
-import { checkFirstIDAvailable } from '../../../common/components/form/form.jsx'
+import { checkFirstIDAvailable } from '../../../common/utils/formUtils.jsx'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
-} from '../../../common/components/form/form.js'
+} from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getUserAllData, getUserAllStatus, getUserError } from "../../features/userSlice.js"
 import { UserFetchAllThunk } from "../../features/thunks/userFetchAllThunk.js"

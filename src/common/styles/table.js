@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 import { ImPhone } from "react-icons/im";
 import { SlOptionsVertical } from "react-icons/sl";
 
-import * as gb from '../../../styles/globalVars.js'
+import * as gb from './globalVars.js'
 
 
 export const Table = styled.table`

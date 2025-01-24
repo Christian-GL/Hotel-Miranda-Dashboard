@@ -3,26 +3,16 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as bookingCreateJS from "./bookingCreate.js"
-import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/components/form/form.jsx'
+import { hourFormatTo12H } from '../../../common/utils/formUtils.jsx'
+import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/utils/formUtils.jsx'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, Select, Option, InputDate, DivButtonCreateUser
-} from '../../../common/components/form/form.js'
+} from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "../../../bookings/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../../../bookings/features/thunks/bookingFetchAllThunk.js"
 import { BookingCreateThunk } from "../../../bookings/features/thunks/bookingCreateThunk.js"
-
-
-const convertTo12HourFormat = (time) => {
-    const [hours, minutes] = time.split(":")
-    let hour = parseInt(hours)
-    const ampm = hour >= 12 ? 'PM' : 'AM'
-    hour = hour % 12
-    hour = hour ? hour : 12
-    const minute = minutes
-    return `${hour}:${minute} ${ampm}`
-}
 
 export const BookingCreate = () => {
 
@@ -89,7 +79,7 @@ export const BookingCreate = () => {
     }
     const handleCheckInTimeChange = (e) => {
         const { name, value } = e.target
-        const timeFormatted = convertTo12HourFormat(value)
+        const timeFormatted = hourFormatTo12H(value)
         setNewBooking({
             ...newBooking,
             [name]: timeFormatted
@@ -106,7 +96,7 @@ export const BookingCreate = () => {
     }
     const handleCheckOutTimeChange = (e) => {
         const { name, value } = e.target
-        const timeFormatted = convertTo12HourFormat(value)
+        const timeFormatted = hourFormatTo12H(value)
         setNewBooking({
             ...newBooking,
             [name]: timeFormatted
