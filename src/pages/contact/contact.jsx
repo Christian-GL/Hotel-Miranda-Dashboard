@@ -10,50 +10,47 @@ import { TableDisplayIndicator } from "../../common/components/table/tableDispla
 import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/tableSearchTerm.jsx"
 import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
 import { Table, THTable, PTable, IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption } from "../../common/components/table/createTable/createTable.js"
-import { getContactAllData, getContactAllStatus, getContactIdData, getContactIdStatus, getContactError } from "./features/contactSlice.js"
+import { getContactAllData, getContactAllStatus, getContactError } from "./features/contactSlice.js"
 import { ContactFetchAllThunk } from "./features/thunks/contactFetchAllThunk.js"
-import { ContactFetchByIDThunk } from "./features/thunks/contactFetchByIDThunk.js"
 import { ContactDeleteByIdThunk } from "./features/thunks/contactDeleteByIdThunk.js"
-
 
 
 export const Contact = () => {
 
     const navigate = useNavigate()
     const navigateToContactCreate = () => {
-        navigate('./contact-create')
+        navigate('contact-create')
     }
     const navigateToContactUpdate = (id) => {
-        navigate(`./contact-update/${id}`)
+        navigate(`contact-update/${id}`)
     }
 
     const nameColumnList = ['Order ID', 'Date', 'Customer', 'Comment', 'Action', '']
     const [contactDisplayed, setContactDisplayed] = useState([])
-    const contactAll = useSelector(getContactAllData) || []
-    const contactById = useSelector(getContactIdData) || {}
+    const contactAll = useSelector(getContactAllData)
     const contactAllLoading = useSelector(getContactAllStatus)
-    const contactIdLoading = useSelector(getContactIdStatus)
+    const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState();
 
     const dispatch = useDispatch()
     useEffect(() => {
         if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
         else if (contactAllLoading === "fulfilled") {
-            Object.keys(contactById).length !== 0 ?
-                setContactDisplayed([contactById]) :
+            if (inputText === '') {
                 setContactDisplayed(contactAll)
+            }
+            else {
+                const contactById = contactAll.filter(contact =>
+                    contact.id === parseInt(inputText)
+                )
+                setContactDisplayed(contactById)
+            }
         }
         else if (contactAllLoading === "rejected") { alert("Error en la api") }
-    }, [contactAllLoading, contactIdLoading, contactAll, contactById])
+    }, [contactAllLoading, contactAll, inputText])
 
     const handleInputTerm = (e) => {
-        const inputText = parseInt(e.target.value)
-        if (inputText === '') {
-            dispatch(ContactFetchAllThunk())
-        }
-        else {
-            dispatch(ContactFetchByIDThunk(inputText))
-        }
+        setInputText(e.target.value)
     }
     const deleteContactById = (id, index) => {
         dispatch(ContactDeleteByIdThunk(parseInt(id)))

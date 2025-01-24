@@ -3,7 +3,6 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"
 
-
 import * as userJS from "./user.js"
 import * as gb from '../../common/styles/globalVars.js'
 import { TableDisplayIndicator } from "../../common/components/table/tableDisplaySelector/tableDisplaySelector.jsx"
@@ -19,15 +18,15 @@ export const User = () => {
 
     const navigate = useNavigate()
     const navigateToUserCreate = () => {
-        navigate('./user-create')
+        navigate('user-create')
     }
     const navigateToUserUpdate = (id) => {
-        navigate(`./user-update/${id}`)
+        navigate(`user-update/${id}`)
     }
 
     const nameColumnList = ['', 'Name', 'Start date', 'Job description', 'Contact', 'Status', '']
     const [userDisplayed, setUserDisplayed] = useState([])
-    const usersAll = useSelector(getUserAllData) || []
+    const usersAll = useSelector(getUserAllData)
     const usersAllLoading = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()

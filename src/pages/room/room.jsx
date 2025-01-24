@@ -10,9 +10,8 @@ import { TableSearchTerm } from "../../common/components/table/tableSearchTerm/t
 import { ButtonCreate } from "../../common/components/buttonCreate/buttonCreate.jsx"
 import { formatToTerm } from "../../common/components/table/createTable/createTable.jsx";
 import { Table, THTable, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../../common/components/table/createTable/createTable.js"
-import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus, getRoomError } from "./features/roomSlice.js";
+import { getRoomAllData, getRoomAllStatus, getRoomError } from "./features/roomSlice.js";
 import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.js";
-import { RoomFetchByIDThunk } from "./features/thunks/roomFetchByIDThunk.js";
 import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.js";
 
 
@@ -20,39 +19,38 @@ export const Room = () => {
 
     const navigate = useNavigate()
     const navigateToRoomCreate = () => {
-        navigate('./room-create')
+        navigate('room-create')
     }
     const navigateToRoomUpdate = (id) => {
-        navigate(`./room-update/${id}`)
+        navigate(`room-update/${id}`)
     }
 
     const nameColumnList = ['', 'Room number', 'Room type', 'Amenities', 'Price', 'Offer price', 'Booking status', '']
     const [roomDisplayed, setRoomDisplayed] = useState([])
-    const roomAll = useSelector(getRoomAllData) || []
-    const roomById = useSelector(getRoomIdData) || {}
+    const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
-    const roomIdLoading = useSelector(getRoomIdStatus)
+    const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState();
 
     const dispatch = useDispatch()
     useEffect(() => {
         if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === "fulfilled") {
-            Object.keys(roomById).length !== 0 ?
-                setRoomDisplayed([roomById]) :
+            if (inputText === '') {
                 setRoomDisplayed(roomAll)
+            }
+            else {
+                const roomById = roomAll.filter(room =>
+                    room.id === parseInt(inputText)
+                )
+                setRoomDisplayed(roomById)
+            }
         }
         else if (roomAllLoading === "rejected") { alert("Error en la api") }
-    }, [roomAllLoading, roomIdLoading, roomAll, roomById])
+    }, [roomAllLoading, roomAll, inputText])
 
     const handleInputTerm = (e) => {
-        const inputText = parseInt(e.target.value)
-        if (inputText === '') {
-            dispatch(RoomFetchAllThunk())
-        }
-        else {
-            dispatch(RoomFetchByIDThunk(inputText))
-        }
+        setInputText(e.target.value)
     }
     const deleteRoomById = (id, index) => {
         dispatch(RoomDeleteByIdThunk(parseInt(id)))

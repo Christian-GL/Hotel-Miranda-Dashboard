@@ -37,7 +37,7 @@ export const ContactUpdate = () => {
                 id: contactById.id,
                 publish_date: contactById.publish_date || '',
                 publish_time: contactById.publish_time || '',
-                fullname: contactById.full_name || '',
+                full_name: contactById.full_name || '',
                 email: contactById.email || '',
                 contact: contactById.contact || '',
                 comment: contactById.comment || ''
@@ -101,7 +101,7 @@ export const ContactUpdate = () => {
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
                         <LabelText>Full Name</LabelText>
-                        <InputText name="fullname" value={contactUpdated.fullname} onChange={handleFullNameChange} />
+                        <InputText name="full_name" value={contactUpdated.full_name} onChange={handleFullNameChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>

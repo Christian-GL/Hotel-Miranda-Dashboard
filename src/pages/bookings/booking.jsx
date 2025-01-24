@@ -19,18 +19,18 @@ export const Bookings = () => {
 
     const navigate = useNavigate()
     const navigateToBookingCreate = () => {
-        navigate('./booking-create')
+        navigate('booking-create')
     }
     const navigateToBookingUpdate = (id) => {
-        navigate(`./booking-update/${id}`)
+        navigate(`booking-update/${id}`)
     }
     const navigateToBookingDetail = () => {
-        navigate('./booking-detail')
+        navigate('booking-detail')
     }
 
     const nameColumnList = ['', 'Guest', 'Order date', 'Check in', 'Check out', 'Special request', 'Room type', 'Status', '']
     const [bookingDisplayed, setBookingDisplayed] = useState([])
-    const bookingAll = useSelector(getBookingAllData) || []
+    const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
     const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState();
