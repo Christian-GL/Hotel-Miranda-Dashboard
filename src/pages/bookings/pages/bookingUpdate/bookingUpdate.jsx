@@ -78,7 +78,7 @@ export const BookingUpdate = () => {
                 full_name_guest: bookingById.full_name_guest || '',
                 order_date: bookingById.order_date || '',
                 order_time: bookingById.order_time || '',
-                check_in_date: bookingById.check_out_date || '',
+                check_in_date: bookingById.check_in_date || '',
                 check_in_time: bookingById.check_in_time || '',
                 check_out_date: bookingById.check_out_date || '',
                 check_out_time: bookingById.check_out_time || '',
@@ -118,10 +118,9 @@ export const BookingUpdate = () => {
     }
     const handleCheckInTimeChange = (e) => {
         const { name, value } = e.target
-        const timeFormatted = convertTo12HourFormat(value)
         setBookingUpdated({
             ...bookingUpdated,
-            [name]: timeFormatted
+            [name]: convertTo12HourFormat(value)
         })
     }
     const handleCheckOutDateChange = (e) => {
@@ -133,10 +132,9 @@ export const BookingUpdate = () => {
     }
     const handleCheckOutTimeChange = (e) => {
         const { name, value } = e.target
-        const timeFormatted = convertTo12HourFormat(value)
         setBookingUpdated({
             ...bookingUpdated,
-            [name]: timeFormatted
+            [name]: convertTo12HourFormat(value)
         })
     }
     const handleTypeChange = (e) => {
@@ -196,22 +194,22 @@ export const BookingUpdate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
+                        <LabelText>Check in date</LabelText>
                         <InputDate name="check_in_date" value={formatDateToYYYYMMDD(bookingUpdated.check_in_date)} type="date" onChange={handleCheckInDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
+                        <LabelText>Check in time</LabelText>
                         <InputDate name="check_in_time" value={convertTo24HourFormat(bookingUpdated.check_in_time)} type="time" onChange={handleCheckInTimeChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
+                        <LabelText>Check out date</LabelText>
                         <InputDate name="check_out_date" value={formatDateToYYYYMMDD(bookingUpdated.check_out_date)} type="date" onChange={handleCheckOutDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
+                        <LabelText>Check out time</LabelText>
                         <InputDate name="check_out_time" value={convertTo24HourFormat(bookingUpdated.check_out_time)} type="time" onChange={handleCheckOutTimeChange} />
                     </DivCtnEntry>
 

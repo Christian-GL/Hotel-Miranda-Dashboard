@@ -1,7 +1,7 @@
 [
     {
         "photo": "http://dummyimage.com/590x405.png/dddddd/000000",
-        "number": "#000123456",
+        "number": 1,
         "id": 1,
         "type": "double_bed",
         "amenities": [
@@ -23,7 +23,7 @@
     },
     {
         "photo": "http://dummyimage.com/753x538.png/5fa2dd/ffffff",
-        "number": "#000123457",
+        "number": 2,
         "id": 2,
         "type": "single_bed",
         "amenities": [
@@ -45,7 +45,7 @@
     },
     {
         "photo": "http://dummyimage.com/867x726.png/5fa2dd/ffffff",
-        "number": "#000123458",
+        "number": 3,
         "id": 3,
         "type": "double_bed",
         "amenities": [

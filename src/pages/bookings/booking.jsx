@@ -24,6 +24,9 @@ export const Bookings = () => {
     const navigateToBookingUpdate = (id) => {
         navigate(`./booking-update/${id}`)
     }
+    const navigateToBookingDetail = () => {
+        navigate('./booking-detail')
+    }
 
     const nameColumnList = ['', 'Guest', 'Order date', 'Check in', 'Check out', 'Special request', 'Room type', 'Status', '']
     const [bookingDisplayed, setBookingDisplayed] = useState([])
@@ -97,11 +100,12 @@ export const Bookings = () => {
                             <div style={{ color: `${gb.colorGreen}` }}>
                                 <b>{bookingData.full_name_guest}</b>
                             </div>
-                            <div><b>{bookingData.id}</b></div>
+                            <div>#<b>{bookingData.id}</b></div>
                         </PTable>,
 
-                        <PTable key={index + '-3'} >
-                            {bookingData.order_date} {bookingData.order_time}
+                        <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center' >
+                            <div>{bookingData.order_date}</div>
+                            <div>{bookingData.order_time}</div>
                         </PTable>,
 
                         <PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center'>

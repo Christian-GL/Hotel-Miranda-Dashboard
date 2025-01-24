@@ -106,7 +106,7 @@ export const Room = () => {
                         </PTable>,
 
                         <PTable key={index + '-4'}>
-                            {roomData.amenities}
+                            <p>{roomData.amenities.join(', ')}</p>
                         </PTable>,
 
                         <PTable key={index + '-5'} flexdirection='row'>

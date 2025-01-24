@@ -175,22 +175,22 @@ export const BookingCreate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
+                        <LabelText>Check in date</LabelText>
                         <InputDate name="check_in_date" type="date" onChange={handleCheckInDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
+                        <LabelText>Check in time</LabelText>
                         <InputDate name="check_in_time" type="time" onChange={handleCheckInTimeChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
+                        <LabelText>Check out date</LabelText>
                         <InputDate name="check_out_date" type="date" onChange={handleCheckOutDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
+                        <LabelText>Check out time</LabelText>
                         <InputDate name="check_out_time" type="time" onChange={handleCheckOutTimeChange} />
                     </DivCtnEntry>
 

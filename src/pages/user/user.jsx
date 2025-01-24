@@ -97,7 +97,7 @@ export const User = () => {
                             <div style={{ color: `${gb.colorGreen}` }}>
                                 <b>{userData.full_name}</b>
                             </div>
-                            <div><b>{userData.id}</b></div>
+                            <div>#<b>{userData.id}</b></div>
                             <div>{userData.email}</div>
                         </PTable>,
 
