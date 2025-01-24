@@ -5,9 +5,9 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as formJS from "./form.js"
 import { ButtonCreate } from '../buttonCreate/buttonCreate.jsx'
-import { getContactAllData, getContactAllStatus } from "../../../pages/contact/features/contactSlice.js"
-import { ContactFetchAllThunk } from "../../../pages/contact/features/thunks/contactFetchAllThunk.js"
-import { ContactCreateThunk } from "../../../pages/contact/features/thunks/contactCreateThunk.js"
+import { getContactAllData, getContactAllStatus } from "../../../contact/features/contactSlice.js"
+import { ContactFetchAllThunk } from "../../../contact/features/thunks/contactFetchAllThunk.js"
+import { ContactCreateThunk } from "../../../contact/features/thunks/contactCreateThunk.js"
 
 
 export const checkFirstIDAvailable = (list) => {

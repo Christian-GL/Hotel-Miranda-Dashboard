@@ -2,6 +2,7 @@
 import * as articleReviewJS from "./articleReview.js"
 
 
+
 export const ArticleReview = (props) => {
 
     return (<>
@@ -12,7 +13,7 @@ export const ArticleReview = (props) => {
             </articleReviewJS.PTextReview>
             <articleReviewJS.DivCtnDetails>
                 <articleReviewJS.DivCtnReviewDetails>
-                    <articleReviewJS.ImgProfile src="src/common/assets/img/PedroSanchez.png" />
+                    <articleReviewJS.ImgProfile src="src/assets/img/PedroSanchez.png" />
                     <articleReviewJS.DivCtnInfoDetails>
                         <articleReviewJS.TitleNameProfile>{props.nameprofile}</articleReviewJS.TitleNameProfile>
                         <articleReviewJS.TextH5>{props.timesince} ago</articleReviewJS.TextH5>
