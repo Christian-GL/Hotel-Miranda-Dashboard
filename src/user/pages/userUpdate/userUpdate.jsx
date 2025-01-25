@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
 import * as userUpdateJS from "./userUpdate.js"
-import { dateFormatToYYYYMMDD, dateFormatToDDMMYYYY } from '../../../common/utils/formUtils.jsx'
+import { dateFormatToYYYYMMDD, dateFormatToDDMMYYYY } from '../../../common/utils/formutils.js'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser

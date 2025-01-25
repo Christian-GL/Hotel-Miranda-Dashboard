@@ -8,7 +8,7 @@ import * as gb from '../common/styles/globalVars.js'
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
-import { formatToTerm } from "../common/utils/tableUtils.jsx";
+import { applyDiscount } from "../common/utils/tableUtils.js";
 import { Table, THTable, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { getRoomAllData, getRoomAllStatus, getRoomError } from "./features/roomSlice.js";
 import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.js";
@@ -92,27 +92,24 @@ export const Room = () => {
                             <ImgTableRoom src={`${roomData.photo}`} />
                         </DivImgTable>,
 
-                        <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div style={{ color: `${gb.colorGreen}` }}>
-                                <b>{roomData.number}</b>
-                            </div>
-                            <div>#<b>{roomData.id}</b></div>
+                        <PTable key={index + '-2'}>
+                            #<b>{roomData.id}</b>
                         </PTable>,
 
                         <PTable key={index + '-3'}>
-                            {formatToTerm(roomData.type)}
+                            {roomData.type}
                         </PTable>,
 
                         <PTable key={index + '-4'}>
                             <p>{roomData.amenities.join(', ')}</p>
                         </PTable>,
 
-                        <PTable key={index + '-5'} flexdirection='row'>
-                            <b>${roomData.price}</b> <div>&nbsp;/night</div>
+                        <PTable key={index + '-5'}>
+                            <b>${roomData.price}</b>&nbsp;/night
                         </PTable>,
 
-                        <PTable key={index + '-6'} flexdirection='row'>
-                            <b>${roomData.offer_price}</b> <div>&nbsp;/night</div>
+                        <PTable key={index + '-6'}>
+                            <b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;({roomData.discount}%)
                         </PTable>,
 
                         <PTable key={index + '-7'}>

@@ -3,8 +3,8 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as bookingCreateJS from "./bookingCreate.js"
-import { hourFormatTo12H } from '../../../common/utils/formUtils.jsx'
-import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/utils/formUtils.jsx'
+import { hourFormatTo12H } from '../../../common/utils/formUtils.js'
+import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/utils/formUtils.js'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, Select, Option, InputDate, DivButtonCreateUser
@@ -13,11 +13,17 @@ import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCrea
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "../../../bookings/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../../../bookings/features/thunks/bookingFetchAllThunk.js"
 import { BookingCreateThunk } from "../../../bookings/features/thunks/bookingCreateThunk.js"
+import { getRoomAllData, getRoomAllStatus, getRoomError } from '../../../room/features/roomSlice.js'
+import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk.js'
+import { RoomUpdateByIdThunk } from "../../../room/features/thunks/roomUpdateByIdThunk.js"
+
 
 export const BookingCreate = () => {
 
     const bookingAll = useSelector(getBookingAllData) || []
     const bookingAllLoading = useSelector(getBookingAllStatus)
+    const roomAll = useSelector(getRoomAllData)
+    const roomAllLoading = useSelector(getRoomAllStatus)
     const [newBooking, setNewBooking] = useState({
         id: 0,
         photo: '',
@@ -28,9 +34,9 @@ export const BookingCreate = () => {
         check_in_time: '',
         check_out_date: '',
         check_out_time: '',
+        room_id: 0,
         room_type: '',
-        room_number: '',
-        status: '',
+        room_booking_status: '',
     })
     const [nextIdAvailable, setNextIdAvailable] = useState(null)
 
@@ -38,16 +44,17 @@ export const BookingCreate = () => {
     useEffect(() => {
         if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === "fulfilled") {
-            if (bookingAll.length > 0) {
-                const id = checkFirstIDAvailable(bookingAll)
-                setNextIdAvailable(id)
+            if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
+            else if (roomAllLoading === "fulfilled") {
+                if (bookingAll.length > 0) {
+                    const id = checkFirstIDAvailable(bookingAll)
+                    setNextIdAvailable(id)
+                } else { setNextIdAvailable(1) }
             }
-            else {
-                setNextIdAvailable(1)
-            }
+            else if (roomAllLoading === "rejected") { alert("Error en la api de rooms") }
         }
-        else if (bookingAllLoading === "rejected") { alert("Error en la api") }
-    }, [bookingAllLoading, bookingAll])
+        else if (bookingAllLoading === "rejected") { alert("Error en la api de bookings") }
+    }, [bookingAllLoading, bookingAll, roomAllLoading, roomAll])
 
 
     // QUE URL DE FOTO DEBE GUARDAR EN REDUX ???
@@ -102,21 +109,14 @@ export const BookingCreate = () => {
             [name]: timeFormatted
         })
     }
-    const handleTypeChange = (e) => {
-        const { name, value } = e.target
-        setNewBooking({
-            ...newBooking,
-            [name]: value
-        })
-    }
-    const handleNumberChange = (e) => {
+    const handleIdRoomChange = (e) => {
         const { name, value } = e.target
         setNewBooking({
             ...newBooking,
             [name]: parseInt(value)
         })
     }
-    const handleBookingStatusChange = (e) => {
+    const handleBookingRoomStatusChange = (e) => {
         const { name, value } = e.target
         setNewBooking({
             ...newBooking,
@@ -125,18 +125,36 @@ export const BookingCreate = () => {
     }
     const handleSubmit = e => {
         e.preventDefault()
+        const getRoomById = (id) => {
+            const room = roomAll.find(room => room.id === id)
+            return room ? room : "No encontrado"
+        }
+
         const newBookingToDispatch = {
             ...newBooking,
             id: nextIdAvailable,
             order_date: getActualDate(),
-            order_time: getActualTime()
+            order_time: getActualTime(),
+            room_type: getRoomById(newBooking.room_id).type
         }
+        const roomUpdatedToDispatch = {
+            ...getRoomById(newBooking.room_id),
+            booking_status: newBooking.room_booking_status
+        }
+
         dispatch(BookingCreateThunk(newBookingToDispatch))
             .then(() => {
                 alert(`Booking #${newBookingToDispatch.id} created`)
             })
             .catch((error) => {
                 alert('Error creating the booking: ', error)
+            })
+        dispatch(RoomUpdateByIdThunk(roomUpdatedToDispatch))
+            .then(() => {
+                alert(`Room #${newBooking.room_id} booking status updated to ${roomUpdatedToDispatch.booking_status}`)
+            })
+            .catch((error) => {
+                alert(`Error updating the room ${roomUpdatedToDispatch.id}: `, error)
             })
     }
 
@@ -185,26 +203,24 @@ export const BookingCreate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Room Type</LabelText>
-                        <Select name="room_type" onChange={handleTypeChange} >
-                            <Option value='suite'>Suite</Option>
-                            <Option value='single_bed'>Single Bed</Option>
-                            <Option value='double_bed'>Double Bed</Option>
-                            <Option value='double_superior'>Double Superior</Option>
+                        <LabelText>Room number</LabelText>
+                        <Select name="room_id" onChange={handleIdRoomChange}>
+                            <Option value="null" selected></Option>
+                            {roomAll.map((room, index) => (
+                                room.booking_status ?
+                                    <></> :
+                                    <Option key={index} value={room.id}>{room.id}</Option>
+                            ))}
                         </Select>
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Room Number</LabelText>
-                        <InputText name="room_number" onChange={handleNumberChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
                         <LabelText>Booking Status</LabelText>
-                        <Select name="status" onChange={handleBookingStatusChange}>
-                            <Option value='check_in'>Check In</Option>
-                            <Option value='check_out'>Check Out</Option>
-                            <Option value='in_progress'>In Progress</Option>
+                        <Select name="room_booking_status" onChange={handleBookingRoomStatusChange}>
+                            <Option value="null" selected></Option>
+                            <Option value='Check In'>Check In</Option>
+                            <Option value='Check Out'>Check Out</Option>
+                            <Option value='In Progress'>In Progress</Option>
                         </Select>
                     </DivCtnEntry>
 

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as userCreateJS from "./userCreate.js"
-import { checkFirstIDAvailable } from '../../../common/utils/formUtils.jsx'
+import { checkFirstIDAvailable } from '../../../common/utils/formutils.js'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser

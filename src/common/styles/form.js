@@ -200,11 +200,16 @@ export const SelectAmenities = styled.select`
 export const Select = styled.select`
     padding: 1em;
     min-width: 10rem;
+    max-height: 5rem;
     font-family: ${gb.fontPoppins};
     font-weight: 500;
     border: 1px solid ${gb.colorBlack26};
     border-radius: 1rem;
     color: ${gb.colorBlack26};
+
+    option[value="null"] {
+        display: none;
+    }
 `
 
 export const Option = styled.option`

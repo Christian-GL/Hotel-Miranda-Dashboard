@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as contactCreateJS from "./contactCreate.js"
-import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/utils/formUtils.jsx'
+import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/utils/formUtils.js'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconPlus, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser

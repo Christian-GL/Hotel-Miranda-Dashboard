@@ -8,7 +8,6 @@ import * as gb from '../common/styles/globalVars.js'
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
-import { formatToTerm } from "../common/utils/tableUtils.jsx";
 import { Table, THTable, DivImgTable, ImgTableUser, PTable, IconOptions, ButtonViewNotes, PStatusBooking, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "./features/bookingSlice.js";
 import { BookingFetchAllThunk } from "./features/thunks/bookingFetchAllThunk.js";
@@ -28,7 +27,7 @@ export const Bookings = () => {
         navigate('booking-detail')
     }
 
-    const nameColumnList = ['', 'Guest', 'Order date', 'Check in', 'Check out', 'Special request', 'Room type', 'Status', '']
+    const nameColumnList = ['', 'Guest', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
     const [bookingDisplayed, setBookingDisplayed] = useState([])
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
@@ -122,23 +121,24 @@ export const Bookings = () => {
                             <ButtonViewNotes onClick={() => navigateToBookingDetail()}>View Notes</ButtonViewNotes>
                         </PTable>,
 
-                        <PTable key={index + '-7'}>
-                            {formatToTerm(bookingData.room_type)} - {bookingData.room_number}
+                        <PTable key={index + '-7'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <div>Nº {bookingData.room_id}</div>
+                            <div>{bookingData.room_type}</div>
                         </PTable>,
 
                         <PTable key={index + '-8'}>
                             {
                                 (() => {
-                                    switch (bookingData.status) {
-                                        case 'check_in':
+                                    switch (bookingData.room_booking_status) {
+                                        case 'Check In':
                                             return <PStatusBooking color={`${gb.colorGreen}`} backgroundcolor={`${gb.colorLightGreenButtonTable}`}>
                                                 Check In
                                             </PStatusBooking>;
-                                        case 'check_out':
+                                        case 'Check Out':
                                             return <PStatusBooking color={`${gb.colorRed}`} backgroundcolor={`${gb.colorLightRedButtonTable}`}>
                                                 Check Out
                                             </PStatusBooking>;
-                                        case 'in_progress':
+                                        case 'In Progress':
                                             return <PStatusBooking color={`${gb.colorLightRedButtonTable2}`} backgroundcolor={`${gb.colorLightGreenButtonTable2}`}>
                                                 In Progress
                                             </PStatusBooking>;

@@ -4,7 +4,9 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
-import * as roomCreateJS from "./roomUpdate.js"
+import * as roomUpdateJS from "./roomUpdate.js"
+import roomTypeData from '../../data/roomTypeData.json'
+import roomAmenitiesData from '../../data/roomAmenitiesData.json'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form, ImgRoom, DivCtnEntry,
     LabelText, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
@@ -23,11 +25,10 @@ export const RoomUpdate = () => {
     const [roomUpdated, setRoomUpdated] = useState({
         id: 0,
         photo: '',
-        number: '',
         type: '',
         amenities: [],
         price: 0,
-        offer_price: 0,
+        discount: 0,
         booking_status: false
     })
 
@@ -38,11 +39,10 @@ export const RoomUpdate = () => {
             setRoomUpdated({
                 id: roomById.id,
                 photo: roomById.photo || '',
-                number: roomById.number || '',
                 type: roomById.type || '',
                 amenities: roomById.amenities || [],
                 price: roomById.price || 0,
-                offer_price: roomById.offer_price || 0,
+                discount: roomById.discount || 0,
                 booking_status: roomById.booking_status || ''
             })
         }
@@ -60,13 +60,6 @@ export const RoomUpdate = () => {
                 [name]: photoUrl
             })
         }
-    }
-    const handleNumberChange = (e) => {
-        const { name, value } = e.target
-        setRoomUpdated({
-            ...roomUpdated,
-            [name]: parseInt(value)
-        })
     }
     const handleTypeChange = (e) => {
         const { name, value } = e.target
@@ -95,7 +88,7 @@ export const RoomUpdate = () => {
             [name]: parseInt(value)
         })
     }
-    const handleOfferPriceChange = (e) => {
+    const handleDiscountChange = (e) => {
         const { name, value } = e.target
         setRoomUpdated({
             ...roomUpdated,
@@ -122,7 +115,7 @@ export const RoomUpdate = () => {
 
     return (
 
-        <roomCreateJS.SectionPageRoomUpdate>
+        <roomUpdateJS.SectionPageRoomUpdate>
             <DivCtnForm>
                 <DivIcon>
                     <DivCtnIcons>
@@ -140,29 +133,20 @@ export const RoomUpdate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Room Number</LabelText>
-                        <InputText name="number" value={roomUpdated.number} onChange={handleNumberChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
                         <LabelText>Room Type</LabelText>
                         <Select name="type" value={roomUpdated.type} onChange={handleTypeChange}>
-                            <Option value='suite'>Suite</Option>
-                            <Option value='single_bed'>Single Bed</Option>
-                            <Option value='double_bed'>Double Bed</Option>
-                            <Option value='double_superior'>Double Superior</Option>
+                            {roomTypeData.type.map((type, index) => (
+                                <Option key={index} value={type}>{type}</Option>
+                            ))}
                         </Select>
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Amenities</LabelText>
                         <SelectAmenities name="amenities" value={roomUpdated.amenities} onChange={handleAmenitiesChange} multiple={true}>
-                            <Option value='3 Bed Space'>3 Bed Space</Option>
-                            <Option value='24 Hours Guard'>24 Hours Guard</Option>
-                            <Option value='Free WiFi'>Free WiFi</Option>
-                            <Option value='2 Bathroom'>2 Bathroom</Option>
-                            <Option value='Air Conditioner'>Air Conditioner</Option>
-                            <Option value='Television'>Television</Option>
+                            {roomAmenitiesData.amenities.map((amenity, index) => (
+                                <Option key={index} value={amenity}>{amenity}</Option>
+                            ))}
                         </SelectAmenities>
                     </DivCtnEntry>
 
@@ -172,8 +156,8 @@ export const RoomUpdate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Offer Price</LabelText>
-                        <InputText name="offer_price" value={roomUpdated.offer_price} onChange={handleOfferPriceChange} />
+                        <LabelText>Discount</LabelText>
+                        <InputText name="discount" value={roomUpdated.discount} onChange={handleDiscountChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
@@ -189,7 +173,7 @@ export const RoomUpdate = () => {
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>
-        </roomCreateJS.SectionPageRoomUpdate>
+        </roomUpdateJS.SectionPageRoomUpdate>
 
     )
 }
