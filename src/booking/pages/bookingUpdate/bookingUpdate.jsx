@@ -10,9 +10,9 @@ import {
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
 } from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
-import { getBookingIdData, getBookingIdStatus, getBookingError } from "../../../bookings/features/bookingSlice.js"
-import { BookingFetchByIDThunk } from "../../../bookings/features/thunks/bookingFetchByIDThunk.js"
-import { BookingUpdateByIdThunk } from "../../../bookings/features/thunks/bookingUpdateByIdThunk.js"
+import { getBookingIdData, getBookingIdStatus, getBookingError } from "../../../booking/features/bookingSlice.js"
+import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk.js"
+import { BookingUpdateByIdThunk } from "../../../booking/features/thunks/bookingUpdateByIdThunk.js"
 import { getRoomAllData, getRoomAllStatus, getRoomError } from '../../../room/features/roomSlice.js'
 import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk.js'
 import { RoomUpdateByIdThunk } from "../../../room/features/thunks/roomUpdateByIdThunk.js"

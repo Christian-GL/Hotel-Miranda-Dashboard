@@ -17,7 +17,6 @@ export const SectionPageBookingDetails = styled.section`
     padding: 2em;
     height: 100%;
     overflow-y: auto;
-    border: 5px solid blue;
     background-color: ${gb.colorGrayBackgroundPage};
 `
 

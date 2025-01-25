@@ -11,14 +11,17 @@ import * as gb from '../../styles/globalVars.js'
 
 
 export const Header = styled.header`
-    transition: 0.5s ease;
+    position: fixed;
+    z-index: 1;
+    left: ${props => props.display === 'collapsed' ? `${gb.widthSidebarMenuCollapsed}` : `${gb.widthSidebarMenuNotCollapsed}`};
+    transition: ${gb.transitionSidebarMenu};
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 2em;
-    width: 100%;
-    height: auto;
-    // box-shadow: inset 0px 0px 10px 3px ${gb.colorGray};
+    width: ${props => props.display === 'collapsed' ? `calc(100% - ${gb.widthSidebarMenuCollapsed})` : `calc(100% - ${gb.widthSidebarMenuNotCollapsed})`};
+    height: ${gb.heightHeader};
+    box-shadow: 5px -5px 15px 0px rgba(254,209,209,0.45) inset;
     background-color: ${gb.colorWhiteFull};
 `
 

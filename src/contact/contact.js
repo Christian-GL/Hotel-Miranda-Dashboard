@@ -8,7 +8,6 @@ export const SectionPageContact = styled.section`
     padding: 2em;
     height: 100%;
     overflow-y: auto;
-    border: 5px solid blue;
     background-color: ${gb.colorGrayBackgroundPage};
 `
 
@@ -24,7 +23,7 @@ export const DivCtnFuncionality = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 2em 1em;
+    padding: 2em;
     min-width: 50rem;
 `
 

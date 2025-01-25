@@ -12,17 +12,18 @@ import * as gb from '../../styles/globalVars.js'
 
 
 export const AsideSideNavigationBar = styled.aside`
+    position: fixed;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: ${props => props.display === 'collapsed' ? 'center' : 'left'};
     justify-content: ${props => props.display === 'collapsed' ? 'flex-start' : 'space-between'};
     padding: ${props => props.display === 'collapsed' ? '1em' : '1em 2.5em'};
-    width: ${props => props.display === 'collapsed' ? '5rem' : '18rem'};
+    width: ${props => props.display === 'collapsed' ? `${gb.widthSidebarMenuCollapsed}` : `${gb.widthSidebarMenuNotCollapsed}`};
     height: 100vh;
     text-align: left;
-    transition: 0.5s ease;
+    transition: ${gb.transitionSidebarMenu};
     background: ${gb.colorWhiteFull};
-    border: 1px solid black;
 `
 
 export const IconHotel = styled(RiHotelFill)`

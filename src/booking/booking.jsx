@@ -31,7 +31,7 @@ export const Bookings = () => {
         setShowPopup(true)
     }
 
-    const nameColumnList = ['', 'Guest', 'View Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
+    const nameColumnList = ['', 'Guest', 'Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
     const [bookingDisplayed, setBookingDisplayed] = useState([])
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)

@@ -7,8 +7,8 @@ import * as gb from '../../../common/styles/globalVars.js'
 import * as bookingDetailsJS from "./bookingDetails.js"
 import { amenities } from '../../../room/data/roomAmenitiesData.json'
 import { applyDiscount } from '../../../common/utils/tableUtils.js'
-import { getBookingIdData, getBookingIdStatus, getBookingError } from "../../../bookings/features/bookingSlice.js"
-import { BookingFetchByIDThunk } from "../../../bookings/features/thunks/bookingFetchByIDThunk.js"
+import { getBookingIdData, getBookingIdStatus, getBookingError } from "../../../booking/features/bookingSlice.js"
+import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk.js"
 import { getRoomIdData, getRoomIdStatus, getRoomError } from '../../../room/features/roomSlice.js'
 import { RoomFetchByIDThunk } from '../../../room/features/thunks/roomFetchByIDThunk.js'
 
