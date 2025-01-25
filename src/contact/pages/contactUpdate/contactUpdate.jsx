@@ -116,7 +116,7 @@ export const ContactUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Comment</LabelText>
-                        <TextAreaJobDescription name="comment" value={contactUpdated.comment} type='text' onChange={handleCommentChange} ></TextAreaJobDescription>
+                        <TextAreaJobDescription name="comment" type='text' value={contactUpdated.comment} onChange={handleCommentChange} ></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>

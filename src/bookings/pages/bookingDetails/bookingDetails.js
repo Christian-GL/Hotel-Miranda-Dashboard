@@ -42,6 +42,7 @@ export const IconOptions = styled(SlOptionsVertical)`
     padding: 0.75em;
     width: 2.5rem;
     height: auto;
+    cursor: pointer;
     color: ${gb.colorGray};
 `
 
@@ -72,6 +73,7 @@ export const NameProfileH2 = styled.h2`
 `
 
 export const SubTittleH4 = styled.h4`
+    padding-top: 0;
     padding-top: ${props => props.paddingtop};
     font-family: ${gb.fontPoppins};
     font-size: 0.75em;

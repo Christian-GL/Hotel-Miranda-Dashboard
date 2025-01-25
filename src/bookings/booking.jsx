@@ -5,10 +5,11 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as bookingsJS from "./booking.js"
 import * as gb from '../common/styles/globalVars.js'
+import { PopupText } from "../common/components/popupText/popupText.jsx";
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
-import { Table, THTable, DivImgTable, ImgTableUser, PTable, IconOptions, ButtonViewNotes, PStatusBooking, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
+import { Table, THTable, DivImgTable, ImgTableUser, PTable, IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "./features/bookingSlice.js";
 import { BookingFetchAllThunk } from "./features/thunks/bookingFetchAllThunk.js";
 import { BookingDeleteByIdThunk } from "./features/thunks/bookingDeleteByIdThunk.js";
@@ -23,16 +24,21 @@ export const Bookings = () => {
     const navigateToBookingUpdate = (id) => {
         navigate(`booking-update/${id}`)
     }
-    const navigateToBookingDetail = () => {
-        navigate('booking-detail')
+    const navigateToBookingDetail = (id) => {
+        navigate(`booking-detail/${id}`)
+    }
+    const openPopup = () => {
+        setShowPopup(true)
     }
 
-    const nameColumnList = ['', 'Guest', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
+    const nameColumnList = ['', 'Guest', 'View Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
     const [bookingDisplayed, setBookingDisplayed] = useState([])
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
     const [inputText, setInputText] = useState('')
-    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState();
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
+    const [showPopup, setShowPopup] = useState(false)
+    const [infoViewNotes, setInfoViewNotes] = useState({})
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -85,6 +91,8 @@ export const Bookings = () => {
                 </bookingsJS.DivCtnButton>
             </bookingsJS.DivCtnFuncionality>
 
+            {showPopup && <PopupText title={infoViewNotes.title} text={infoViewNotes.text} onClose={() => setShowPopup(false)} />}
+
             <Table rowlistlength={`${bookingDisplayed.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
                 {nameColumnList.map((nameColumn, index) =>
                     <THTable key={index}>{nameColumn}</THTable>
@@ -102,31 +110,42 @@ export const Bookings = () => {
                             <div>#<b>{bookingData.id}</b></div>
                         </PTable>,
 
-                        <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center' >
+                        <PTable key={index + '-3'}>
+                            <ButtonView onClick={() => navigateToBookingDetail(bookingData.id)}>View Details</ButtonView>
+                        </PTable>,
+
+                        <PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center' >
                             <div>{bookingData.order_date}</div>
                             <div>{bookingData.order_time}</div>
                         </PTable>,
 
-                        <PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center'>
+                        <PTable key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
                             <div>{bookingData.check_in_date}</div>
                             <div>{bookingData.check_in_time}</div>
                         </PTable>,
 
-                        <PTable key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
+                        <PTable key={index + '-6'} flexdirection='column' alignitems='left' justifycontent='center'>
                             <div>{bookingData.check_out_date}</div>
                             <div>{bookingData.check_out_time}</div>
                         </PTable>,
 
-                        <PTable key={index + '-6'}>
-                            <ButtonViewNotes onClick={() => navigateToBookingDetail()}>View Notes</ButtonViewNotes>
+                        <PTable key={index + '-7'}>
+                            <ButtonView onClick={() => {
+                                setInfoViewNotes({
+                                    title: `Special request #${bookingData.id} by ${bookingData.full_name_guest}`,
+                                    text: bookingData.special_request
+                                })
+                                openPopup()
+                            }
+                            }>View Notes</ButtonView>
                         </PTable>,
 
-                        <PTable key={index + '-7'} flexdirection='column' alignitems='left' justifycontent='center'>
+                        <PTable key={index + '-8'} flexdirection='column' alignitems='left' justifycontent='center'>
                             <div>Nº {bookingData.room_id}</div>
                             <div>{bookingData.room_type}</div>
                         </PTable>,
 
-                        <PTable key={index + '-8'}>
+                        <PTable key={index + '-9'}>
                             {
                                 (() => {
                                     switch (bookingData.room_booking_status) {

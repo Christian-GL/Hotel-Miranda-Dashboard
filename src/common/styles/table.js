@@ -141,7 +141,7 @@ export const PStatusBooking = styled.p`
     background-color: ${props => props.backgroundcolor};
 `
 
-export const ButtonViewNotes = styled.button`
+export const ButtonView = styled.button`
     padding: 1em 2em;
     font-family: ${gb.fontPoppins};
     border: none;

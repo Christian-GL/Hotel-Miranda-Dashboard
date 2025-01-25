@@ -4,16 +4,19 @@
         "photo": "http://dummyimage.com/213x100.png/5fa2dd/ffffff",
         "type": "Double Superior",
         "amenities": [
+            "3 Bed Space",
+            "2 Bathroom",
             "WiFi",
             "TV",
+            "LED TV",
+            "Air Conditioner",
             "Minibar",
             "Balcony",
-            "Air conditioning",
             "Shower",
             "Towel",
             "Bathup",
             "Cofee Set",
-            "LED TV"
+            "24 Hours Guard"
         ],
         "price": 702.57,
         "discount": 39.29,

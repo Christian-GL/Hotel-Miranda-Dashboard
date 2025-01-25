@@ -7,7 +7,7 @@ import * as bookingUpdateJS from "./bookingUpdate.js"
 import { dateFormatToYYYYMMDD, dateFormatToDDMMYYYY, hourFormatTo12H, hourFormatTo24H } from '../../../common/utils/formUtils.js'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
-    LabelText, InputText, Select, Option, InputDate, DivButtonCreateUser
+    LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
 } from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getBookingIdData, getBookingIdStatus, getBookingError } from "../../../bookings/features/bookingSlice.js"
@@ -26,7 +26,6 @@ export const BookingUpdate = () => {
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
     const previusRoomId = bookingById.room_id || 0
-    const previusRoomBookingStatus = bookingById.room_booking_status === 'Check Out' ? false : true || ''
     const [bookingUpdated, setBookingUpdated] = useState({
         id: 0,
         photo: '',
@@ -37,6 +36,7 @@ export const BookingUpdate = () => {
         check_in_time: '',
         check_out_date: '',
         check_out_time: '',
+        special_request: '',
         room_id: 0,
         room_type: '',
         room_booking_status: '',
@@ -45,7 +45,7 @@ export const BookingUpdate = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         if (bookingByIdLoading === "idle") { dispatch(BookingFetchByIDThunk(parseInt(id))) }
-        else if (bookingByIdLoading === "fulfilled" && Object.keys(bookingById).length !== 0) {         // <-- EsTO ??
+        else if (bookingByIdLoading === "fulfilled") {
             if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
             else if (roomAllLoading === "fulfilled") {
                 setBookingUpdated({
@@ -58,6 +58,7 @@ export const BookingUpdate = () => {
                     check_in_time: bookingById.check_in_time || '',
                     check_out_date: bookingById.check_out_date || '',
                     check_out_time: bookingById.check_out_time || '',
+                    special_request: bookingById.special_request || '',
                     room_id: bookingById.room_id || 0,
                     room_type: bookingById.room_type || '',
                     room_booking_status: bookingById.room_booking_status || ''
@@ -115,6 +116,13 @@ export const BookingUpdate = () => {
             [name]: hourFormatTo12H(value)
         })
     }
+    const handleSpecialRequestChange = (e) => {
+        const { name, value } = e.target
+        setBookingUpdated({
+            ...bookingUpdated,
+            [name]: value
+        })
+    }
     const handleIdRoomChange = (e) => {
         const { name, value } = e.target
         setBookingUpdated({
@@ -159,11 +167,11 @@ export const BookingUpdate = () => {
         if (previusRoomId !== roomUpdatedToDispatch.id) {
             const oldRoomUpdatedToDispatch = {
                 ...getRoomById(previusRoomId),
-                booking_status: previusRoomBookingStatus ? false : true
+                booking_status: false
             }
             dispatch(RoomUpdateByIdThunk(oldRoomUpdatedToDispatch))
                 .then(() => {
-                    alert(`Room #${previusRoomId} booking status updated to ${!previusRoomBookingStatus}`)
+                    alert(`Room #${previusRoomId} booking status updated to false`)
                 })
                 .catch((error) => {
                     alert(`Error updating the room ${oldRoomUpdatedToDispatch.id}: `, error)
@@ -216,6 +224,11 @@ export const BookingUpdate = () => {
                         <DivCtnEntry>
                             <LabelText>Check out time</LabelText>
                             <InputDate name="check_out_time" value={hourFormatTo24H(bookingUpdated.check_out_time)} type="time" onChange={handleCheckOutTimeChange} />
+                        </DivCtnEntry>
+
+                        <DivCtnEntry>
+                            <LabelText>Special request</LabelText>
+                            <TextAreaJobDescription name="special_request" type='text' value={bookingUpdated.special_request} onChange={handleSpecialRequestChange} ></TextAreaJobDescription>
                         </DivCtnEntry>
 
                         <DivCtnEntry>

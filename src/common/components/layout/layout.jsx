@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { Navigate, Outlet } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 
+import  HC  from '../../../assets/img/HC.png'
 import * as headerJS from "./header.js"
 import * as sidebarJS from "./sidebarMenu.js"
 import { useLoginOptionsContext } from "../signUp/features/loginProvider.jsx";
@@ -86,7 +87,7 @@ export const Layout = () => {
                     </div>
 
                     <sidebarJS.DivCtnUser display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
-                        <sidebarJS.ImgProfile src="src/common/assets/img/HC.png" />
+                        <sidebarJS.ImgProfile src={HC} />
                         <sidebarJS.TitleH4>Henry Cavill</sidebarJS.TitleH4>
                         <sidebarJS.TitleH5>HenryCavill@gmail.com</sidebarJS.TitleH5>
                         <sidebarJS.ButtonContactUs>Contact Us</sidebarJS.ButtonContactUs>

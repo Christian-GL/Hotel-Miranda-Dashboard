@@ -7,7 +7,7 @@ import { hourFormatTo12H } from '../../../common/utils/formUtils.js'
 import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/utils/formUtils.js'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
-    LabelText, InputText, Select, Option, InputDate, DivButtonCreateUser
+    LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
 } from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "../../../bookings/features/bookingSlice.js"
@@ -34,6 +34,7 @@ export const BookingCreate = () => {
         check_in_time: '',
         check_out_date: '',
         check_out_time: '',
+        special_request: '',
         room_id: 0,
         room_type: '',
         room_booking_status: '',
@@ -107,6 +108,13 @@ export const BookingCreate = () => {
         setNewBooking({
             ...newBooking,
             [name]: timeFormatted
+        })
+    }
+    const handleSpecialRequestChange = (e) => {
+        const { name, value } = e.target
+        setNewBooking({
+            ...newBooking,
+            [name]: value
         })
     }
     const handleIdRoomChange = (e) => {
@@ -200,6 +208,11 @@ export const BookingCreate = () => {
                     <DivCtnEntry>
                         <LabelText>Check out time</LabelText>
                         <InputDate name="check_out_time" type="time" onChange={handleCheckOutTimeChange} />
+                    </DivCtnEntry>
+
+                    <DivCtnEntry>
+                        <LabelText>Special request</LabelText>
+                        <TextAreaJobDescription name="special_request" type='text' onChange={handleSpecialRequestChange} ></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivCtnEntry>

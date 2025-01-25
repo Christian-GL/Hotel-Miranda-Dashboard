@@ -1,11 +1,37 @@
 
+import { useState, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { useParams } from "react-router-dom"
+
 import * as gb from '../../../common/styles/globalVars.js'
 import * as bookingDetailsJS from "./bookingDetails.js"
-
-import HC from '../../../assets/img/HC.png'
+import { amenities } from '../../../room/data/roomAmenitiesData.json'
+import { applyDiscount } from '../../../common/utils/tableUtils.js'
+import { getBookingIdData, getBookingIdStatus, getBookingError } from "../../../bookings/features/bookingSlice.js"
+import { BookingFetchByIDThunk } from "../../../bookings/features/thunks/bookingFetchByIDThunk.js"
+import { getRoomIdData, getRoomIdStatus, getRoomError } from '../../../room/features/roomSlice.js'
+import { RoomFetchByIDThunk } from '../../../room/features/thunks/roomFetchByIDThunk.js'
 
 
 export const BookingDetails = () => {
+
+    const { id } = useParams()
+    const bookingById = useSelector(getBookingIdData)
+    const bookingByIdLoading = useSelector(getBookingIdStatus)
+    const roomById = useSelector(getRoomIdData)
+    const roomByIdLoading = useSelector(getRoomIdStatus)
+    const amenitiesWithIcon = ["Free Wifi", "3 Bed Space", "24 Hours Guard"]
+
+    const dispatch = useDispatch()
+    useEffect(() => {
+        if (bookingByIdLoading === "idle") { dispatch(BookingFetchByIDThunk(parseInt(id))) }
+        else if (bookingByIdLoading === "fulfilled") {
+            if (roomByIdLoading === "idle") { dispatch(RoomFetchByIDThunk(parseInt(bookingById.room_id))) }
+            else if (roomByIdLoading === "fulfilled") { }
+            else if (roomByIdLoading === "rejected") { alert("Error en la api de rooms") }
+        }
+        else if (bookingByIdLoading === "rejected") { alert("Error en la api de bookings") }
+    }, [bookingByIdLoading, bookingById, roomByIdLoading, roomById])
 
 
     return (
@@ -13,11 +39,11 @@ export const BookingDetails = () => {
         <bookingDetailsJS.SectionPageBookingDetails>
             <bookingDetailsJS.DivSection padding='2em'>
                 <bookingDetailsJS.DivCtnImgAndMainData>
-                    <bookingDetailsJS.ImgProfile src={HC} />
+                    <bookingDetailsJS.ImgProfile src={bookingById.photo} />
                     <bookingDetailsJS.DivCtnMainData>
                         <bookingDetailsJS.DivCtnNameId>
-                            <bookingDetailsJS.NameProfileH2>Henry Cavill</bookingDetailsJS.NameProfileH2>
-                            <bookingDetailsJS.SubTittleH4 color={`${gb.colorGreen}`}>ID: 1234567890</bookingDetailsJS.SubTittleH4>
+                            <bookingDetailsJS.NameProfileH2>{bookingById.full_name_guest}</bookingDetailsJS.NameProfileH2>
+                            <bookingDetailsJS.SubTittleH4 color={`${gb.colorGreen}`}>ID Booking: #{bookingById.id}</bookingDetailsJS.SubTittleH4>
                         </bookingDetailsJS.DivCtnNameId>
                         <bookingDetailsJS.DivCtnContactMessage>
                             <bookingDetailsJS.IconPhone />
@@ -36,7 +62,7 @@ export const BookingDetails = () => {
                             Check In
                         </bookingDetailsJS.SubTittleH4>
                         <bookingDetailsJS.SubTittleH4 paddingtop='1em' color={`${gb.colorBlack26}`}>
-                            October 30th, 2020 | 08:23 AM
+                            {bookingById.check_in_date} | {bookingById.check_in_time}
                         </bookingDetailsJS.SubTittleH4>
                     </bookingDetailsJS.Div50PercentageSection>
                     <bookingDetailsJS.Div50PercentageSection>
@@ -44,7 +70,7 @@ export const BookingDetails = () => {
                             Check Out
                         </bookingDetailsJS.SubTittleH4>
                         <bookingDetailsJS.SubTittleH4 paddingtop='1em' color={`${gb.colorBlack26}`}>
-                            November 2th, 2020
+                            {bookingById.check_out_date} | {bookingById.check_out_time}
                         </bookingDetailsJS.SubTittleH4>
                     </bookingDetailsJS.Div50PercentageSection>
                 </bookingDetailsJS.DivCheckInOut>
@@ -55,7 +81,9 @@ export const BookingDetails = () => {
                             Room Info
                         </bookingDetailsJS.SubTittleH4>
                         <bookingDetailsJS.SubTittleH4 paddingtop='0.5em' fontsize='1.25em' color={`${gb.colorBlack26}`}>
-                            Deluxe Z - 002424
+                            Room Nº {bookingById.room_id}
+                            <br />
+                            {bookingById.room_type}
                         </bookingDetailsJS.SubTittleH4>
                     </bookingDetailsJS.Div50PercentageSection>
                     <bookingDetailsJS.Div50PercentageSection>
@@ -63,36 +91,57 @@ export const BookingDetails = () => {
                             Price
                         </bookingDetailsJS.SubTittleH4>
                         <bookingDetailsJS.SubTittleH4 paddingtop='0.5em' fontsize='1.25em' color={`${gb.colorBlack26}`}>
-                            $145 /night
+                            <del>${roomById.price} /night</del>
+                            <br />
+                            ${applyDiscount(roomById.price, roomById.discount)} /night (-{roomById.discount}%)
                         </bookingDetailsJS.SubTittleH4>
                     </bookingDetailsJS.Div50PercentageSection>
                 </bookingDetailsJS.DivCtnInfo>
 
                 <bookingDetailsJS.PTextInfo>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    {bookingById.special_request}
                 </bookingDetailsJS.PTextInfo>
 
                 <bookingDetailsJS.DivCtnFacilities>
-                    <bookingDetailsJS.SubTittleH4 color={`${gb.colorGraySubTitleBookingDetails}`}>Facilities</bookingDetailsJS.SubTittleH4>
-                    <bookingDetailsJS.ButtonFacility withicon='true'>
-                        3 Bed Space
-                        <bookingDetailsJS.IconBed />
-                    </bookingDetailsJS.ButtonFacility>
-                    <bookingDetailsJS.ButtonFacility withicon='true'>
-                        24 Hours Guard
-                        <bookingDetailsJS.IconShieldCheck />
-                    </bookingDetailsJS.ButtonFacility>
-                    <bookingDetailsJS.ButtonFacility withicon='true'>
-                        Free Wifi
-                        <bookingDetailsJS.IconWiFi />
-                    </bookingDetailsJS.ButtonFacility>
-                    <bookingDetailsJS.ButtonFacility>2 Bathroom</bookingDetailsJS.ButtonFacility>
-                    <bookingDetailsJS.ButtonFacility>Air conditioner</bookingDetailsJS.ButtonFacility>
-                    <bookingDetailsJS.ButtonFacility>Television</bookingDetailsJS.ButtonFacility>
+                    <bookingDetailsJS.SubTittleH4 color={`${gb.colorGraySubTitleBookingDetails}`} fontsize='1em'>Facilities</bookingDetailsJS.SubTittleH4>
+                    {console.log(roomById.amenities)}
+                    {Array.isArray(roomById.amenities) ? (
+                        roomById.amenities.map((amenity, index) => {
+                            switch (amenity) {
+                                case "3 Bed Space":
+                                    return (
+                                        <bookingDetailsJS.ButtonFacility key={index} withicon='true'>
+                                            3 Bed Space
+                                            <bookingDetailsJS.IconBed />
+                                        </bookingDetailsJS.ButtonFacility>
+                                    )
+                                case "24 Hours Guard":
+                                    return (
+                                        <bookingDetailsJS.ButtonFacility key={index} withicon='true'>
+                                            24 Hours Guard
+                                            <bookingDetailsJS.IconShieldCheck />
+                                        </bookingDetailsJS.ButtonFacility>
+                                    )
+                                case "WiFi":
+                                    return (
+                                        <bookingDetailsJS.ButtonFacility key={index} withicon='true'>
+                                            Wifi
+                                            <bookingDetailsJS.IconWiFi />
+                                        </bookingDetailsJS.ButtonFacility>
+                                    )
+                                default:
+                                    return (
+                                        <bookingDetailsJS.ButtonFacility key={index}>
+                                            {amenity}
+                                        </bookingDetailsJS.ButtonFacility>
+                                    )
+                            }
+                        })
+                    ) :
+                        (<bookingDetailsJS.SubTittleH4 fontsize='1em' color={`${gb.colorBlack26}`}>
+                            No amenities available
+                        </bookingDetailsJS.SubTittleH4>)
+                    }
                 </bookingDetailsJS.DivCtnFacilities>
             </bookingDetailsJS.DivSection>
 

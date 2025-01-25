@@ -109,7 +109,7 @@ export const Room = () => {
                         </PTable>,
 
                         <PTable key={index + '-6'}>
-                            <b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;({roomData.discount}%)
+                            <b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;(-{roomData.discount}%)
                         </PTable>,
 
                         <PTable key={index + '-7'}>
