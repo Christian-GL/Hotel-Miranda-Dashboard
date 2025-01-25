@@ -129,6 +129,15 @@ export const LabelText = styled.label`
     color: ${gb.colorBlack26};
 `
 
+export const LabelTextBookingStatus = styled.label`
+    min-width: 10rem;
+    font-family: ${gb.fontPoppins};
+    font-size: 1em;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: ${props => props.color};
+`
+
 export const InputText = styled.input`
     padding: 1em;
     text-align: left;

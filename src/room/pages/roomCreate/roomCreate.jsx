@@ -92,13 +92,6 @@ export const RoomCreate = () => {
             [name]: parseFloat(value)
         })
     }
-    const handleBookingStatusChange = (e) => {
-        const { name, value } = e.target
-        setNewRoom({
-            ...newRoom,
-            [name]: value === 'false' ? false : true
-        })
-    }
     const handleSubmit = e => {
         e.preventDefault()
         const newRoomToDispatch = {
@@ -136,6 +129,7 @@ export const RoomCreate = () => {
                     <DivCtnEntry>
                         <LabelText>Room Type</LabelText>
                         <Select name="type" onChange={handleTypeChange}>
+                            <Option value="null" selected></Option>
                             {roomTypeData.type.map((type, index) => (
                                 <Option key={index} value={type}>{type}</Option>
                             ))}
@@ -159,14 +153,6 @@ export const RoomCreate = () => {
                     <DivCtnEntry>
                         <LabelText>Discount</LabelText>
                         <InputText name="discount" onChange={handleDiscountChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
-                        <LabelText>Booking Status</LabelText>
-                        <Select name="booking_status" onChange={handleBookingStatusChange}>
-                            <Option value={false}>Available</Option>
-                            <Option value={true}>Booked</Option>
-                        </Select>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>

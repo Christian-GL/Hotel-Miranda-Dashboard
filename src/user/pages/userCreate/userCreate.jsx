@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as userCreateJS from "./userCreate.js"
-import { checkFirstIDAvailable } from '../../../common/utils/formutils.js'
+import { checkFirstIDAvailable } from '../../../common/utils/formUtils.js'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
@@ -163,6 +163,7 @@ export const UserCreate = () => {
                     <DivCtnEntry>
                         <LabelText>Status</LabelText>
                         <Select name="status_active" onChange={handleStatusActiveChange}>
+                            <Option value="null" selected></Option>
                             <Option value={true}>Active</Option>
                             <Option value={false}>Inactive</Option>
                         </Select>

@@ -5,11 +5,12 @@ import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
 import * as roomUpdateJS from "./roomUpdate.js"
+import * as gb from '../../../common/styles/globalVars.js'
 import roomTypeData from '../../data/roomTypeData.json'
 import roomAmenitiesData from '../../data/roomAmenitiesData.json'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form, ImgRoom, DivCtnEntry,
-    LabelText, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
+    LabelText, LabelTextBookingStatus, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
 } from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getRoomIdData, getRoomIdStatus, getRoomError } from "../../features/roomSlice.js"
@@ -43,7 +44,7 @@ export const RoomUpdate = () => {
                 amenities: roomById.amenities || [],
                 price: roomById.price || 0,
                 discount: roomById.discount || 0,
-                booking_status: roomById.booking_status || ''
+                booking_status: roomById.booking_status || false
             })
         }
         else if (roomByIdLoading === "rejected") { alert("Error en la api") }
@@ -93,13 +94,6 @@ export const RoomUpdate = () => {
         setRoomUpdated({
             ...roomUpdated,
             [name]: parseInt(value)
-        })
-    }
-    const handleBookingStatusChange = (e) => {
-        const { name, value } = e.target
-        setRoomUpdated({
-            ...roomUpdated,
-            [name]: value === 'false' ? false : true
         })
     }
     const handleSubmit = e => {
@@ -162,10 +156,9 @@ export const RoomUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Booking Status</LabelText>
-                        <Select name="booking_status" value={roomUpdated.booking_status} onChange={handleBookingStatusChange}>
-                            <Option value={false}>Available</Option>
-                            <Option value={true}>Booked</Option>
-                        </Select>
+                        <LabelTextBookingStatus color={roomUpdated.booking_status ? gb.colorRed : gb.colorLightGreenButton}>
+                            {roomUpdated.booking_status ? 'Booking' : 'Available'}
+                        </LabelTextBookingStatus>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
