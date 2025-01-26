@@ -10,6 +10,8 @@ import { TableDisplayIndicator } from "../common/components/tableDisplaySelector
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
 import { Table, THTable, DivImgTable, ImgTableUser, PTable, IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
+import { usePagination } from "../common/hooks/usePagination.js"
+import * as paginationJS from '../common/styles/pagination.js'
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "./features/bookingSlice.js";
 import { BookingFetchAllThunk } from "./features/thunks/bookingFetchAllThunk.js";
 import { BookingDeleteByIdThunk } from "./features/thunks/bookingDeleteByIdThunk.js";
@@ -25,40 +27,42 @@ export const Bookings = () => {
         navigate(`booking-update/${id}`)
     }
     const navigateToBookingDetail = (id) => {
-        navigate(`booking-detail/${id}`)
+        navigate(`booking-details/${id}`)
     }
     const openPopup = () => {
         setShowPopup(true)
     }
 
     const nameColumnList = ['', 'Guest', 'Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
-    const [bookingDisplayed, setBookingDisplayed] = useState([])
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
     const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
+    const filteredBookings = bookingAll.filter(bookings =>
+        bookings.full_name_guest.toLowerCase().includes(inputText.toLowerCase())
+    )
+    const {
+        currentPageItems,
+        currentPage,
+        totalPages,
+        goToNextPage,
+        goToPrevPage,
+        resetPage,
+        lastPage
+    } = usePagination(filteredBookings, 10)
     const [showPopup, setShowPopup] = useState(false)
     const [infoViewNotes, setInfoViewNotes] = useState({})
 
     const dispatch = useDispatch()
     useEffect(() => {
         if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
-        else if (bookingAllLoading === "fulfilled") {
-            if (inputText === '') {
-                setBookingDisplayed(bookingAll)
-            }
-            else {
-                const filteredClients = bookingAll.filter(client =>
-                    client.full_name_guest.toLowerCase().includes(inputText.toLowerCase())
-                )
-                setBookingDisplayed(filteredClients)
-            }
-        }
+        else if (bookingAllLoading === "fulfilled") { }
         else if (bookingAllLoading === "rejected") { alert("Error en la api") }
-    }, [bookingAllLoading, bookingAll, inputText])
+    }, [bookingAllLoading, bookingAll])
 
     const handleInputTerm = (e) => {
         setInputText(e.target.value)
+        resetPage()
     }
     const deleteBookingById = (id, index) => {
         dispatch(BookingDeleteByIdThunk(parseInt(id)))
@@ -93,11 +97,11 @@ export const Bookings = () => {
 
             {showPopup && <PopupText title={infoViewNotes.title} text={infoViewNotes.text} onClose={() => setShowPopup(false)} />}
 
-            <Table rowlistlength={`${bookingDisplayed.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
+            <Table rowlistlength={`${filteredBookings.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
                 {nameColumnList.map((nameColumn, index) =>
                     <THTable key={index}>{nameColumn}</THTable>
                 )}
-                {bookingDisplayed.map((bookingData, index) => {
+                {currentPageItems.map((bookingData, index) => {
                     return [
                         <DivImgTable key={index + '-1'}>
                             <ImgTableUser src={`${bookingData.photo}`} />
@@ -180,6 +184,25 @@ export const Bookings = () => {
                 }
                 )}
             </Table>
+
+            <paginationJS.DivCtnPagination>
+                <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
+                    &lt;&lt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
+                    &lt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.SpanPageCount>
+                    {currentPage} of {totalPages}
+                </paginationJS.SpanPageCount>
+                <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
+                    &gt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
+                    &gt;&gt;
+                </paginationJS.ButtonSwitchPage>
+            </paginationJS.DivCtnPagination>
+
         </bookingsJS.SectionPageBookings>
 
     )

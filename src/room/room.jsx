@@ -9,6 +9,8 @@ import { TableDisplayIndicator } from "../common/components/tableDisplaySelector
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
 import { applyDiscount } from "../common/utils/tableUtils.js";
+import { usePagination } from "../common/hooks/usePagination.js"
+import * as paginationJS from '../common/styles/pagination.js'
 import { Table, THTable, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { getRoomAllData, getRoomAllStatus, getRoomError } from "./features/roomSlice.js";
 import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.js";
@@ -26,31 +28,33 @@ export const Room = () => {
     }
 
     const nameColumnList = ['', 'Room number', 'Room type', 'Amenities', 'Price', 'Offer price', 'Booking status', '']
-    const [roomDisplayed, setRoomDisplayed] = useState([])
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
     const [inputText, setInputText] = useState('')
-    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState();
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
+    const filteredRooms = roomAll.filter(room =>
+        room.id.toString().includes(inputText.toLowerCase())
+    )
+    const {
+        currentPageItems,
+        currentPage,
+        totalPages,
+        goToNextPage,
+        goToPrevPage,
+        resetPage,
+        lastPage
+    } = usePagination(filteredRooms, 10)
 
     const dispatch = useDispatch()
     useEffect(() => {
         if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
-        else if (roomAllLoading === "fulfilled") {
-            if (inputText === '') {
-                setRoomDisplayed(roomAll)
-            }
-            else {
-                const roomById = roomAll.filter(room =>
-                    room.id === parseInt(inputText)
-                )
-                setRoomDisplayed(roomById)
-            }
-        }
+        else if (roomAllLoading === "fulfilled") { }
         else if (roomAllLoading === "rejected") { alert("Error en la api") }
-    }, [roomAllLoading, roomAll, inputText])
+    }, [roomAllLoading, roomAll])
 
     const handleInputTerm = (e) => {
         setInputText(e.target.value)
+        resetPage()
     }
     const deleteRoomById = (id, index) => {
         dispatch(RoomDeleteByIdThunk(parseInt(id)))
@@ -74,7 +78,7 @@ export const Room = () => {
                 </roomJS.DivCtnTableDisplayFilter>
 
                 <roomJS.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search room by ID' />
+                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search by room number' />
                 </roomJS.DivCtnSearch>
 
                 <roomJS.DivCtnButton>
@@ -82,11 +86,11 @@ export const Room = () => {
                 </roomJS.DivCtnButton>
             </roomJS.DivCtnFuncionality>
 
-            <Table rowlistlength={`${roomDisplayed.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
+            <Table rowlistlength={`${filteredRooms.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
                 {nameColumnList.map((nameColumn, index) =>
                     <THTable key={index}>{nameColumn}</THTable>
                 )}
-                {roomDisplayed.map((roomData, index) => {
+                {currentPageItems.map((roomData, index) => {
                     return [
                         <DivImgTable key={index + '-1'}>
                             <ImgTableRoom src={`${roomData.photo}`} />
@@ -130,6 +134,25 @@ export const Room = () => {
                 }
                 )}
             </Table>
+
+            <paginationJS.DivCtnPagination>
+                <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
+                    &lt;&lt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
+                    &lt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.SpanPageCount>
+                    {currentPage} of {totalPages}
+                </paginationJS.SpanPageCount>
+                <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
+                    &gt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
+                    &gt;&gt;
+                </paginationJS.ButtonSwitchPage>
+            </paginationJS.DivCtnPagination>
+
         </roomJS.SectionPageRoom>
 
     )

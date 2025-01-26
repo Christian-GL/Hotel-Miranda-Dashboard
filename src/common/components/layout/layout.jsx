@@ -93,7 +93,7 @@ export const Layout = () => {
 
                 <div>
                     <a href="/dashboard">
-                        <sidebarJS.DivCtnNavOption routeIsActive={routeIsActive('/dashboard')}>
+                        <sidebarJS.DivCtnNavOption routeIsActive={routeIsActive('/dashboard')} display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
                             <sidebarJS.IconDashboard />
                             <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                                 Dashboard
@@ -101,7 +101,7 @@ export const Layout = () => {
                         </sidebarJS.DivCtnNavOption>
                     </a>
                     <a href="/bookings">
-                        <sidebarJS.DivCtnNavOption routeIsActive={routeIsActive('/bookings')}>
+                        <sidebarJS.DivCtnNavOption routeIsActive={routeIsActive('/bookings')} display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
                             <sidebarJS.IconBooking />
                             <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                                 Bookings
@@ -109,7 +109,7 @@ export const Layout = () => {
                         </sidebarJS.DivCtnNavOption>
                     </a>
                     <a href="/rooms">
-                        <sidebarJS.DivCtnNavOption routeIsActive={routeIsActive('/rooms')}>
+                        <sidebarJS.DivCtnNavOption routeIsActive={routeIsActive('/rooms')} display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
                             <sidebarJS.IconRooms />
                             <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                                 Rooms
@@ -117,7 +117,7 @@ export const Layout = () => {
                         </sidebarJS.DivCtnNavOption>
                     </a>
                     <a href="/contacts">
-                        <sidebarJS.DivCtnNavOption routeIsActive={routeIsActive('/contacts')}>
+                        <sidebarJS.DivCtnNavOption routeIsActive={routeIsActive('/contacts')} display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
                             <sidebarJS.IconContact />
                             <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                                 Contact
@@ -125,7 +125,7 @@ export const Layout = () => {
                         </sidebarJS.DivCtnNavOption>
                     </a>
                     <a href="/users">
-                        <sidebarJS.DivCtnNavOption routeIsActive={routeIsActive('/users')} >
+                        <sidebarJS.DivCtnNavOption routeIsActive={routeIsActive('/users')} display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
                             <sidebarJS.IconUsers />
                             <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
                                 Users

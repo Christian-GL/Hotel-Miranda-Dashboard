@@ -38,7 +38,7 @@ createRoot(document.getElementById('root')).render(
                             <Route path="" element={<Bookings />} />
                             <Route path="booking-create" element={<BookingCreate />} />
                             <Route path="booking-update/:id" element={<BookingUpdate />} />
-                            <Route path="booking-detail/:id" element={<BookingDetails />} />
+                            <Route path="booking-details/:id" element={<BookingDetails />} />
                         </Route>
                         <Route path="/rooms" element={<Root />}>
                             <Route path="" element={<Room />} />

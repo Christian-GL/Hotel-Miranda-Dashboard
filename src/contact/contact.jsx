@@ -10,6 +10,8 @@ import { TableDisplayIndicator } from "../common/components/tableDisplaySelector
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
 import { Table, THTable, PTable, IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
+import { usePagination } from "../common/hooks/usePagination.js"
+import * as paginationJS from '../common/styles/pagination.js'
 import { getContactAllData, getContactAllStatus, getContactError } from "./features/contactSlice.js"
 import { ContactFetchAllThunk } from "./features/thunks/contactFetchAllThunk.js"
 import { ContactDeleteByIdThunk } from "./features/thunks/contactDeleteByIdThunk.js"
@@ -26,31 +28,33 @@ export const Contact = () => {
     }
 
     const nameColumnList = ['Order ID', 'Date', 'Customer', 'Comment', 'Action', '']
-    const [contactDisplayed, setContactDisplayed] = useState([])
     const contactAll = useSelector(getContactAllData)
     const contactAllLoading = useSelector(getContactAllStatus)
     const [inputText, setInputText] = useState('')
-    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState();
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
+    const filteredContacts = contactAll.filter(contact =>
+        contact.full_name.toLowerCase().includes(inputText.toLowerCase())
+    )
+    const {
+        currentPageItems,
+        currentPage,
+        totalPages,
+        goToNextPage,
+        goToPrevPage,
+        resetPage,
+        lastPage
+    } = usePagination(filteredContacts, 10)
 
     const dispatch = useDispatch()
     useEffect(() => {
         if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
-        else if (contactAllLoading === "fulfilled") {
-            if (inputText === '') {
-                setContactDisplayed(contactAll)
-            }
-            else {
-                const contactById = contactAll.filter(contact =>
-                    contact.id === parseInt(inputText)
-                )
-                setContactDisplayed(contactById)
-            }
-        }
-        else if (contactAllLoading === "rejected") { alert("Error en la api") }
-    }, [contactAllLoading, contactAll, inputText])
+        else if (contactAllLoading === "fulfilled") { }
+        else if (contactAllLoading === "rejected") { alert("Error en la api de contacts") }
+    }, [contactAllLoading, contactAll])
 
     const handleInputTerm = (e) => {
         setInputText(e.target.value)
+        resetPage()
     }
     const deleteContactById = (id, index) => {
         dispatch(ContactDeleteByIdThunk(parseInt(id)))
@@ -96,7 +100,7 @@ export const Contact = () => {
                 </contactJS.DivCtnTableDisplayFilter>
 
                 <contactJS.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search contact by ID' />
+                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search by contact name' />
                 </contactJS.DivCtnSearch>
 
                 <contactJS.DivCtnButton>
@@ -104,16 +108,12 @@ export const Contact = () => {
                 </contactJS.DivCtnButton>
             </contactJS.DivCtnFuncionality>
 
-            <Table rowlistlength={`${contactDisplayed.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
-                {/* <thead>
-                    <tr> */}
+
+            <Table rowlistlength={`${filteredContacts.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
                 {nameColumnList.map((nameColumn, index) =>
                     <THTable key={index}>{nameColumn}</THTable>
                 )}
-                {/* </tr>
-                </thead>
-                <tbody> */}
-                {contactDisplayed.map((contactData, index) => {
+                {currentPageItems.map((contactData, index) => {
                     return [
                         <PTable key={index + '-1'}>
                             #<b>{contactData.id}</b>
@@ -151,10 +151,26 @@ export const Contact = () => {
                             </DivCtnOptions>
                         </PTable>
                     ]
-                }
-                )}
-                {/* </tbody> */}
+                })}
             </Table>
+
+            <paginationJS.DivCtnPagination>
+                <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
+                    &lt;&lt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
+                    &lt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.SpanPageCount>
+                    {currentPage} of {totalPages}
+                </paginationJS.SpanPageCount>
+                <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
+                    &gt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
+                    &gt;&gt;
+                </paginationJS.ButtonSwitchPage>
+            </paginationJS.DivCtnPagination>
 
         </contactJS.SectionPageContact >
 

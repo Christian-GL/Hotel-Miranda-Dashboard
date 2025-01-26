@@ -1,8 +1,6 @@
 
 import { styled } from 'styled-components'
 
-// ICONS
-
 import * as gb from '../../styles/globalVars.js'
 
 
@@ -16,5 +14,7 @@ export const ButtonCreate = styled.button`
     border-radius: 0.75rem;
     cursor: pointer;
     color: ${gb.colorWhiteFull};
+    color: ${props => props.color};
     background-color: ${gb.colorGrayIconHotel};
+    background-color: ${props => props.backgroundcolor};
 `

@@ -1,17 +1,19 @@
 
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as userJS from "./user.js"
 import * as gb from '../common/styles/globalVars.js'
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
-import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx";
+import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
 import { Table, THTable, DivImgTable, ImgTableUser, PTable, PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
-import { getUserAllData, getUserAllStatus, getUserError } from "./features/userSlice.js";
-import { UserFetchAllThunk } from "./features/thunks/userFetchAllThunk.js";
-import { UserDeleteByIdThunk } from "./features/thunks/userDeleteByIdThunk.js";
+import { usePagination } from "../common/hooks/usePagination.js"
+import * as paginationJS from '../common/styles/pagination.js'
+import { getUserAllData, getUserAllStatus, getUserError } from "./features/userSlice.js"
+import { UserFetchAllThunk } from "./features/thunks/userFetchAllThunk.js"
+import { UserDeleteByIdThunk } from "./features/thunks/userDeleteByIdThunk.js"
 
 
 export const User = () => {
@@ -25,32 +27,33 @@ export const User = () => {
     }
 
     const nameColumnList = ['', 'Name', 'Start date', 'Job description', 'Contact', 'Status', '']
-    const [userDisplayed, setUserDisplayed] = useState([])
     const usersAll = useSelector(getUserAllData)
     const usersAllLoading = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
+    const filteredUsers = usersAll.filter(users =>
+        users.full_name.toLowerCase().includes(inputText.toLowerCase())
+    )
+    const {
+        currentPageItems,
+        currentPage,
+        totalPages,
+        goToNextPage,
+        goToPrevPage,
+        resetPage,
+        lastPage
+    } = usePagination(filteredUsers, 10)
 
     const dispatch = useDispatch()
     useEffect(() => {
         if (usersAllLoading === "idle") { dispatch(UserFetchAllThunk()) }
-        else if (usersAllLoading === "fulfilled") {
-            if (inputText === '') {
-                setUserDisplayed(usersAll)
-            }
-            else {
-                const filteredEmployees = usersAll.filter(employee =>
-                    employee.full_name.toLowerCase().includes(inputText.toLowerCase())
-                )
-                setUserDisplayed(filteredEmployees)
-            }
-
-        }
+        else if (usersAllLoading === "fulfilled") { }
         else if (usersAllLoading === "rejected") { alert("Error en la api") }
-    }, [usersAllLoading, usersAll, inputText])
+    }, [usersAllLoading, usersAll])
 
     const handleInputTerm = (e) => {
         setInputText(e.target.value)
+        resetPage()
     }
     const deleteUserById = (id, index) => {
         dispatch(UserDeleteByIdThunk(parseInt(id)))
@@ -82,11 +85,11 @@ export const User = () => {
                 </userJS.DivCtnButton>
             </userJS.DivCtnFuncionality>
 
-            <Table rowlistlength={`${userDisplayed.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
+            <Table rowlistlength={`${filteredUsers.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
                 {nameColumnList.map((nameColumn, index) =>
                     <THTable key={index}>{nameColumn}</THTable>
                 )}
-                {userDisplayed.map((userData, index) => {
+                {currentPageItems.map((userData, index) => {
                     return [
                         <DivImgTable key={index + '-1'}>
                             <ImgTableUser src={`${userData.photo}`} />
@@ -136,6 +139,25 @@ export const User = () => {
                 }
                 )}
             </Table>
+
+            <paginationJS.DivCtnPagination>
+                <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
+                    &lt;&lt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
+                    &lt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.SpanPageCount>
+                    {currentPage} of {totalPages}
+                </paginationJS.SpanPageCount>
+                <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
+                    &gt;
+                </paginationJS.ButtonSwitchPage>
+                <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
+                    &gt;&gt;
+                </paginationJS.ButtonSwitchPage>
+            </paginationJS.DivCtnPagination>
+
         </userJS.SectionPageUser>
 
     )

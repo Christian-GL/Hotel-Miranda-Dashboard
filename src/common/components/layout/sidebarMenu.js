@@ -109,6 +109,7 @@ export const PNavOptionText = styled.p`
 `
 
 export const DivCtnNavOption = styled.div`
+    text-align: ${props => props.display === 'collapsed' ? 'center' : 'left'};
     padding: 1.25em 0;
     cursor: pointer;
 
@@ -123,9 +124,11 @@ export const DivCtnNavOption = styled.div`
     }
 
     ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconContact}, ${IconUsers} {
+        width: ${props => (props.routeIsActive ? '1.75rem' : '1.5rem')};
         color: ${props => (props.routeIsActive ? gb.colorRed : gb.colorGreen)};
     }
     ${PNavOptionText} {
+        font-size: ${props => (props.routeIsActive ? '1em' : '0.85rem')};
         font-weight: ${props => (props.routeIsActive ? '700' : '400')};
         color: ${props => (props.routeIsActive ? gb.colorRed : gb.colorGreen)};
     }
