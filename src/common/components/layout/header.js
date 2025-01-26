@@ -45,6 +45,7 @@ export const TitleH2 = styled.h2`
     margin-left: 2.5rem;
     font-family: ${gb.fontPoppins};
     font-size: 1.5em;
+    font-weight: 700;
     color: ${gb.colorBlack26};
 `
 

@@ -40,12 +40,12 @@ createRoot(document.getElementById('root')).render(
                             <Route path="booking-update/:id" element={<BookingUpdate />} />
                             <Route path="booking-detail/:id" element={<BookingDetails />} />
                         </Route>
-                        <Route path="/room" element={<Root />}>
+                        <Route path="/rooms" element={<Root />}>
                             <Route path="" element={<Room />} />
                             <Route path="room-create" element={<RoomCreate />} />
                             <Route path="room-update/:id" element={<RoomUpdate />} />
                         </Route>
-                        <Route path="/contact" element={<Root />}>
+                        <Route path="/contacts" element={<Root />}>
                             <Route path="" element={<Contact />} />
                             <Route path="contact-create" element={<ContactCreate />} />
                             <Route path="contact-update/:id" element={<ContactUpdate />} />

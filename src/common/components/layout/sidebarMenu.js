@@ -59,7 +59,6 @@ export const PTitleText = styled.p`
     color: ${gb.colorGray};
 `
 
-// Nav options
 export const IconDashboard = styled(LuLayoutDashboard)`
     display: inline-block;
     vertical-align: middle;
@@ -113,21 +112,25 @@ export const DivCtnNavOption = styled.div`
     padding: 1.25em 0;
     cursor: pointer;
 
-    &:hover ${IconDashboard},
-    &:hover ${IconBooking},
-    &:hover ${IconRooms},
-    &:hover ${IconContact},
-    &:hover ${IconUsers} {
-        color: ${gb.colorRed};
+    &:hover {
+        ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconContact}, ${IconUsers} {
+            color: ${gb.colorRed};
+        }
+        ${PNavOptionText} {
+            font-weight: 700;
+            color: ${gb.colorRed};
+        }
     }
 
-    &:hover ${PNavOptionText} {
-        font-weight: 700;
-        color: ${gb.colorRed};
+    ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconContact}, ${IconUsers} {
+        color: ${props => (props.routeIsActive ? gb.colorRed : gb.colorGreen)};
+    }
+    ${PNavOptionText} {
+        font-weight: ${props => (props.routeIsActive ? '700' : '400')};
+        color: ${props => (props.routeIsActive ? gb.colorRed : gb.colorGreen)};
     }
 `
 
-// Profile
 export const DivCtnUser = styled.div`
     display: ${props => props.display === 'collapsed' ? 'none' : 'block'};
     position: relative;
@@ -169,7 +172,6 @@ export const ButtonContactUs = styled.button`
     background-color: ${gb.colorGrayButtonProfile};
 `
 
-// Credits
 export const DivCtnCredits = styled.div`
     display: ${props => props.display === 'collapsed' ? 'none' : 'block'};
 `
