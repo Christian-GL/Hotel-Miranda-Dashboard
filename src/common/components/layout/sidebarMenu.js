@@ -34,6 +34,7 @@ export const IconHotel = styled(RiHotelFill)`
     height: auto;
     text-align: center;
     cursor: pointer;
+    transition: 0.25s ease;
     color: ${gb.colorGrayIconHotel};
 
     &:hover {
@@ -62,40 +63,55 @@ export const PTitleText = styled.p`
 export const IconDashboard = styled(LuLayoutDashboard)`
     display: inline-block;
     vertical-align: middle;
-    width: 1.5rem;
+    padding: 0.5em;
+    width: 2.5rem;
     height: auto;
+    border-radius: 25%;
+    transition: 0.25s ease;
     color: ${gb.colorGreen};
 `
 
 export const IconBooking = styled(FaRegCalendarAlt)`
     display: inline-block;
     vertical-align: middle;
-    width: 1.5rem;
+    padding: 0.5em;
+    width: 2.5rem;
     height: auto;
+    border-radius: 25%;
+    transition: 0.25s ease;
     color: ${gb.colorGreen};
 `
 
 export const IconRooms = styled(MdOutlineBedroomParent)`
     display: inline-block;
     vertical-align: middle;
-    width: 1.5rem;
+    padding: 0.5em;
+    width: 2.5rem;
     height: auto;
+    border-radius: 25%;
+    transition: 0.25s ease;
     color: ${gb.colorGreen};
 `
 
 export const IconContact = styled(MdContacts)`
     display: inline-block;
     vertical-align: middle;
-    width: 1.5rem;
+    padding: 0.5em;
+    width: 2.5rem;
     height: auto;
+    border-radius: 25%;
+    transition: 0.25s ease;
     color: ${gb.colorGreen};
 `
 
 export const IconUsers = styled(FaUser)`
     display: inline-block;
     vertical-align: middle;
-    width: 1.5rem;
+    padding: 0.5em;
+    width: 2.5rem;
     height: auto;
+    border-radius: 25%;
+    transition: 0.25s ease;
     color: ${gb.colorGreen};
 `
 
@@ -105,6 +121,7 @@ export const PNavOptionText = styled.p`
     margin-left: 1.5rem;
     font-family: ${gb.fontPoppins};
     font-size: 0.85em;
+    transition: 0.25s ease;
     color: ${gb.colorGreen};
 `
 
@@ -115,7 +132,7 @@ export const DivCtnNavOption = styled.div`
 
     &:hover {
         ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconContact}, ${IconUsers} {
-            color: ${gb.colorRed};
+            color: ${props => (props.routeIsActive ? gb.colorWhiteFull : gb.colorRed)};
         }
         ${PNavOptionText} {
             font-weight: 700;
@@ -124,11 +141,11 @@ export const DivCtnNavOption = styled.div`
     }
 
     ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconContact}, ${IconUsers} {
-        width: ${props => (props.routeIsActive ? '1.75rem' : '1.5rem')};
-        color: ${props => (props.routeIsActive ? gb.colorRed : gb.colorGreen)};
+        color: ${props => (props.routeIsActive ? gb.colorWhiteFull : gb.colorGreen)};
+        background-color: ${props => (props.routeIsActive ? gb.colorRed : gb.colorWhiteFull)};
     }
     ${PNavOptionText} {
-        font-size: ${props => (props.routeIsActive ? '1em' : '0.85rem')};
+        font-size: ${props => (props.routeIsActive ? '1.1em' : '0.9rem')};
         font-weight: ${props => (props.routeIsActive ? '700' : '400')};
         color: ${props => (props.routeIsActive ? gb.colorRed : gb.colorGreen)};
     }

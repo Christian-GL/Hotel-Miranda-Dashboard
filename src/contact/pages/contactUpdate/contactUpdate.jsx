@@ -32,7 +32,7 @@ export const ContactUpdate = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         if (contactByIdLoading === "idle") { dispatch(ContactFetchByIDThunk(parseInt(id))) }
-        else if (contactByIdLoading === "fulfilled" && Object.keys(contactById).length !== 0) {
+        else if (contactByIdLoading === "fulfilled") {
             setContactUpdated({
                 id: contactById.id,
                 publish_date: contactById.publish_date || '',

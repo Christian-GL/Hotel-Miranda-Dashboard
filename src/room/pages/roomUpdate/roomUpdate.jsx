@@ -36,7 +36,7 @@ export const RoomUpdate = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         if (roomByIdLoading === "idle") { dispatch(RoomFetchByIDThunk(parseInt(id))) }
-        else if (roomByIdLoading === "fulfilled" && Object.keys(roomById).length !== 0) {
+        else if (roomByIdLoading === "fulfilled") {
             setRoomUpdated({
                 id: roomById.id,
                 photo: roomById.photo || '',

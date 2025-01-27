@@ -51,24 +51,36 @@ export const TitleH2 = styled.h2`
 
 export const IconMail = styled(MdOutlineEmail)`
     margin: 0 0.75rem;
+    padding: 0.5em;
     vertical-align: middle;
-    width: 1.75rem;
+    width: 2.75rem;
     height: auto;
+    border-radius: 50%;
     cursor: pointer;
 `
 
 export const IconBell = styled(FaRegBell)`
     margin: 0 0.75rem;
+    padding: 0.5em;
     vertical-align: middle;
-    width: 1.5rem;
+    width: 2.75rem;
     height: auto;
+    border-radius: 50%;
     cursor: pointer;
 `
 
 export const IconLogOut = styled(AiOutlineLogout)`
     margin: 0 0.75rem;
+    padding: 0.5em;
     vertical-align: middle;
-    width: 1.75rem;
+    width: 2.75rem;
     height: auto;
+    border-radius: 50%;
     cursor: pointer;
+    transition: 0.25s ease;
+
+    &:hover {
+        color: ${gb.colorWhiteFull};
+        background-color: ${gb.colorRed};
+    }
 `

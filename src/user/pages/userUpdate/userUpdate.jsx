@@ -35,7 +35,7 @@ export const UserUpdate = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         if (userByIdLoading === "idle") { dispatch(UserFetchByIDThunk(parseInt(id))) }
-        else if (userByIdLoading === "fulfilled" && Object.keys(userById).length !== 0) {
+        else if (userByIdLoading === "fulfilled") {
 
             setUserUpdated({
                 id: userById.id,
