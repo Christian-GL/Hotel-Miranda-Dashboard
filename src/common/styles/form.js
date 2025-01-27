@@ -102,16 +102,16 @@ export const ImgRoom = styled.img`
     padding-left: 2em;
     width: 100%;
     height: auto;
-    max-width: 20rem;  
-    max-height: 15rem;
+    max-width: 10rem;  
+    max-height: 7.5rem;
 `
 
 export const ImgUser = styled.img`
     padding-left: 2em;
     width: 100%;
     height: auto;
-    max-width: 10rem;
-    max-height: 10rem;
+    max-width: 7.5rem;
+    max-height: 7.5rem;
 `
 
 export const DivCtnEntry = styled.div`
@@ -126,6 +126,21 @@ export const LabelText = styled.label`
     font-family: ${gb.fontPoppins};
     font-size: 1em;
     font-weight: 700;
+    color: ${gb.colorBlack26};
+`
+
+export const DivCtnEntryBookings = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    display: grid;
+    padding: 1em 0;
+`
+
+export const LabelBookings = styled.label`
+    font-family: ${gb.fontPoppins};
+    font-size: 0.8em;
+    font-weight: 500;
     color: ${gb.colorBlack26};
 `
 

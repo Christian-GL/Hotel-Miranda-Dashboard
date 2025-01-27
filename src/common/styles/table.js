@@ -81,8 +81,7 @@ export const PStatusRoomList = styled.p`
     width: 6.5rem;
     border-radius: 1.25rem;
     color: ${gb.colorWhiteFull};
-    // background-color: ${gb.colorGreen}       // <-- Sin condición si que deja (mismo problema 2 PStatus de debajo)
-    background-color: ${props => props.status === true ? '#E23428' : '#5AD07A'};
+    background-color: ${props => (props.status === 'Available' ? gb.colorLightGreenButton : gb.colorRed)};
 `
 
 export const PStatusAvailableUsers = styled.p`

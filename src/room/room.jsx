@@ -93,7 +93,7 @@ export const Room = () => {
                 {currentPageItems.map((roomData, index) => {
                     return [
                         <DivImgTable key={index + '-1'}>
-                            <ImgTableRoom src={`${roomData.photo}`} />
+                            <ImgTableRoom src={`${roomData.photos[0]}`} />
                         </DivImgTable>,
 
                         <PTable key={index + '-2'}>
@@ -113,13 +113,16 @@ export const Room = () => {
                         </PTable>,
 
                         <PTable key={index + '-6'}>
-                            <b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;(-{roomData.discount}%)
+                            {roomData.discount === 0 ?
+                                <>No Discount</> :
+                                <><b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;(-{roomData.discount}%)</>
+                            }
                         </PTable>,
 
                         <PTable key={index + '-7'}>
-                            {roomData.booking_status === false ?
-                                <PStatusRoomList status={roomData.booking_status}>Available</PStatusRoomList> :
-                                <PStatusRoomList status={roomData.booking_status}>Booking</PStatusRoomList>
+                            {roomData.booking_list.length === 0 ?
+                                <PStatusRoomList status='Available'>Available</PStatusRoomList> :
+                                <PStatusRoomList status='Booking'>Booking</PStatusRoomList>
                             }
                         </PTable>,
 

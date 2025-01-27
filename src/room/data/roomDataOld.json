@@ -1,0 +1,5005 @@
+[
+    {
+        "id": 1,
+        "photo": "http://dummyimage.com/213x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "3 Bed Space",
+            "2 Bathroom",
+            "WiFi",
+            "TV",
+            "LED TV",
+            "Air Conditioner",
+            "Minibar",
+            "Balcony",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "24 Hours Guard"
+        ],
+        "price": 702.57,
+        "discount": 39.29,
+        "booking_status": false
+    },
+    {
+        "id": 2,
+        "photo": "http://dummyimage.com/104x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 819.17,
+        "discount": 81.65,
+        "booking_status": true
+    },
+    {
+        "id": 3,
+        "photo": "http://dummyimage.com/119x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 802.39,
+        "discount": 62.49,
+        "booking_status": false
+    },
+    {
+        "id": 4,
+        "photo": "http://dummyimage.com/182x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1202.09,
+        "discount": 22.76,
+        "booking_status": true
+    },
+    {
+        "id": 5,
+        "photo": "http://dummyimage.com/101x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1948.1,
+        "discount": 54.96,
+        "booking_status": false
+    },
+    {
+        "id": 6,
+        "photo": "http://dummyimage.com/246x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 899.86,
+        "discount": 97.64,
+        "booking_status": true
+    },
+    {
+        "id": 7,
+        "photo": "http://dummyimage.com/189x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 194.17,
+        "discount": 11.96,
+        "booking_status": false
+    },
+    {
+        "id": 8,
+        "photo": "http://dummyimage.com/186x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 602.21,
+        "discount": 23.12,
+        "booking_status": true
+    },
+    {
+        "id": 9,
+        "photo": "http://dummyimage.com/161x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1110.24,
+        "discount": 27.87,
+        "booking_status": false
+    },
+    {
+        "id": 10,
+        "photo": "http://dummyimage.com/133x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1405.62,
+        "discount": 63.2,
+        "booking_status": false
+    },
+    {
+        "id": 11,
+        "photo": "http://dummyimage.com/214x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 202.31,
+        "discount": 81.03,
+        "booking_status": true
+    },
+    {
+        "id": 12,
+        "photo": "http://dummyimage.com/238x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 142.41,
+        "discount": 10.47,
+        "booking_status": true
+    },
+    {
+        "id": 13,
+        "photo": "http://dummyimage.com/156x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1723.19,
+        "discount": 54.93,
+        "booking_status": false
+    },
+    {
+        "id": 14,
+        "photo": "http://dummyimage.com/118x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 565.47,
+        "discount": 34.65,
+        "booking_status": true
+    },
+    {
+        "id": 15,
+        "photo": "http://dummyimage.com/177x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1720.99,
+        "discount": 58.73,
+        "booking_status": false
+    },
+    {
+        "id": 16,
+        "photo": "http://dummyimage.com/198x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 620.86,
+        "discount": 83.09,
+        "booking_status": true
+    },
+    {
+        "id": 17,
+        "photo": "http://dummyimage.com/140x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1939.06,
+        "discount": 45.86,
+        "booking_status": true
+    },
+    {
+        "id": 18,
+        "photo": "http://dummyimage.com/154x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1357.65,
+        "discount": 88.47,
+        "booking_status": true
+    },
+    {
+        "id": 19,
+        "photo": "http://dummyimage.com/101x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1099.98,
+        "discount": 10.66,
+        "booking_status": false
+    },
+    {
+        "id": 20,
+        "photo": "http://dummyimage.com/155x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1641.22,
+        "discount": 11.74,
+        "booking_status": true
+    },
+    {
+        "id": 21,
+        "photo": "http://dummyimage.com/163x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 298.28,
+        "discount": 8.96,
+        "booking_status": true
+    },
+    {
+        "id": 22,
+        "photo": "http://dummyimage.com/156x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1909.72,
+        "discount": 55.7,
+        "booking_status": true
+    },
+    {
+        "id": 23,
+        "photo": "http://dummyimage.com/159x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1396.39,
+        "discount": 94.16,
+        "booking_status": false
+    },
+    {
+        "id": 24,
+        "photo": "http://dummyimage.com/246x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 662.18,
+        "discount": 46.24,
+        "booking_status": false
+    },
+    {
+        "id": 25,
+        "photo": "http://dummyimage.com/205x100.png/dddddd/000000",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1758.4,
+        "discount": 17.59,
+        "booking_status": false
+    },
+    {
+        "id": 26,
+        "photo": "http://dummyimage.com/238x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 275.51,
+        "discount": 43.31,
+        "booking_status": true
+    },
+    {
+        "id": 27,
+        "photo": "http://dummyimage.com/118x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 908.97,
+        "discount": 31.32,
+        "booking_status": true
+    },
+    {
+        "id": 28,
+        "photo": "http://dummyimage.com/143x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 778.3,
+        "discount": 87.83,
+        "booking_status": false
+    },
+    {
+        "id": 29,
+        "photo": "http://dummyimage.com/134x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1804.04,
+        "discount": 56.17,
+        "booking_status": true
+    },
+    {
+        "id": 30,
+        "photo": "http://dummyimage.com/132x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1024.46,
+        "discount": 41.62,
+        "booking_status": true
+    },
+    {
+        "id": 31,
+        "photo": "http://dummyimage.com/182x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1556.82,
+        "discount": 75.24,
+        "booking_status": false
+    },
+    {
+        "id": 32,
+        "photo": "http://dummyimage.com/111x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 810.95,
+        "discount": 25.11,
+        "booking_status": false
+    },
+    {
+        "id": 33,
+        "photo": "http://dummyimage.com/188x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 836.37,
+        "discount": 19.92,
+        "booking_status": false
+    },
+    {
+        "id": 34,
+        "photo": "http://dummyimage.com/210x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 247.79,
+        "discount": 88.22,
+        "booking_status": false
+    },
+    {
+        "id": 35,
+        "photo": "http://dummyimage.com/216x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 283.93,
+        "discount": 87.41,
+        "booking_status": true
+    },
+    {
+        "id": 36,
+        "photo": "http://dummyimage.com/244x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 467.06,
+        "discount": 43.18,
+        "booking_status": false
+    },
+    {
+        "id": 37,
+        "photo": "http://dummyimage.com/147x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 365.28,
+        "discount": 92.13,
+        "booking_status": false
+    },
+    {
+        "id": 38,
+        "photo": "http://dummyimage.com/165x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1005.98,
+        "discount": 73.83,
+        "booking_status": true
+    },
+    {
+        "id": 39,
+        "photo": "http://dummyimage.com/231x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1000.91,
+        "discount": 22.98,
+        "booking_status": false
+    },
+    {
+        "id": 40,
+        "photo": "http://dummyimage.com/115x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 51.43,
+        "discount": 48.68,
+        "booking_status": false
+    },
+    {
+        "id": 41,
+        "photo": "http://dummyimage.com/231x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1940.8,
+        "discount": 72.12,
+        "booking_status": false
+    },
+    {
+        "id": 42,
+        "photo": "http://dummyimage.com/105x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1227.13,
+        "discount": 34.84,
+        "booking_status": true
+    },
+    {
+        "id": 43,
+        "photo": "http://dummyimage.com/235x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1118.29,
+        "discount": 1.28,
+        "booking_status": false
+    },
+    {
+        "id": 44,
+        "photo": "http://dummyimage.com/118x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 922.49,
+        "discount": 54.43,
+        "booking_status": false
+    },
+    {
+        "id": 45,
+        "photo": "http://dummyimage.com/117x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1962.11,
+        "discount": 14.13,
+        "booking_status": true
+    },
+    {
+        "id": 46,
+        "photo": "http://dummyimage.com/221x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 317.72,
+        "discount": 94.96,
+        "booking_status": false
+    },
+    {
+        "id": 47,
+        "photo": "http://dummyimage.com/118x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1487.74,
+        "discount": 62.67,
+        "booking_status": true
+    },
+    {
+        "id": 48,
+        "photo": "http://dummyimage.com/236x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1391.86,
+        "discount": 81.87,
+        "booking_status": false
+    },
+    {
+        "id": 49,
+        "photo": "http://dummyimage.com/154x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1503.14,
+        "discount": 71.11,
+        "booking_status": true
+    },
+    {
+        "id": 50,
+        "photo": "http://dummyimage.com/100x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 937.55,
+        "discount": 92.43,
+        "booking_status": false
+    },
+    {
+        "id": 51,
+        "photo": "http://dummyimage.com/218x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1038.52,
+        "discount": 92.15,
+        "booking_status": true
+    },
+    {
+        "id": 52,
+        "photo": "http://dummyimage.com/141x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 257.36,
+        "discount": 89.99,
+        "booking_status": true
+    },
+    {
+        "id": 53,
+        "photo": "http://dummyimage.com/209x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1970.35,
+        "discount": 67.3,
+        "booking_status": true
+    },
+    {
+        "id": 54,
+        "photo": "http://dummyimage.com/115x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 807.73,
+        "discount": 94.05,
+        "booking_status": false
+    },
+    {
+        "id": 55,
+        "photo": "http://dummyimage.com/150x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1794.24,
+        "discount": 21.39,
+        "booking_status": true
+    },
+    {
+        "id": 56,
+        "photo": "http://dummyimage.com/131x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1359.01,
+        "discount": 22.27,
+        "booking_status": false
+    },
+    {
+        "id": 57,
+        "photo": "http://dummyimage.com/175x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 450.08,
+        "discount": 55.31,
+        "booking_status": true
+    },
+    {
+        "id": 58,
+        "photo": "http://dummyimage.com/122x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 788.27,
+        "discount": 6.03,
+        "booking_status": true
+    },
+    {
+        "id": 59,
+        "photo": "http://dummyimage.com/133x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1750.15,
+        "discount": 34.39,
+        "booking_status": true
+    },
+    {
+        "id": 60,
+        "photo": "http://dummyimage.com/108x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1003.14,
+        "discount": 34.87,
+        "booking_status": true
+    },
+    {
+        "id": 61,
+        "photo": "http://dummyimage.com/173x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1864.3,
+        "discount": 2.58,
+        "booking_status": false
+    },
+    {
+        "id": 62,
+        "photo": "http://dummyimage.com/144x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1558.2,
+        "discount": 10.76,
+        "booking_status": true
+    },
+    {
+        "id": 63,
+        "photo": "http://dummyimage.com/229x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 577.34,
+        "discount": 51.62,
+        "booking_status": true
+    },
+    {
+        "id": 64,
+        "photo": "http://dummyimage.com/232x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 892.32,
+        "discount": 2.69,
+        "booking_status": true
+    },
+    {
+        "id": 65,
+        "photo": "http://dummyimage.com/206x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1288.55,
+        "discount": 93.94,
+        "booking_status": true
+    },
+    {
+        "id": 66,
+        "photo": "http://dummyimage.com/181x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 967.62,
+        "discount": 81.88,
+        "booking_status": false
+    },
+    {
+        "id": 67,
+        "photo": "http://dummyimage.com/152x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1550.22,
+        "discount": 20.34,
+        "booking_status": true
+    },
+    {
+        "id": 68,
+        "photo": "http://dummyimage.com/211x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1570.77,
+        "discount": 86.8,
+        "booking_status": true
+    },
+    {
+        "id": 69,
+        "photo": "http://dummyimage.com/149x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 705.34,
+        "discount": 33.31,
+        "booking_status": true
+    },
+    {
+        "id": 70,
+        "photo": "http://dummyimage.com/231x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1362.05,
+        "discount": 98.33,
+        "booking_status": false
+    },
+    {
+        "id": 71,
+        "photo": "http://dummyimage.com/181x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 371.74,
+        "discount": 31.08,
+        "booking_status": false
+    },
+    {
+        "id": 72,
+        "photo": "http://dummyimage.com/160x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1282.84,
+        "discount": 95.16,
+        "booking_status": true
+    },
+    {
+        "id": 73,
+        "photo": "http://dummyimage.com/109x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 191.01,
+        "discount": 85.27,
+        "booking_status": true
+    },
+    {
+        "id": 74,
+        "photo": "http://dummyimage.com/179x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1495.2,
+        "discount": 7.26,
+        "booking_status": false
+    },
+    {
+        "id": 75,
+        "photo": "http://dummyimage.com/111x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 739.12,
+        "discount": 28.98,
+        "booking_status": false
+    },
+    {
+        "id": 76,
+        "photo": "http://dummyimage.com/158x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 598.25,
+        "discount": 17.24,
+        "booking_status": true
+    },
+    {
+        "id": 77,
+        "photo": "http://dummyimage.com/168x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 454.98,
+        "discount": 73.25,
+        "booking_status": false
+    },
+    {
+        "id": 78,
+        "photo": "http://dummyimage.com/215x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1398.39,
+        "discount": 99.67,
+        "booking_status": true
+    },
+    {
+        "id": 79,
+        "photo": "http://dummyimage.com/129x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 562.96,
+        "discount": 32.58,
+        "booking_status": false
+    },
+    {
+        "id": 80,
+        "photo": "http://dummyimage.com/227x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1486.31,
+        "discount": 39.01,
+        "booking_status": false
+    },
+    {
+        "id": 81,
+        "photo": "http://dummyimage.com/216x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1091.93,
+        "discount": 11.44,
+        "booking_status": true
+    },
+    {
+        "id": 82,
+        "photo": "http://dummyimage.com/100x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1580.4,
+        "discount": 28.85,
+        "booking_status": true
+    },
+    {
+        "id": 83,
+        "photo": "http://dummyimage.com/204x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1096.68,
+        "discount": 63.17,
+        "booking_status": true
+    },
+    {
+        "id": 84,
+        "photo": "http://dummyimage.com/112x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1644.1,
+        "discount": 78.29,
+        "booking_status": true
+    },
+    {
+        "id": 85,
+        "photo": "http://dummyimage.com/153x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 267.02,
+        "discount": 15.27,
+        "booking_status": true
+    },
+    {
+        "id": 86,
+        "photo": "http://dummyimage.com/215x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1626.77,
+        "discount": 19.1,
+        "booking_status": false
+    },
+    {
+        "id": 87,
+        "photo": "http://dummyimage.com/180x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 82.75,
+        "discount": 7.54,
+        "booking_status": true
+    },
+    {
+        "id": 88,
+        "photo": "http://dummyimage.com/161x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1462.94,
+        "discount": 9.41,
+        "booking_status": true
+    },
+    {
+        "id": 89,
+        "photo": "http://dummyimage.com/130x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 518.61,
+        "discount": 57.26,
+        "booking_status": true
+    },
+    {
+        "id": 90,
+        "photo": "http://dummyimage.com/178x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1334.04,
+        "discount": 99.37,
+        "booking_status": true
+    },
+    {
+        "id": 91,
+        "photo": "http://dummyimage.com/190x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 591.76,
+        "discount": 86.99,
+        "booking_status": true
+    },
+    {
+        "id": 92,
+        "photo": "http://dummyimage.com/238x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 683.58,
+        "discount": 4.43,
+        "booking_status": true
+    },
+    {
+        "id": 93,
+        "photo": "http://dummyimage.com/201x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 681.86,
+        "discount": 71.68,
+        "booking_status": true
+    },
+    {
+        "id": 94,
+        "photo": "http://dummyimage.com/218x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1630.39,
+        "discount": 10.23,
+        "booking_status": false
+    },
+    {
+        "id": 95,
+        "photo": "http://dummyimage.com/143x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 97.01,
+        "discount": 19.04,
+        "booking_status": false
+    },
+    {
+        "id": 96,
+        "photo": "http://dummyimage.com/137x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 225.85,
+        "discount": 28.87,
+        "booking_status": false
+    },
+    {
+        "id": 97,
+        "photo": "http://dummyimage.com/138x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 329.26,
+        "discount": 58.6,
+        "booking_status": true
+    },
+    {
+        "id": 98,
+        "photo": "http://dummyimage.com/147x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1014.04,
+        "discount": 67.63,
+        "booking_status": true
+    },
+    {
+        "id": 99,
+        "photo": "http://dummyimage.com/118x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 178.08,
+        "discount": 43.75,
+        "booking_status": true
+    },
+    {
+        "id": 100,
+        "photo": "http://dummyimage.com/166x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1062.8,
+        "discount": 89.53,
+        "booking_status": false
+    },
+    {
+        "id": 101,
+        "photo": "http://dummyimage.com/214x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1608.01,
+        "discount": 71.38,
+        "booking_status": true
+    },
+    {
+        "id": 102,
+        "photo": "http://dummyimage.com/205x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 106.14,
+        "discount": 71.36,
+        "booking_status": true
+    },
+    {
+        "id": 103,
+        "photo": "http://dummyimage.com/169x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 873.15,
+        "discount": 51.61,
+        "booking_status": true
+    },
+    {
+        "id": 104,
+        "photo": "http://dummyimage.com/241x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1509.41,
+        "discount": 55.03,
+        "booking_status": true
+    },
+    {
+        "id": 105,
+        "photo": "http://dummyimage.com/128x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 146.44,
+        "discount": 41.22,
+        "booking_status": true
+    },
+    {
+        "id": 106,
+        "photo": "http://dummyimage.com/224x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 410.27,
+        "discount": 41.92,
+        "booking_status": true
+    },
+    {
+        "id": 107,
+        "photo": "http://dummyimage.com/199x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1532.97,
+        "discount": 76.52,
+        "booking_status": false
+    },
+    {
+        "id": 108,
+        "photo": "http://dummyimage.com/199x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 833.23,
+        "discount": 56.46,
+        "booking_status": true
+    },
+    {
+        "id": 109,
+        "photo": "http://dummyimage.com/212x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1231.21,
+        "discount": 8.05,
+        "booking_status": false
+    },
+    {
+        "id": 110,
+        "photo": "http://dummyimage.com/186x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 990.26,
+        "discount": 73.81,
+        "booking_status": true
+    },
+    {
+        "id": 111,
+        "photo": "http://dummyimage.com/181x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 858.82,
+        "discount": 26.46,
+        "booking_status": false
+    },
+    {
+        "id": 112,
+        "photo": "http://dummyimage.com/231x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1263.77,
+        "discount": 36.72,
+        "booking_status": true
+    },
+    {
+        "id": 113,
+        "photo": "http://dummyimage.com/143x100.png/dddddd/000000",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1337.65,
+        "discount": 60.16,
+        "booking_status": true
+    },
+    {
+        "id": 114,
+        "photo": "http://dummyimage.com/198x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 645.66,
+        "discount": 6.28,
+        "booking_status": true
+    },
+    {
+        "id": 115,
+        "photo": "http://dummyimage.com/208x100.png/dddddd/000000",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 513.01,
+        "discount": 31.07,
+        "booking_status": true
+    },
+    {
+        "id": 116,
+        "photo": "http://dummyimage.com/215x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1551.43,
+        "discount": 64.31,
+        "booking_status": true
+    },
+    {
+        "id": 117,
+        "photo": "http://dummyimage.com/180x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1253.44,
+        "discount": 26.68,
+        "booking_status": true
+    },
+    {
+        "id": 118,
+        "photo": "http://dummyimage.com/151x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 938.59,
+        "discount": 32.89,
+        "booking_status": true
+    },
+    {
+        "id": 119,
+        "photo": "http://dummyimage.com/165x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1970.07,
+        "discount": 46.78,
+        "booking_status": true
+    },
+    {
+        "id": 120,
+        "photo": "http://dummyimage.com/205x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 525.79,
+        "discount": 57.14,
+        "booking_status": true
+    },
+    {
+        "id": 121,
+        "photo": "http://dummyimage.com/228x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1497.05,
+        "discount": 61.49,
+        "booking_status": false
+    },
+    {
+        "id": 122,
+        "photo": "http://dummyimage.com/126x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 194.85,
+        "discount": 1.61,
+        "booking_status": true
+    },
+    {
+        "id": 123,
+        "photo": "http://dummyimage.com/171x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1429.18,
+        "discount": 66.5,
+        "booking_status": true
+    },
+    {
+        "id": 124,
+        "photo": "http://dummyimage.com/176x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 891.73,
+        "discount": 6.4,
+        "booking_status": false
+    },
+    {
+        "id": 125,
+        "photo": "http://dummyimage.com/110x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 790.8,
+        "discount": 5.06,
+        "booking_status": false
+    },
+    {
+        "id": 126,
+        "photo": "http://dummyimage.com/118x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1238.94,
+        "discount": 66.75,
+        "booking_status": false
+    },
+    {
+        "id": 127,
+        "photo": "http://dummyimage.com/156x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1146.55,
+        "discount": 24.42,
+        "booking_status": true
+    },
+    {
+        "id": 128,
+        "photo": "http://dummyimage.com/223x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 821.44,
+        "discount": 91.63,
+        "booking_status": true
+    },
+    {
+        "id": 129,
+        "photo": "http://dummyimage.com/166x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1698.88,
+        "discount": 47.9,
+        "booking_status": false
+    },
+    {
+        "id": 130,
+        "photo": "http://dummyimage.com/144x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 490.32,
+        "discount": 43.33,
+        "booking_status": true
+    },
+    {
+        "id": 131,
+        "photo": "http://dummyimage.com/183x100.png/dddddd/000000",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1840.59,
+        "discount": 60.64,
+        "booking_status": false
+    },
+    {
+        "id": 132,
+        "photo": "http://dummyimage.com/134x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1690.06,
+        "discount": 59.04,
+        "booking_status": true
+    },
+    {
+        "id": 133,
+        "photo": "http://dummyimage.com/148x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 704.2,
+        "discount": 74.29,
+        "booking_status": true
+    },
+    {
+        "id": 134,
+        "photo": "http://dummyimage.com/215x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1103.33,
+        "discount": 30.22,
+        "booking_status": false
+    },
+    {
+        "id": 135,
+        "photo": "http://dummyimage.com/150x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1577.55,
+        "discount": 1.8,
+        "booking_status": false
+    },
+    {
+        "id": 136,
+        "photo": "http://dummyimage.com/151x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1038.62,
+        "discount": 59.06,
+        "booking_status": true
+    },
+    {
+        "id": 137,
+        "photo": "http://dummyimage.com/135x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 382.36,
+        "discount": 78.08,
+        "booking_status": true
+    },
+    {
+        "id": 138,
+        "photo": "http://dummyimage.com/216x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 646.81,
+        "discount": 50.25,
+        "booking_status": true
+    },
+    {
+        "id": 139,
+        "photo": "http://dummyimage.com/235x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1266.75,
+        "discount": 56.29,
+        "booking_status": true
+    },
+    {
+        "id": 140,
+        "photo": "http://dummyimage.com/162x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1775.29,
+        "discount": 81.15,
+        "booking_status": false
+    },
+    {
+        "id": 141,
+        "photo": "http://dummyimage.com/109x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1266.86,
+        "discount": 62.59,
+        "booking_status": false
+    },
+    {
+        "id": 142,
+        "photo": "http://dummyimage.com/127x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1322.73,
+        "discount": 53.26,
+        "booking_status": false
+    },
+    {
+        "id": 143,
+        "photo": "http://dummyimage.com/176x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1223.36,
+        "discount": 75.5,
+        "booking_status": true
+    },
+    {
+        "id": 144,
+        "photo": "http://dummyimage.com/166x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 801.05,
+        "discount": 81.58,
+        "booking_status": true
+    },
+    {
+        "id": 145,
+        "photo": "http://dummyimage.com/141x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1976.82,
+        "discount": 75.23,
+        "booking_status": false
+    },
+    {
+        "id": 146,
+        "photo": "http://dummyimage.com/225x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1768.89,
+        "discount": 80.01,
+        "booking_status": true
+    },
+    {
+        "id": 147,
+        "photo": "http://dummyimage.com/242x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 447.5,
+        "discount": 57.74,
+        "booking_status": true
+    },
+    {
+        "id": 148,
+        "photo": "http://dummyimage.com/159x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 761.98,
+        "discount": 38.42,
+        "booking_status": true
+    },
+    {
+        "id": 149,
+        "photo": "http://dummyimage.com/191x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1455.42,
+        "discount": 29.43,
+        "booking_status": true
+    },
+    {
+        "id": 150,
+        "photo": "http://dummyimage.com/238x100.png/dddddd/000000",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 720.33,
+        "discount": 10.01,
+        "booking_status": true
+    },
+    {
+        "id": 151,
+        "photo": "http://dummyimage.com/154x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 854.44,
+        "discount": 40.21,
+        "booking_status": true
+    },
+    {
+        "id": 152,
+        "photo": "http://dummyimage.com/113x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 802.14,
+        "discount": 70.51,
+        "booking_status": true
+    },
+    {
+        "id": 153,
+        "photo": "http://dummyimage.com/215x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1912.71,
+        "discount": 77.92,
+        "booking_status": true
+    },
+    {
+        "id": 154,
+        "photo": "http://dummyimage.com/242x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 58.89,
+        "discount": 55.77,
+        "booking_status": false
+    },
+    {
+        "id": 155,
+        "photo": "http://dummyimage.com/199x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1728.56,
+        "discount": 72.54,
+        "booking_status": false
+    },
+    {
+        "id": 156,
+        "photo": "http://dummyimage.com/113x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 739.06,
+        "discount": 27.9,
+        "booking_status": true
+    },
+    {
+        "id": 157,
+        "photo": "http://dummyimage.com/100x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 826.51,
+        "discount": 20.49,
+        "booking_status": true
+    },
+    {
+        "id": 158,
+        "photo": "http://dummyimage.com/110x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1681.18,
+        "discount": 32.42,
+        "booking_status": false
+    },
+    {
+        "id": 159,
+        "photo": "http://dummyimage.com/234x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 562.08,
+        "discount": 61.78,
+        "booking_status": false
+    },
+    {
+        "id": 160,
+        "photo": "http://dummyimage.com/196x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 198.7,
+        "discount": 22.05,
+        "booking_status": false
+    },
+    {
+        "id": 161,
+        "photo": "http://dummyimage.com/168x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1738.15,
+        "discount": 10.4,
+        "booking_status": false
+    },
+    {
+        "id": 162,
+        "photo": "http://dummyimage.com/155x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1277.42,
+        "discount": 13.81,
+        "booking_status": false
+    },
+    {
+        "id": 163,
+        "photo": "http://dummyimage.com/210x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1389.04,
+        "discount": 8.08,
+        "booking_status": true
+    },
+    {
+        "id": 164,
+        "photo": "http://dummyimage.com/150x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1186.51,
+        "discount": 13.39,
+        "booking_status": true
+    },
+    {
+        "id": 165,
+        "photo": "http://dummyimage.com/139x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1168.11,
+        "discount": 18.64,
+        "booking_status": false
+    },
+    {
+        "id": 166,
+        "photo": "http://dummyimage.com/225x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1963.68,
+        "discount": 53.48,
+        "booking_status": false
+    },
+    {
+        "id": 167,
+        "photo": "http://dummyimage.com/187x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 62.02,
+        "discount": 31.42,
+        "booking_status": false
+    },
+    {
+        "id": 168,
+        "photo": "http://dummyimage.com/186x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1005.03,
+        "discount": 78.49,
+        "booking_status": true
+    },
+    {
+        "id": 169,
+        "photo": "http://dummyimage.com/191x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1169.06,
+        "discount": 23.92,
+        "booking_status": false
+    },
+    {
+        "id": 170,
+        "photo": "http://dummyimage.com/154x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1390.21,
+        "discount": 71.76,
+        "booking_status": false
+    },
+    {
+        "id": 171,
+        "photo": "http://dummyimage.com/226x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1195.85,
+        "discount": 14.86,
+        "booking_status": false
+    },
+    {
+        "id": 172,
+        "photo": "http://dummyimage.com/197x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 398.61,
+        "discount": 4.07,
+        "booking_status": true
+    },
+    {
+        "id": 173,
+        "photo": "http://dummyimage.com/245x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1865.92,
+        "discount": 78.98,
+        "booking_status": false
+    },
+    {
+        "id": 174,
+        "photo": "http://dummyimage.com/210x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 100.84,
+        "discount": 13.41,
+        "booking_status": false
+    },
+    {
+        "id": 175,
+        "photo": "http://dummyimage.com/208x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 161.24,
+        "discount": 92.73,
+        "booking_status": false
+    },
+    {
+        "id": 176,
+        "photo": "http://dummyimage.com/211x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 907.94,
+        "discount": 23.75,
+        "booking_status": true
+    },
+    {
+        "id": 177,
+        "photo": "http://dummyimage.com/121x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 369.87,
+        "discount": 25.88,
+        "booking_status": true
+    },
+    {
+        "id": 178,
+        "photo": "http://dummyimage.com/101x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 161.05,
+        "discount": 2.35,
+        "booking_status": false
+    },
+    {
+        "id": 179,
+        "photo": "http://dummyimage.com/209x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 608.76,
+        "discount": 7.58,
+        "booking_status": false
+    },
+    {
+        "id": 180,
+        "photo": "http://dummyimage.com/147x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 803.64,
+        "discount": 65.3,
+        "booking_status": true
+    },
+    {
+        "id": 181,
+        "photo": "http://dummyimage.com/104x100.png/dddddd/000000",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1839.05,
+        "discount": 6.11,
+        "booking_status": true
+    },
+    {
+        "id": 182,
+        "photo": "http://dummyimage.com/114x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1363.66,
+        "discount": 18.15,
+        "booking_status": true
+    },
+    {
+        "id": 183,
+        "photo": "http://dummyimage.com/122x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 318.49,
+        "discount": 61.53,
+        "booking_status": false
+    },
+    {
+        "id": 184,
+        "photo": "http://dummyimage.com/207x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1936.44,
+        "discount": 45.13,
+        "booking_status": true
+    },
+    {
+        "id": 185,
+        "photo": "http://dummyimage.com/148x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 773.65,
+        "discount": 32.06,
+        "booking_status": true
+    },
+    {
+        "id": 186,
+        "photo": "http://dummyimage.com/247x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1442.46,
+        "discount": 42.51,
+        "booking_status": false
+    },
+    {
+        "id": 187,
+        "photo": "http://dummyimage.com/122x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1204.72,
+        "discount": 25.28,
+        "booking_status": false
+    },
+    {
+        "id": 188,
+        "photo": "http://dummyimage.com/190x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1463.71,
+        "discount": 0.75,
+        "booking_status": false
+    },
+    {
+        "id": 189,
+        "photo": "http://dummyimage.com/101x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1315.56,
+        "discount": 76.3,
+        "booking_status": false
+    },
+    {
+        "id": 190,
+        "photo": "http://dummyimage.com/185x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1821.87,
+        "discount": 52.09,
+        "booking_status": true
+    },
+    {
+        "id": 191,
+        "photo": "http://dummyimage.com/142x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 182.24,
+        "discount": 66.42,
+        "booking_status": true
+    },
+    {
+        "id": 192,
+        "photo": "http://dummyimage.com/153x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1723.84,
+        "discount": 33.73,
+        "booking_status": true
+    },
+    {
+        "id": 193,
+        "photo": "http://dummyimage.com/115x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 173.27,
+        "discount": 34.48,
+        "booking_status": false
+    },
+    {
+        "id": 194,
+        "photo": "http://dummyimage.com/240x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1079.97,
+        "discount": 95.99,
+        "booking_status": true
+    },
+    {
+        "id": 195,
+        "photo": "http://dummyimage.com/218x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1532.48,
+        "discount": 99.45,
+        "booking_status": true
+    },
+    {
+        "id": 196,
+        "photo": "http://dummyimage.com/120x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1754.51,
+        "discount": 86.14,
+        "booking_status": false
+    },
+    {
+        "id": 197,
+        "photo": "http://dummyimage.com/151x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1023.09,
+        "discount": 61.11,
+        "booking_status": true
+    },
+    {
+        "id": 198,
+        "photo": "http://dummyimage.com/110x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1291.95,
+        "discount": 67.05,
+        "booking_status": false
+    },
+    {
+        "id": 199,
+        "photo": "http://dummyimage.com/214x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1875.24,
+        "discount": 48.88,
+        "booking_status": false
+    },
+    {
+        "id": 200,
+        "photo": "http://dummyimage.com/237x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 761.59,
+        "discount": 11.38,
+        "booking_status": true
+    },
+    {
+        "id": 201,
+        "photo": "http://dummyimage.com/163x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1364.57,
+        "discount": 2.32,
+        "booking_status": true
+    },
+    {
+        "id": 202,
+        "photo": "http://dummyimage.com/201x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 72.28,
+        "discount": 52.22,
+        "booking_status": true
+    },
+    {
+        "id": 203,
+        "photo": "http://dummyimage.com/194x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1546.59,
+        "discount": 52.67,
+        "booking_status": false
+    },
+    {
+        "id": 204,
+        "photo": "http://dummyimage.com/115x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1156.1,
+        "discount": 90.72,
+        "booking_status": false
+    },
+    {
+        "id": 205,
+        "photo": "http://dummyimage.com/202x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 186.64,
+        "discount": 53.9,
+        "booking_status": true
+    },
+    {
+        "id": 206,
+        "photo": "http://dummyimage.com/122x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1701.68,
+        "discount": 64.19,
+        "booking_status": false
+    },
+    {
+        "id": 207,
+        "photo": "http://dummyimage.com/240x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1396.13,
+        "discount": 15.71,
+        "booking_status": false
+    },
+    {
+        "id": 208,
+        "photo": "http://dummyimage.com/233x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 798.14,
+        "discount": 18.72,
+        "booking_status": false
+    },
+    {
+        "id": 209,
+        "photo": "http://dummyimage.com/234x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 993.36,
+        "discount": 37.74,
+        "booking_status": false
+    },
+    {
+        "id": 210,
+        "photo": "http://dummyimage.com/227x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1783.94,
+        "discount": 24.61,
+        "booking_status": false
+    },
+    {
+        "id": 211,
+        "photo": "http://dummyimage.com/111x100.png/cc0000/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 961.71,
+        "discount": 33.79,
+        "booking_status": true
+    },
+    {
+        "id": 212,
+        "photo": "http://dummyimage.com/233x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 363.04,
+        "discount": 8.29,
+        "booking_status": true
+    },
+    {
+        "id": 213,
+        "photo": "http://dummyimage.com/244x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1965.43,
+        "discount": 78.14,
+        "booking_status": false
+    },
+    {
+        "id": 214,
+        "photo": "http://dummyimage.com/216x100.png/dddddd/000000",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 442.31,
+        "discount": 4.0,
+        "booking_status": false
+    },
+    {
+        "id": 215,
+        "photo": "http://dummyimage.com/127x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 130.58,
+        "discount": 73.71,
+        "booking_status": false
+    },
+    {
+        "id": 216,
+        "photo": "http://dummyimage.com/209x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 662.12,
+        "discount": 30.22,
+        "booking_status": false
+    },
+    {
+        "id": 217,
+        "photo": "http://dummyimage.com/122x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1132.22,
+        "discount": 11.36,
+        "booking_status": true
+    },
+    {
+        "id": 218,
+        "photo": "http://dummyimage.com/129x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1170.2,
+        "discount": 49.25,
+        "booking_status": true
+    },
+    {
+        "id": 219,
+        "photo": "http://dummyimage.com/119x100.png/ff4444/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 905.05,
+        "discount": 39.83,
+        "booking_status": true
+    },
+    {
+        "id": 220,
+        "photo": "http://dummyimage.com/226x100.png/dddddd/000000",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1298.64,
+        "discount": 64.61,
+        "booking_status": false
+    },
+    {
+        "id": 221,
+        "photo": "http://dummyimage.com/175x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1751.63,
+        "discount": 92.81,
+        "booking_status": true
+    },
+    {
+        "id": 222,
+        "photo": "http://dummyimage.com/250x100.png/cc0000/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 825.6,
+        "discount": 5.65,
+        "booking_status": true
+    },
+    {
+        "id": 223,
+        "photo": "http://dummyimage.com/132x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1794.48,
+        "discount": 66.33,
+        "booking_status": false
+    },
+    {
+        "id": 224,
+        "photo": "http://dummyimage.com/104x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1967.2,
+        "discount": 74.5,
+        "booking_status": true
+    },
+    {
+        "id": 225,
+        "photo": "http://dummyimage.com/164x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 432.09,
+        "discount": 31.51,
+        "booking_status": true
+    },
+    {
+        "id": 226,
+        "photo": "http://dummyimage.com/220x100.png/ff4444/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1686.19,
+        "discount": 90.9,
+        "booking_status": true
+    },
+    {
+        "id": 227,
+        "photo": "http://dummyimage.com/176x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1079.72,
+        "discount": 8.89,
+        "booking_status": false
+    },
+    {
+        "id": 228,
+        "photo": "http://dummyimage.com/127x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1831.22,
+        "discount": 61.02,
+        "booking_status": true
+    },
+    {
+        "id": 229,
+        "photo": "http://dummyimage.com/181x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1995.5,
+        "discount": 21.5,
+        "booking_status": true
+    },
+    {
+        "id": 230,
+        "photo": "http://dummyimage.com/186x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 591.13,
+        "discount": 23.36,
+        "booking_status": false
+    },
+    {
+        "id": 231,
+        "photo": "http://dummyimage.com/109x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1139.47,
+        "discount": 99.67,
+        "booking_status": false
+    },
+    {
+        "id": 232,
+        "photo": "http://dummyimage.com/199x100.png/dddddd/000000",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 625.85,
+        "discount": 2.79,
+        "booking_status": true
+    },
+    {
+        "id": 233,
+        "photo": "http://dummyimage.com/250x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1003.23,
+        "discount": 61.46,
+        "booking_status": false
+    },
+    {
+        "id": 234,
+        "photo": "http://dummyimage.com/214x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 399.24,
+        "discount": 14.72,
+        "booking_status": false
+    },
+    {
+        "id": 235,
+        "photo": "http://dummyimage.com/207x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 942.75,
+        "discount": 17.3,
+        "booking_status": true
+    },
+    {
+        "id": 236,
+        "photo": "http://dummyimage.com/191x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 233.98,
+        "discount": 0.04,
+        "booking_status": false
+    },
+    {
+        "id": 237,
+        "photo": "http://dummyimage.com/181x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 782.85,
+        "discount": 85.77,
+        "booking_status": false
+    },
+    {
+        "id": 238,
+        "photo": "http://dummyimage.com/112x100.png/cc0000/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 403.82,
+        "discount": 25.47,
+        "booking_status": true
+    },
+    {
+        "id": 239,
+        "photo": "http://dummyimage.com/123x100.png/5fa2dd/ffffff",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1837.05,
+        "discount": 23.01,
+        "booking_status": false
+    },
+    {
+        "id": 240,
+        "photo": "http://dummyimage.com/181x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 686.1,
+        "discount": 46.14,
+        "booking_status": true
+    },
+    {
+        "id": 241,
+        "photo": "http://dummyimage.com/140x100.png/dddddd/000000",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 835.91,
+        "discount": 37.0,
+        "booking_status": false
+    },
+    {
+        "id": 242,
+        "photo": "http://dummyimage.com/145x100.png/cc0000/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1394.66,
+        "discount": 30.96,
+        "booking_status": false
+    },
+    {
+        "id": 243,
+        "photo": "http://dummyimage.com/230x100.png/ff4444/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 149.77,
+        "discount": 52.39,
+        "booking_status": true
+    },
+    {
+        "id": 244,
+        "photo": "http://dummyimage.com/156x100.png/ff4444/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1995.75,
+        "discount": 79.89,
+        "booking_status": true
+    },
+    {
+        "id": 245,
+        "photo": "http://dummyimage.com/185x100.png/dddddd/000000",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 670.91,
+        "discount": 62.69,
+        "booking_status": true
+    },
+    {
+        "id": 246,
+        "photo": "http://dummyimage.com/225x100.png/dddddd/000000",
+        "type": "Suite",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1962.27,
+        "discount": 99.07,
+        "booking_status": false
+    },
+    {
+        "id": 247,
+        "photo": "http://dummyimage.com/160x100.png/5fa2dd/ffffff",
+        "type": "Single Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1727.04,
+        "discount": 84.0,
+        "booking_status": true
+    },
+    {
+        "id": 248,
+        "photo": "http://dummyimage.com/156x100.png/dddddd/000000",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1138.62,
+        "discount": 36.29,
+        "booking_status": false
+    },
+    {
+        "id": 249,
+        "photo": "http://dummyimage.com/126x100.png/5fa2dd/ffffff",
+        "type": "Double Bed",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 1396.29,
+        "discount": 26.57,
+        "booking_status": false
+    },
+    {
+        "id": 250,
+        "photo": "http://dummyimage.com/216x100.png/5fa2dd/ffffff",
+        "type": "Double Superior",
+        "amenities": [
+            "WiFi",
+            "TV",
+            "Minibar",
+            "Balcony",
+            "Air conditioning",
+            "Shower",
+            "Towel",
+            "Bathup",
+            "Cofee Set",
+            "LED TV"
+        ],
+        "price": 606.48,
+        "discount": 94.96,
+        "booking_status": true
+    }
+]

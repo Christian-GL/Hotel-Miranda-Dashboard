@@ -22,12 +22,12 @@ export const RoomCreate = () => {
     const roomAllLoading = useSelector(getRoomAllStatus)
     const [newRoom, setNewRoom] = useState({
         id: 0,
-        photo: '',
+        photos: [],
         type: '',
         amenities: [],
         price: 0,
         discount: 0,
-        booking_status: false
+        booking_list: []
     })
     const [nextIdAvailable, setNextIdAvailable] = useState(null)
 
@@ -48,13 +48,17 @@ export const RoomCreate = () => {
 
 
     // QUE URL DE FOTO DEBE GUARDAR EN REDUX ???
-    const handlePhotoChange = (e) => {
-        const { name, files } = e.target
+    const handlePhotoChange = (index, e) => {
+        const { files } = e.target
         if (files[0]) {
             const photoUrl = URL.createObjectURL(files[0])
-            setNewRoom({
-                ...newRoom,
-                [name]: photoUrl
+            setNewRoom(prevState => {
+                const updatedPhotos = [...prevState.photos]
+                updatedPhotos[index] = photoUrl
+                return {
+                    ...prevState,
+                    photos: updatedPhotos
+                }
             })
         }
     }
@@ -121,9 +125,29 @@ export const RoomCreate = () => {
 
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
-                        <LabelText>Photo</LabelText>
-                        <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
-                        <ImgRoom src={newRoom.photo} />
+                        <LabelText>Photo 1</LabelText>
+                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(0, e)} />
+                        <ImgRoom src={newRoom.photos[0]} />
+                    </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Photo 2</LabelText>
+                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(1, e)} />
+                        <ImgRoom src={newRoom.photos[1]} />
+                    </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Photo 3</LabelText>
+                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(2, e)} />
+                        <ImgRoom src={newRoom.photos[2]} />
+                    </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Photo 4</LabelText>
+                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(3, e)} />
+                        <ImgRoom src={newRoom.photos[3]} />
+                    </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Photo 5</LabelText>
+                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(4, e)} />
+                        <ImgRoom src={newRoom.photos[4]} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>

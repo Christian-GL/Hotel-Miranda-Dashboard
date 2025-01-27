@@ -147,7 +147,10 @@ export const BookingCreate = () => {
         }
         const roomUpdatedToDispatch = {
             ...getRoomById(newBooking.room_id),
-            booking_status: newBooking.room_booking_status
+            booking_list: [
+                ...getRoomById(newBooking.room_id).booking_list,
+                newBooking.room_id
+            ]
         }
 
         dispatch(BookingCreateThunk(newBookingToDispatch))
@@ -159,7 +162,7 @@ export const BookingCreate = () => {
             })
         dispatch(RoomUpdateByIdThunk(roomUpdatedToDispatch))
             .then(() => {
-                alert(`Room #${newBooking.room_id} booking status updated to ${roomUpdatedToDispatch.booking_status}`)
+                alert(`Room #${newBooking.room_id} booking status updated to ${roomUpdatedToDispatch.booking_list}`)
             })
             .catch((error) => {
                 alert(`Error updating the room ${roomUpdatedToDispatch.id}: `, error)
@@ -180,7 +183,7 @@ export const BookingCreate = () => {
 
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
-                        <LabelText>Photo</LabelText>
+                        <LabelText>Guest photo</LabelText>
                         <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
                         <ImgUser src={newBooking.photo} />
                     </DivCtnEntry>
@@ -220,7 +223,7 @@ export const BookingCreate = () => {
                         <Select name="room_id" onChange={handleIdRoomChange}>
                             <Option value="null" selected></Option>
                             {roomAll.map((room, index) => (
-                                room.booking_status ?
+                                room.booking_list.length !== 0 ?
                                     <></> :
                                     <Option key={index} value={room.id}>{room.id}</Option>
                             ))}

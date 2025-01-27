@@ -10,8 +10,8 @@
         "check_out_date": "28/07/2024",
         "check_out_time": "8:53 AM",
         "room_id": 1,
-        "room_type": "Single Bed",
-        "room_booking_status": "In Progress",
+        "room_type": "Suite",
+        "room_booking_status": "Check Out",
         "special_request": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     },
     {
@@ -24,9 +24,9 @@
         "check_in_time": "1:00 AM",
         "check_out_date": "29/07/2024",
         "check_out_time": "11:17 PM",
-        "room_id": 2,
+        "room_id": 1,
         "room_type": "Suite",
-        "room_booking_status": "Check In",
+        "room_booking_status": "Check Out",
         "special_request": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     },
     {
@@ -39,7 +39,7 @@
         "check_in_time": "5:42 PM",
         "check_out_date": "27/12/2024",
         "check_out_time": "1:14 AM",
-        "room_id": 3,
+        "room_id": 1,
         "room_type": "Suite",
         "room_booking_status": "Check Out",
         "special_request": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
@@ -54,9 +54,9 @@
         "check_in_time": "11:17 AM",
         "check_out_date": "07/02/2024",
         "check_out_time": "7:39 AM",
-        "room_id": 4,
+        "room_id": 2,
         "room_type": "Single Bed",
-        "room_booking_status": "Check Out",
+        "room_booking_status": "Check In",
         "special_request": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     },
     {
@@ -69,7 +69,7 @@
         "check_in_time": "3:54 AM",
         "check_out_date": "12/07/2024",
         "check_out_time": "1:23 AM",
-        "room_id": 5,
+        "room_id": 2,
         "room_type": "Single Bed",
         "room_booking_status": "Check In",
         "special_request": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
@@ -84,7 +84,7 @@
         "check_in_time": "10:47 PM",
         "check_out_date": "16/11/2024",
         "check_out_time": "5:58 AM",
-        "room_id": 6,
+        "room_id": 3,
         "room_type": "Double Superior",
         "room_booking_status": "Check In",
         "special_request": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."

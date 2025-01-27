@@ -44,29 +44,32 @@ export const BookingUpdate = () => {
 
     const dispatch = useDispatch()
     useEffect(() => {
+        dispatch(BookingFetchByIDThunk(parseInt(id)))
+    }, [id, dispatch])
+
+    useEffect(() => {
         if (bookingByIdLoading === "idle") { dispatch(BookingFetchByIDThunk(parseInt(id))) }
         else if (bookingByIdLoading === "fulfilled") {
+            setBookingUpdated({
+                id: bookingById.id,
+                photo: bookingById.photo || '',
+                full_name_guest: bookingById.full_name_guest || '',
+                order_date: bookingById.order_date || '',
+                order_time: bookingById.order_time || '',
+                check_in_date: bookingById.check_in_date || '',
+                check_in_time: bookingById.check_in_time || '',
+                check_out_date: bookingById.check_out_date || '',
+                check_out_time: bookingById.check_out_time || '',
+                special_request: bookingById.special_request || '',
+                room_id: bookingById.room_id || 0,
+                room_type: bookingById.room_type || '',
+                room_booking_status: bookingById.room_booking_status || ''
+            })
             if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
-            else if (roomAllLoading === "fulfilled") {
-                setBookingUpdated({
-                    id: bookingById.id,
-                    photo: bookingById.photo || '',
-                    full_name_guest: bookingById.full_name_guest || '',
-                    order_date: bookingById.order_date || '',
-                    order_time: bookingById.order_time || '',
-                    check_in_date: bookingById.check_in_date || '',
-                    check_in_time: bookingById.check_in_time || '',
-                    check_out_date: bookingById.check_out_date || '',
-                    check_out_time: bookingById.check_out_time || '',
-                    special_request: bookingById.special_request || '',
-                    room_id: bookingById.room_id || 0,
-                    room_type: bookingById.room_type || '',
-                    room_booking_status: bookingById.room_booking_status || ''
-                })
-            }
+            else if (roomAllLoading === "fulfilled") { }
             else if (roomAllLoading === "rejected") { alert("Error en la api de rooms") }
         }
-        else if (bookingByIdLoading === "rejected") { alert("Error en la api") }
+        else if (bookingByIdLoading === "rejected") { alert("Error en la api de bookings") }
     }, [bookingByIdLoading, bookingById, roomAllLoading, roomAll])
 
 
@@ -196,7 +199,7 @@ export const BookingUpdate = () => {
 
                     <Form onSubmit={handleSubmit}>
                         <DivCtnEntry>
-                            <LabelText>Photo</LabelText>
+                            <LabelText>Guest photo</LabelText>
                             <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
                             <ImgUser src={bookingUpdated.photo} />
                         </DivCtnEntry>
@@ -236,7 +239,7 @@ export const BookingUpdate = () => {
                             <Select name="room_id" value={bookingUpdated.room_id} onChange={handleIdRoomChange}>
                                 <Option value={bookingUpdated.room_id}>{bookingUpdated.room_id}</Option>
                                 {roomAll.map((room, index) => (
-                                    room.booking_status || room.id === bookingUpdated.room_id ?
+                                    room.booking_list.length !== 0 || room.id === bookingUpdated.room_id ?
                                         <></> :
                                         <Option key={index} value={room.id}>{room.id}</Option>
                                 ))}
