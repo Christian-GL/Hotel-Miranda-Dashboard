@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as contactJS from "./contact.js"
 import * as gb from '../common/styles/globalVars.js'
@@ -72,24 +73,56 @@ export const Contact = () => {
 
             <contactJS.SectionReviews>
                 <contactJS.DivCtnReviews>
-                    <ArticleReview
-                        nameprofile="Pedro Sánchez"
-                        timesince="4m"
-                        textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                    />
-                    <ArticleReview
-                        nameprofile="Perro Sánchez"
-                        timesince="5m"
-                        textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                    />
-                    <ArticleReview
-                        nameprofile="Pablo Sales"
-                        timesince="7m"
-                        textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                    />
+                    <Swiper
+                        spaceBetween={0}
+                        slidesPerView={3}
+                        navigation={false}
+                        pagination={{ clickable: true }}
+                        loop={true}
+                    >
+                        <SwiperSlide>
+                            <ArticleReview
+                                nameprofile="Pedro Sánchez"
+                                timesince="4m"
+                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <ArticleReview
+                                nameprofile="Perro Sánchez"
+                                timesince="5m"
+                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <ArticleReview
+                                nameprofile="Pablo Sales"
+                                timesince="7m"
+                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <ArticleReview
+                                nameprofile="Pedro Sánchez"
+                                timesince="4m"
+                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <ArticleReview
+                                nameprofile="Perro Sánchez"
+                                timesince="5m"
+                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <ArticleReview
+                                nameprofile="Pablo Sales"
+                                timesince="7m"
+                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
+                            />
+                        </SwiperSlide>
+                    </Swiper>
                 </contactJS.DivCtnReviews>
             </contactJS.SectionReviews>
 

@@ -10,11 +10,16 @@ import * as gb from '../../styles/globalVars.js'
 export const ArticleReview = styled.article`
     flex: 1 1 0;
     text-align: center;
-    margin: 0 1rem;
+    margin: 1rem;
     padding: 1em;
+    min-width: 25rem;
     border-radius: 1rem;
     box-shadow: ${gb.boxShadowCustom};
     background-color: ${gb.colorWhiteFull};
+
+    &:hover {
+        box-shadow: ${gb.boxShadowCustomWithHover};
+    }
 `
 
 export const PTextReview = styled.p`

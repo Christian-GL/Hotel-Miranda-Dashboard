@@ -15,15 +15,15 @@ export const Layout = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const { logout, isAuthenticated } = useLoginOptionsContext()
-    const [sidebarDisplayed, setSidebarDisplayed] = useState(true)
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
     useEffect(() => {
         if (!isAuthenticated()) {
             navigate('/')
         }
-        const savedState = localStorage.getItem('sidebarDisplayed')
+        const savedState = localStorage.getItem('sidebarCollapsed')
         if (savedState !== null) {
-            setSidebarDisplayed(JSON.parse(savedState))
+            setSidebarCollapsed(JSON.parse(savedState))
         }
     }, [navigate, isAuthenticated])
 
@@ -32,9 +32,9 @@ export const Layout = () => {
         navigate('')
     }
     const displaySidebarMenu = () => {
-        setSidebarDisplayed((prevState) => {
+        setSidebarCollapsed((prevState) => {
             const newState = !prevState
-            localStorage.setItem('sidebarDisplayed', JSON.stringify(newState))
+            localStorage.setItem('sidebarCollapsed', JSON.stringify(newState))
             return newState
         })
     }
@@ -67,9 +67,9 @@ export const Layout = () => {
     else
         return (<>
 
-            <headerJS.Header display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
+            <headerJS.Header display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
                 <div>
-                    {sidebarDisplayed ?
+                    {sidebarCollapsed ?
                         <headerJS.IconMenuCollapsed onClick={displaySidebarMenu} /> :
                         <headerJS.IconMenuNotCollaped onClick={displaySidebarMenu} />
                     }
@@ -82,10 +82,10 @@ export const Layout = () => {
                 </div>
             </headerJS.Header>
 
-            <sidebarJS.AsideSideNavigationBar display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+            <sidebarJS.AsideSideNavigationBar display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                 <div>
-                    <sidebarJS.IconHotel onClick={() => navigate('/dashboard')} display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} />
-                    <sidebarJS.DivCtnTitle display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                    <sidebarJS.IconHotel onClick={() => navigate('/dashboard')} display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} />
+                    <sidebarJS.DivCtnTitle display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                         <sidebarJS.TitleH1>travl</sidebarJS.TitleH1>
                         <sidebarJS.PTitleText>Hotel Admin Dashboard</sidebarJS.PTitleText>
                     </sidebarJS.DivCtnTitle>
@@ -95,9 +95,9 @@ export const Layout = () => {
                     <sidebarJS.DivCtnNavOption
                         onClick={() => navigate('/dashboard')}
                         routeIsActive={routeIsActive('/dashboard')}
-                        display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
+                        display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
                         <sidebarJS.IconDashboard />
-                        <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarJS.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                             Dashboard
                         </sidebarJS.PNavOptionText>
                     </sidebarJS.DivCtnNavOption>
@@ -105,55 +105,55 @@ export const Layout = () => {
                         data-cy="nav-ctn-bookings"
                         onClick={() => navigate('/bookings')}
                         routeIsActive={routeIsActive('/bookings')}
-                        display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
+                        display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
                         <sidebarJS.IconBooking />
-                        <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarJS.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                             Bookings
                         </sidebarJS.PNavOptionText>
                     </sidebarJS.DivCtnNavOption>
                     <sidebarJS.DivCtnNavOption
                         onClick={() => navigate('/rooms')}
                         routeIsActive={routeIsActive('/rooms')}
-                        display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
+                        display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
                         <sidebarJS.IconRooms />
-                        <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarJS.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                             Rooms
                         </sidebarJS.PNavOptionText>
                     </sidebarJS.DivCtnNavOption>
                     <sidebarJS.DivCtnNavOption
                         onClick={() => navigate('/contacts')}
                         routeIsActive={routeIsActive('/contacts')}
-                        display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
+                        display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
                         <sidebarJS.IconContact />
-                        <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarJS.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                             Contact
                         </sidebarJS.PNavOptionText>
                     </sidebarJS.DivCtnNavOption>
                     <sidebarJS.DivCtnNavOption
                         onClick={() => navigate('/users')}
                         routeIsActive={routeIsActive('/users')}
-                        display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
+                        display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
                         <sidebarJS.IconUsers />
-                        <sidebarJS.PNavOptionText display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarJS.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                             Users
                         </sidebarJS.PNavOptionText>
                     </sidebarJS.DivCtnNavOption>
                 </div>
 
-                <sidebarJS.DivCtnUser display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                <sidebarJS.DivCtnUser display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                     <sidebarJS.ImgProfile src={HC} />
                     <sidebarJS.TitleH4>Henry Cavill</sidebarJS.TitleH4>
                     <sidebarJS.TitleH5>HenryCavill@gmail.com</sidebarJS.TitleH5>
                     <sidebarJS.ButtonEdit>Editar</sidebarJS.ButtonEdit>
                 </sidebarJS.DivCtnUser>
 
-                <sidebarJS.DivCtnCredits display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`} >
+                <sidebarJS.DivCtnCredits display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                     <sidebarJS.TitleMayorCreditH5>Travl Hotel Admin Dashboard</sidebarJS.TitleMayorCreditH5>
                     <sidebarJS.TitleMinorCreditH6>2025 All Rights Reserved</sidebarJS.TitleMinorCreditH6>
                 </sidebarJS.DivCtnCredits>
             </sidebarJS.AsideSideNavigationBar>
 
-            <layoutJS.Main display={`${sidebarDisplayed ? 'collapsed' : 'notCollapsed'}`}>
+            <layoutJS.Main display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
                 <Outlet />
             </layoutJS.Main>
 

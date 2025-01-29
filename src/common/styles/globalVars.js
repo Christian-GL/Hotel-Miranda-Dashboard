@@ -31,4 +31,5 @@ export const widthSidebarMenuCollapsed = '5rem';
 export const widthSidebarMenuNotCollapsed = '17.5rem';
 export const transitionSidebarMenu = '0.5s ease';
 
-export const boxShadowCustom = `0 0.25em 0.5em ${colorBlack26}`;
+export const boxShadowCustom = `0 0.25em 0.5em ${colorLightGray}`;
+export const boxShadowCustomWithHover = `0 0.25em 0.5em ${colorGray}`;

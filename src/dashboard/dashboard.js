@@ -1,12 +1,10 @@
 
 import { styled } from 'styled-components'
 
-import { MdOutlineBedroomParent } from "react-icons/md";
-import { FaRegCalendarCheck } from "react-icons/fa";
-import { IoLogInOutline } from "react-icons/io5";
-import { IoLogOutOutline } from "react-icons/io5";
-import { FaRegCheckCircle } from "react-icons/fa";
-import { RxCrossCircled } from "react-icons/rx";
+import { MdOutlineBedroomParent } from "react-icons/md"
+import { FaRegCalendarCheck } from "react-icons/fa"
+import { IoLogInOutline } from "react-icons/io5"
+import { IoLogOutOutline } from "react-icons/io5"
 
 import * as gb from '../common/styles/globalVars.js'
 
@@ -18,20 +16,9 @@ export const SectionPageDashboard = styled.section`
     background-color: ${gb.colorGrayBackgroundPage};
 `
 
-// KPIs
 export const SectionKPIs = styled.section`
     display: flex;
     padding: 1em 0;
-`
-
-export const ArticleKPI = styled.article`
-    flex: 1 1 0;
-    text-align: left;
-    margin: 0 1rem;
-    padding: 1em;
-    border-radius: 1rem;
-    box-shadow: ${gb.boxShadowCustom};
-    background-color: ${gb.colorWhiteFull};
 `
 
 export const IconBooking = styled(MdOutlineBedroomParent)`
@@ -59,11 +46,6 @@ export const IconCalendar = styled(FaRegCalendarCheck)`
     border-radius: 0.6rem;
     color: ${gb.colorRed};
     background-color: ${gb.colorLightRed};
-
-    &:hover {
-        color: ${gb.colorWhiteFull};
-        background-color: ${gb.colorRed};
-    }
 `
 
 export const IconLogIn = styled(IoLogInOutline)`
@@ -75,11 +57,6 @@ export const IconLogIn = styled(IoLogInOutline)`
     border-radius: 0.6rem;
     color: ${gb.colorRed};
     background-color: ${gb.colorLightRed};
-
-    &:hover {
-        color: ${gb.colorWhiteFull};
-        background-color: ${gb.colorRed};
-    }
 `
 
 export const IconLogOut = styled(IoLogOutOutline)`
@@ -91,11 +68,26 @@ export const IconLogOut = styled(IoLogOutOutline)`
     border-radius: 0.6rem;
     color: ${gb.colorRed};
     background-color: ${gb.colorLightRed};
+`
+
+export const ArticleKPI = styled.article`
+    flex: 1 1 0;
+    text-align: left;
+    margin: 0 1rem;
+    padding: 1em;
+    border-radius: 1rem;
+    box-shadow: ${gb.boxShadowCustom};
+    background-color: ${gb.colorWhiteFull};
 
     &:hover {
-        color: ${gb.colorWhiteFull};
-        background-color: ${gb.colorRed};
+        box-shadow: ${gb.boxShadowCustomWithHover};
+        
+        ${IconBooking}, ${IconCalendar}, ${IconLogIn}, ${IconLogOut} {
+            color: ${gb.colorWhiteFull};
+            background-color: ${gb.colorRed};
+        }
     }
+    
 `
 
 export const DivCtnInfo = styled.div`
@@ -116,7 +108,6 @@ export const TextH5 = styled.h5`
     color: ${gb.colorGrayTextKPI};
 `
 
-// Reviews
 export const SectionReviews = styled.section`
     padding: 1em 0;
 `
