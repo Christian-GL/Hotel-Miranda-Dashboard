@@ -24,7 +24,7 @@ export const useLoginOptionsContext = () => {
 export const LoginProvider = ({ children }) => {
 
     const initialState = {
-        loggedUser: null,
+        loggedUser: localStorage.getItem('isAuthenticated') ? true : null
     }
     const [state, dispatch] = useReducer(loginReducer, initialState)
 

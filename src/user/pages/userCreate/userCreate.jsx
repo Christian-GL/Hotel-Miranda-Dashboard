@@ -170,7 +170,7 @@ export const UserCreate = () => {
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
-                        <ButtonCreate type="submit" text='+ Create User' fontsize='1.25em'></ButtonCreate>
+                        <ButtonCreate type="submit" children='+ Create User' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>

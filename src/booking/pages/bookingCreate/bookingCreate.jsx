@@ -135,7 +135,9 @@ export const BookingCreate = () => {
         e.preventDefault()
         const getRoomById = (id) => {
             const room = roomAll.find(room => room.id === id)
-            return room ? room : "No encontrado"
+            return room ?
+                room :
+                { booking_list: [] }
         }
 
         const newBookingToDispatch = {
@@ -241,7 +243,7 @@ export const BookingCreate = () => {
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
-                        <ButtonCreate type="submit" text='+ Create Booking' fontsize='1.25em'></ButtonCreate>
+                        <ButtonCreate type="submit" children='+ Create Booking' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>

@@ -127,7 +127,7 @@ export const PNavOptionText = styled.p`
 
 export const DivCtnNavOption = styled.div`
     text-align: ${props => props.display === 'collapsed' ? 'center' : 'left'};
-    padding: 1.25em 0;
+    padding: 1em 0;
     cursor: pointer;
 
     &:hover {
@@ -183,7 +183,7 @@ export const TitleH5 = styled.h5`
     color: ${gb.colorGrayEmailProfile};
 `
 
-export const ButtonContactUs = styled.button`
+export const ButtonEdit = styled.button`
     padding: 1em 2em;
     font-family: ${gb.fontPoppins};
     border: none;

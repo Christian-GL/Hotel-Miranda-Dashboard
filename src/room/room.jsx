@@ -82,7 +82,7 @@ export const Room = () => {
                 </roomJS.DivCtnSearch>
 
                 <roomJS.DivCtnButton>
-                    <ButtonCreate onclick={navigateToRoomCreate} text='+ New Room' />
+                    <ButtonCreate onClick={navigateToRoomCreate} children='+ New Room' />
                 </roomJS.DivCtnButton>
             </roomJS.DivCtnFuncionality>
 

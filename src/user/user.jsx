@@ -81,7 +81,7 @@ export const User = () => {
                 </userJS.DivCtnSearch>
 
                 <userJS.DivCtnButton>
-                    <ButtonCreate onclick={navigateToUserCreate} text='+ New Employee' />
+                    <ButtonCreate onClick={navigateToUserCreate} children='+ New Employee' />
                 </userJS.DivCtnButton>
             </userJS.DivCtnFuncionality>
 

@@ -104,7 +104,7 @@ export const Contact = () => {
                 </contactJS.DivCtnSearch>
 
                 <contactJS.DivCtnButton>
-                    <ButtonCreate onclick={navigateToContactCreate} text='+ New Contact' />
+                    <ButtonCreate onClick={navigateToContactCreate} children='+ New Contact' />
                 </contactJS.DivCtnButton>
             </contactJS.DivCtnFuncionality>
 

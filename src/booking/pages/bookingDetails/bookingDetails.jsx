@@ -24,6 +24,10 @@ export const BookingDetails = () => {
 
     const dispatch = useDispatch()
     useEffect(() => {
+        dispatch(RoomFetchByIDThunk(parseInt(id)))
+    }, [id, dispatch])
+
+    useEffect(() => {
         if (bookingByIdLoading === "idle") { dispatch(BookingFetchByIDThunk(parseInt(id))) }
         else if (bookingByIdLoading === "fulfilled") {
             if (roomByIdLoading === "idle") { dispatch(RoomFetchByIDThunk(parseInt(bookingById.room_id))) }
@@ -31,7 +35,7 @@ export const BookingDetails = () => {
             else if (roomByIdLoading === "rejected") { alert("Error en la api de rooms") }
         }
         else if (bookingByIdLoading === "rejected") { alert("Error en la api de bookings") }
-    }, [bookingByIdLoading, bookingById, roomByIdLoading, roomById])
+    }, [bookingByIdLoading, bookingById, roomByIdLoading, roomById, id, dispatch])
 
 
     return (

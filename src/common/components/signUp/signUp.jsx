@@ -8,15 +8,16 @@ import { useLoginOptionsContext } from "./features/loginProvider.jsx";
 
 export const SignUp = () => {
 
+    const navigate = useNavigate()
     const [userEmail, setUserEmail] = useState('admin');
     const [userPassword, setUserPassword] = useState('1234');
     const { tryLogin } = useLoginOptionsContext();
 
-    const navigate = useNavigate()
-    const handleSubmit = e => {
-        e.preventDefault();
+    const handleSubmit = (e) => {
+        e.preventDefault()
 
-        tryLogin(userEmail, userPassword) ?
+        const loginSuccessful = tryLogin(userEmail, userPassword);
+        loginSuccessful ?
             navigate('/dashboard') :
             alert('Email or password wrong')
     }
@@ -32,15 +33,17 @@ export const SignUp = () => {
                     <signUpJS.InputText
                         placeholder="admin"
                         onChange={(e) => setUserEmail(e.currentTarget.value)}
+                        data-cy="email-input"
                     />
                 </signUpJS.LabelText>
                 <signUpJS.LabelText>Password
                     <signUpJS.InputText type="password"
                         placeholder="1234"
                         onChange={(e) => setUserPassword(e.currentTarget.value)}
+                        data-cy="password-input"
                     />
                 </signUpJS.LabelText>
-                <signUpJS.ButtonSignUp type="submit">Sign Up</signUpJS.ButtonSignUp>
+                <signUpJS.ButtonSignUp type="submit" data-cy="submit-button">Sign Up</signUpJS.ButtonSignUp>
             </signUpJS.Form>
 
         </signUpJS.SectionPageSignUp>

@@ -180,7 +180,7 @@ export const RoomCreate = () => {
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
-                        <ButtonCreate type="submit" text='+ Create Room' fontsize='1.25em'></ButtonCreate>
+                        <ButtonCreate type="submit" children='+ Create Room' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>

@@ -2,12 +2,16 @@
 import * as buttonCreateJS from "./buttonCreate.js"
 
 
-export const ButtonCreate = (props) => {
+export const ButtonCreate = ({ children, fontSize, onClick, ...rest }) => {
 
     return (<>
 
-        <buttonCreateJS.ButtonCreate onClick={props.onclick} fontsize={`${props.fontsize}`}>
-            {props.text}
+        <buttonCreateJS.ButtonCreate
+            onClick={onClick}
+            fontSize={fontSize}
+            {...rest}
+        >
+            {children}
         </buttonCreateJS.ButtonCreate>
 
     </>)

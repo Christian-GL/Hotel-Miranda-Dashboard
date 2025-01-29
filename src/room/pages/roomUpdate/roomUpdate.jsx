@@ -68,7 +68,7 @@ export const RoomUpdate = () => {
         const { files } = e.target
         if (files[0]) {
             const photoUrl = URL.createObjectURL(files[0])
-            setNewRoom(prevState => {
+            setRoomUpdated(prevState => {
                 const updatedPhotos = [...prevState.photos]
                 updatedPhotos[index] = photoUrl
                 return {
@@ -208,7 +208,7 @@ export const RoomUpdate = () => {
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
-                        <ButtonCreate type="submit" text='⮂ Update Room' fontsize='1.25em'></ButtonCreate>
+                        <ButtonCreate type="submit" children='⮂ Update Room' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>

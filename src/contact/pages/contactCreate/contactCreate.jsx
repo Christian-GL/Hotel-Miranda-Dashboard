@@ -126,7 +126,7 @@ export const ContactCreate = () => {
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
-                        <ButtonCreate type="submit" text='+ Create Contact' fontsize='1.25em'></ButtonCreate>
+                        <ButtonCreate type="submit" children='+ Create Contact' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>

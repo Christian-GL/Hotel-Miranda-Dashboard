@@ -91,7 +91,7 @@ export const Bookings = () => {
                 </bookingsJS.DivCtnSearch>
 
                 <bookingsJS.DivCtnButton>
-                    <ButtonCreate onclick={navigateToBookingCreate} text='+ New Booking' />
+                    <ButtonCreate onClick={navigateToBookingCreate} children='+ New Booking' />
                 </bookingsJS.DivCtnButton>
             </bookingsJS.DivCtnFuncionality>
 
