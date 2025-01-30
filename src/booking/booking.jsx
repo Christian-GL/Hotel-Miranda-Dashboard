@@ -20,6 +20,32 @@ import { BookingDeleteByIdThunk } from "./features/thunks/bookingDeleteByIdThunk
 export const Bookings = () => {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const nameColumnList = ['', 'Guest', 'Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
+    const bookingAll = useSelector(getBookingAllData)
+    const bookingAllLoading = useSelector(getBookingAllStatus)
+    const [inputText, setInputText] = useState('')
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
+    const [filteredBookings, setFilteredBookings] = useState([])
+    const [selectedButton, setSelectedButton] = useState('all')
+    const {
+        currentPageItems,
+        currentPage,
+        totalPages,
+        goToNextPage,
+        goToPrevPage,
+        resetPage,
+        lastPage
+    } = usePagination(filteredBookings, 10)
+    const [showPopup, setShowPopup] = useState(false)
+    const [infoViewNotes, setInfoViewNotes] = useState({})
+
+    useEffect(() => {
+        if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
+        else if (bookingAllLoading === "fulfilled") { displayAllBookings() }
+        else if (bookingAllLoading === "rejected") { alert("Error en la api") }
+    }, [bookingAllLoading, bookingAll, inputText])
+
     const navigateToBookingCreate = () => {
         navigate('booking-create')
     }
@@ -33,45 +59,59 @@ export const Bookings = () => {
         setShowPopup(true)
     }
 
-    const nameColumnList = ['', 'Guest', 'Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
-    const bookingAll = useSelector(getBookingAllData)
-    const bookingAllLoading = useSelector(getBookingAllStatus)
-    const [inputText, setInputText] = useState('')
-    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
-    const filteredBookings = bookingAll.filter(bookings =>
-        bookings.full_name_guest.toLowerCase().includes(inputText.toLowerCase())
-    )
-    const {
-        currentPageItems,
-        currentPage,
-        totalPages,
-        goToNextPage,
-        goToPrevPage,
-        resetPage,
-        lastPage
-    } = usePagination(filteredBookings, 10)
-    const [showPopup, setShowPopup] = useState(false)
-    const [infoViewNotes, setInfoViewNotes] = useState({})
-
-    const dispatch = useDispatch()
-    useEffect(() => {
-        if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
-        else if (bookingAllLoading === "fulfilled") { }
-        else if (bookingAllLoading === "rejected") { alert("Error en la api") }
-    }, [bookingAllLoading, bookingAll])
-
     const handleInputTerm = (e) => {
         setInputText(e.target.value)
         resetPage()
     }
-    const deleteBookingById = (id, index) => {
-        dispatch(BookingDeleteByIdThunk(parseInt(id)))
-        displayMenuOptions(index)
+    const handleTableFilter = (type) => {
+        setSelectedButton(type)
+        switch (type) {
+            case 'all':
+                displayAllBookings()
+                break
+            case 'checkin':
+                displayBookingsCheckIn()
+                break
+            case 'inprogress':
+                displayBookingsInProgress()
+                break
+            case 'checkout':
+                displayBookingsCheckOut()
+                break
+        }
+    }
+    const displayAllBookings = () => {
+        const filtered = bookingAll.filter(booking =>
+            booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase())
+        )
+        setFilteredBookings(filtered)
+    }
+    const displayBookingsCheckIn = () => {
+        const filtered = bookingAll.filter(booking =>
+            booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) && booking.room_booking_status === 'Check In'
+        )
+        setFilteredBookings(filtered)
+    }
+    const displayBookingsInProgress = () => {
+        const filtered = bookingAll.filter(booking =>
+            booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) && booking.room_booking_status === 'In Progress'
+        )
+        setFilteredBookings(filtered)
+    }
+    const displayBookingsCheckOut = () => {
+        const filtered = bookingAll.filter(booking =>
+            booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) && booking.room_booking_status === 'Check Out'
+        )
+        setFilteredBookings(filtered)
     }
     const displayMenuOptions = (index) => {
         tableOptionsDisplayed === index ?
             setTableOptionsDisplayed() :
             setTableOptionsDisplayed(index)
+    }
+    const deleteBookingById = (id, index) => {
+        dispatch(BookingDeleteByIdThunk(parseInt(id)))
+        displayMenuOptions(index)
     }
 
 
@@ -80,10 +120,10 @@ export const Bookings = () => {
         <bookingsJS.SectionPageBookings>
             <bookingsJS.DivCtnFuncionality>
                 <bookingsJS.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='All Bookings' />
-                    <TableDisplayIndicator text='Check In' />
-                    <TableDisplayIndicator text='Check Out' />
-                    <TableDisplayIndicator text='In Progress' />
+                    <TableDisplayIndicator text='All Bookings' onClick={() => handleTableFilter('all')} isSelected={selectedButton === 'all'} />
+                    <TableDisplayIndicator text='Check In' onClick={() => handleTableFilter('checkin')} isSelected={selectedButton === 'checkin'} />
+                    <TableDisplayIndicator text='In Progress' onClick={() => handleTableFilter('inprogress')} isSelected={selectedButton === 'inprogress'} />
+                    <TableDisplayIndicator text='Check Out' onClick={() => handleTableFilter('checkout')} isSelected={selectedButton === 'checkout'} />
                 </bookingsJS.DivCtnTableDisplayFilter>
 
                 <bookingsJS.DivCtnSearch>

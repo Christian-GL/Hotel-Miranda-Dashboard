@@ -1,9 +1,9 @@
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 import { UserFetchAllThunk } from './thunks/userFetchAllThunk'
-import { UserFetchByIDThunk } from './thunks/userFetchByIDThunk';
-import { UserCreateThunk } from './thunks/userCreateThunk';
-import { UserUpdateByIdThunk } from './thunks/userUpdateByIdThunk';
+import { UserFetchByIDThunk } from './thunks/userFetchByIDThunk'
+import { UserCreateThunk } from './thunks/userCreateThunk'
+import { UserUpdateByIdThunk } from './thunks/userUpdateByIdThunk'
 import { UserDeleteByIdThunk } from './thunks/userDeleteByIdThunk'
 
 
@@ -51,7 +51,7 @@ export const UserSlice = createSlice({
             })
             .addCase(UserCreateThunk.fulfilled, (state, action) => {
                 state.createStatus = 'fulfilled'
-                state.allData.push(action.payload);
+                state.allData.push(action.payload)
             })
             .addCase(UserCreateThunk.rejected, (state) => {
                 state.error = true
@@ -64,13 +64,13 @@ export const UserSlice = createSlice({
             })
             .addCase(UserUpdateByIdThunk.fulfilled, (state, action) => {
                 state.updateStatus = 'fulfilled'
-                const userToUpdate = action.payload;
-                const index = state.allData.findIndex(user => user.id === userToUpdate.id);
+                const userToUpdate = action.payload
+                const index = state.allData.findIndex(user => user.id === userToUpdate.id)
                 if (index !== -1) {
-                    state.allData[index] = userToUpdate;
+                    state.allData[index] = userToUpdate
                 }
                 if (state.idData && state.idData.id === userToUpdate.id) {
-                    state.idData = userToUpdate;
+                    state.idData = userToUpdate
                 }
             })
             .addCase(UserUpdateByIdThunk.rejected, (state) => {
@@ -83,10 +83,10 @@ export const UserSlice = createSlice({
             })
             .addCase(UserDeleteByIdThunk.fulfilled, (state, action) => {
                 state.deleteStatus = 'fulfilled'
-                const userIdToDelete = action.payload;
-                state.allData = state.allData.filter(user => user.id !== userIdToDelete);
+                const userIdToDelete = action.payload
+                state.allData = state.allData.filter(user => user.id !== userIdToDelete)
                 if (state.idData && state.idData.id === userIdToDelete) {
-                    state.idData = null;
+                    state.idData = null
                 }
             })
             .addCase(UserDeleteByIdThunk.rejected, (state) => {

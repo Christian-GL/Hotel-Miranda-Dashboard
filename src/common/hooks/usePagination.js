@@ -4,11 +4,12 @@ import { useState } from 'react'
 
 export const usePagination = (data, itemsPerPage) => {
 
+    const sortedData = [...data].sort((a, b) => a.id - b.id)
     const [currentPage, setCurrentPage] = useState(1)
-    const totalPages = Math.ceil(data.length / itemsPerPage)
+    const totalPages = Math.ceil(sortedData.length / itemsPerPage)
     const startIndex = (currentPage - 1) * itemsPerPage
     const endIndex = currentPage * itemsPerPage
-    const currentPageItems = data.slice(startIndex, endIndex)
+    const currentPageItems = sortedData.slice(startIndex, endIndex)
 
     const goToNextPage = () => {
         if (currentPage < totalPages) {

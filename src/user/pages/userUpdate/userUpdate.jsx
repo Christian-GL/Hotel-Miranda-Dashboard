@@ -40,7 +40,6 @@ export const UserUpdate = () => {
     useEffect(() => {
         if (userByIdLoading === "idle") { dispatch(UserFetchByIDThunk(parseInt(id))) }
         else if (userByIdLoading === "fulfilled") {
-
             setUserUpdated({
                 id: userById.id,
                 photo: userById.photo || '',

@@ -16,8 +16,17 @@ export const DisplayIndicator = styled.button`
     cursor: pointer;
     background-color: ${gb.colorGrayBackgroundPage};
 
-    &:hover {
+    ${({ isSelected }) => !isSelected && `
+        &:hover {
+            font-weight: 700;
+            color: ${gb.colorBlueHoverFilterTableCustom};
+            border-bottom: 2px solid ${gb.colorBlueHoverFilterTableCustom};
+        }
+    `}
+
+    ${({ isSelected }) => isSelected && `
         font-weight: 700;
         border-bottom: 2px solid ${gb.colorBlack26};
-    }
+    `}
+        
 `

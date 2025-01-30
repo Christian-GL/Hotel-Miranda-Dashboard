@@ -23,6 +23,7 @@ export const colorGrayBackgroundPage = '#F8F8F8';
 export const colorGrayButtonTable = '#EEF9F2';
 export const colorBlack26 = '#262626';
 export const colorBlack21 = '#212121';
+export const colorBlueHoverFilterTableCustom = '#00a3cc';
 
 export const fontPoppins = 'Poppins';
 

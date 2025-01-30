@@ -19,21 +19,14 @@ import { UserDeleteByIdThunk } from "./features/thunks/userDeleteByIdThunk.js"
 export const User = () => {
 
     const navigate = useNavigate()
-    const navigateToUserCreate = () => {
-        navigate('user-create')
-    }
-    const navigateToUserUpdate = (id) => {
-        navigate(`user-update/${id}`)
-    }
-
+    const dispatch = useDispatch()
     const nameColumnList = ['', 'Name', 'Start date', 'Job description', 'Contact', 'Status', '']
-    const usersAll = useSelector(getUserAllData)
-    const usersAllLoading = useSelector(getUserAllStatus)
+    const userAll = useSelector(getUserAllData)
+    const userAllLoading = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
-    const filteredUsers = usersAll.filter(users =>
-        users.full_name.toLowerCase().includes(inputText.toLowerCase())
-    )
+    const [filteredUsers, setFilteredUsers] = useState([])
+    const [selectedButton, setSelectedButton] = useState('all')
     const {
         currentPageItems,
         currentPage,
@@ -44,25 +37,63 @@ export const User = () => {
         lastPage
     } = usePagination(filteredUsers, 10)
 
-    const dispatch = useDispatch()
     useEffect(() => {
-        if (usersAllLoading === "idle") { dispatch(UserFetchAllThunk()) }
-        else if (usersAllLoading === "fulfilled") { }
-        else if (usersAllLoading === "rejected") { alert("Error en la api") }
-    }, [usersAllLoading, usersAll])
+        if (userAllLoading === "idle") { dispatch(UserFetchAllThunk()) }
+        else if (userAllLoading === "fulfilled") { displayAllEmployee() }
+        else if (userAllLoading === "rejected") { alert("Error en la api") }
+    }, [userAllLoading, userAll, inputText])
+
+    const navigateToUserCreate = () => {
+        navigate('user-create')
+    }
+    const navigateToUserUpdate = (id) => {
+        navigate(`user-update/${id}`)
+    }
 
     const handleInputTerm = (e) => {
         setInputText(e.target.value)
         resetPage()
     }
-    const deleteUserById = (id, index) => {
-        dispatch(UserDeleteByIdThunk(parseInt(id)))
-        displayMenuOptions(index)
+    const handleTableFilter = (type) => {
+        setSelectedButton(type)
+        switch (type) {
+            case 'all':
+                displayAllEmployee()
+                break
+            case 'active':
+                displayActiveEmployee()
+                break
+            case 'inactive':
+                displayInactiveEmployee()
+                break
+        }
+    }
+    const displayAllEmployee = () => {
+        const filtered = userAll.filter(user =>
+            user.full_name.toLowerCase().includes(inputText.toLowerCase())
+        )
+        setFilteredUsers(filtered)
+    }
+    const displayActiveEmployee = () => {
+        const filtered = userAll.filter(user =>
+            user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status_active === true
+        )
+        setFilteredUsers(filtered)
+    }
+    const displayInactiveEmployee = () => {
+        const filtered = userAll.filter(user =>
+            user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status_active === false
+        )
+        setFilteredUsers(filtered)
     }
     const displayMenuOptions = (index) => {
         tableOptionsDisplayed === index ?
             setTableOptionsDisplayed() :
             setTableOptionsDisplayed(index)
+    }
+    const deleteUserById = (id, index) => {
+        dispatch(UserDeleteByIdThunk(parseInt(id)))
+        displayMenuOptions(index)
     }
 
     return (
@@ -71,9 +102,9 @@ export const User = () => {
 
             <userJS.DivCtnFuncionality>
                 <userJS.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='All Employee' />
-                    <TableDisplayIndicator text='Active Employee' />
-                    <TableDisplayIndicator text='Inactive Employee' />
+                    <TableDisplayIndicator text='All Employee' onClick={() => handleTableFilter('all')} isSelected={selectedButton === 'all'} />
+                    <TableDisplayIndicator text='Active Employee' onClick={() => handleTableFilter('active')} isSelected={selectedButton === 'active'} />
+                    <TableDisplayIndicator text='Inactive Employee' onClick={() => handleTableFilter('inactive')} isSelected={selectedButton === 'inactive'} />
                 </userJS.DivCtnTableDisplayFilter>
 
                 <userJS.DivCtnSearch>

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"
 
 import * as roomJS from "./room.js"
-import * as gb from '../common/styles/globalVars.js'
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx";
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
@@ -20,21 +19,14 @@ import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.js";
 export const Room = () => {
 
     const navigate = useNavigate()
-    const navigateToRoomCreate = () => {
-        navigate('room-create')
-    }
-    const navigateToRoomUpdate = (id) => {
-        navigate(`room-update/${id}`)
-    }
-
+    const dispatch = useDispatch()
     const nameColumnList = ['', 'Room number', 'Room type', 'Amenities', 'Price', 'Offer price', 'Booking status', '']
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
     const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
-    const filteredRooms = roomAll.filter(room =>
-        room.id.toString().includes(inputText.toLowerCase())
-    )
+    const [filteredRooms, setFilteredRooms] = useState([])
+    const [selectedButton, setSelectedButton] = useState('all')
     const {
         currentPageItems,
         currentPage,
@@ -45,25 +37,64 @@ export const Room = () => {
         lastPage
     } = usePagination(filteredRooms, 10)
 
-    const dispatch = useDispatch()
+
     useEffect(() => {
         if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
-        else if (roomAllLoading === "fulfilled") { }
+        else if (roomAllLoading === "fulfilled") { displayAllRooms() }
         else if (roomAllLoading === "rejected") { alert("Error en la api") }
-    }, [roomAllLoading, roomAll])
+    }, [roomAllLoading, roomAll, inputText])
+
+    const navigateToRoomCreate = () => {
+        navigate('room-create')
+    }
+    const navigateToRoomUpdate = (id) => {
+        navigate(`room-update/${id}`)
+    }
 
     const handleInputTerm = (e) => {
         setInputText(e.target.value)
         resetPage()
     }
-    const deleteRoomById = (id, index) => {
-        dispatch(RoomDeleteByIdThunk(parseInt(id)))
-        displayMenuOptions(index)
+    const handleTableFilter = (type) => {
+        setSelectedButton(type)
+        switch (type) {
+            case 'all':
+                displayAllRooms()
+                break
+            case 'available':
+                displayInactiveRooms()
+                break
+            case 'booked':
+                displayActiveRooms()
+                break
+        }
+    }
+    const displayAllRooms = () => {
+        const filtered = roomAll.filter(room =>
+            room.id.toString().includes(inputText.toLowerCase())
+        )
+        setFilteredRooms(filtered)
+    }
+    const displayActiveRooms = () => {
+        const filtered = roomAll.filter(room =>
+            room.id.toString().includes(inputText.toLowerCase()) && room.booking_list.length >= 1
+        )
+        setFilteredRooms(filtered)
+    }
+    const displayInactiveRooms = () => {
+        const filtered = roomAll.filter(room =>
+            room.id.toString().includes(inputText.toLowerCase()) && room.booking_list.length === 0
+        )
+        setFilteredRooms(filtered)
     }
     const displayMenuOptions = (index) => {
         tableOptionsDisplayed === index ?
             setTableOptionsDisplayed() :
             setTableOptionsDisplayed(index)
+    }
+    const deleteRoomById = (id, index) => {
+        dispatch(RoomDeleteByIdThunk(parseInt(id)))
+        displayMenuOptions(index)
     }
 
 
@@ -72,9 +103,9 @@ export const Room = () => {
         <roomJS.SectionPageRoom>
             <roomJS.DivCtnFuncionality>
                 <roomJS.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='All Rooms' />
-                    <TableDisplayIndicator text='Active Rooms' />
-                    <TableDisplayIndicator text='Inactive Rooms' />
+                    <TableDisplayIndicator text='All Rooms' onClick={() => handleTableFilter('all')} isSelected={selectedButton === 'all'} />
+                    <TableDisplayIndicator text='Available Rooms' onClick={() => handleTableFilter('available')} isSelected={selectedButton === 'available'} />
+                    <TableDisplayIndicator text='Booked Rooms' onClick={() => handleTableFilter('booked')} isSelected={selectedButton === 'booked'} />
                 </roomJS.DivCtnTableDisplayFilter>
 
                 <roomJS.DivCtnSearch>

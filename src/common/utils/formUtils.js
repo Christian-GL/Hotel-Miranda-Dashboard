@@ -1,15 +1,19 @@
 
 export const checkFirstIDAvailable = (list) => {
-    for (let i = 0; i < list.length - 1; i++) {
-        const currentId = list[i].id
-        const nextId = list[i + 1].id
 
+    const sortedList = [...list].sort((a, b) => a.id - b.id)
+    if (sortedList[0].id > 1) {
+        return 1
+    }
+    for (let i = 0; i < sortedList.length - 1; i++) {
+        const currentId = sortedList[i].id
+        const nextId = sortedList[i + 1].id
         if (nextId - currentId > 1) {
             return currentId + 1
         }
     }
 
-    return list[list.length - 1].id + 1
+    return sortedList[sortedList.length - 1].id + 1
 }
 
 export const getActualDate = () => {
@@ -60,5 +64,5 @@ export const hourFormatTo24H = (time12H) => {
     if (period === 'AM' && hour === 12) {
         hour = 0
     }
-    return `${hour < 10 ? '0' + hour : hour}:${minutes}`;
+    return `${hour < 10 ? '0' + hour : hour}:${minutes}`
 }

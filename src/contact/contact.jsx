@@ -21,21 +21,16 @@ import { ContactDeleteByIdThunk } from "./features/thunks/contactDeleteByIdThunk
 export const Contact = () => {
 
     const navigate = useNavigate()
-    const navigateToContactCreate = () => {
-        navigate('contact-create')
-    }
-    const navigateToContactUpdate = (id) => {
-        navigate(`contact-update/${id}`)
-    }
-
+    const dispatch = useDispatch()
     const nameColumnList = ['Order ID', 'Date', 'Customer', 'Comment', 'Action', '']
     const contactAll = useSelector(getContactAllData)
     const contactAllLoading = useSelector(getContactAllStatus)
     const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
-    const filteredContacts = contactAll.filter(contact =>
-        contact.full_name.toLowerCase().includes(inputText.toLowerCase())
-    )
+    const [filteredContacts, setFilteredContacts] = useState([])
+    const [selectedButton, setSelectedButton] = useState('all')
+    const [notArchived, setNotArchived] = useState([])
+    const [archived, setArchived] = useState([])
     const {
         currentPageItems,
         currentPage,
@@ -46,13 +41,63 @@ export const Contact = () => {
         lastPage
     } = usePagination(filteredContacts, 10)
 
-    const dispatch = useDispatch()
     useEffect(() => {
         if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
-        else if (contactAllLoading === "fulfilled") { }
+        else if (contactAllLoading === "fulfilled") {
+            setNotArchived(contactAll)
+        }
         else if (contactAllLoading === "rejected") { alert("Error en la api de contacts") }
-    }, [contactAllLoading, contactAll])
+    }, [contactAllLoading, contactAll, dispatch])
+    useEffect(() => {
+        if (selectedButton === "all") {
+            setFilteredContacts(notArchived)
+        }
+        else if (selectedButton === "archived") {
+            setFilteredContacts(archived)
+        }
+    }, [selectedButton, notArchived, archived, inputText])
 
+    const navigateToContactCreate = () => {
+        navigate('contact-create')
+    }
+    const navigateToContactUpdate = (id) => {
+        navigate(`contact-update/${id}`)
+    }
+    const handleTableFilter = (type) => {
+        setSelectedButton(type)
+        switch (type) {
+            case 'all':
+                displayAllContacts()
+                break
+            case 'archived':
+                displayArchivedContacts()
+                break
+        }
+    }
+    const displayAllContacts = () => {
+        const filtered = notArchived.filter(contact =>
+            contact.full_name.toLowerCase().includes(inputText.toLowerCase())
+        )
+        setFilteredContacts(filtered)
+    }
+    const displayArchivedContacts = () => {
+        const filtered = archived.filter(contact =>
+            contact.full_name.toLowerCase().includes(inputText.toLowerCase())
+        )
+        setFilteredContacts(filtered)
+    }
+    const publish = (contactData) => {
+        if (!notArchived.some(contact => contact.id === contactData.id)) {
+            setNotArchived([...notArchived, contactData])
+        }
+        setArchived(archived.filter(contact => contact.id !== contactData.id))
+    }
+    const archive = (contactData) => {
+        if (!archived.some(contact => contact.id === contactData.id)) {
+            setArchived([...archived, contactData])
+        }
+        setNotArchived(notArchived.filter(contact => contact.id !== contactData.id))
+    }
     const handleInputTerm = (e) => {
         setInputText(e.target.value)
         resetPage()
@@ -128,8 +173,8 @@ export const Contact = () => {
 
             <contactJS.DivCtnFuncionality>
                 <contactJS.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='All Contacts' />
-                    <TableDisplayIndicator text='Archived' />
+                    <TableDisplayIndicator text='All Contacts' onClick={() => handleTableFilter('all')} isSelected={selectedButton === 'all'} />
+                    <TableDisplayIndicator text='Archived' onClick={() => handleTableFilter('archived')} isSelected={selectedButton === 'archived'} />
                 </contactJS.DivCtnTableDisplayFilter>
 
                 <contactJS.DivCtnSearch>
@@ -172,8 +217,10 @@ export const Contact = () => {
                         </PTable>,
 
                         <PTable key={index + '-5'}>
-                            <ButtonPublishArchive color={`${gb.colorGreen}`}>Publish</ButtonPublishArchive>
-                            <ButtonPublishArchive color={`${gb.colorRed}`}>Archive</ButtonPublishArchive>
+                            {selectedButton === 'all' ?
+                                <ButtonPublishArchive onClick={() => archive(contactData)} color={`${gb.colorRed}`}>Archive</ButtonPublishArchive> :
+                                <ButtonPublishArchive onClick={() => publish(contactData)} color={`${gb.colorGreen}`}>Publish</ButtonPublishArchive>
+                            }
                         </PTable>,
 
                         <PTable key={index + '-8'}>
