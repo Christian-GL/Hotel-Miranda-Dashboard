@@ -15,18 +15,17 @@ import { RoomFetchByIDThunk } from '../../../room/features/thunks/roomFetchByIDT
 
 export const BookingDetails = () => {
 
+    const dispatch = useDispatch()
     const { id } = useParams()
     const bookingById = useSelector(getBookingIdData)
     const bookingByIdLoading = useSelector(getBookingIdStatus)
     const roomById = useSelector(getRoomIdData)
     const roomByIdLoading = useSelector(getRoomIdStatus)
-    const amenitiesWithIcon = ["Free Wifi", "3 Bed Space", "24 Hours Guard"]
 
-    const dispatch = useDispatch()
     useEffect(() => {
+        dispatch(BookingFetchByIDThunk(parseInt(id)))
         dispatch(RoomFetchByIDThunk(parseInt(id)))
     }, [id, dispatch])
-
     useEffect(() => {
         if (bookingByIdLoading === "idle") { dispatch(BookingFetchByIDThunk(parseInt(id))) }
         else if (bookingByIdLoading === "fulfilled") {
@@ -108,7 +107,6 @@ export const BookingDetails = () => {
 
                 <bookingDetailsJS.DivCtnFacilities>
                     <bookingDetailsJS.SubTittleH4 color={`${gb.colorGraySubTitleBookingDetails}`} fontsize='1em'>Facilities</bookingDetailsJS.SubTittleH4>
-                    {console.log(roomById.amenities)}
                     {Array.isArray(roomById.amenities) ? (
                         roomById.amenities.map((amenity, index) => {
                             switch (amenity) {
