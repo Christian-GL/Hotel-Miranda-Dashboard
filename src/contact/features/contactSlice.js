@@ -58,7 +58,6 @@ export const ContactSlice = createSlice({
                 state.createStatus = 'rejected'
             })
 
-
             .addCase(ContactUpdateByIdThunk.pending, (state) => {
                 state.updateStatus = 'pending'
             })

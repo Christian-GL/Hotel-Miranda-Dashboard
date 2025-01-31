@@ -45,17 +45,18 @@ export const BookingCreate = () => {
     useEffect(() => {
         if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === "fulfilled") {
-            if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
-            else if (roomAllLoading === "fulfilled") {
-                if (bookingAll.length > 0) {
-                    const id = checkFirstIDAvailable(bookingAll)
-                    setNextIdAvailable(id)
-                } else { setNextIdAvailable(1) }
-            }
-            else if (roomAllLoading === "rejected") { alert("Error en la api de rooms") }
+            if (bookingAll.length > 0) {
+                const id = checkFirstIDAvailable(bookingAll)
+                setNextIdAvailable(id)
+            } else { setNextIdAvailable(1) }
         }
         else if (bookingAllLoading === "rejected") { alert("Error en la api de bookings") }
-    }, [bookingAllLoading, bookingAll, roomAllLoading, roomAll])
+    }, [bookingAllLoading, bookingAll])
+    useEffect(() => {
+        if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
+        else if (roomAllLoading === "fulfilled") { }
+        else if (roomAllLoading === "rejected") { alert("Error en la api de rooms") }
+    }, [roomAllLoading, roomAll])
 
 
     // QUE URL DE FOTO DEBE GUARDAR EN REDUX ???

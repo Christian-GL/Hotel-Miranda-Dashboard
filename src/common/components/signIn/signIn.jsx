@@ -2,11 +2,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import * as signUpJS from "./signUp.js"
+import * as signInJS from "./signIn.js"
 import { useLoginOptionsContext } from "./features/loginProvider.jsx";
 
 
-export const SignUp = () => {
+export const SignIn = () => {
 
     const navigate = useNavigate()
     const [userEmail, setUserEmail] = useState('admin');
@@ -24,29 +24,29 @@ export const SignUp = () => {
 
     return (
 
-        <signUpJS.SectionPageSignUp>
+        <signInJS.SectionPageSignIn>
 
-            <signUpJS.IconHotel />
+            <signInJS.IconHotel />
 
-            <signUpJS.Form onSubmit={handleSubmit}>
-                <signUpJS.LabelText>Username
-                    <signUpJS.InputText
+            <signInJS.Form onSubmit={handleSubmit}>
+                <signInJS.LabelText>Username
+                    <signInJS.InputText
                         placeholder="admin"
                         onChange={(e) => setUserEmail(e.currentTarget.value)}
                         data-cy="email-input"
                     />
-                </signUpJS.LabelText>
-                <signUpJS.LabelText>Password
-                    <signUpJS.InputText type="password"
+                </signInJS.LabelText>
+                <signInJS.LabelText>Password
+                    <signInJS.InputText type="password"
                         placeholder="1234"
                         onChange={(e) => setUserPassword(e.currentTarget.value)}
                         data-cy="password-input"
                     />
-                </signUpJS.LabelText>
-                <signUpJS.ButtonSignUp type="submit" data-cy="submit-button">Sign Up</signUpJS.ButtonSignUp>
-            </signUpJS.Form>
+                </signInJS.LabelText>
+                <signInJS.ButtonSignIn type="submit" data-cy="submit-button">Sign In</signInJS.ButtonSignIn>
+            </signInJS.Form>
 
-        </signUpJS.SectionPageSignUp>
+        </signInJS.SectionPageSignIn>
 
     );
 }

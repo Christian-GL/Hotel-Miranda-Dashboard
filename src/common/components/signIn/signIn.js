@@ -6,7 +6,7 @@ import { RiHotelFill } from "react-icons/ri";
 import * as gb from '../../styles/globalVars.js'
 
 
-export const SectionPageSignUp = styled.section`
+export const SectionPageSignIn = styled.section`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -59,7 +59,7 @@ export const InputText = styled.input`
     color: ${gb.colorBlack26};
 `
 
-export const ButtonSignUp = styled.button`
+export const ButtonSignIn = styled.button`
     margin-top: 2rem;
     padding: 0.5em 2em;
     font-family: ${gb.fontPoppins};

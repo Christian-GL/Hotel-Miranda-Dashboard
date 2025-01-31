@@ -11,7 +11,9 @@ export const ArticleReview = (props) => {
             <articleReviewJS.PTextReview>
                 {props.textreview}
             </articleReviewJS.PTextReview>
+
             <articleReviewJS.DivCtnDetails>
+
                 <articleReviewJS.DivCtnReviewDetails>
                     <articleReviewJS.ImgProfile src="src/assets/img/PedroSanchez.png" />
                     <articleReviewJS.DivCtnInfoDetails>
@@ -19,10 +21,12 @@ export const ArticleReview = (props) => {
                         <articleReviewJS.TextH5>{props.timesince} ago</articleReviewJS.TextH5>
                     </articleReviewJS.DivCtnInfoDetails>
                 </articleReviewJS.DivCtnReviewDetails>
+
                 <articleReviewJS.DivCtnIcons>
                     <articleReviewJS.IconCheckConfirm />
                     <articleReviewJS.IconCheckCross />
                 </articleReviewJS.DivCtnIcons>
+
             </articleReviewJS.DivCtnDetails>
         </articleReviewJS.ArticleReview>
 

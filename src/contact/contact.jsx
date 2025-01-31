@@ -187,7 +187,6 @@ export const Contact = () => {
                 </contactJS.DivCtnButton>
             </contactJS.DivCtnFuncionality>
 
-
             <Table rowlistlength={`${filteredContacts.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
                 {nameColumnList.map((nameColumn, index) =>
                     <THTable key={index}>{nameColumn}</THTable>

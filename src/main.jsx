@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 
 import { store } from './common/redux/store.js'
-import { Root } from './common/components/signUp/root/root.jsx'
-import { SignUp } from './common/components/signUp/signUp.jsx'
+import { Root } from './common/components/signIn/root/root.jsx'
+import { SignIn } from './common/components/signIn/signIn.jsx'
 import { Layout } from './common/components/layout/layout.jsx'
 import { Dashboard } from './dashboard/dashboard.jsx'
 import { Bookings } from './booking/booking.jsx'
@@ -22,7 +22,7 @@ import { User } from './user/user.jsx'
 import { UserCreate } from './user/pages/userCreate/userCreate.jsx'
 import { UserUpdate } from './user/pages/userUpdate/userUpdate.jsx'
 
-import { LoginProvider } from './common/components/signUp/features/loginProvider.jsx'
+import { LoginProvider } from './common/components/signIn/features/loginProvider.jsx'
 
 
 
@@ -31,7 +31,7 @@ createRoot(document.getElementById('root')).render(
         <BrowserRouter>
             <Provider store={store}>
                 <Routes>
-                    <Route path='' element={<SignUp />} />
+                    <Route path='' element={<SignIn />} />
                     <Route element={<Layout />}>
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/bookings" element={<Root />}>

@@ -42,7 +42,7 @@ export const Room = () => {
         if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === "fulfilled") { displayAllRooms() }
         else if (roomAllLoading === "rejected") { alert("Error en la api") }
-    }, [roomAllLoading, roomAll, inputText])
+    }, [roomAllLoading, roomAll, inputText, dispatch])
 
     const navigateToRoomCreate = () => {
         navigate('room-create')

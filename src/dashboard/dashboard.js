@@ -1,5 +1,6 @@
 
 import { styled } from 'styled-components'
+import { Swiper } from 'swiper/react'
 
 import { MdOutlineBedroomParent } from "react-icons/md"
 import { FaRegCalendarCheck } from "react-icons/fa"
@@ -8,6 +9,36 @@ import { IoLogOutOutline } from "react-icons/io5"
 
 import * as gb from '../common/styles/globalVars.js'
 
+
+export const SwiperCustom = styled(Swiper)`
+    padding: 0 5rem;
+    position: relative;
+
+    .swiper-button-prev {
+        z-index: 10;
+        position: absolute;
+        top: 50%;
+        left: 1.5rem;
+        padding: 1em 1.35em;
+        border-radius: 25%;
+        background-color: ${gb.colorGrayIconHotel};
+    }
+
+    .swiper-button-next {
+        position: absolute;
+        top: 50%;
+        right: 1.5rem;
+        padding: 1em 1.35em;
+        border-radius: 25%;
+        background-color: ${gb.colorGrayIconHotel};
+    }
+
+    .swiper-button-prev::after, .swiper-button-next::after {
+        color: ${gb.colorWhiteFull};
+        font-size: 1rem;
+        font-weight: 700;
+    }
+`
 
 export const SectionPageDashboard = styled.section`
     padding: 2em;

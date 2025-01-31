@@ -7,7 +7,7 @@ import HC from '../../../assets/img/HC.png'
 import * as layoutJS from "./layout.js"
 import * as headerJS from "./header.js"
 import * as sidebarJS from "./sidebarMenu.js"
-import { useLoginOptionsContext } from "../signUp/features/loginProvider.jsx"
+import { useLoginOptionsContext } from "../signIn/features/loginProvider.jsx"
 
 
 export const Layout = () => {
@@ -15,15 +15,11 @@ export const Layout = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const { logout, isAuthenticated } = useLoginOptionsContext()
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(true)
 
     useEffect(() => {
         if (!isAuthenticated()) {
             navigate('/')
-        }
-        const savedState = localStorage.getItem('sidebarCollapsed')
-        if (savedState !== null) {
-            setSidebarCollapsed(JSON.parse(savedState))
         }
     }, [navigate, isAuthenticated])
 
@@ -32,11 +28,7 @@ export const Layout = () => {
         navigate('')
     }
     const displaySidebarMenu = () => {
-        setSidebarCollapsed((prevState) => {
-            const newState = !prevState
-            localStorage.setItem('sidebarCollapsed', JSON.stringify(newState))
-            return newState
-        })
+        setSidebarCollapsed(!sidebarCollapsed)
     }
     const formatRouteTitle = (pathname) => {
         const formattedTitle = pathname
@@ -112,6 +104,7 @@ export const Layout = () => {
                         </sidebarJS.PNavOptionText>
                     </sidebarJS.DivCtnNavOption>
                     <sidebarJS.DivCtnNavOption
+                        data-cy="nav-ctn-rooms"
                         onClick={() => navigate('/rooms')}
                         routeIsActive={routeIsActive('/rooms')}
                         display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>

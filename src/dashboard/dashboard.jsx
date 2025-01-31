@@ -70,6 +70,17 @@ export const Dashboard = () => {
 
             <dashboardJS.SectionReviews>
                 <dashboardJS.TitleSectionReviewsH5>Latest Review by Customers</dashboardJS.TitleSectionReviewsH5>
+                {/* <dashboardJS.SwiperCustom
+                        spaceBetween={0}
+                        slidesPerView={3}
+                        navigation={{
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev'
+                        }}
+                        pagination={{ clickable: true }}
+                        loop={true}
+                        grabCursor={true}
+                    > */}
                 <Swiper
                     spaceBetween={0}
                     slidesPerView={3}
@@ -120,6 +131,7 @@ export const Dashboard = () => {
                         />
                     </SwiperSlide>
                 </Swiper>
+                {/* </dashboardJS.SwiperCustom> */}
             </dashboardJS.SectionReviews>
 
         </dashboardJS.SectionPageDashboard>
