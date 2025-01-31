@@ -1,9 +1,9 @@
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 import { BookingFetchAllThunk } from './thunks/bookingFetchAllThunk'
-import { BookingFetchByIDThunk } from './thunks/bookingFetchByIDThunk';
-import { BookingCreateThunk } from './thunks/bookingCreateThunk';
-import { BookingUpdateByIdThunk } from './thunks/bookingUpdateByIdThunk';
+import { BookingFetchByIDThunk } from './thunks/bookingFetchByIDThunk'
+import { BookingCreateThunk } from './thunks/bookingCreateThunk'
+import { BookingUpdateByIdThunk } from './thunks/bookingUpdateByIdThunk'
 import { BookingDeleteByIdThunk } from './thunks/bookingDeleteByIdThunk'
 
 
@@ -51,7 +51,7 @@ export const BookingSlice = createSlice({
             })
             .addCase(BookingCreateThunk.fulfilled, (state, action) => {
                 state.createStatus = 'fulfilled'
-                state.allData.push(action.payload);
+                state.allData.push(action.payload)
             })
             .addCase(BookingCreateThunk.rejected, (state) => {
                 state.error = true
@@ -64,13 +64,13 @@ export const BookingSlice = createSlice({
             })
             .addCase(BookingUpdateByIdThunk.fulfilled, (state, action) => {
                 state.updateStatus = 'fulfilled'
-                const bookingToUpdate = action.payload;
-                const index = state.allData.findIndex(booking => booking.id === bookingToUpdate.id);
+                const bookingToUpdate = action.payload
+                const index = state.allData.findIndex(booking => booking.id === bookingToUpdate.id)
                 if (index !== -1) {
-                    state.allData[index] = bookingToUpdate;
+                    state.allData[index] = bookingToUpdate
                 }
                 if (state.idData && state.idData.id === bookingToUpdate.id) {
-                    state.idData = bookingToUpdate;
+                    state.idData = bookingToUpdate
                 }
             })
             .addCase(BookingUpdateByIdThunk.rejected, (state) => {
@@ -83,10 +83,10 @@ export const BookingSlice = createSlice({
             })
             .addCase(BookingDeleteByIdThunk.fulfilled, (state, action) => {
                 state.deleteStatus = 'fulfilled'
-                const bookingIdToDelete = action.payload;
-                state.allData = state.allData.filter(booking => booking.id !== bookingIdToDelete);
+                const bookingIdToDelete = action.payload
+                state.allData = state.allData.filter(booking => booking.id !== bookingIdToDelete)
                 if (state.idData && state.idData.id === bookingIdToDelete) {
-                    state.idData = null;
+                    state.idData = null
                 }
             })
             .addCase(BookingDeleteByIdThunk.rejected, (state) => {

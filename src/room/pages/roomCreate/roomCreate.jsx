@@ -125,7 +125,7 @@ export const RoomCreate = () => {
 
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
-                        <LabelText>Photo 1</LabelText>
+                        <LabelText>Photo 1 (Main)</LabelText>
                         <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(0, e)} />
                         <ImgRoom src={newRoom.photos[0]} />
                     </DivCtnEntry>
@@ -175,7 +175,7 @@ export const RoomCreate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Discount</LabelText>
+                        <LabelText>Discount (%)</LabelText>
                         <InputText name="discount" onChange={handleDiscountChange} />
                     </DivCtnEntry>
 

@@ -105,6 +105,7 @@ export const Contact = () => {
     const deleteContactById = (id, index) => {
         dispatch(ContactDeleteByIdThunk(parseInt(id)))
         displayMenuOptions(index)
+        resetPage()
     }
     const displayMenuOptions = (index) => {
         tableOptionsDisplayed === index ?

@@ -25,6 +25,7 @@ import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFe
 export const RoomUpdate = () => {
 
     const { id } = useParams()
+    const dispatch = useDispatch()
     const roomById = useSelector(getRoomIdData)
     const roomByIdLoading = useSelector(getRoomIdStatus)
     const bookingAll = useSelector(getBookingAllData) || []
@@ -39,11 +40,9 @@ export const RoomUpdate = () => {
         booking_list: []
     })
 
-    const dispatch = useDispatch()
     useEffect(() => {
         dispatch(RoomFetchByIDThunk(parseInt(id)))
     }, [id, dispatch])
-
     useEffect(() => {
         if (roomByIdLoading === "idle") { dispatch(RoomFetchByIDThunk(parseInt(id))) }
         else if (roomByIdLoading === "fulfilled") {
@@ -66,17 +65,15 @@ export const RoomUpdate = () => {
     // QUE URL DE FOTO DEBE GUARDAR EN REDUX ???
     const handlePhotoChange = (index, e) => {
         const { files } = e.target
-        if (files[0]) {
-            const photoUrl = URL.createObjectURL(files[0])
-            setRoomUpdated(prevState => {
-                const updatedPhotos = [...prevState.photos]
-                updatedPhotos[index] = photoUrl
-                return {
-                    ...prevState,
-                    photos: updatedPhotos
-                }
-            })
-        }
+        const photoUrl = URL.createObjectURL(files[0])
+        setRoomUpdated(prevState => {
+            const updatedPhotos = [...prevState.photos]
+            updatedPhotos[index] = photoUrl
+            return {
+                ...prevState,
+                photos: updatedPhotos
+            }
+        })
     }
     const handleTypeChange = (e) => {
         const { name, value } = e.target
@@ -137,7 +134,7 @@ export const RoomUpdate = () => {
 
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
-                        <LabelText>Photo 1</LabelText>
+                        <LabelText>Photo 1 (Main)</LabelText>
                         <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(0, e)} />
                         <ImgRoom src={roomUpdated.photos[0]} />
                     </DivCtnEntry>
@@ -186,7 +183,7 @@ export const RoomUpdate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Discount</LabelText>
+                        <LabelText>Discount (%)</LabelText>
                         <InputText name="discount" value={roomUpdated.discount} onChange={handleDiscountChange} />
                     </DivCtnEntry>
 
@@ -194,13 +191,12 @@ export const RoomUpdate = () => {
                         <LabelText>Booking Status</LabelText>
                         <DivCtnEntryBookings>
                             {
-                                roomUpdated.booking_list.length === 0 ?
-                                    <LabelTextBookingStatus color={roomUpdated.booking_list.length === 0 ? gb.colorLightGreenButton : gb.colorRed}>Available</LabelTextBookingStatus> :
-                                    (bookingAll
-                                        .filter(booking => roomUpdated.booking_list.includes(booking.id))
+                                bookingAll.filter((booking) => roomUpdated.booking_list.includes(booking.id)).length === 0 ?
+                                    <LabelTextBookingStatus color={gb.colorLightGreenButton}>Available</LabelTextBookingStatus> :
+                                    (bookingAll.filter(booking => roomUpdated.booking_list.includes(booking.id))
                                         .map((booking, index) => (
                                             <LabelBookings key={index}>
-                                                <b>#{booking.id}</b> - {booking.check_in_date} {booking.check_in_time} ⭢ {booking.check_out_date} {booking.check_out_time}
+                                                <b>Booking #{booking.id} -</b> {booking.check_in_date} {booking.check_in_time} ⭢ {booking.check_out_date} {booking.check_out_time}
                                             </LabelBookings>
                                         )))
                             }
