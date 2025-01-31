@@ -1,9 +1,9 @@
 
-import { createSlice } from '@reduxjs/toolkit';
-import { ContactFetchAllThunk } from './thunks/contactFetchAllThunk';
-import { ContactFetchByIDThunk } from './thunks/contactFetchByIDThunk';
-import { ContactCreateThunk } from './thunks/contactCreateThunk';
-import { ContactUpdateByIdThunk } from './thunks/contactUpdateByIdThunk';
+import { createSlice } from '@reduxjs/toolkit'
+import { ContactFetchAllThunk } from './thunks/contactFetchAllThunk'
+import { ContactFetchByIDThunk } from './thunks/contactFetchByIDThunk'
+import { ContactCreateThunk } from './thunks/contactCreateThunk'
+import { ContactUpdateByIdThunk } from './thunks/contactUpdateByIdThunk'
 import { ContactDeleteByIdThunk } from './thunks/contactDeleteByIdThunk'
 
 
@@ -11,6 +11,8 @@ export const ContactSlice = createSlice({
     name: 'contact',
     initialState: {
         allData: [],
+        notArchived: [],
+        archived: [],
         idData: {},
         allStatus: 'idle',
         idStatus: 'idle',
@@ -19,7 +21,24 @@ export const ContactSlice = createSlice({
         deleteStatus: 'idle',
         error: false
     },
-    reducers: {},
+    reducers: {
+        archiveContact: (state, action) => {
+            const contactId = action.payload
+            const contactInNotArchived = state.notArchived.find(contact => contact.id === contactId)
+            if (contactInNotArchived) {
+                state.notArchived = state.notArchived.filter(contact => contact.id !== contactId)
+                state.archived.push(contactInNotArchived)
+            }
+        },
+        restoreContact: (state, action) => {
+            const contactId = action.payload
+            const contactInArchived = state.archived.find(contact => contact.id === contactId)
+            if (contactInArchived) {
+                state.archived = state.archived.filter(contact => contact.id !== contactId)
+                state.notArchived.push(contactInArchived)
+            }
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(ContactFetchAllThunk.pending, (state) => {
@@ -28,6 +47,8 @@ export const ContactSlice = createSlice({
             .addCase(ContactFetchAllThunk.fulfilled, (state, action) => {
                 state.allStatus = 'fulfilled'
                 state.allData = action.payload
+                state.notArchived = [...action.payload]
+                state.archived = []
             })
             .addCase(ContactFetchAllThunk.rejected, (state) => {
                 state.error = true
@@ -51,7 +72,8 @@ export const ContactSlice = createSlice({
             })
             .addCase(ContactCreateThunk.fulfilled, (state, action) => {
                 state.createStatus = 'fulfilled'
-                state.allData.push(action.payload);
+                state.allData.push(action.payload)
+                state.notArchived.push(action.payload)
             })
             .addCase(ContactCreateThunk.rejected, (state) => {
                 state.error = true
@@ -63,13 +85,13 @@ export const ContactSlice = createSlice({
             })
             .addCase(ContactUpdateByIdThunk.fulfilled, (state, action) => {
                 state.updateStatus = 'fulfilled'
-                const contactToUpdate = action.payload;
-                const index = state.allData.findIndex(contact => contact.id === contactToUpdate.id);
+                const contactToUpdate = action.payload
+                const index = state.allData.findIndex(contact => contact.id === contactToUpdate.id)
                 if (index !== -1) {
-                    state.allData[index] = contactToUpdate;
+                    state.allData[index] = contactToUpdate
                 }
                 if (state.idData && state.idData.id === contactToUpdate.id) {
-                    state.idData = contactToUpdate;
+                    state.idData = contactToUpdate
                 }
             })
             .addCase(ContactUpdateByIdThunk.rejected, (state) => {
@@ -82,10 +104,12 @@ export const ContactSlice = createSlice({
             })
             .addCase(ContactDeleteByIdThunk.fulfilled, (state, action) => {
                 state.deleteStatus = 'fulfilled'
-                const contactIdToDelete = action.payload;
-                state.allData = state.allData.filter(contact => contact.id !== contactIdToDelete);
+                const contactIdToDelete = action.payload
+                state.allData = state.allData.filter(contact => contact.id !== contactIdToDelete)
+                state.notArchived = state.notArchived.filter(contact => contact.id !== contactIdToDelete)
+                state.archived = state.archived.filter(contact => contact.id !== contactIdToDelete)
                 if (state.idData && state.idData.id === contactIdToDelete) {
-                    state.idData = null;
+                    state.idData = null
                 }
             })
             .addCase(ContactDeleteByIdThunk.rejected, (state) => {
@@ -95,7 +119,11 @@ export const ContactSlice = createSlice({
     }
 })
 
+export const { archiveContact, restoreContact } = ContactSlice.actions
+
 export const getContactAllData = (state) => state.contactSlice.allData
+export const getContactNotArchived = (state) => state.contactSlice.notArchived
+export const getContactArchived = (state) => state.contactSlice.archived
 export const getContactIdData = (state) => state.contactSlice.idData
 
 export const getContactAllStatus = (state) => state.contactSlice.allStatus

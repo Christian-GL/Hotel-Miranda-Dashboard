@@ -1,20 +1,20 @@
 
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as bookingsJS from "./booking.js"
 import * as gb from '../common/styles/globalVars.js'
-import { PopupText } from "../common/components/popupText/popupText.jsx";
+import { PopupText } from "../common/components/popupText/popupText.jsx"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
-import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx";
+import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
 import { Table, THTable, DivImgTable, ImgTableUser, PTable, IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { usePagination } from "../common/hooks/usePagination.js"
 import * as paginationJS from '../common/styles/pagination.js'
-import { getBookingAllData, getBookingAllStatus, getBookingError } from "./features/bookingSlice.js";
-import { BookingFetchAllThunk } from "./features/thunks/bookingFetchAllThunk.js";
-import { BookingDeleteByIdThunk } from "./features/thunks/bookingDeleteByIdThunk.js";
+import { getBookingAllData, getBookingAllStatus, getBookingError } from "./features/bookingSlice.js"
+import { BookingFetchAllThunk } from "./features/thunks/bookingFetchAllThunk.js"
+import { BookingDeleteByIdThunk } from "./features/thunks/bookingDeleteByIdThunk.js"
 
 
 export const Bookings = () => {
@@ -196,17 +196,17 @@ export const Bookings = () => {
                                         case 'Check In':
                                             return <PStatusBooking color={`${gb.colorGreen}`} backgroundcolor={`${gb.colorLightGreenButtonTable}`}>
                                                 Check In
-                                            </PStatusBooking>;
+                                            </PStatusBooking>
                                         case 'Check Out':
                                             return <PStatusBooking color={`${gb.colorRed}`} backgroundcolor={`${gb.colorLightRedButtonTable}`}>
                                                 Check Out
-                                            </PStatusBooking>;
+                                            </PStatusBooking>
                                         case 'In Progress':
                                             return <PStatusBooking color={`${gb.colorLightRedButtonTable2}`} backgroundcolor={`${gb.colorLightGreenButtonTable2}`}>
                                                 In Progress
-                                            </PStatusBooking>;
+                                            </PStatusBooking>
                                         default:
-                                            return <></>;
+                                            return <></>
                                     }
                                 }
                                 )()

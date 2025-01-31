@@ -13,7 +13,8 @@ import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx
 import { Table, THTable, PTable, IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { usePagination } from "../common/hooks/usePagination.js"
 import * as paginationJS from '../common/styles/pagination.js'
-import { getContactAllData, getContactAllStatus, getContactError } from "./features/contactSlice.js"
+import { getContactAllStatus, getContactError, getContactNotArchived, getContactArchived } from "./features/contactSlice.js"
+import { archiveContact, restoreContact } from "./features/contactSlice.js"
 import { ContactFetchAllThunk } from "./features/thunks/contactFetchAllThunk.js"
 import { ContactDeleteByIdThunk } from "./features/thunks/contactDeleteByIdThunk.js"
 
@@ -23,14 +24,13 @@ export const Contact = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const nameColumnList = ['Order ID', 'Date', 'Customer', 'Comment', 'Action', '']
-    const contactAll = useSelector(getContactAllData)
     const contactAllLoading = useSelector(getContactAllStatus)
+    const notArchived = useSelector(getContactNotArchived)
+    const archived = useSelector(getContactArchived)
     const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
     const [filteredContacts, setFilteredContacts] = useState([])
-    const [selectedButton, setSelectedButton] = useState('all')
-    const [notArchived, setNotArchived] = useState([])
-    const [archived, setArchived] = useState([])
+    const [selectedButton, setSelectedButton] = useState('notarchived')
     const {
         currentPageItems,
         currentPage,
@@ -43,19 +43,19 @@ export const Contact = () => {
 
     useEffect(() => {
         if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
-        else if (contactAllLoading === "fulfilled") {
-            setNotArchived(contactAll)
-        }
-        else if (contactAllLoading === "rejected") { alert("Error en la api de contacts") }
-    }, [contactAllLoading, contactAll, dispatch])
+        else if (contactAllLoading === "fulfilled") { displayNotArchivedContacts() }
+        else if (contactAllLoading === "rejected") { alert("Error en la api") }
+    }, [contactAllLoading, inputText])
     useEffect(() => {
-        if (selectedButton === "all") {
-            setFilteredContacts(notArchived)
-        }
-        else if (selectedButton === "archived") {
-            setFilteredContacts(archived)
-        }
-    }, [selectedButton, notArchived, archived, inputText])
+        selectedButton === 'notarchived' ?
+            displayNotArchivedContacts() :
+            displayArchivedContacts()
+    }, [notArchived])
+    useEffect(() => {
+        selectedButton === 'notarchived' ?
+            displayNotArchivedContacts() :
+            displayArchivedContacts()
+    }, [archived])
 
     const navigateToContactCreate = () => {
         navigate('contact-create')
@@ -65,16 +65,11 @@ export const Contact = () => {
     }
     const handleTableFilter = (type) => {
         setSelectedButton(type)
-        switch (type) {
-            case 'all':
-                displayAllContacts()
-                break
-            case 'archived':
-                displayArchivedContacts()
-                break
-        }
+        type === 'notarchived' ?
+            displayNotArchivedContacts() :
+            displayArchivedContacts()
     }
-    const displayAllContacts = () => {
+    const displayNotArchivedContacts = () => {
         const filtered = notArchived.filter(contact =>
             contact.full_name.toLowerCase().includes(inputText.toLowerCase())
         )
@@ -86,17 +81,15 @@ export const Contact = () => {
         )
         setFilteredContacts(filtered)
     }
-    const publish = (contactData) => {
-        if (!notArchived.some(contact => contact.id === contactData.id)) {
-            setNotArchived([...notArchived, contactData])
+    const publish = (id) => {
+        if (archived.some(contact => contact.id === id)) {
+            dispatch(restoreContact(id))
         }
-        setArchived(archived.filter(contact => contact.id !== contactData.id))
     }
-    const archive = (contactData) => {
-        if (!archived.some(contact => contact.id === contactData.id)) {
-            setArchived([...archived, contactData])
+    const archive = (id) => {
+        if (notArchived.some(contact => contact.id === id)) {
+            dispatch(archiveContact(id))
         }
-        setNotArchived(notArchived.filter(contact => contact.id !== contactData.id))
     }
     const handleInputTerm = (e) => {
         setInputText(e.target.value)
@@ -174,7 +167,7 @@ export const Contact = () => {
 
             <contactJS.DivCtnFuncionality>
                 <contactJS.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='All Contacts' onClick={() => handleTableFilter('all')} isSelected={selectedButton === 'all'} />
+                    <TableDisplayIndicator text='Contacts' onClick={() => handleTableFilter('notarchived')} isSelected={selectedButton === 'notarchived'} />
                     <TableDisplayIndicator text='Archived' onClick={() => handleTableFilter('archived')} isSelected={selectedButton === 'archived'} />
                 </contactJS.DivCtnTableDisplayFilter>
 
@@ -217,9 +210,10 @@ export const Contact = () => {
                         </PTable>,
 
                         <PTable key={index + '-5'}>
-                            {selectedButton === 'all' ?
-                                <ButtonPublishArchive onClick={() => archive(contactData)} color={`${gb.colorRed}`}>Archive</ButtonPublishArchive> :
-                                <ButtonPublishArchive onClick={() => publish(contactData)} color={`${gb.colorGreen}`}>Publish</ButtonPublishArchive>
+                            {
+                                selectedButton === 'notarchived' ?
+                                    <ButtonPublishArchive onClick={() => archive(contactData.id)} color={gb.colorRed}>Archive</ButtonPublishArchive> :
+                                    <ButtonPublishArchive onClick={() => publish(contactData.id)} color={gb.colorGreen}>Publish</ButtonPublishArchive>
                             }
                         </PTable>,
 
