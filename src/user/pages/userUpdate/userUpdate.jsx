@@ -54,8 +54,6 @@ export const UserUpdate = () => {
         else if (userByIdLoading === "rejected") { alert("Error en la api") }
     }, [userByIdLoading, userById])
 
-
-    // QUE URL DE FOTO DEBE GUARDAR EN REDUX ???
     const handlePhotoChange = (e) => {
         const { name, files } = e.target
         if (files[0]) {

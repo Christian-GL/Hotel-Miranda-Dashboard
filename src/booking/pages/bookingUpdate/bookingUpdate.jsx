@@ -72,8 +72,6 @@ export const BookingUpdate = () => {
         else if (bookingByIdLoading === "rejected") { alert("Error en la api de bookings") }
     }, [bookingByIdLoading, bookingById, roomAllLoading, roomAll])
 
-
-    // QUE URL DE FOTO DEBE GUARDAR EN REDUX ???
     const handlePhotoChange = (e) => {
         const { name, files } = e.target
         if (files[0]) {

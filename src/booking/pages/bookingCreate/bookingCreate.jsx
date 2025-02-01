@@ -59,7 +59,6 @@ export const BookingCreate = () => {
     }, [roomAllLoading, roomAll])
 
 
-    // QUE URL DE FOTO DEBE GUARDAR EN REDUX ???
     const handlePhotoChange = (e) => {
         const { name, files } = e.target
         if (files[0]) {

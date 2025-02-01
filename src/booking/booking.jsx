@@ -42,7 +42,22 @@ export const Bookings = () => {
 
     useEffect(() => {
         if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
-        else if (bookingAllLoading === "fulfilled") { displayAllBookings() }
+        else if (bookingAllLoading === "fulfilled") {
+            switch (selectedButton) {
+                case 'all':
+                    displayAllBookings()
+                    break
+                case 'checkin':
+                    displayBookingsCheckIn()
+                    break
+                case 'inprogress':
+                    displayBookingsInProgress()
+                    break
+                case 'checkout':
+                    displayBookingsCheckOut()
+                    break
+            }
+        }
         else if (bookingAllLoading === "rejected") { alert("Error en la api") }
     }, [bookingAllLoading, bookingAll, inputText])
 

@@ -46,8 +46,6 @@ export const RoomCreate = () => {
         else if (roomAllLoading === "rejected") { alert("Error en la api") }
     }, [roomAllLoading, roomAll])
 
-
-    // QUE URL DE FOTO DEBE GUARDAR EN REDUX ???
     const handlePhotoChange = (index, e) => {
         const { files } = e.target
         if (files[0]) {

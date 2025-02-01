@@ -39,7 +39,19 @@ export const User = () => {
 
     useEffect(() => {
         if (userAllLoading === "idle") { dispatch(UserFetchAllThunk()) }
-        else if (userAllLoading === "fulfilled") { displayAllEmployee() }
+        else if (userAllLoading === "fulfilled") {
+            switch (selectedButton) {
+                case 'all':
+                    displayAllEmployee()
+                    break
+                case 'active':
+                    displayActiveEmployee()
+                    break
+                case 'inactive':
+                    displayInactiveEmployee()
+                    break
+            }
+        }
         else if (userAllLoading === "rejected") { alert("Error en la api") }
     }, [userAllLoading, userAll, inputText])
 

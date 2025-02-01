@@ -16,10 +16,12 @@ import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCrea
 import { getRoomIdData, getRoomIdStatus, getRoomError } from "../../features/roomSlice.js"
 import { RoomFetchByIDThunk } from "../../features/thunks/roomFetchByIDThunk.js"
 import { RoomUpdateByIdThunk } from '../../features/thunks/roomUpdateByIdThunk.js'
+
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "../../../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.js"
 // import { getBookingIdData, getBookingIdStatus, getBookingError } from "../../../booking/features/bookingSlice.js"
 // import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk.js"
+// import { resetIdStatus } from "../../../booking/features/bookingSlice.js"
 
 
 export const RoomUpdate = () => {
@@ -28,8 +30,12 @@ export const RoomUpdate = () => {
     const dispatch = useDispatch()
     const roomById = useSelector(getRoomIdData)
     const roomByIdLoading = useSelector(getRoomIdStatus)
-    const bookingAll = useSelector(getBookingAllData) || []
+    const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
+    // const bookingById = useSelector(getBookingIdData)
+    // const bookingByIdLoading = useSelector(getBookingIdStatus)
+    // const [index, setIndex] = useState(0)
+    // const [bookingListIds, setBookingListIds] = useState([])
     const [roomUpdated, setRoomUpdated] = useState({
         id: 0,
         photos: [],
@@ -40,9 +46,6 @@ export const RoomUpdate = () => {
         booking_list: []
     })
 
-    useEffect(() => {
-        dispatch(RoomFetchByIDThunk(parseInt(id)))
-    }, [id, dispatch])
     useEffect(() => {
         if (roomByIdLoading === "idle") { dispatch(RoomFetchByIDThunk(parseInt(id))) }
         else if (roomByIdLoading === "fulfilled") {
@@ -55,14 +58,35 @@ export const RoomUpdate = () => {
                 discount: roomById.discount || 0,
                 booking_list: roomById.booking_list || []
             })
-            if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
-            else if (bookingAllLoading === "fulfilled") { }
-            else if (bookingAllLoading === "rejected") { alert("Error en la api de bookings") }
         }
         else if (roomByIdLoading === "rejected") { alert("Error en la api de rooms") }
-    }, [roomByIdLoading, roomById, bookingAllLoading, bookingAll])
+    }, [roomByIdLoading, roomById])
+    useEffect(() => {
+        if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
+        else if (bookingAllLoading === "fulfilled") { }
+        else if (bookingAllLoading === "rejected") { alert("Error en la api de bookings") }
+    }, [bookingAllLoading, bookingAll])
+    // useEffect(() => {
+    //     if (bookingByIdLoading === "idle" && roomByIdLoading === "fulfilled" && index < roomById.booking_list.length) {
+    //         console.log('B.List--> ', roomById.booking_list.length)
+    //         console.log('index--> ', index)
+    //         console.log('idle')
+    //         dispatch(BookingFetchByIDThunk(roomById.booking_list[index]))
+    //         setIndex(index + 1)
+    //         console.log('INDEX+1')
+    //     }
+    //     else if (bookingByIdLoading === "fulfilled") {
+    //         console.log('fulfilled')
+    //         setBookingListIds([...bookingListIds, bookingById])
+    //         dispatch(resetIdStatus())
+    //     }
+    //     else if (bookingByIdLoading === "rejected") { alert("Error en la api de bookings") }
+    //     console.log('==============')
+    // }, [roomByIdLoading, bookingByIdLoading, index])
+    useEffect(() => {
+        dispatch(RoomFetchByIDThunk(parseInt(id)))
+    }, [id, dispatch])
 
-    // QUE URL DE FOTO DEBE GUARDAR EN REDUX ???
     const handlePhotoChange = (index, e) => {
         const { files } = e.target
         const photoUrl = URL.createObjectURL(files[0])
@@ -191,6 +215,13 @@ export const RoomUpdate = () => {
                         <LabelText>Booking Status</LabelText>
                         <DivCtnEntryBookings>
                             {
+                                // bookingListIds.length === 0 ?
+                                //     <LabelTextBookingStatus color={gb.colorLightGreenButton}>Available</LabelTextBookingStatus> :
+                                //     (bookingListIds.map((booking, index) => (
+                                //         <LabelBookings key={index}>
+                                //             <b>Booking #{booking.id} -</b> {booking.check_in_date} {booking.check_in_time} ⭢ {booking.check_out_date} {booking.check_out_time}
+                                //         </LabelBookings>
+                                //     )))
                                 bookingAll.filter((booking) => roomUpdated.booking_list.includes(booking.id)).length === 0 ?
                                     <LabelTextBookingStatus color={gb.colorLightGreenButton}>Available</LabelTextBookingStatus> :
                                     (bookingAll.filter(booking => roomUpdated.booking_list.includes(booking.id))

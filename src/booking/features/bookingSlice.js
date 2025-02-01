@@ -19,7 +19,11 @@ export const BookingSlice = createSlice({
         deleteStatus: 'idle',
         error: false
     },
-    reducers: {},
+    reducers: {
+        resetIdStatus: (state) => {
+            state.idStatus = 'idle'
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(BookingFetchAllThunk.pending, (state) => {
@@ -95,6 +99,8 @@ export const BookingSlice = createSlice({
             })
     }
 })
+
+export const { resetIdStatus } = BookingSlice.actions
 
 export const getBookingAllData = (state) => state.bookingSlice.allData
 export const getBookingIdData = (state) => state.bookingSlice.idData

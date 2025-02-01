@@ -1,19 +1,21 @@
 
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as roomJS from "./room.js"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
-import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx";
+import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
-import { applyDiscount } from "../common/utils/tableUtils.js";
+import { applyDiscount } from "../common/utils/tableUtils.js"
 import { usePagination } from "../common/hooks/usePagination.js"
 import * as paginationJS from '../common/styles/pagination.js'
 import { Table, THTable, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { getRoomAllData, getRoomAllStatus, getRoomError } from "./features/roomSlice.js";
-import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.js";
-import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.js";
+import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.js"
+import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.js"
+import { getBookingAllData, getBookingAllStatus, getBookingError } from "../booking/features/bookingSlice.js"
+import { BookingFetchAllThunk } from "../booking/features/thunks/bookingFetchAllThunk.js"
 
 
 export const Room = () => {
@@ -23,6 +25,8 @@ export const Room = () => {
     const nameColumnList = ['', 'Room number', 'Room type', 'Amenities', 'Price', 'Offer price', 'Booking status', '']
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
+    const bookingAll = useSelector(getBookingAllData)
+    const bookingAllLoading = useSelector(getBookingAllStatus)
     const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
     const [filteredRooms, setFilteredRooms] = useState([])
@@ -37,12 +41,28 @@ export const Room = () => {
         lastPage
     } = usePagination(filteredRooms, 10)
 
-
     useEffect(() => {
         if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
-        else if (roomAllLoading === "fulfilled") { displayAllRooms() }
+        else if (roomAllLoading === "fulfilled") {
+            switch (selectedButton) {
+                case 'all':
+                    displayAllRooms()
+                    break
+                case 'available':
+                    displayInactiveRooms()
+                    break
+                case 'booked':
+                    displayActiveRooms()
+                    break
+            }
+        }
         else if (roomAllLoading === "rejected") { alert("Error en la api") }
     }, [roomAllLoading, roomAll, inputText, dispatch])
+    useEffect(() => {
+        if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
+        else if (bookingAllLoading === "fulfilled") { }
+        else if (bookingAllLoading === "rejected") { alert("Error en la api de bookings") }
+    }, [bookingAllLoading, bookingAll])
 
     const navigateToRoomCreate = () => {
         navigate('room-create')
@@ -77,13 +97,15 @@ export const Room = () => {
     }
     const displayActiveRooms = () => {
         const filtered = roomAll.filter(room =>
-            room.id.toString().includes(inputText.toLowerCase()) && room.booking_list.length >= 1
+            room.id.toString().includes(inputText.toLowerCase()) &&
+            bookingAll.filter((booking) => room.booking_list.includes(booking.id)).length >= 1
         )
         setFilteredRooms(filtered)
     }
     const displayInactiveRooms = () => {
         const filtered = roomAll.filter(room =>
-            room.id.toString().includes(inputText.toLowerCase()) && room.booking_list.length === 0
+            room.id.toString().includes(inputText.toLowerCase()) &&
+            bookingAll.filter((booking) => room.booking_list.includes(booking.id)).length === 0
         )
         setFilteredRooms(filtered)
     }
@@ -151,9 +173,11 @@ export const Room = () => {
                         </PTable>,
 
                         <PTable key={index + '-7'}>
-                            {roomData.booking_list.length === 0 ?
-                                <PStatusRoomList status='Available'>Available</PStatusRoomList> :
-                                <PStatusRoomList status='Booking'>Booking</PStatusRoomList>
+                            {
+                                bookingAll.filter((booking) => roomData.booking_list.includes(booking.id)).length === 0 ?
+                                    // roomData.booking_list.length === 0 ?
+                                    <PStatusRoomList status='Available'>Available</PStatusRoomList> :
+                                    <PStatusRoomList status='Booking'>Booking</PStatusRoomList>
                             }
                         </PTable>,
 

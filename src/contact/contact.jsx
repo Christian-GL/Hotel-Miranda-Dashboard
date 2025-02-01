@@ -43,7 +43,11 @@ export const Contact = () => {
 
     useEffect(() => {
         if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
-        else if (contactAllLoading === "fulfilled") { displayNotArchivedContacts() }
+        else if (contactAllLoading === "fulfilled") {
+            selectedButton === 'notarchived' ?
+                displayNotArchivedContacts() :
+                displayArchivedContacts()
+        }
         else if (contactAllLoading === "rejected") { alert("Error en la api") }
     }, [contactAllLoading, inputText])
     useEffect(() => {
