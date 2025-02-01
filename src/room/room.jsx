@@ -16,6 +16,7 @@ import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.js"
 import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.js"
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../booking/features/thunks/bookingFetchAllThunk.js"
+import { BookingDeleteByIdThunk } from "../booking/features/thunks/bookingDeleteByIdThunk.js"
 
 
 export const Room = () => {
@@ -115,6 +116,10 @@ export const Room = () => {
             setTableOptionsDisplayed(index)
     }
     const deleteRoomById = (id, index) => {
+        const room = roomAll.find(room => room.id === parseInt(id))
+        room.booking_list.map((bookingId) => {
+            dispatch(BookingDeleteByIdThunk(parseInt(bookingId)))
+        })
         dispatch(RoomDeleteByIdThunk(parseInt(id)))
         displayMenuOptions(index)
     }

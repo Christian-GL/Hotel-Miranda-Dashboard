@@ -17,6 +17,7 @@ import { ContactUpdateByIdThunk } from '../../../contact/features/thunks/contact
 export const ContactUpdate = () => {
 
     const { id } = useParams()
+    const dispatch = useDispatch()
     const contactById = useSelector(getContactIdData) || {}
     const contactByIdLoading = useSelector(getContactIdStatus)
     const [contactUpdated, setContactUpdated] = useState({
@@ -27,13 +28,11 @@ export const ContactUpdate = () => {
         email: '',
         contact: '',
         comment: ''
-    });
+    })
 
-    const dispatch = useDispatch()
     useEffect(() => {
         dispatch(ContactFetchByIDThunk(parseInt(id)))
     }, [id, dispatch])
-
     useEffect(() => {
         if (contactByIdLoading === "idle") { dispatch(ContactFetchByIDThunk(parseInt(id))) }
         else if (contactByIdLoading === "fulfilled") {

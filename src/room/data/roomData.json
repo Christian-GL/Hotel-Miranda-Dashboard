@@ -26,7 +26,11 @@
         ],
         "price": 218.51,
         "discount": 49.26,
-        "booking_list": [1, 2, 3]
+        "booking_list": [
+            1,
+            2,
+            3
+        ]
     },
     {
         "id": 2,
@@ -54,7 +58,10 @@
         ],
         "price": 2139.68,
         "discount": 32.23,
-        "booking_list": [4, 5]
+        "booking_list": [
+            4,
+            5
+        ]
     },
     {
         "id": 3,
@@ -81,7 +88,9 @@
         ],
         "price": 464.0,
         "discount": 0,
-        "booking_list": [6]
+        "booking_list": [
+            6
+        ]
     },
     {
         "id": 4,
@@ -135,7 +144,9 @@
         ],
         "price": 2460.58,
         "discount": 57.63,
-        "booking_list": []
+        "booking_list": [
+            7
+        ]
     },
     {
         "id": 6,
@@ -243,7 +254,13 @@
         ],
         "price": 2114.71,
         "discount": 18.33,
-        "booking_list": []
+        "booking_list": [
+            8,
+            9,
+            10,
+            11,
+            12
+        ]
     },
     {
         "id": 10,
@@ -297,7 +314,10 @@
         ],
         "price": 2416.68,
         "discount": 38.1,
-        "booking_list": []
+        "booking_list": [
+            13,
+            14
+        ]
     },
     {
         "id": 12,
@@ -378,7 +398,9 @@
         ],
         "price": 180.71,
         "discount": 14.36,
-        "booking_list": []
+        "booking_list": [
+            15
+        ]
     },
     {
         "id": 15,
@@ -405,7 +427,10 @@
         ],
         "price": 738.72,
         "discount": 27.8,
-        "booking_list": []
+        "booking_list": [
+            16,
+            17
+        ]
     },
     {
         "id": 16,
@@ -459,7 +484,9 @@
         ],
         "price": 1960.95,
         "discount": 36.37,
-        "booking_list": []
+        "booking_list": [
+            18
+        ]
     },
     {
         "id": 18,
@@ -5454,7 +5481,10 @@
         ],
         "price": 1831.2,
         "discount": 73.17,
-        "booking_list": []
+        "booking_list": [
+            19,
+            20
+        ]
     },
     {
         "id": 203,

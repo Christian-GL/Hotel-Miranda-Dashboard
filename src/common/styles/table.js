@@ -1,8 +1,11 @@
 
 import { styled } from 'styled-components'
 
-import { ImPhone } from "react-icons/im";
-import { SlOptionsVertical } from "react-icons/sl";
+import { ImPhone } from "react-icons/im"
+import { SlOptionsVertical } from "react-icons/sl"
+import { GoTriangleUp } from "react-icons/go"
+import { GoTriangleRight } from "react-icons/go"
+import { GoTriangleDown } from "react-icons/go"
 
 import * as gb from './globalVars.js'
 
@@ -24,8 +27,30 @@ export const THTable = styled.th`
     font-family: ${gb.fontPoppins};
     font-size: 0.75em;
     font-weight: 700;
+    cursor: ${props => props.cursorPointer === 'yes' ? `pointer` : ``};
     border-bottom: 1px solid ${gb.colorLightGray};
     color: ${gb.colorGray39};
+`
+
+export const TriangleUp = styled(GoTriangleUp)`
+    width: 2rem;
+    height: auto;
+    color: ${gb.colorBlack26};
+    background-color: ${gb.colorWhiteFull};
+`
+
+export const TriangleRight = styled(GoTriangleRight)`
+    width: 2rem;
+    height: auto;
+    color: ${gb.colorBlack26};
+    background-color: ${gb.colorWhiteFull};
+`
+
+export const TriangleDown = styled(GoTriangleDown)`
+    width: 2rem;
+    height: auto;
+    color: ${gb.colorBlack26};
+    background-color: ${gb.colorWhiteFull};
 `
 
 export const PTable = styled.p`

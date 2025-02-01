@@ -21,7 +21,8 @@ import { RoomUpdateByIdThunk } from "../../../room/features/thunks/roomUpdateByI
 export const BookingUpdate = () => {
 
     const { id } = useParams()
-    const bookingById = useSelector(getBookingIdData) || []
+    const dispatch = useDispatch()
+    const bookingById = useSelector(getBookingIdData)
     const bookingByIdLoading = useSelector(getBookingIdStatus)
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
@@ -42,11 +43,9 @@ export const BookingUpdate = () => {
         room_booking_status: '',
     })
 
-    const dispatch = useDispatch()
     useEffect(() => {
         dispatch(BookingFetchByIDThunk(parseInt(id)))
     }, [id, dispatch])
-
     useEffect(() => {
         if (bookingByIdLoading === "idle") { dispatch(BookingFetchByIDThunk(parseInt(id))) }
         else if (bookingByIdLoading === "fulfilled") {

@@ -19,6 +19,7 @@ import { UserUpdateByIdThunk } from "../../features/thunks/userUpdateByIdThunk.j
 export const UserUpdate = () => {
 
     const { id } = useParams()
+    const dispatch = useDispatch()
     const userById = useSelector(getUserIdData) || []
     const userByIdLoading = useSelector(getUserIdStatus)
     const [userUpdated, setUserUpdated] = useState({
@@ -32,11 +33,9 @@ export const UserUpdate = () => {
         status_active: false
     })
 
-    const dispatch = useDispatch()
     useEffect(() => {
         dispatch(UserFetchByIDThunk(parseInt(id)))
     }, [id, dispatch])
-
     useEffect(() => {
         if (userByIdLoading === "idle") { dispatch(UserFetchByIDThunk(parseInt(id))) }
         else if (userByIdLoading === "fulfilled") {
