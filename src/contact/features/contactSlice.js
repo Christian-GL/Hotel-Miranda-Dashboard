@@ -93,6 +93,15 @@ export const ContactSlice = createSlice({
                 if (state.idData && state.idData.id === contactToUpdate.id) {
                     state.idData = contactToUpdate
                 }
+
+                const notArchivedIndex = state.notArchived.findIndex(contact => contact.id === contactToUpdate.id)
+                if (notArchivedIndex !== -1) {
+                    state.notArchived[notArchivedIndex] = contactToUpdate
+                }
+                const archivedIndex = state.archived.findIndex(contact => contact.id === contactToUpdate.id)
+                if (archivedIndex !== -1) {
+                    state.archived[archivedIndex] = contactToUpdate
+                }
             })
             .addCase(ContactUpdateByIdThunk.rejected, (state) => {
                 state.error = true
@@ -118,6 +127,7 @@ export const ContactSlice = createSlice({
             })
     }
 })
+
 
 export const { archiveContact, restoreContact } = ContactSlice.actions
 

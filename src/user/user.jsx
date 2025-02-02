@@ -44,9 +44,7 @@ export const User = () => {
 
     useEffect(() => {
         if (userAllLoading === "idle") { dispatch(UserFetchAllThunk()) }
-        else if (userAllLoading === "fulfilled") {
-            displayEmployee()
-        }
+        else if (userAllLoading === "fulfilled") { displayEmployee() }
         else if (userAllLoading === "rejected") { alert("Error en la api") }
     }, [userAllLoading, userAll, inputText, selectedButton, arrowStates])
 
@@ -114,7 +112,6 @@ export const User = () => {
         return sortedData
     }
     const handleColumnClick = (column) => {
-
         setArrowStates(prevState => {
             const newState = { ...prevState }
 
@@ -175,7 +172,7 @@ export const User = () => {
                     index === 1 || index === 2 ?
                         <THTable key={index} onClick={() => handleColumnClick(index === 1 ? 'name' : 'startDate')} cursorPointer='yes'>
                             {nameColumn}
-                            {index === 2 ? getArrowIcon("startDate") : getArrowIcon("name")}
+                            {index === 1 ? getArrowIcon("name") : getArrowIcon("startDate")}
                         </THTable> :
                         <THTable key={index}>{nameColumn}</THTable>
                 )}

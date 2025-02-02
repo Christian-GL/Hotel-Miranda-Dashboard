@@ -6,11 +6,12 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as contactJS from "./contact.js"
 import * as gb from '../common/styles/globalVars.js'
+import { dateFormatToYYYYMMDD, hourFormatTo24H } from "../common/utils/formUtils.js"
 import { ArticleReview } from "../common/components/articleReview/articleReview.jsx"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
-import { Table, THTable, PTable, IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
+import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, PTable, IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { usePagination } from "../common/hooks/usePagination.js"
 import * as paginationJS from '../common/styles/pagination.js'
 import { getContactAllStatus, getContactError, getContactNotArchived, getContactArchived } from "./features/contactSlice.js"
@@ -31,6 +32,11 @@ export const Contact = () => {
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
     const [filteredContacts, setFilteredContacts] = useState([])
     const [selectedButton, setSelectedButton] = useState('notarchived')
+    const [arrowStates, setArrowStates] = useState({
+        orderId: 'right',
+        date: 'down',
+        customer: 'right'
+    })
     const {
         currentPageItems,
         currentPage,
@@ -49,7 +55,7 @@ export const Contact = () => {
                 displayArchivedContacts()
         }
         else if (contactAllLoading === "rejected") { alert("Error en la api") }
-    }, [contactAllLoading, inputText])
+    }, [contactAllLoading, inputText, selectedButton, arrowStates])
     useEffect(() => {
         selectedButton === 'notarchived' ?
             displayNotArchivedContacts() :
@@ -67,6 +73,11 @@ export const Contact = () => {
     const navigateToContactUpdate = (id) => {
         navigate(`contact-update/${id}`)
     }
+
+    const handleInputTerm = (e) => {
+        setInputText(e.target.value)
+        resetPage()
+    }
     const handleTableFilter = (type) => {
         setSelectedButton(type)
         type === 'notarchived' ?
@@ -74,16 +85,73 @@ export const Contact = () => {
             displayArchivedContacts()
     }
     const displayNotArchivedContacts = () => {
-        const filtered = notArchived.filter(contact =>
+        const filteredData = notArchived.filter(contact =>
             contact.full_name.toLowerCase().includes(inputText.toLowerCase())
         )
-        setFilteredContacts(filtered)
+        const sortedData = sortData(filteredData)
+        setFilteredContacts(sortedData)
     }
     const displayArchivedContacts = () => {
-        const filtered = archived.filter(contact =>
+        const filteredData = archived.filter(contact =>
             contact.full_name.toLowerCase().includes(inputText.toLowerCase())
         )
-        setFilteredContacts(filtered)
+        const sortedData = sortData(filteredData)
+        setFilteredContacts(sortedData)
+    }
+    const sortData = (filteredData) => {
+        const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== 'right')
+        let sortedData
+        if (activeColumn) {
+            sortedData = filteredData.sort((a, b) => {
+                let valueA
+                let valueB
+
+                if (activeColumn === 'orderId') {
+                    valueA = a.id
+                    valueB = b.id
+                }
+                else if (activeColumn === 'date') {
+                    valueA = new Date(dateFormatToYYYYMMDD(a.publish_date) + ' ' + hourFormatTo24H(a.publish_time))
+                    valueB = new Date(dateFormatToYYYYMMDD(b.publish_date) + ' ' + hourFormatTo24H(b.publish_time))
+                }
+                else if (activeColumn === 'customer') {
+                    valueA = a.full_name.toLowerCase()
+                    valueB = b.full_name.toLowerCase()
+                }
+
+                if (arrowStates[activeColumn] === 'down') {
+                    return valueB > valueA ? -1 : 1
+                } else {
+                    return valueA > valueB ? -1 : 1
+                }
+            })
+        }
+        return sortedData
+    }
+    const handleColumnClick = (column) => {
+        setArrowStates(prevState => {
+            const newState = { ...prevState }
+
+            if (newState[column] === 'right') { newState[column] = 'down' }
+            else if (newState[column] === 'down') { newState[column] = 'up' }
+            else if (newState[column] === 'up') { newState[column] = 'down' }
+
+            Object.keys(newState).forEach(key => {
+                if (key !== column) {
+                    newState[key] = 'right'
+                }
+            })
+
+            return newState
+        })
+
+        handleTableFilter(selectedButton)
+    }
+    const getArrowIcon = (column) => {
+        const state = arrowStates[column]
+        if (state === 'up') { return <TriangleUp /> }
+        else if (state === 'down') { return <TriangleDown /> }
+        else { return <TriangleRight /> }
     }
     const publish = (id) => {
         if (archived.some(contact => contact.id === id)) {
@@ -95,20 +163,17 @@ export const Contact = () => {
             dispatch(archiveContact(id))
         }
     }
-    const handleInputTerm = (e) => {
-        setInputText(e.target.value)
-        resetPage()
+    const displayMenuOptions = (index) => {
+        tableOptionsDisplayed === index ?
+            setTableOptionsDisplayed() :
+            setTableOptionsDisplayed(index)
     }
     const deleteContactById = (id, index) => {
         dispatch(ContactDeleteByIdThunk(parseInt(id)))
         displayMenuOptions(index)
         resetPage()
     }
-    const displayMenuOptions = (index) => {
-        tableOptionsDisplayed === index ?
-            setTableOptionsDisplayed() :
-            setTableOptionsDisplayed(index)
-    }
+
 
     return (
 
@@ -186,7 +251,27 @@ export const Contact = () => {
 
             <Table rowlistlength={`${filteredContacts.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
                 {nameColumnList.map((nameColumn, index) =>
-                    <THTable key={index}>{nameColumn}</THTable>
+                    index <= 2 ?
+                        <THTable key={index} cursorPointer='yes' onClick={() => {
+                            switch (index) {
+                                case 0: handleColumnClick('orderId'); break
+                                case 1: handleColumnClick('date'); break
+                                case 2: handleColumnClick('customer'); break
+                                default: ; break
+                            }
+                        }}
+                        >
+                            {nameColumn}
+                            {(() => {
+                                switch (index) {
+                                    case 0: return getArrowIcon('orderId')
+                                    case 1: return getArrowIcon('date')
+                                    case 2: return getArrowIcon('customer')
+                                    default: return null
+                                }
+                            })()}
+                        </THTable> :
+                        <THTable key={index}>{nameColumn}</THTable>
                 )}
                 {currentPageItems.map((contactData, index) => {
                     return [

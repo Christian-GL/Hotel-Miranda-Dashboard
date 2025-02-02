@@ -5,11 +5,12 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as bookingsJS from "./booking.js"
 import * as gb from '../common/styles/globalVars.js'
+import { dateFormatToYYYYMMDD, hourFormatTo24H } from "../common/utils/formUtils.js"
 import { PopupText } from "../common/components/popupText/popupText.jsx"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
-import { Table, THTable, DivImgTable, ImgTableUser, PTable, IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
+import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableUser, PTable, IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { usePagination } from "../common/hooks/usePagination.js"
 import * as paginationJS from '../common/styles/pagination.js'
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "./features/bookingSlice.js"
@@ -28,6 +29,13 @@ export const Bookings = () => {
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
     const [filteredBookings, setFilteredBookings] = useState([])
     const [selectedButton, setSelectedButton] = useState('all')
+    const [arrowStates, setArrowStates] = useState({
+        guest: 'right',
+        orderDate: 'right',
+        checkIn: 'right',
+        checkOut: 'right',
+        roomNumber: 'down'
+    })
     const {
         currentPageItems,
         currentPage,
@@ -42,24 +50,9 @@ export const Bookings = () => {
 
     useEffect(() => {
         if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
-        else if (bookingAllLoading === "fulfilled") {
-            switch (selectedButton) {
-                case 'all':
-                    displayAllBookings()
-                    break
-                case 'checkin':
-                    displayBookingsCheckIn()
-                    break
-                case 'inprogress':
-                    displayBookingsInProgress()
-                    break
-                case 'checkout':
-                    displayBookingsCheckOut()
-                    break
-            }
-        }
+        else if (bookingAllLoading === "fulfilled") { displayBookings() }
         else if (bookingAllLoading === "rejected") { alert("Error en la api") }
-    }, [bookingAllLoading, bookingAll, inputText])
+    }, [bookingAllLoading, bookingAll, inputText, selectedButton, arrowStates])
 
     const navigateToBookingCreate = () => {
         navigate('booking-create')
@@ -80,44 +73,100 @@ export const Bookings = () => {
     }
     const handleTableFilter = (type) => {
         setSelectedButton(type)
-        switch (type) {
+        displayBookings()
+    }
+    const displayBookings = () => {
+        let filteredData
+        switch (selectedButton) {
             case 'all':
-                displayAllBookings()
+                filteredData = bookingAll.filter(booking =>
+                    booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase())
+                )
                 break
             case 'checkin':
-                displayBookingsCheckIn()
+                filteredData = bookingAll.filter(booking =>
+                    booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
+                    booking.room_booking_status === 'Check In'
+                )
                 break
             case 'inprogress':
-                displayBookingsInProgress()
+                filteredData = bookingAll.filter(booking =>
+                    booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
+                    booking.room_booking_status === 'In Progress'
+                )
                 break
             case 'checkout':
-                displayBookingsCheckOut()
+                filteredData = bookingAll.filter(booking =>
+                    booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
+                    booking.room_booking_status === 'Check Out'
+                )
                 break
         }
+        const sortedData = sortData(filteredData)
+        setFilteredBookings(sortedData)
     }
-    const displayAllBookings = () => {
-        const filtered = bookingAll.filter(booking =>
-            booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase())
-        )
-        setFilteredBookings(filtered)
+    const sortData = (filteredData) => {
+        const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== 'right')
+        let sortedData
+        if (activeColumn) {
+            sortedData = filteredData.sort((a, b) => {
+                let valueA
+                let valueB
+
+                if (activeColumn === 'guest') {
+                    valueA = a.full_name_guest.toLowerCase()
+                    valueB = b.full_name_guest.toLowerCase()
+                }
+                else if (activeColumn === 'orderDate') {
+                    valueA = new Date(dateFormatToYYYYMMDD(a.order_date) + ' ' + hourFormatTo24H(a.order_time))
+                    valueB = new Date(dateFormatToYYYYMMDD(b.order_date) + ' ' + hourFormatTo24H(b.order_time))
+                }
+                else if (activeColumn === 'checkIn') {
+                    valueA = new Date(dateFormatToYYYYMMDD(a.check_in_date) + ' ' + hourFormatTo24H(a.check_in_time))
+                    valueB = new Date(dateFormatToYYYYMMDD(b.check_in_date) + ' ' + hourFormatTo24H(b.check_in_time))
+                }
+                else if (activeColumn === 'checkOut') {
+                    valueA = new Date(dateFormatToYYYYMMDD(a.check_out_date) + ' ' + hourFormatTo24H(a.check_out_time))
+                    valueB = new Date(dateFormatToYYYYMMDD(b.check_out_date) + ' ' + hourFormatTo24H(b.check_out_time))
+                }
+                else if (activeColumn === 'roomNumber') {
+                    valueA = valueA = a.room_id
+                    valueB = b.room_id
+                }
+
+                if (arrowStates[activeColumn] === 'down') {
+                    return valueB > valueA ? -1 : 1
+                } else {
+                    return valueA > valueB ? -1 : 1
+                }
+            })
+        }
+        return sortedData
     }
-    const displayBookingsCheckIn = () => {
-        const filtered = bookingAll.filter(booking =>
-            booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) && booking.room_booking_status === 'Check In'
-        )
-        setFilteredBookings(filtered)
+    const handleColumnClick = (column) => {
+        setArrowStates(prevState => {
+            const newState = { ...prevState }
+
+            if (newState[column] === 'right') { newState[column] = 'down' }
+            else if (newState[column] === 'down') { newState[column] = 'up' }
+            else if (newState[column] === 'up') { newState[column] = 'down' }
+
+            Object.keys(newState).forEach(key => {
+                if (key !== column) {
+                    newState[key] = 'right'
+                }
+            })
+
+            return newState
+        })
+
+        handleTableFilter(selectedButton)
     }
-    const displayBookingsInProgress = () => {
-        const filtered = bookingAll.filter(booking =>
-            booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) && booking.room_booking_status === 'In Progress'
-        )
-        setFilteredBookings(filtered)
-    }
-    const displayBookingsCheckOut = () => {
-        const filtered = bookingAll.filter(booking =>
-            booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) && booking.room_booking_status === 'Check Out'
-        )
-        setFilteredBookings(filtered)
+    const getArrowIcon = (column) => {
+        const state = arrowStates[column]
+        if (state === 'up') { return <TriangleUp /> }
+        else if (state === 'down') { return <TriangleDown /> }
+        else { return <TriangleRight /> }
     }
     const displayMenuOptions = (index) => {
         tableOptionsDisplayed === index ?
@@ -154,7 +203,31 @@ export const Bookings = () => {
 
             <Table rowlistlength={`${filteredBookings.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
                 {nameColumnList.map((nameColumn, index) =>
-                    <THTable key={index}>{nameColumn}</THTable>
+                    index === 1 || index === 3 || index === 4 || index === 5 || index === 7 ?
+                        <THTable key={index} cursorPointer='yes' onClick={() => {
+                            switch (index) {
+                                case 1: handleColumnClick('guest'); break
+                                case 3: handleColumnClick('orderDate'); break
+                                case 4: handleColumnClick('checkIn'); break
+                                case 5: handleColumnClick('checkOut'); break
+                                case 7: handleColumnClick('roomNumber'); break
+                                default: ; break
+                            }
+                        }}
+                        >
+                            {nameColumn}
+                            {(() => {
+                                switch (index) {
+                                    case 1: return getArrowIcon('guest')
+                                    case 3: return getArrowIcon('orderDate')
+                                    case 4: return getArrowIcon('checkIn')
+                                    case 5: return getArrowIcon('checkOut')
+                                    case 7: return getArrowIcon('roomNumber')
+                                    default: return null
+                                }
+                            })()}
+                        </THTable> :
+                        <THTable key={index}>{nameColumn}</THTable>
                 )}
                 {currentPageItems.map((bookingData, index) => {
                     return [

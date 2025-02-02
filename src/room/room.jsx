@@ -10,7 +10,7 @@ import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx
 import { applyDiscount } from "../common/utils/tableUtils.js"
 import { usePagination } from "../common/hooks/usePagination.js"
 import * as paginationJS from '../common/styles/pagination.js'
-import { Table, THTable, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
+import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { getRoomAllData, getRoomAllStatus, getRoomError } from "./features/roomSlice.js";
 import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.js"
 import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.js"
@@ -32,6 +32,11 @@ export const Room = () => {
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
     const [filteredRooms, setFilteredRooms] = useState([])
     const [selectedButton, setSelectedButton] = useState('all')
+    const [arrowStates, setArrowStates] = useState({
+        roomNumber: 'down',
+        price: 'right',
+        offerPrice: 'right'
+    })
     const {
         currentPageItems,
         currentPage,
@@ -44,21 +49,9 @@ export const Room = () => {
 
     useEffect(() => {
         if (roomAllLoading === "idle") { dispatch(RoomFetchAllThunk()) }
-        else if (roomAllLoading === "fulfilled") {
-            switch (selectedButton) {
-                case 'all':
-                    displayAllRooms()
-                    break
-                case 'available':
-                    displayInactiveRooms()
-                    break
-                case 'booked':
-                    displayActiveRooms()
-                    break
-            }
-        }
+        else if (roomAllLoading === "fulfilled") { displayRooms() }
         else if (roomAllLoading === "rejected") { alert("Error en la api") }
-    }, [roomAllLoading, roomAll, inputText, dispatch])
+    }, [roomAllLoading, roomAll, inputText, selectedButton, arrowStates])
     useEffect(() => {
         if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === "fulfilled") { }
@@ -78,37 +71,86 @@ export const Room = () => {
     }
     const handleTableFilter = (type) => {
         setSelectedButton(type)
-        switch (type) {
+        displayRooms()
+    }
+    const displayRooms = () => {
+        let filteredData
+        switch (selectedButton) {
             case 'all':
-                displayAllRooms()
+                filteredData = roomAll.filter(room =>
+                    room.id.toString().includes(inputText.toLowerCase())
+                )
                 break
             case 'available':
-                displayInactiveRooms()
+                filteredData = roomAll.filter(room =>
+                    room.id.toString().includes(inputText.toLowerCase()) &&
+                    bookingAll.filter((booking) => room.booking_list.includes(booking.id)).length === 0
+                )
                 break
             case 'booked':
-                displayActiveRooms()
+                filteredData = roomAll.filter(room =>
+                    room.id.toString().includes(inputText.toLowerCase()) &&
+                    bookingAll.filter((booking) => room.booking_list.includes(booking.id)).length >= 1
+                )
                 break
         }
+        const sortedData = sortData(filteredData)
+        setFilteredRooms(sortedData)
     }
-    const displayAllRooms = () => {
-        const filtered = roomAll.filter(room =>
-            room.id.toString().includes(inputText.toLowerCase())
-        )
-        setFilteredRooms(filtered)
+    const sortData = (filteredData) => {
+        const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== 'right')
+        let sortedData
+        if (activeColumn) {
+            sortedData = filteredData.sort((a, b) => {
+                let valueA
+                let valueB
+
+                if (activeColumn === 'roomNumber') {
+                    valueA = a.id
+                    valueB = b.id
+                }
+                else if (activeColumn === 'price') {
+                    valueA = a.price
+                    valueB = b.price
+                }
+                else if (activeColumn === 'offerPrice') {
+                    valueA = applyDiscount(a.price, a.discount)
+                    valueB = applyDiscount(b.price, b.discount)
+                }
+
+                if (arrowStates[activeColumn] === 'down') {
+                    return valueB > valueA ? -1 : 1
+                } else {
+                    return valueA > valueB ? -1 : 1
+                }
+            })
+        }
+        return sortedData
     }
-    const displayActiveRooms = () => {
-        const filtered = roomAll.filter(room =>
-            room.id.toString().includes(inputText.toLowerCase()) &&
-            bookingAll.filter((booking) => room.booking_list.includes(booking.id)).length >= 1
-        )
-        setFilteredRooms(filtered)
+    const handleColumnClick = (column) => {
+        setArrowStates(prevState => {
+            const newState = { ...prevState }
+
+            if (newState[column] === 'right') { newState[column] = 'down' }
+            else if (newState[column] === 'down') { newState[column] = 'up' }
+            else if (newState[column] === 'up') { newState[column] = 'down' }
+
+            Object.keys(newState).forEach(key => {
+                if (key !== column) {
+                    newState[key] = 'right'
+                }
+            })
+
+            return newState
+        })
+
+        handleTableFilter(selectedButton)
     }
-    const displayInactiveRooms = () => {
-        const filtered = roomAll.filter(room =>
-            room.id.toString().includes(inputText.toLowerCase()) &&
-            bookingAll.filter((booking) => room.booking_list.includes(booking.id)).length === 0
-        )
-        setFilteredRooms(filtered)
+    const getArrowIcon = (column) => {
+        const state = arrowStates[column]
+        if (state === 'up') { return <TriangleUp /> }
+        else if (state === 'down') { return <TriangleDown /> }
+        else { return <TriangleRight /> }
     }
     const displayMenuOptions = (index) => {
         tableOptionsDisplayed === index ?
@@ -146,7 +188,27 @@ export const Room = () => {
 
             <Table rowlistlength={`${filteredRooms.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
                 {nameColumnList.map((nameColumn, index) =>
-                    <THTable key={index}>{nameColumn}</THTable>
+                    index === 1 || index === 4 || index === 5 ?
+                        <THTable key={index} cursorPointer='yes' onClick={() => {
+                            switch (index) {
+                                case 1: handleColumnClick('roomNumber'); break
+                                case 4: handleColumnClick('price'); break
+                                case 5: handleColumnClick('offerPrice'); break
+                                default: ; break
+                            }
+                        }}
+                        >
+                            {nameColumn}
+                            {(() => {
+                                switch (index) {
+                                    case 1: return getArrowIcon('roomNumber')
+                                    case 4: return getArrowIcon('price')
+                                    case 5: return getArrowIcon('offerPrice')
+                                    default: return null
+                                }
+                            })()}
+                        </THTable> :
+                        <THTable key={index}>{nameColumn}</THTable>
                 )}
                 {currentPageItems.map((roomData, index) => {
                     return [
