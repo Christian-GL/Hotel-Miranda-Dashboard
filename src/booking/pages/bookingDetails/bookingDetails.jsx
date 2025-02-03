@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom"
 
 import * as gb from '../../../common/styles/globalVars.js'
 import * as bookingDetailsJS from "./bookingDetails.js"
-import { amenities } from '../../../room/data/roomAmenitiesData.json'
+import { RoomAmenities } from "../../../room/data/roomAmenities.ts"
 import { applyDiscount } from '../../../common/utils/tableUtils.js'
 import { getBookingIdData, getBookingIdStatus, getBookingError } from "../../../booking/features/bookingSlice.js"
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk.js"
@@ -110,21 +110,21 @@ export const BookingDetails = () => {
                     {Array.isArray(roomById.amenities) ? (
                         roomById.amenities.map((amenity, index) => {
                             switch (amenity) {
-                                case "3 Bed Space":
+                                case RoomAmenities.bedSpace3:
                                     return (
                                         <bookingDetailsJS.ButtonFacility key={index} withicon='true'>
                                             3 Bed Space
                                             <bookingDetailsJS.IconBed />
                                         </bookingDetailsJS.ButtonFacility>
                                     )
-                                case "24 Hours Guard":
+                                case RoomAmenities.guard24Hours:
                                     return (
                                         <bookingDetailsJS.ButtonFacility key={index} withicon='true'>
                                             24 Hours Guard
                                             <bookingDetailsJS.IconShieldCheck />
                                         </bookingDetailsJS.ButtonFacility>
                                     )
-                                case "WiFi":
+                                case RoomAmenities.wiFi:
                                     return (
                                         <bookingDetailsJS.ButtonFacility key={index} withicon='true'>
                                             Wifi

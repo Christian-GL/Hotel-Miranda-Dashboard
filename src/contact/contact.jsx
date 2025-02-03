@@ -14,7 +14,7 @@ import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx
 import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, PTable, IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
 import { usePagination } from "../common/hooks/usePagination.js"
 import * as paginationJS from '../common/styles/pagination.js'
-import { getContactAllStatus, getContactError, getContactNotArchived, getContactArchived } from "./features/contactSlice.js"
+import { getContactAllData, getContactAllStatus, getContactNotArchived, getContactArchived } from "./features/contactSlice.js"
 import { archiveContact, restoreContact } from "./features/contactSlice.js"
 import { ContactFetchAllThunk } from "./features/thunks/contactFetchAllThunk.js"
 import { ContactDeleteByIdThunk } from "./features/thunks/contactDeleteByIdThunk.js"
@@ -25,6 +25,7 @@ export const Contact = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const nameColumnList = ['Order ID', 'Date', 'Customer', 'Comment', 'Action', '']
+    const contactAll = useSelector(getContactAllData)
     const contactAllLoading = useSelector(getContactAllStatus)
     const notArchived = useSelector(getContactNotArchived)
     const archived = useSelector(getContactArchived)
@@ -55,7 +56,7 @@ export const Contact = () => {
                 displayArchivedContacts()
         }
         else if (contactAllLoading === "rejected") { alert("Error en la api") }
-    }, [contactAllLoading, inputText, selectedButton, arrowStates])
+    }, [contactAllLoading, contactAll, inputText, selectedButton, arrowStates])
     useEffect(() => {
         selectedButton === 'notarchived' ?
             displayNotArchivedContacts() :
@@ -188,48 +189,15 @@ export const Contact = () => {
                         pagination={{ clickable: true }}
                         loop={true}
                     >
-                        <SwiperSlide>
-                            <ArticleReview
-                                nameprofile="Pedro Sánchez"
-                                timesince="4m"
-                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <ArticleReview
-                                nameprofile="Perro Sánchez"
-                                timesince="5m"
-                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <ArticleReview
-                                nameprofile="Pablo Sales"
-                                timesince="7m"
-                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <ArticleReview
-                                nameprofile="Pedro Sánchez"
-                                timesince="4m"
-                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <ArticleReview
-                                nameprofile="Perro Sánchez"
-                                timesince="5m"
-                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <ArticleReview
-                                nameprofile="Pablo Sales"
-                                timesince="7m"
-                                textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                            />
-                        </SwiperSlide>
+                        {contactAll.map((contact, index) => {
+                            return <SwiperSlide key={index}>
+                                <ArticleReview
+                                    nameprofile={contact.full_name}
+                                    timesince={`${contact.publish_date} - ${contact.publish_time}`}
+                                    textreview={contact.comment}
+                                />
+                            </SwiperSlide>
+                        })}
                     </Swiper>
                 </contactJS.DivCtnReviews>
             </contactJS.SectionReviews>

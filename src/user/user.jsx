@@ -27,6 +27,11 @@ export const User = () => {
     const [inputText, setInputText] = useState('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
     const [filteredUsers, setFilteredUsers] = useState([])
+    // export enum ButtonType {     <-- Hacer cuando se pase fichero a TS y hacer en las otras 3 páginas el equivalente.
+    //     all = "all",
+    //     active = "active",
+    //     inactive = "inactive"
+    // }
     const [selectedButton, setSelectedButton] = useState('all')
     const [arrowStates, setArrowStates] = useState({
         name: 'right',

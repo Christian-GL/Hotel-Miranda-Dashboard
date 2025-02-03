@@ -8,11 +8,16 @@ import * as dashboardJS from "./dashboard.js"
 import { ArticleReview } from "../common/components/articleReview/articleReview.jsx"
 import { getBookingAllData, getBookingAllStatus, getBookingError } from '../booking/features/bookingSlice.js'
 import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk.js'
+import { getContactAllData, getContactAllStatus } from "../contact/features/contactSlice.js"
+import { ContactFetchAllThunk } from "../contact/features/thunks/contactFetchAllThunk.js"
+
 
 export const Dashboard = () => {
 
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
+    const contactAll = useSelector(getContactAllData)
+    const contactAllLoading = useSelector(getContactAllStatus)
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -20,6 +25,11 @@ export const Dashboard = () => {
         else if (bookingAllLoading === "fulfilled") { }
         else if (bookingAllLoading === "rejected") { alert("Error en la api de bookings") }
     }, [bookingAllLoading, bookingAll])
+    useEffect(() => {
+        if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
+        else if (contactAllLoading === "fulfilled") { }
+        else if (contactAllLoading === "rejected") { alert("Error en la api") }
+    }, [contactAllLoading, contactAll])
 
     return (
 
@@ -88,48 +98,15 @@ export const Dashboard = () => {
                     pagination={{ clickable: true }}
                     loop={true}
                 >
-                    <SwiperSlide>
-                        <ArticleReview
-                            nameprofile="Pedro Sánchez"
-                            timesince="4m"
-                            textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ArticleReview
-                            nameprofile="Perro Sánchez"
-                            timesince="5m"
-                            textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ArticleReview
-                            nameprofile="Pablo Sales"
-                            timesince="7m"
-                            textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ArticleReview
-                            nameprofile="Pedro Sánchez"
-                            timesince="4m"
-                            textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ArticleReview
-                            nameprofile="Perro Sánchez"
-                            timesince="5m"
-                            textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ArticleReview
-                            nameprofile="Pablo Sales"
-                            timesince="7m"
-                            textreview="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
-                        />
-                    </SwiperSlide>
+                    {contactAll.map((contact, index) => {
+                        return <SwiperSlide key={index}>
+                            <ArticleReview
+                                nameprofile={contact.full_name}
+                                timesince={`${contact.publish_date} - ${contact.publish_time}`}
+                                textreview={contact.comment}
+                            />
+                        </SwiperSlide>
+                    })}
                 </Swiper>
                 {/* </dashboardJS.SwiperCustom> */}
             </dashboardJS.SectionReviews>

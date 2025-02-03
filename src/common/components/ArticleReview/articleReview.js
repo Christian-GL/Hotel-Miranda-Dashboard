@@ -24,8 +24,16 @@ export const ArticleReview = styled.article`
 
 export const PTextReview = styled.p`
     text-align: left;
+    width: 100%;
+    height: 10rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
     font-family: ${gb.fontPoppins};
     font-size: 1em;
+    line-height: 1.6rem;
     color: ${gb.colorGrayTextReview};
 `
 
@@ -33,13 +41,11 @@ export const DivCtnDetails = styled.div`
     display: flex;
     justify-content: space-between;
     flex-wrap: nowrap;
-    margin-top: 3rem;
+    margin-top: 2rem;
     text-align: left;
 `
 
 export const DivCtnReviewDetails = styled.div`
-    // display: inline-block;
-    // vertical-align: middle;
     display: flex;
     align-items: center;
     gap: 1rem;

@@ -6,8 +6,8 @@ import { useParams } from "react-router-dom"
 
 import * as roomUpdateJS from "./roomUpdate.js"
 import * as gb from '../../../common/styles/globalVars.js'
-import roomTypeData from '../../data/roomTypeData.json'
-import roomAmenitiesData from '../../data/roomAmenitiesData.json'
+import { RoomAmenities } from "../../data/roomAmenities.ts"
+import { RoomType } from "../../data/roomType.ts"
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form, ImgRoom, DivCtnEntry,
     LabelText, DivCtnEntryBookings, LabelBookings, LabelTextBookingStatus, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
@@ -189,8 +189,10 @@ export const RoomUpdate = () => {
                     <DivCtnEntry>
                         <LabelText>Room Type</LabelText>
                         <Select name="type" value={roomUpdated.type} onChange={handleTypeChange}>
-                            {roomTypeData.type.map((type, index) => (
-                                <Option key={index} value={type}>{type}</Option>
+                            {Object.values(RoomType).map((type, index) => (
+                                <option key={index} value={type}>
+                                    {type}
+                                </option>
                             ))}
                         </Select>
                     </DivCtnEntry>
@@ -198,8 +200,10 @@ export const RoomUpdate = () => {
                     <DivCtnEntry>
                         <LabelText>Amenities</LabelText>
                         <SelectAmenities name="amenities" value={roomUpdated.amenities} onChange={handleAmenitiesChange} multiple={true}>
-                            {roomAmenitiesData.amenities.map((amenity, index) => (
-                                <Option key={index} value={amenity}>{amenity}</Option>
+                            {Object.values(RoomAmenities).map((amenity, index) => (
+                                <option key={index} value={amenity}>
+                                    {amenity}
+                                </option>
                             ))}
                         </SelectAmenities>
                     </DivCtnEntry>

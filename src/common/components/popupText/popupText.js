@@ -23,6 +23,10 @@ export const DialogPopup = styled.dialog`
     border-radius: 1rem;
     box-shadow: ${gb.boxShadowCustom};
     background-color: ${gb.colorGrayBackgroundPage};
+
+    &:hover {
+        box-shadow: ${gb.boxShadowCustomWithHover};
+    }
 `
 
 export const TitleH2 = styled.h2`

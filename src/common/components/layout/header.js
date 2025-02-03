@@ -12,7 +12,7 @@ import * as gb from '../../styles/globalVars.js'
 
 export const Header = styled.header`
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     left: ${props => props.display === 'collapsed' ? `${gb.widthSidebarMenuCollapsed}` : `${gb.widthSidebarMenuNotCollapsed}`};
     transition: ${gb.transitionSidebarMenu};
     display: flex;

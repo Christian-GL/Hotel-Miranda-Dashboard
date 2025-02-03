@@ -3,8 +3,8 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as roomCreateJS from "./roomCreate.js"
-import roomTypeData from '../../data/roomTypeData.json'
-import roomAmenitiesData from '../../data/roomAmenitiesData.json'
+import { RoomAmenities } from "../../data/roomAmenities.ts"
+import { RoomType } from "../../data/roomType.ts"
 import { checkFirstIDAvailable } from '../../../common/utils/formUtils.js'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconPlus, TitleForm, Form, ImgRoom, DivCtnEntry,
@@ -152,8 +152,10 @@ export const RoomCreate = () => {
                         <LabelText>Room Type</LabelText>
                         <Select name="type" onChange={handleTypeChange}>
                             <Option value="null" selected></Option>
-                            {roomTypeData.type.map((type, index) => (
-                                <Option key={index} value={type}>{type}</Option>
+                            {Object.values(RoomType).map((type, index) => (
+                                <option key={index} value={type}>
+                                    {type}
+                                </option>
                             ))}
                         </Select>
                     </DivCtnEntry>
@@ -161,8 +163,10 @@ export const RoomCreate = () => {
                     <DivCtnEntry>
                         <LabelText>Amenities</LabelText>
                         <SelectAmenities name="amenities" onChange={handleAmenitiesChange} multiple={true}>
-                            {roomAmenitiesData.amenities.map((amenity, index) => (
-                                <Option key={index} value={amenity}>{amenity}</Option>
+                            {Object.values(RoomAmenities).map((amenity, index) => (
+                                <option key={index} value={amenity}>
+                                    {amenity}
+                                </option>
                             ))}
                         </SelectAmenities>
                     </DivCtnEntry>
