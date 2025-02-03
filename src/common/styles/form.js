@@ -129,6 +129,14 @@ export const LabelText = styled.label`
     color: ${gb.colorBlack26};
 `
 
+export const LabelTextNote = styled.label`
+    margin-left: 1rem;
+    font-family: ${gb.fontPoppins};
+    font-size: 0.75em;
+    font-weight: 500;
+    color: ${gb.colorBlack26};
+`
+
 export const DivCtnEntryBookings = styled.div`
     display: flex;
     flex-direction: column;

@@ -49,7 +49,7 @@ export const hourFormatTo12H = (time24H) => {
     let hour = parseInt(hours)
     const ampm = hour >= 12 ? 'PM' : 'AM'
     hour = hour % 12
-    hour = hour ? hour : 12
+    hour = hour === 0 && ampm === 'AM' ? 0 : hour
     const minute = minutes
     return `${hour}:${minute} ${ampm}`
 }
@@ -65,4 +65,78 @@ export const hourFormatTo24H = (time12H) => {
         hour = 0
     }
     return `${hour < 10 ? '0' + hour : hour}:${minutes}`
+}
+
+
+export const checkName = (name) => {
+    if (typeof name !== "string") {
+        throw new Error('error name isString')
+    }
+    if (name.length <= 2) {
+        throw new Error('error name isMinLenght')
+    }
+    if (name.length >= 100) {
+        throw new Error('error name isMaxLenght')
+    }
+}
+
+export const checkEmail = (email) => {
+    const regex = new RegExp(/^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+    if (typeof email !== "string") {
+        throw new Error('error email isString')
+    }
+    if (email.length <= 2) {
+        throw new Error('error email isMinLenght')
+    }
+    if (email.length >= 100) {
+        throw new Error('error email isMaxLenght')
+    }
+    if (!regex.test(email)) {
+        throw new Error("error email isCorrectFormat")
+    }
+}
+
+export const checkCheckOut = (checkIn, checkOut) => {
+    const currentDate = new Date()
+    if (!(checkOut instanceof Date) || isNaN(checkOut.getTime())) {
+        throw new Error('error checkOut isValidDate')
+    }
+    if (checkOut < currentDate) {
+        throw new Error('error checkOutIsPastDate')
+    }
+    if (checkOut <= checkIn) {
+        throw new Error('error checkOutIsBeforeCheckIn')
+    }
+}
+
+export const checkCheckIn = (checkIn) => {
+    const currentDate = new Date()
+    if (!(checkIn instanceof Date) || isNaN(checkIn.getTime())) {
+        throw new Error('error checkIn isValidDate')
+    }
+    if (checkIn < currentDate) {
+        throw new Error('error checkInIsPastDate')
+    }
+}
+
+export const checkPrice = (price) => {
+    if (!Number.isInteger(price)) {
+        throw new Error('error rate isInteger')
+    }
+    if (price <= 0) {
+        throw new Error('error rate isPositive')
+    }
+    const maxPrice = 100000
+    if (price > maxPrice) {
+        throw new Error('error rate isOverMaxPrice')
+    }
+}
+
+export const checkDiscount = (discount) => {
+    if (typeof discount !== 'number') {
+        throw new Error('error discount isNumber')
+    }
+    if (discount < 0 || discount > 100) {
+        throw new Error('error discount isOutOfRange')
+    }
 }
