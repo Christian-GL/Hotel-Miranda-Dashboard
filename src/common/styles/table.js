@@ -141,6 +141,10 @@ export const DivCtnOptions = styled.div`
     font-family: ${gb.fontPoppins};
     border-radius: 0.75rem;
     background-color: ${gb.colorGrayBackgroundPage};
+
+    &:hover {
+        box-shadow: ${gb.boxShadowCustomWithHover};
+    }
 `
 
 export const ButtonOption = styled.button`
@@ -152,6 +156,10 @@ export const ButtonOption = styled.button`
     cursor: pointer;
     color: ${gb.colorBlack26};
     background-color: ${gb.colorWhiteFull};
+
+    &:hover {
+        font-weight: 700;
+    }
 `
 
 export const PStatusBooking = styled.p`
