@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import * as userCreateJS from "./userCreate.js"
 import { checkFirstIDAvailable } from '../../../common/utils/formUtils.js'
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
+    GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
 } from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
@@ -114,7 +114,9 @@ export const UserCreate = () => {
             })
     }
 
-    return (
+    return (<>
+
+        <GlobalDateTimeStyles />
 
         <userCreateJS.SectionPageUserCreate>
             <DivCtnForm>
@@ -174,5 +176,5 @@ export const UserCreate = () => {
             </DivCtnForm>
         </userCreateJS.SectionPageUserCreate>
 
-    )
+    </>)
 }

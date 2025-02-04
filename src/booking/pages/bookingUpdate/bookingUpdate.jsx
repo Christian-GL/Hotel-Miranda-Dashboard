@@ -6,16 +6,16 @@ import { useParams } from "react-router-dom"
 import * as bookingUpdateJS from "./bookingUpdate.js"
 import { dateFormatToYYYYMMDD, dateFormatToDDMMYYYY, hourFormatTo12H, hourFormatTo24H } from '../../../common/utils/formUtils.js'
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
+    GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
 } from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getBookingIdData, getBookingIdStatus, getBookingError } from "../../../booking/features/bookingSlice.js"
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk.js"
-import { BookingUpdateByIdThunk } from "../../../booking/features/thunks/bookingUpdateByIdThunk.js"
+import { BookingUpdateThunk } from "../../../booking/features/thunks/bookingUpdateThunk.js"
 import { getRoomAllData, getRoomAllStatus, getRoomError } from '../../../room/features/roomSlice.js'
 import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk.js'
-import { RoomUpdateByIdThunk } from "../../../room/features/thunks/roomUpdateByIdThunk.js"
+import { RoomUpdateThunk } from "../../../room/features/thunks/roomUpdateThunk.js"
 
 
 export const BookingUpdate = () => {
@@ -141,123 +141,127 @@ export const BookingUpdate = () => {
         e.preventDefault()
         const getRoomById = (id) => {
             const room = roomAll.find(room => room.id === id)
-            return room ? room : "No encontrado"
+            return room ? room : 0
         }
 
         const roomUpdatedToDispatch = {
-            ...getRoomById(bookingUpdated.room_id),
-            booking_status: bookingUpdated.room_booking_status === 'Check Out' ? false : true
+            ...getRoomById(previusRoomId)
+        }
+        const roomUpdatedToDispatch2 = {
+            ...getRoomById(bookingUpdated.room_id)
         }
 
-        dispatch(BookingUpdateByIdThunk(bookingUpdated))
+        dispatch(BookingUpdateThunk(bookingUpdated))
             .then(() => {
                 alert(`Booking #${bookingUpdated.id} updated`)
             })
             .catch((error) => {
                 alert(`Error updating the booking #${bookingUpdated.id}: `, error)
             })
-        dispatch(RoomUpdateByIdThunk(roomUpdatedToDispatch))
-            .then(() => {
-                alert(`Room #${bookingUpdated.room_id} booking status updated to ${roomUpdatedToDispatch.booking_status}`)
-            })
-            .catch((error) => {
-                alert(`Error updating the room ${roomUpdatedToDispatch.id}: `, error)
-            })
 
-        if (previusRoomId !== roomUpdatedToDispatch.id) {
+        if (previusRoomId !== bookingUpdated.room_id) {
             const oldRoomUpdatedToDispatch = {
-                ...getRoomById(previusRoomId),
-                booking_status: false
+                ...roomUpdatedToDispatch,
+                booking_list: roomUpdatedToDispatch.booking_list.filter(bookingId => bookingId !== previusRoomId)
             }
-            dispatch(RoomUpdateByIdThunk(oldRoomUpdatedToDispatch))
+            console.log('--> ', bookingUpdated.room_id)
+            const newRoomUpdatedToDispatch = {
+                ...roomUpdatedToDispatch2,
+                booking_list: [...roomUpdatedToDispatch2.booking_list, bookingUpdated.room_id]
+            }
+
+            dispatch(RoomUpdateThunk(oldRoomUpdatedToDispatch))
                 .then(() => {
-                    alert(`Room #${previusRoomId} booking status updated to false`)
+                    alert(`Room #${previusRoomId} booking list updated to [${oldRoomUpdatedToDispatch.booking_list}]`)
                 })
                 .catch((error) => {
-                    alert(`Error updating the room ${oldRoomUpdatedToDispatch.id}: `, error)
+                    alert(`Error updating the room ${previusRoomId}: `, error)
+                })
+            dispatch(RoomUpdateThunk(newRoomUpdatedToDispatch))
+                .then(() => {
+                    alert(`Room #${bookingUpdated.room_id} booking list updated to [${newRoomUpdatedToDispatch.booking_list}]`)
+                })
+                .catch((error) => {
+                    alert(`Error updating the room ${bookingUpdated.room_id}: `, error)
                 })
         }
     }
 
-    return (
+    return (<>
 
-        bookingByIdLoading === "idle" || roomAllLoading === "idle" ?
-            <bookingUpdateJS.SectionPageBookingUpdate>Loaging...</bookingUpdateJS.SectionPageBookingUpdate> :
+        <GlobalDateTimeStyles />
 
-            <bookingUpdateJS.SectionPageBookingUpdate>
-                <DivCtnForm>
-                    <DivIcon>
-                        <DivCtnIcons>
-                            <IconCalendar />
-                            <IconUpdate />
-                        </DivCtnIcons>
-                    </DivIcon>
-                    <TitleForm>Update Booking #{bookingUpdated.id}</TitleForm>
+        <bookingUpdateJS.SectionPageBookingUpdate>
+            <DivCtnForm>
+                <DivIcon>
+                    <DivCtnIcons>
+                        <IconCalendar />
+                        <IconUpdate />
+                    </DivCtnIcons>
+                </DivIcon>
+                <TitleForm>Update Booking #{bookingUpdated.id}</TitleForm>
 
-                    <Form onSubmit={handleSubmit}>
-                        <DivCtnEntry>
-                            <LabelText>Guest photo</LabelText>
-                            <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
-                            <ImgUser src={bookingUpdated.photo} />
-                        </DivCtnEntry>
+                <Form onSubmit={handleSubmit}>
+                    <DivCtnEntry>
+                        <LabelText>Guest photo</LabelText>
+                        <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
+                        <ImgUser src={bookingUpdated.photo} />
+                    </DivCtnEntry>
 
-                        <DivCtnEntry>
-                            <LabelText>Full name guest</LabelText>
-                            <InputText name="full_name_guest" value={bookingUpdated.full_name_guest} onChange={handleFullNameChange} />
-                        </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Full name guest</LabelText>
+                        <InputText name="full_name_guest" value={bookingUpdated.full_name_guest} onChange={handleFullNameChange} />
+                    </DivCtnEntry>
 
-                        <DivCtnEntry>
-                            <LabelText>Check in date</LabelText>
-                            <InputDate name="check_in_date" value={dateFormatToYYYYMMDD(bookingUpdated.check_in_date)} type="date" onChange={handleCheckInDateChange} />
-                        </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Check in date</LabelText>
+                        <InputDate name="check_in_date" value={dateFormatToYYYYMMDD(bookingUpdated.check_in_date)} type="date" onChange={handleCheckInDateChange} />
+                    </DivCtnEntry>
 
-                        <DivCtnEntry>
-                            <LabelText>Check in time</LabelText>
-                            <InputDate name="check_in_time" value={hourFormatTo24H(bookingUpdated.check_in_time)} type="time" onChange={handleCheckInTimeChange} />
-                        </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Check in time</LabelText>
+                        <InputDate name="check_in_time" value={hourFormatTo24H(bookingUpdated.check_in_time)} type="time" onChange={handleCheckInTimeChange} />
+                    </DivCtnEntry>
 
-                        <DivCtnEntry>
-                            <LabelText>Check out date</LabelText>
-                            <InputDate name="check_out_date" value={dateFormatToYYYYMMDD(bookingUpdated.check_out_date)} type="date" onChange={handleCheckOutDateChange} />
-                        </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Check out date</LabelText>
+                        <InputDate name="check_out_date" value={dateFormatToYYYYMMDD(bookingUpdated.check_out_date)} type="date" onChange={handleCheckOutDateChange} />
+                    </DivCtnEntry>
 
-                        <DivCtnEntry>
-                            <LabelText>Check out time</LabelText>
-                            <InputDate name="check_out_time" value={hourFormatTo24H(bookingUpdated.check_out_time)} type="time" onChange={handleCheckOutTimeChange} />
-                        </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Check out time</LabelText>
+                        <InputDate name="check_out_time" value={hourFormatTo24H(bookingUpdated.check_out_time)} type="time" onChange={handleCheckOutTimeChange} />
+                    </DivCtnEntry>
 
-                        <DivCtnEntry>
-                            <LabelText>Special request</LabelText>
-                            <TextAreaJobDescription name="special_request" type='text' value={bookingUpdated.special_request} onChange={handleSpecialRequestChange} ></TextAreaJobDescription>
-                        </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Special request</LabelText>
+                        <TextAreaJobDescription name="special_request" type='text' value={bookingUpdated.special_request} onChange={handleSpecialRequestChange} ></TextAreaJobDescription>
+                    </DivCtnEntry>
 
-                        <DivCtnEntry>
-                            <LabelText>Room number</LabelText>
-                            <Select name="room_id" value={bookingUpdated.room_id} onChange={handleIdRoomChange}>
-                                <Option value={bookingUpdated.room_id}>{bookingUpdated.room_id}</Option>
-                                {roomAll.map((room, index) => (
-                                    room.booking_list.length !== 0 || room.id === bookingUpdated.room_id ?
-                                        <></> :
-                                        <Option key={index} value={room.id}>{room.id}</Option>
-                                ))}
-                            </Select>
-                        </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Room number</LabelText>
+                        <Select name="room_id" value={bookingUpdated.room_id} onChange={handleIdRoomChange}>
+                            {roomAll.map((room, index) => (
+                                <Option key={index} value={room.id}>{room.id}</Option>
+                            ))}
+                        </Select>
+                    </DivCtnEntry>
 
-                        <DivCtnEntry>
-                            <LabelText>Booking Status</LabelText>
-                            <Select name="room_booking_status" value={bookingUpdated.room_booking_status} onChange={handleBookingRoomStatusChange}>
-                                <Option value='Check In'>Check In</Option>
-                                <Option value='Check Out'>Check Out</Option>
-                                <Option value='In Progress'>In Progress</Option>
-                            </Select>
-                        </DivCtnEntry>
+                    <DivCtnEntry>
+                        <LabelText>Booking Status</LabelText>
+                        <Select name="room_booking_status" value={bookingUpdated.room_booking_status} onChange={handleBookingRoomStatusChange}>
+                            <Option value='Check In'>Check In</Option>
+                            <Option value='Check Out'>Check Out</Option>
+                            <Option value='In Progress'>In Progress</Option>
+                        </Select>
+                    </DivCtnEntry>
 
-                        <DivButtonCreateUser>
-                            <ButtonCreate type="submit" children='⮂ Update Booking' fontSize='1.25em'></ButtonCreate>
-                        </DivButtonCreateUser>
-                    </Form>
-                </DivCtnForm>
-            </bookingUpdateJS.SectionPageBookingUpdate>
+                    <DivButtonCreateUser>
+                        <ButtonCreate type="submit" children='⮂ Update Booking' fontSize='1.25em'></ButtonCreate>
+                    </DivButtonCreateUser>
+                </Form>
+            </DivCtnForm>
+        </bookingUpdateJS.SectionPageBookingUpdate>
 
-    )
+    </>)
 }

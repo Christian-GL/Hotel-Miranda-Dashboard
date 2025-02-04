@@ -11,10 +11,10 @@ import { applyDiscount } from "../common/utils/tableUtils.js"
 import { usePagination } from "../common/hooks/usePagination.js"
 import * as paginationJS from '../common/styles/pagination.js'
 import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
-import { getRoomAllData, getRoomAllStatus, getRoomError } from "./features/roomSlice.js";
+import { getRoomAllData, getRoomAllStatus } from "./features/roomSlice.js";
 import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.js"
 import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.js"
-import { getBookingAllData, getBookingAllStatus, getBookingError } from "../booking/features/bookingSlice.js"
+import { getBookingAllData, getBookingAllStatus } from "../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../booking/features/thunks/bookingFetchAllThunk.js"
 import { BookingDeleteByIdThunk } from "../booking/features/thunks/bookingDeleteByIdThunk.js"
 

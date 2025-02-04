@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { UserFetchAllThunk } from './thunks/userFetchAllThunk'
 import { UserFetchByIDThunk } from './thunks/userFetchByIDThunk'
 import { UserCreateThunk } from './thunks/userCreateThunk'
-import { UserUpdateByIdThunk } from './thunks/userUpdateByIdThunk'
+import { UserUpdateThunk } from './thunks/userUpdateThunk'
 import { UserDeleteByIdThunk } from './thunks/userDeleteByIdThunk'
 
 
@@ -59,10 +59,10 @@ export const UserSlice = createSlice({
             })
 
 
-            .addCase(UserUpdateByIdThunk.pending, (state) => {
+            .addCase(UserUpdateThunk.pending, (state) => {
                 state.updateStatus = 'pending'
             })
-            .addCase(UserUpdateByIdThunk.fulfilled, (state, action) => {
+            .addCase(UserUpdateThunk.fulfilled, (state, action) => {
                 state.updateStatus = 'fulfilled'
                 const userToUpdate = action.payload
                 const index = state.allData.findIndex(user => user.id === userToUpdate.id)
@@ -73,7 +73,7 @@ export const UserSlice = createSlice({
                     state.idData = userToUpdate
                 }
             })
-            .addCase(UserUpdateByIdThunk.rejected, (state) => {
+            .addCase(UserUpdateThunk.rejected, (state) => {
                 state.error = true
                 state.updateStatus = 'rejected'
             })

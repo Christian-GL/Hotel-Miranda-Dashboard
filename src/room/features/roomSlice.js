@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RoomFetchAllThunk } from './thunks/roomFetchAllThunk';
 import { RoomFetchByIDThunk } from './thunks/roomFetchByIDThunk';
 import { RoomCreateThunk } from './thunks/roomCreateThunk';
-import { RoomUpdateByIdThunk } from './thunks/roomUpdateByIdThunk';
+import { RoomUpdateThunk } from './thunks/roomUpdateThunk';
 import { RoomDeleteByIdThunk } from './thunks/roomDeleteByIdThunk'
 
 
@@ -59,10 +59,10 @@ export const RoomSlice = createSlice({
             })
 
 
-            .addCase(RoomUpdateByIdThunk.pending, (state) => {
+            .addCase(RoomUpdateThunk.pending, (state) => {
                 state.updateStatus = 'pending'
             })
-            .addCase(RoomUpdateByIdThunk.fulfilled, (state, action) => {
+            .addCase(RoomUpdateThunk.fulfilled, (state, action) => {
                 state.updateStatus = 'fulfilled'
                 const roomToUpdate = action.payload;
                 const index = state.allData.findIndex(room => room.id === roomToUpdate.id);
@@ -73,7 +73,7 @@ export const RoomSlice = createSlice({
                     state.idData = roomToUpdate;
                 }
             })
-            .addCase(RoomUpdateByIdThunk.rejected, (state) => {
+            .addCase(RoomUpdateThunk.rejected, (state) => {
                 state.error = true
                 state.updateStatus = 'rejected'
             })

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { ContactFetchAllThunk } from './thunks/contactFetchAllThunk'
 import { ContactFetchByIDThunk } from './thunks/contactFetchByIDThunk'
 import { ContactCreateThunk } from './thunks/contactCreateThunk'
-import { ContactUpdateByIdThunk } from './thunks/contactUpdateByIdThunk'
+import { ContactUpdateThunk } from './thunks/contactUpdateThunk'
 import { ContactDeleteByIdThunk } from './thunks/contactDeleteByIdThunk'
 
 
@@ -80,10 +80,10 @@ export const ContactSlice = createSlice({
                 state.createStatus = 'rejected'
             })
 
-            .addCase(ContactUpdateByIdThunk.pending, (state) => {
+            .addCase(ContactUpdateThunk.pending, (state) => {
                 state.updateStatus = 'pending'
             })
-            .addCase(ContactUpdateByIdThunk.fulfilled, (state, action) => {
+            .addCase(ContactUpdateThunk.fulfilled, (state, action) => {
                 state.updateStatus = 'fulfilled'
                 const contactToUpdate = action.payload
                 const index = state.allData.findIndex(contact => contact.id === contactToUpdate.id)
@@ -103,7 +103,7 @@ export const ContactSlice = createSlice({
                     state.archived[archivedIndex] = contactToUpdate
                 }
             })
-            .addCase(ContactUpdateByIdThunk.rejected, (state) => {
+            .addCase(ContactUpdateThunk.rejected, (state) => {
                 state.error = true
                 state.updateStatus = 'rejected'
             })

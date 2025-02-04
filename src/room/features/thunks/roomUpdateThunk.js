@@ -2,14 +2,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
-export const BookingUpdateByIdThunk = createAsyncThunk("booking/updateById", async (bookingIdToUpdate) => {
+export const RoomUpdateThunk = createAsyncThunk("room/update", async (roomData) => {
 
     try {
         const request = await new Promise((resolve) => {
-            if (bookingIdToUpdate) {
+            if (roomData) {
                 setTimeout(() => resolve({
                     ok: true,
-                    json: () => bookingIdToUpdate
+                    json: () => roomData
                 }), 200)
             }
             else {
@@ -22,8 +22,8 @@ export const BookingUpdateByIdThunk = createAsyncThunk("booking/updateById", asy
         })
 
         if (request.ok) {
-            const bookingDataUpdated = await request.json()
-            return bookingDataUpdated
+            const roomDataUpdated = await request.json()
+            return roomDataUpdated
         }
         else return {}
     }

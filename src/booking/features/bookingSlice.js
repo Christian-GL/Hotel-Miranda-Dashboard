@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { BookingFetchAllThunk } from './thunks/bookingFetchAllThunk'
 import { BookingFetchByIDThunk } from './thunks/bookingFetchByIDThunk'
 import { BookingCreateThunk } from './thunks/bookingCreateThunk'
-import { BookingUpdateByIdThunk } from './thunks/bookingUpdateByIdThunk'
+import { BookingUpdateThunk } from './thunks/bookingUpdateThunk'
 import { BookingDeleteByIdThunk } from './thunks/bookingDeleteByIdThunk'
 
 
@@ -63,10 +63,10 @@ export const BookingSlice = createSlice({
             })
 
 
-            .addCase(BookingUpdateByIdThunk.pending, (state) => {
+            .addCase(BookingUpdateThunk.pending, (state) => {
                 state.updateStatus = 'pending'
             })
-            .addCase(BookingUpdateByIdThunk.fulfilled, (state, action) => {
+            .addCase(BookingUpdateThunk.fulfilled, (state, action) => {
                 state.updateStatus = 'fulfilled'
                 const bookingToUpdate = action.payload
                 const index = state.allData.findIndex(booking => booking.id === bookingToUpdate.id)
@@ -77,7 +77,7 @@ export const BookingSlice = createSlice({
                     state.idData = bookingToUpdate
                 }
             })
-            .addCase(BookingUpdateByIdThunk.rejected, (state) => {
+            .addCase(BookingUpdateThunk.rejected, (state) => {
                 state.error = true
                 state.updateStatus = 'rejected'
             })

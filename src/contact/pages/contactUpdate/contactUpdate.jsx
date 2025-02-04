@@ -11,7 +11,7 @@ import {
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getContactIdData, getContactIdStatus, getContactError } from "../../../contact/features/contactSlice.js"
 import { ContactFetchByIDThunk } from "../../../contact/features/thunks/contactFetchByIDThunk.js"
-import { ContactUpdateByIdThunk } from '../../../contact/features/thunks/contactUpdateByIdThunk.js'
+import { ContactUpdateThunk } from '../../../contact/features/thunks/contactUpdateThunk.js'
 
 
 export const ContactUpdate = () => {
@@ -79,7 +79,7 @@ export const ContactUpdate = () => {
     }
     const handleSubmit = e => {
         e.preventDefault();
-        dispatch(ContactUpdateByIdThunk(contactUpdated))
+        dispatch(ContactUpdateThunk(contactUpdated))
 
             .then(() => {
                 alert(`Contact #${contactUpdated.id} updated`)

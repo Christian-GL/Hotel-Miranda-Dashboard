@@ -3,10 +3,9 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as bookingCreateJS from "./bookingCreate.js"
-import { hourFormatTo12H, hourFormatTo24H, dateFormatToYYYYMMDD, checkName, checkCheckOut, checkCheckIn } from '../../../common/utils/formUtils.js'
-import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/utils/formUtils.js'
+import { checkFirstIDAvailable, getActualDate, getActualTime, hourFormatTo12H, hourFormatTo24H, dateFormatToYYYYMMDD } from '../../../common/utils/formUtils.js'
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
+    GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, LabelTextNote, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
 } from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
@@ -15,7 +14,7 @@ import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFe
 import { BookingCreateThunk } from "../../../booking/features/thunks/bookingCreateThunk.js"
 import { getRoomAllData, getRoomAllStatus, getRoomError } from '../../../room/features/roomSlice.js'
 import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk.js'
-import { RoomUpdateByIdThunk } from "../../../room/features/thunks/roomUpdateByIdThunk.js"
+import { RoomUpdateThunk } from "../../../room/features/thunks/roomUpdateThunk.js"
 
 
 export const BookingCreate = () => {
@@ -158,7 +157,7 @@ export const BookingCreate = () => {
                 ...getRoomById(newBooking.room_id),
                 booking_list: [
                     ...getRoomById(newBooking.room_id).booking_list,
-                    newBooking.room_id
+                    nextIdAvailable
                 ]
             }
 
@@ -169,9 +168,9 @@ export const BookingCreate = () => {
                 .catch((error) => {
                     alert('Error creating the booking: ', error)
                 })
-            dispatch(RoomUpdateByIdThunk(roomUpdatedToDispatch))
+            dispatch(RoomUpdateThunk(roomUpdatedToDispatch))
                 .then(() => {
-                    alert(`Room #${newBooking.room_id} booking status updated to [${roomUpdatedToDispatch.booking_list}]`)
+                    alert(`Room #${roomUpdatedToDispatch.id} booking list updated to [${roomUpdatedToDispatch.booking_list}]`)
                 })
                 .catch((error) => {
                     alert(`Error updating the room ${roomUpdatedToDispatch.id}: `, error)
@@ -182,7 +181,7 @@ export const BookingCreate = () => {
 
     const checkIsOccupied = () => {
 
-        const room = roomAll.find(room => room.id === newBooking.room_id)
+        const room = roomAll.find(room => room.id === nextIdAvailable)
         const bookings = bookingAll.filter(booking => room.booking_list.includes(booking.id))
 
         const bookingDataCheckIn = new Date(`${dateFormatToYYYYMMDD(newBooking.check_in_date)}T${hourFormatTo24H(newBooking.check_in_time)}:00`)
@@ -200,10 +199,13 @@ export const BookingCreate = () => {
 
     const checkAllData = (bookingData) => {
         checkName(bookingData.full_name_guest)
+        //Resto de checks de campos
     }
 
 
-    return (
+    return (<>
+
+        <GlobalDateTimeStyles />
 
         <bookingCreateJS.SectionPageBookingCreate>
             <DivCtnForm>
@@ -256,13 +258,8 @@ export const BookingCreate = () => {
                         <LabelText>Room number</LabelText>
                         <Select name="room_id" onChange={handleIdRoomChange}>
                             <Option value="null" selected></Option>
-                            {/* {roomAll.map((room, index) => (
-                                room.booking_list.length !== 0 ?
-                                    <></> :
-                                    <Option key={index} value={room.id}>{room.id}</Option>
-                            ))} */}
                             {roomAll.map((room, index) => (
-                                <Option key={index} value={room.id}>{room.id}</Option>
+                                <Option key={index}>{room.id}</Option>
                             ))}
                         </Select>
                         {/* <LabelTextNote><b>* Check in date/time</b> and <b>Check out date/time</b> must be especified before</LabelTextNote> */}
@@ -285,5 +282,5 @@ export const BookingCreate = () => {
             </DivCtnForm>
         </bookingCreateJS.SectionPageBookingCreate>
 
-    )
+    </>)
 }

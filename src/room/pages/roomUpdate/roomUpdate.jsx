@@ -15,7 +15,7 @@ import {
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getRoomIdData, getRoomIdStatus, getRoomError } from "../../features/roomSlice.js"
 import { RoomFetchByIDThunk } from "../../features/thunks/roomFetchByIDThunk.js"
-import { RoomUpdateByIdThunk } from '../../features/thunks/roomUpdateByIdThunk.js'
+import { RoomUpdateThunk } from '../../features/thunks/roomUpdateThunk.js'
 
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "../../../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.js"
@@ -63,7 +63,7 @@ export const RoomUpdate = () => {
             })
         }
         else if (roomByIdLoading === "rejected") { alert("Error en la api de rooms") }
-    }, [roomByIdLoading, roomById])
+    }, [roomByIdLoading, roomById, bookingAllLoading, bookingAll])
     useEffect(() => {
         if (bookingAllLoading === "idle") { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === "fulfilled") { }
@@ -138,7 +138,7 @@ export const RoomUpdate = () => {
     }
     const handleSubmit = e => {
         e.preventDefault()
-        dispatch(RoomUpdateByIdThunk(roomUpdated))
+        dispatch(RoomUpdateThunk(roomUpdated))
             .then(() => {
                 alert(`Room #${roomUpdated.id} updated`)
             })
@@ -234,7 +234,13 @@ export const RoomUpdate = () => {
                                     (bookingAll.filter(booking => roomUpdated.booking_list.includes(booking.id))
                                         .map((booking, index) => (
                                             <LabelBookings key={index}>
-                                                <b>Booking #{booking.id} -</b> {booking.check_in_date} {booking.check_in_time} ⭢ {booking.check_out_date} {booking.check_out_time}
+                                                <b>Booking #{booking.id}
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                                                {booking.check_in_date} {booking.check_in_time}
+                                                &nbsp;&nbsp;⭢&nbsp;&nbsp;
+                                                {booking.check_out_date} {booking.check_out_time}
+                                                <b>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                                                {booking.room_booking_status}
                                             </LabelBookings>
                                         )))
                             }

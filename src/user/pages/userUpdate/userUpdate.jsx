@@ -7,13 +7,13 @@ import { useParams } from "react-router-dom"
 import * as userUpdateJS from "./userUpdate.js"
 import { dateFormatToYYYYMMDD, dateFormatToDDMMYYYY } from '../../../common/utils/formUtils.js'
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
+    GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
 } from "../../../common/styles/form.js"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
 import { getUserIdData, getUserIdStatus, getUserError } from "../../features/userSlice.js"
 import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk.js"
-import { UserUpdateByIdThunk } from "../../features/thunks/userUpdateByIdThunk.js"
+import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk.js"
 
 
 export const UserUpdate = () => {
@@ -107,7 +107,7 @@ export const UserUpdate = () => {
     }
     const handleSubmit = e => {
         e.preventDefault()
-        dispatch(UserUpdateByIdThunk(userUpdated))
+        dispatch(UserUpdateThunk(userUpdated))
             .then(() => {
                 alert(`User #${userUpdated.id} updated`)
             })
@@ -116,7 +116,9 @@ export const UserUpdate = () => {
             })
     }
 
-    return (
+    return (<>
+
+        <GlobalDateTimeStyles />
 
         <userUpdateJS.SectionPageUserUpdate>
             <DivCtnForm>
@@ -175,5 +177,5 @@ export const UserUpdate = () => {
             </DivCtnForm>
         </userUpdateJS.SectionPageUserUpdate>
 
-    )
+    </>)
 }
