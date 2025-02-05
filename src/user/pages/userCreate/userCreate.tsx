@@ -1,24 +1,29 @@
 
+import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as userCreateJS from "./userCreate.js"
+import * as userCreateStyles from "./userCreate.ts"
+import { AppDispatch } from "../../../common/redux/store.ts"
+import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
+import { UserInterface } from "../../interfaces/userInterface.ts"
 import { checkFirstIDAvailable } from '../../../common/utils/formUtils.js'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
-} from "../../../common/styles/form.js"
+} from "../../../common/styles/form.ts"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getUserAllData, getUserAllStatus, getUserError } from "../../features/userSlice.tsx"
-import { UserFetchAllThunk } from "../../features/thunks/userFetchAllThunk.js"
-import { UserCreateThunk } from "../../features/thunks/userCreateThunk.js"
+import { getUserAllData, getUserAllStatus } from "../../features/userSlice.ts"
+import { UserFetchAllThunk } from "../../features/thunks/userFetchAllThunk.ts"
+import { UserCreateThunk } from "../../features/thunks/userCreateThunk.ts"
 
 
 export const UserCreate = () => {
 
+    const dispatch = useDispatch<AppDispatch>()
     const userAll = useSelector(getUserAllData) || []
     const userAllLoading = useSelector(getUserAllStatus)
-    const [newUser, setNewUser] = useState({
+    const [newUser, setNewUser] = useState<UserInterface>({
         id: 0,
         photo: '',
         full_name: '',
@@ -28,12 +33,11 @@ export const UserCreate = () => {
         phone_number: '',
         status_active: false
     })
-    const [nextIdAvailable, setNextIdAvailable] = useState(null)
+    const [nextIdAvailable, setNextIdAvailable] = useState<number>(0)
 
-    const dispatch = useDispatch()
     useEffect(() => {
-        if (userAllLoading === "idle") { dispatch(UserFetchAllThunk()) }
-        else if (userAllLoading === "fulfilled") {
+        if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
+        else if (userAllLoading === ApiStatus.fulfilled) {
             if (userAll.length > 0) {
                 const id = checkFirstIDAvailable(userAll)
                 setNextIdAvailable(id)
@@ -42,12 +46,12 @@ export const UserCreate = () => {
                 setNextIdAvailable(1)
             }
         }
-        else if (userAllLoading === "rejected") { alert("Error en la api") }
+        else if (userAllLoading === ApiStatus.rejected) { alert("Error en la api de user create") }
     }, [userAllLoading, userAll])
 
-    const handlePhotoChange = (e) => {
+    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files } = e.target
-        if (files[0]) {
+        if (files && files[0]) {
             const photoUrl = URL.createObjectURL(files[0])
             setNewUser({
                 ...newUser,
@@ -55,21 +59,21 @@ export const UserCreate = () => {
             })
         }
     }
-    const handleFullNameChange = (e) => {
+    const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewUser({
             ...newUser,
             [name]: value
         })
     }
-    const handleEmailChange = (e) => {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewUser({
             ...newUser,
             [name]: value
         })
     }
-    const handleStartDateChange = (e) => {
+    const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         const [year, month, day] = value.split("-")
         const dateFormatted = `${day}-${month}-${year}`
@@ -78,28 +82,28 @@ export const UserCreate = () => {
             [name]: dateFormatted
         })
     }
-    const handleDescriptionChange = (e) => {
+    const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setNewUser({
             ...newUser,
             [name]: value
         })
     }
-    const handleContactChange = (e) => {
+    const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewUser({
             ...newUser,
             [name]: value
         })
     }
-    const handleStatusActiveChange = (e) => {
+    const handleStatusActiveChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setNewUser({
             ...newUser,
             [name]: value === 'false' ? false : true
         })
     }
-    const handleSubmit = e => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const newUserToDispatch = {
             ...newUser,
@@ -110,15 +114,16 @@ export const UserCreate = () => {
                 alert(`User #${newUserToDispatch.id} created`)
             })
             .catch((error) => {
-                alert('Error creating the user: ', error)
+                alert(error)
             })
     }
+
 
     return (<>
 
         <GlobalDateTimeStyles />
 
-        <userCreateJS.SectionPageUserCreate>
+        <userCreateStyles.SectionPageUserCreate>
             <DivCtnForm>
                 <DivIcon>
                     <DivCtnIcons>
@@ -152,7 +157,7 @@ export const UserCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Job Description</LabelText>
-                        <TextAreaJobDescription name="description" type='text' onChange={handleDescriptionChange}></TextAreaJobDescription>
+                        <TextAreaJobDescription name="description" onChange={handleDescriptionChange}></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivCtnEntry>
@@ -164,8 +169,8 @@ export const UserCreate = () => {
                         <LabelText>Status</LabelText>
                         <Select name="status_active" onChange={handleStatusActiveChange}>
                             <Option value="null" selected></Option>
-                            <Option value={true}>Active</Option>
-                            <Option value={false}>Inactive</Option>
+                            <Option value="true">Active</Option>
+                            <Option value="false">Inactive</Option>
                         </Select>
                     </DivCtnEntry>
 
@@ -174,7 +179,7 @@ export const UserCreate = () => {
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>
-        </userCreateJS.SectionPageUserCreate>
+        </userCreateStyles.SectionPageUserCreate>
 
     </>)
 }

@@ -11,7 +11,7 @@ import { RoomType } from "../../data/roomType.ts"
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form, ImgRoom, DivCtnEntry,
     LabelText, DivCtnEntryBookings, LabelBookings, LabelTextBookingStatus, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
-} from "../../../common/styles/form.js"
+} from "../../../common/styles/form.ts"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
 import { getRoomIdData, getRoomIdStatus, getRoomError } from "../../features/roomSlice.js"
 import { RoomFetchByIDThunk } from "../../features/thunks/roomFetchByIDThunk.js"

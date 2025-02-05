@@ -8,9 +8,9 @@ import { TableDisplayIndicator } from "../common/components/tableDisplaySelector
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
 import { applyDiscount } from "../common/utils/tableUtils.js"
-import { usePagination } from "../common/hooks/usePagination.js"
-import * as paginationJS from '../common/styles/pagination.tsx'
-import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.styles.tsx"
+import { usePagination } from "../common/hooks/usePagination.ts"
+import * as paginationJS from '../common/styles/pagination.ts'
+import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/tableStyles.ts"
 import { getRoomAllData, getRoomAllStatus } from "./features/roomSlice.js";
 import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.js"
 import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.js"

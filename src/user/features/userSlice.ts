@@ -1,14 +1,14 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { ApiStatus } from '../../common/enums/ApiStatus'
-import { UserInterface } from '../interfaces/user.interface'
-import { RootState } from '../../common/redux/store'
-import { UserFetchAllThunk } from './thunks/userFetchAllThunk'
-import { UserFetchByIDThunk } from './thunks/userFetchByIDThunk'
-import { UserCreateThunk } from './thunks/userCreateThunk'
-import { UserUpdateThunk } from './thunks/userUpdateThunk'
-import { UserDeleteByIdThunk } from './thunks/userDeleteByIdThunk'
+import { ApiStatus } from '../../common/enums/ApiStatus.ts'
+import { UserInterface } from '../interfaces/userInterface.ts'
+import { RootState } from '../../common/redux/store.ts'
+import { UserFetchAllThunk } from './thunks/userFetchAllThunk.ts'
+import { UserFetchByIDThunk } from './thunks/userFetchByIDThunk.ts'
+import { UserCreateThunk } from './thunks/userCreateThunk.ts'
+import { UserUpdateThunk } from './thunks/userUpdateThunk.ts'
+import { UserDeleteByIdThunk } from './thunks/userDeleteByIdThunk.ts'
 
 
 export const UserSlice = createSlice({
@@ -101,7 +101,7 @@ export const UserSlice = createSlice({
 })
 
 export const getUserAllData = (state: RootState): UserInterface[] => state.userSlice.allData
-export const getUserIdData = (state: RootState) => state.userSlice.idData
+export const getUserIdData = (state: RootState): UserInterface | null => state.userSlice.idData
 
 export const getUserAllStatus = (state: RootState) => state.userSlice.allStatus
 export const getUserIdStatus = (state: RootState) => state.userSlice.idStatus

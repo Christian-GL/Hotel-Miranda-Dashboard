@@ -9,7 +9,7 @@ import { checkFirstIDAvailable } from '../../../common/utils/formUtils.js'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconPlus, TitleForm, Form, ImgRoom, DivCtnEntry,
     LabelText, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
-} from "../../../common/styles/form.js"
+} from "../../../common/styles/form.ts"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
 import { getRoomAllData, getRoomAllStatus, getRoomError } from "../../features/roomSlice.js"
 import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk.js"

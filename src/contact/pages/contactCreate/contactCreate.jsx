@@ -8,7 +8,7 @@ import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../co
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconPlus, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
-} from "../../../common/styles/form.js"
+} from "../../../common/styles/form.ts"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
 import { getContactAllData, getContactAllStatus, getContactError } from "../../../contact/features/contactSlice.js"
 import { ContactFetchAllThunk } from "../../../contact/features/thunks/contactFetchAllThunk.js"

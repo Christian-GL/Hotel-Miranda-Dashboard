@@ -1,28 +1,32 @@
 
-
+import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
-import * as userUpdateJS from "./userUpdate.js"
+import * as userUpdateStyles from "./userUpdate.ts"
+import { AppDispatch } from "../../../common/redux/store.ts"
+import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
+import { UserInterface } from "../../interfaces/userInterface.ts"
 import { dateFormatToYYYYMMDD, dateFormatToDDMMYYYY } from '../../../common/utils/formUtils.js'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
-} from "../../../common/styles/form.js"
+} from "../../../common/styles/form.ts"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getUserIdData, getUserIdStatus, getUserError } from "../../features/userSlice.tsx"
-import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk.js"
-import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk.js"
+import { getUserIdData, getUserIdStatus } from "../../features/userSlice.ts"
+import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk.ts"
+import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk.ts"
 
 
 export const UserUpdate = () => {
 
     const { id } = useParams()
-    const dispatch = useDispatch()
-    const userById = useSelector(getUserIdData) || []
+    const idParams = parseInt(id!)
+    const dispatch = useDispatch<AppDispatch>()
+    const userById = useSelector(getUserIdData)
     const userByIdLoading = useSelector(getUserIdStatus)
-    const [userUpdated, setUserUpdated] = useState({
+    const [userUpdated, setUserUpdated] = useState<UserInterface>({
         id: 0,
         photo: '',
         full_name: '',
@@ -34,28 +38,30 @@ export const UserUpdate = () => {
     })
 
     useEffect(() => {
-        dispatch(UserFetchByIDThunk(parseInt(id)))
+        dispatch(UserFetchByIDThunk(idParams))
     }, [id, dispatch])
     useEffect(() => {
-        if (userByIdLoading === "idle") { dispatch(UserFetchByIDThunk(parseInt(id))) }
-        else if (userByIdLoading === "fulfilled") {
-            setUserUpdated({
-                id: userById.id,
-                photo: userById.photo || '',
-                full_name: userById.full_name || '',
-                email: userById.email || '',
-                start_date: userById.start_date || '',
-                description: userById.description || '',
-                phone_number: userById.phone_number || '',
-                status_active: userById.status_active || false
-            })
+        if (userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(idParams)) }
+        else if (userByIdLoading === ApiStatus.fulfilled) {
+            if (userById) {         // Comprobación necesaria al poder devolver null el Slice
+                setUserUpdated({
+                    id: userById.id,
+                    photo: userById.photo || '',
+                    full_name: userById.full_name || '',
+                    email: userById.email || '',
+                    start_date: userById.start_date || '',
+                    description: userById.description || '',
+                    phone_number: userById.phone_number || '',
+                    status_active: userById.status_active || false
+                })
+            }
         }
-        else if (userByIdLoading === "rejected") { alert("Error en la api") }
+        else if (userByIdLoading === ApiStatus.rejected) { alert("Error en la api") }
     }, [userByIdLoading, userById])
 
-    const handlePhotoChange = (e) => {
+    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files } = e.target
-        if (files[0]) {
+        if (files && files[0]) {
             const photoUrl = URL.createObjectURL(files[0])
             setUserUpdated({
                 ...userUpdated,
@@ -63,56 +69,56 @@ export const UserUpdate = () => {
             })
         }
     }
-    const handleFullNameChange = (e) => {
+    const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
             [name]: value
         })
     }
-    const handleEmailChange = (e) => {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
             [name]: value
         })
     }
-    const handleStartDateChange = (e) => {
+    const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
             [name]: dateFormatToDDMMYYYY(value),
         })
     }
-    const handleDescriptionChange = (e) => {
+    const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
             [name]: value
         })
     }
-    const handleContactChange = (e) => {
+    const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
             [name]: value
         })
     }
-    const handleStatusActiveChange = (e) => {
+    const handleStatusActiveChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
             [name]: value === 'false' ? false : true
         })
     }
-    const handleSubmit = e => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(UserUpdateThunk(userUpdated))
             .then(() => {
                 alert(`User #${userUpdated.id} updated`)
             })
             .catch((error) => {
-                alert(`Error updating the user #${userUpdated.id}: `, error)
+                alert(error)
             })
     }
 
@@ -120,7 +126,7 @@ export const UserUpdate = () => {
 
         <GlobalDateTimeStyles />
 
-        <userUpdateJS.SectionPageUserUpdate>
+        <userUpdateStyles.SectionPageUserUpdate>
             <DivCtnForm>
                 <DivIcon>
                     <DivCtnIcons>
@@ -154,7 +160,7 @@ export const UserUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Job Description</LabelText>
-                        <TextAreaJobDescription name="description" type='text' value={userUpdated.description} onChange={handleDescriptionChange}></TextAreaJobDescription>
+                        <TextAreaJobDescription name="description" value={userUpdated.description} onChange={handleDescriptionChange}></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivCtnEntry>
@@ -164,9 +170,9 @@ export const UserUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Status</LabelText>
-                        <Select name="status_active" value={userUpdated.status_active} onChange={handleStatusActiveChange}>
-                            <Option value={true}>Active</Option>
-                            <Option value={false}>Inactive</Option>
+                        <Select name="status_active" value={userUpdated.status_active ? "true" : "false"} onChange={handleStatusActiveChange}>
+                            <Option value="true">Active</Option>
+                            <Option value="false">Inactive</Option>
                         </Select>
                     </DivCtnEntry>
 
@@ -175,7 +181,7 @@ export const UserUpdate = () => {
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>
-        </userUpdateJS.SectionPageUserUpdate>
+        </userUpdateStyles.SectionPageUserUpdate>
 
     </>)
 }

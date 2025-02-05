@@ -1,8 +1,8 @@
 
 import React from 'react'
 
-import { DisplayIndicator } from './tableDisplaySelector.styles.tsx'
-import { TableDisplaySelectorInterface } from './tableDisplaySelector.interface.ts'
+import { DisplayIndicator } from './tableDisplaySelectorStyles.ts'
+import { TableDisplaySelectorInterface } from './tableDisplaySelectorInterface.ts'
 
 
 // CAMBIAR NOMBRE DE INDICATOR a SELECTOR !!!!!!!!!!!!!

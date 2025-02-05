@@ -1,13 +1,13 @@
 
 import { styled } from 'styled-components'
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 
-import { FaUser } from "react-icons/fa";
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { MdOutlineBedroomParent } from "react-icons/md";
-import { BiSolidPlusCircle } from "react-icons/bi";
-import { RiExchangeFill } from "react-icons/ri";
-import { MdContacts } from "react-icons/md";
+import { FaUser } from "react-icons/fa"
+import { FaRegCalendarAlt } from "react-icons/fa"
+import { MdOutlineBedroomParent } from "react-icons/md"
+import { BiSolidPlusCircle } from "react-icons/bi"
+import { RiExchangeFill } from "react-icons/ri"
+import { MdContacts } from "react-icons/md"
 
 import * as gb from './globalVars.js'
 
@@ -153,7 +153,7 @@ export const LabelBookings = styled.label`
     color: ${gb.colorBlack26};
 `
 
-export const LabelTextBookingStatus = styled.label`
+export const LabelTextBookingStatus = styled.label <{ color?: string }> `
     min-width: 10rem;
     font-family: ${gb.fontPoppins};
     font-size: 1em;

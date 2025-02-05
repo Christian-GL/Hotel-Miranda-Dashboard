@@ -1,11 +1,11 @@
 
 import React from 'react'
 
-import { ButtonCreateStyle } from './buttonCreate.styles.tsx'
-import { ButtonCreateInterface } from "./buttonCreate.inferface.ts"
+import { ButtonCreateStyle } from './buttonCreateStyles.ts'
+import { ButtonCreateInterface } from './buttonCreateInterface.ts'
 
 
-export const ButtonCreate: React.FC<ButtonCreateInterface> = ({ children, fontSize, onClick, ...rest }) => {
+export const ButtonCreate: React.FC<ButtonCreateInterface> = ({ onClick, children, fontSize, ...rest }) => {
 
     return (<>
 

@@ -1,10 +1,11 @@
 
 import { useState } from 'react'
 
+import { UserInterface } from '../../user/interfaces/userInterface.ts'
 
-export const usePagination = (data, itemsPerPage) => {
 
-    // const sortedData = [...data].sort((a, b) => a.id - b.id)
+export const usePagination = (data: UserInterface[], itemsPerPage: number) => {
+
     const sortedData = [...data]
 
     const [currentPage, setCurrentPage] = useState(1)

@@ -4,13 +4,13 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as userStyles from "./user.styles.tsx"
+import * as userStyles from "./userStyles.ts"
 import * as gb from '../common/styles/globalVars.js'
-import { AppDispatch } from '../common/redux/store.tsx'
-import { UserInterface } from "./interfaces/user.interface.js"
-import { RootState } from "../common/redux/store.tsx"
+import { AppDispatch } from '../common/redux/store.ts'
+import { ApiStatus } from "../common/enums/ApiStatus.ts"
+import { UserInterface } from "./interfaces/userInterface.ts"
 import { ArrowType } from "../common/enums/ArrowType.js"
-import { ColumnArrowStates } from "./interfaces/columnArrowStates.interface.js"
+import { UserColumnsArrowStatesInterface } from "./interfaces/userColumnsArrowStatesInterface.ts"
 import { dateFormatToYYYYMMDD } from "../common/utils/formUtils.js"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
@@ -18,12 +18,12 @@ import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableUser, PTable,
     PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption
-} from "../common/styles/table.styles.tsx"
-import { usePagination } from "../common/hooks/usePagination.js"
-import * as paginationStyles from '../common/styles/pagination.tsx'
-import { getUserAllData, getUserAllStatus } from "./features/userSlice.tsx"
-import { UserFetchAllThunk } from "./features/thunks/userFetchAllThunk.js"
-import { UserDeleteByIdThunk } from "./features/thunks/userDeleteByIdThunk.js"
+} from "../common/styles/tableStyles.ts"
+import { usePagination } from "../common/hooks/usePagination.ts"
+import * as paginationStyles from '../common/styles/pagination.ts'
+import { getUserAllData, getUserAllStatus } from "./features/userSlice.ts"
+import { UserFetchAllThunk } from "./features/thunks/userFetchAllThunk.ts"
+import { UserDeleteByIdThunk } from "./features/thunks/userDeleteByIdThunk.ts"
 
 
 export const User = () => {
@@ -46,7 +46,7 @@ export const User = () => {
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
-    const [arrowStates, setArrowStates] = useState<ColumnArrowStates>({
+    const [arrowStates, setArrowStates] = useState<UserColumnsArrowStatesInterface>({
         name: ArrowType.right,
         startDate: ArrowType.down
     })
@@ -61,9 +61,9 @@ export const User = () => {
     } = usePagination(filteredUsers, 10)
 
     useEffect(() => {
-        if (userAllLoading === "idle") { dispatch(UserFetchAllThunk()) }
-        else if (userAllLoading === "fulfilled") { displayEmployee() }
-        else if (userAllLoading === "rejected") { alert("Error en la api") }
+        if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
+        else if (userAllLoading === ApiStatus.fulfilled) { displayEmployee() }
+        else if (userAllLoading === ApiStatus.rejected) { alert("Error en la api de users") }
     }, [userAllLoading, userAll, inputText, selectedButton, arrowStates])
 
     const navigateToUserCreate = (): void => {
@@ -135,9 +135,7 @@ export const User = () => {
     }
     const handleColumnClick = (nameColumn: columnsSortAvailable) => {
         setArrowStates(prevState => {
-            const newState: ColumnArrowStates = { ...prevState }
-            console.log(nameColumn)
-            console.log(newState)
+            const newState: UserColumnsArrowStatesInterface = { ...prevState }
 
             if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
             else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
@@ -151,6 +149,12 @@ export const User = () => {
 
             return newState
         })
+
+        // HECTOR DIJO DE HACERLO ASIN PERO AUN NO SALE
+        // setArrowStates({
+        //     ...arrowStates,
+        //     [nameColumn]: arrowStates[nameColumn] === ArrowType.right || ArrowType.up ? ArrowType.down : ArrowType.up
+        // })
 
         handleTableFilter(selectedButton)
     }
@@ -244,7 +248,7 @@ export const User = () => {
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
                                 <ButtonOption onClick={() => { navigateToUserUpdate(userData.id) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteUserById(parseInt(userData.id), index) }}>Delete</ButtonOption>
+                                <ButtonOption onClick={() => { deleteUserById(userData.id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>
                     ]

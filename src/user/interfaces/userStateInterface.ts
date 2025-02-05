@@ -1,8 +1,8 @@
 
-import { UserInterface } from "./user.interface"
-import { ApiStatus } from "../../common/enums/ApiStatus"
+import { UserInterface } from "./userInterface.ts"
+import { ApiStatus } from "../../common/enums/ApiStatus.ts"
 
-export interface UserState {
+export interface UserStateInterface {
     allData: UserInterface[]
     idData: UserInterface | null
     allStatus: ApiStatus
