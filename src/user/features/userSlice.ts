@@ -2,6 +2,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { ApiStatus } from '../../common/enums/ApiStatus.ts'
+import { UserStateInterface } from '../interfaces/userStateInterface.ts'
 import { UserInterface } from '../interfaces/userInterface.ts'
 import { RootState } from '../../common/redux/store.ts'
 import { UserFetchAllThunk } from './thunks/userFetchAllThunk.ts'
@@ -22,7 +23,7 @@ export const UserSlice = createSlice({
         updateStatus: ApiStatus.idle,
         deleteStatus: ApiStatus.idle,
         error: false
-    },
+    } as UserStateInterface,
     reducers: {},
     extraReducers: (builder) => {
         builder

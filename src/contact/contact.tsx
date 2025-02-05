@@ -1,42 +1,60 @@
 
+import React from "react"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import * as contactJS from "./contact.js"
+import * as contactStyles from "./contactStyles.ts"
 import * as gb from '../common/styles/globalVars.js'
+import { AppDispatch } from '../common/redux/store.ts'
+import { ApiStatus } from "../common/enums/ApiStatus.ts"
+import { ContactInterface } from './interfaces/contactInterface.ts'
+import { ContactColumnsArrowStatesInterface } from './interfaces/contactColumnsArrowStatesInterface.ts'
+import { ArrowType } from "../common/enums/ArrowType.ts"
 import { dateFormatToYYYYMMDD, hourFormatTo24H } from "../common/utils/formUtils.js"
-import { ArticleReview } from "../common/components/articleReview/articleReview.jsx"
+import { ArticleReview } from "../common/components/articleReview/articleReview.tsx"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
-import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, PTable, IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/tableStyles.ts"
+import {
+    Table, THTable, TriangleUp, TriangleRight, TriangleDown, PTable,
+    IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption
+} from "../common/styles/tableStyles.ts"
 import { usePagination } from "../common/hooks/usePagination.ts"
 import * as paginationJS from '../common/styles/pagination.ts'
-import { getContactAllData, getContactAllStatus, getContactNotArchived, getContactArchived } from "./features/contactSlice.js"
-import { archiveContact, restoreContact } from "./features/contactSlice.js"
-import { ContactFetchAllThunk } from "./features/thunks/contactFetchAllThunk.js"
-import { ContactDeleteByIdThunk } from "./features/thunks/contactDeleteByIdThunk.js"
+import { getContactAllData, getContactAllStatus, getContactNotArchived, getContactArchived } from "./features/contactSlice.ts"
+import { archiveContact, restoreContact } from "./features/contactSlice.ts"
+import { ContactFetchAllThunk } from "./features/thunks/contactFetchAllThunk.ts"
+import { ContactDeleteByIdThunk } from "./features/thunks/contactDeleteByIdThunk.ts"
 
 
 export const Contact = () => {
 
     const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
+    enum ButtonType {
+        archived = "archived",
+        notArchived = "notarchived"
+    }
+    enum columnsSortAvailable {
+        orderId = 'orderId',
+        date = 'date',
+        customer = 'customer'
+    }
     const nameColumnList = ['Order ID', 'Date', 'Customer', 'Comment', 'Action', '']
     const contactAll = useSelector(getContactAllData)
     const contactAllLoading = useSelector(getContactAllStatus)
     const notArchived = useSelector(getContactNotArchived)
     const archived = useSelector(getContactArchived)
-    const [inputText, setInputText] = useState('')
-    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState()
-    const [filteredContacts, setFilteredContacts] = useState([])
-    const [selectedButton, setSelectedButton] = useState('notarchived')
-    const [arrowStates, setArrowStates] = useState({
-        orderId: 'right',
-        date: 'down',
-        customer: 'right'
+    const [inputText, setInputText] = useState<string>('')
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
+    const [filteredContacts, setFilteredContacts] = useState<ContactInterface[]>([])
+    const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.notArchived)
+    const [arrowStates, setArrowStates] = useState<ContactColumnsArrowStatesInterface>({
+        orderId: ArrowType.right,
+        date: ArrowType.down,
+        customer: ArrowType.right
     })
     const {
         currentPageItems,
@@ -49,78 +67,82 @@ export const Contact = () => {
     } = usePagination(filteredContacts, 10)
 
     useEffect(() => {
-        if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
-        else if (contactAllLoading === "fulfilled") {
-            selectedButton === 'notarchived' ?
+        if (contactAllLoading === ApiStatus.idle) { dispatch(ContactFetchAllThunk()) }
+        else if (contactAllLoading === ApiStatus.fulfilled) {
+            selectedButton === ButtonType.notArchived ?
                 displayNotArchivedContacts() :
                 displayArchivedContacts()
         }
-        else if (contactAllLoading === "rejected") { alert("Error en la api") }
+        else if (contactAllLoading === ApiStatus.rejected) { alert("Error en la api de contacts") }
     }, [contactAllLoading, contactAll, inputText, selectedButton, arrowStates])
     useEffect(() => {
-        selectedButton === 'notarchived' ?
+        selectedButton === ButtonType.notArchived ?
             displayNotArchivedContacts() :
             displayArchivedContacts()
     }, [notArchived])
     useEffect(() => {
-        selectedButton === 'notarchived' ?
+        selectedButton === ButtonType.notArchived ?
             displayNotArchivedContacts() :
             displayArchivedContacts()
     }, [archived])
 
-    const navigateToContactCreate = () => {
+    const navigateToContactCreate = (): void => {
         navigate('contact-create')
     }
-    const navigateToContactUpdate = (id) => {
+    const navigateToContactUpdate = (id: number): void => {
         navigate(`contact-update/${id}`)
     }
 
-    const handleInputTerm = (e) => {
+    const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
         resetPage()
     }
-    const handleTableFilter = (type) => {
+    const handleTableFilter = (type: ButtonType): void => {
         setSelectedButton(type)
-        type === 'notarchived' ?
+        type === ButtonType.notArchived ?
             displayNotArchivedContacts() :
             displayArchivedContacts()
     }
-    const displayNotArchivedContacts = () => {
+    const displayNotArchivedContacts = (): void => {
         const filteredData = notArchived.filter(contact =>
             contact.full_name.toLowerCase().includes(inputText.toLowerCase())
         )
         const sortedData = sortData(filteredData)
         setFilteredContacts(sortedData)
     }
-    const displayArchivedContacts = () => {
+    const displayArchivedContacts = (): void => {
         const filteredData = archived.filter(contact =>
             contact.full_name.toLowerCase().includes(inputText.toLowerCase())
         )
         const sortedData = sortData(filteredData)
         setFilteredContacts(sortedData)
     }
-    const sortData = (filteredData) => {
-        const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== 'right')
-        let sortedData
+    const sortData = (filteredData: ContactInterface[]): ContactInterface[] => {
+        const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
+        let sortedData: ContactInterface[] = [...filteredData]
         if (activeColumn) {
-            sortedData = filteredData.sort((a, b) => {
-                let valueA
-                let valueB
+            sortedData.sort((a, b) => {
+                let valueA: number | string | Date
+                let valueB: number | string | Date
 
-                if (activeColumn === 'orderId') {
+                if (activeColumn === columnsSortAvailable.orderId) {
                     valueA = a.id
                     valueB = b.id
                 }
-                else if (activeColumn === 'date') {
+                else if (activeColumn === columnsSortAvailable.date) {
                     valueA = new Date(dateFormatToYYYYMMDD(a.publish_date) + ' ' + hourFormatTo24H(a.publish_time))
                     valueB = new Date(dateFormatToYYYYMMDD(b.publish_date) + ' ' + hourFormatTo24H(b.publish_time))
                 }
-                else if (activeColumn === 'customer') {
+                else if (activeColumn === columnsSortAvailable.customer) {
                     valueA = a.full_name.toLowerCase()
                     valueB = b.full_name.toLowerCase()
                 }
+                else {
+                    valueA = 'activeColumn no encontrada'
+                    valueB = 'activeColumn no encontrada'
+                }
 
-                if (arrowStates[activeColumn] === 'down') {
+                if (arrowStates[activeColumn] === ArrowType.down) {
                     return valueB > valueA ? -1 : 1
                 } else {
                     return valueA > valueB ? -1 : 1
@@ -129,17 +151,17 @@ export const Contact = () => {
         }
         return sortedData
     }
-    const handleColumnClick = (column) => {
+    const handleColumnClick = (nameColumn: columnsSortAvailable) => {
         setArrowStates(prevState => {
             const newState = { ...prevState }
 
-            if (newState[column] === 'right') { newState[column] = 'down' }
-            else if (newState[column] === 'down') { newState[column] = 'up' }
-            else if (newState[column] === 'up') { newState[column] = 'down' }
+            if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
+            else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
+            else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
 
             Object.keys(newState).forEach(key => {
-                if (key !== column) {
-                    newState[key] = 'right'
+                if (key !== nameColumn) {
+                    newState[key] = ArrowType.right
                 }
             })
 
@@ -148,29 +170,29 @@ export const Contact = () => {
 
         handleTableFilter(selectedButton)
     }
-    const getArrowIcon = (column) => {
-        const state = arrowStates[column]
-        if (state === 'up') { return <TriangleUp /> }
-        else if (state === 'down') { return <TriangleDown /> }
+    const getArrowIcon = (nameColumn: columnsSortAvailable) => {
+        const state = arrowStates[nameColumn]
+        if (state === ArrowType.up) { return <TriangleUp /> }
+        else if (state === ArrowType.down) { return <TriangleDown /> }
         else { return <TriangleRight /> }
     }
-    const publish = (id) => {
+    const publish = (id: number) => {
         if (archived.some(contact => contact.id === id)) {
             dispatch(restoreContact(id))
         }
     }
-    const archive = (id) => {
+    const archive = (id: number) => {
         if (notArchived.some(contact => contact.id === id)) {
             dispatch(archiveContact(id))
         }
     }
-    const displayMenuOptions = (index) => {
+    const displayMenuOptions = (index: number) => {
         tableOptionsDisplayed === index ?
-            setTableOptionsDisplayed() :
+            setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteContactById = (id, index) => {
-        dispatch(ContactDeleteByIdThunk(parseInt(id)))
+    const deleteContactById = (id: number, index: number) => {
+        dispatch(ContactDeleteByIdThunk(id))
         displayMenuOptions(index)
         resetPage()
     }
@@ -178,10 +200,10 @@ export const Contact = () => {
 
     return (
 
-        <contactJS.SectionPageContact>
+        <contactStyles.SectionPageContact>
 
-            <contactJS.SectionReviews>
-                <contactJS.DivCtnReviews>
+            <contactStyles.SectionReviews>
+                <contactStyles.DivCtnReviews>
                     <Swiper
                         spaceBetween={0}
                         slidesPerView={3}
@@ -189,42 +211,42 @@ export const Contact = () => {
                         pagination={{ clickable: true }}
                         loop={true}
                     >
-                        {contactAll.map((contact, index) => {
+                        {filteredContacts.map((contact: ContactInterface, index: number) => {
                             return <SwiperSlide key={index}>
                                 <ArticleReview
-                                    nameprofile={contact.full_name}
-                                    timesince={`${contact.publish_date} - ${contact.publish_time}`}
-                                    textreview={contact.comment}
+                                    nameProfile={contact.full_name}
+                                    timeSince={`${contact.publish_date} - ${contact.publish_time}`}
+                                    textReview={contact.comment}
                                 />
                             </SwiperSlide>
                         })}
                     </Swiper>
-                </contactJS.DivCtnReviews>
-            </contactJS.SectionReviews>
+                </contactStyles.DivCtnReviews>
+            </contactStyles.SectionReviews>
 
-            <contactJS.DivCtnFuncionality>
-                <contactJS.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='Contacts' onClick={() => handleTableFilter('notarchived')} isSelected={selectedButton === 'notarchived'} />
-                    <TableDisplayIndicator text='Archived' onClick={() => handleTableFilter('archived')} isSelected={selectedButton === 'archived'} />
-                </contactJS.DivCtnTableDisplayFilter>
+            <contactStyles.DivCtnFuncionality>
+                <contactStyles.DivCtnTableDisplayFilter>
+                    <TableDisplayIndicator text='Contacts' onClick={() => handleTableFilter(ButtonType.notArchived)} isSelected={selectedButton === ButtonType.notArchived} />
+                    <TableDisplayIndicator text='Archived' onClick={() => handleTableFilter(ButtonType.archived)} isSelected={selectedButton === ButtonType.archived} />
+                </contactStyles.DivCtnTableDisplayFilter>
 
-                <contactJS.DivCtnSearch>
+                <contactStyles.DivCtnSearch>
                     <TableSearchTerm onchange={handleInputTerm} placeholder='Search by contact name' />
-                </contactJS.DivCtnSearch>
+                </contactStyles.DivCtnSearch>
 
-                <contactJS.DivCtnButton>
+                <contactStyles.DivCtnButton>
                     <ButtonCreate onClick={navigateToContactCreate} children='+ New Contact' />
-                </contactJS.DivCtnButton>
-            </contactJS.DivCtnFuncionality>
+                </contactStyles.DivCtnButton>
+            </contactStyles.DivCtnFuncionality>
 
-            <Table rowlistlength={`${filteredContacts.length + 1}`} columnlistlength={`${nameColumnList.length}`} >
+            <Table rowlistlength={filteredContacts.length + 1} columnlistlength={nameColumnList.length} >
                 {nameColumnList.map((nameColumn, index) =>
                     index <= 2 ?
                         <THTable key={index} cursorPointer='yes' onClick={() => {
                             switch (index) {
-                                case 0: handleColumnClick('orderId'); break
-                                case 1: handleColumnClick('date'); break
-                                case 2: handleColumnClick('customer'); break
+                                case 0: handleColumnClick(columnsSortAvailable.orderId); break
+                                case 1: handleColumnClick(columnsSortAvailable.date); break
+                                case 2: handleColumnClick(columnsSortAvailable.customer); break
                                 default: ; break
                             }
                         }}
@@ -232,9 +254,9 @@ export const Contact = () => {
                             {nameColumn}
                             {(() => {
                                 switch (index) {
-                                    case 0: return getArrowIcon('orderId')
-                                    case 1: return getArrowIcon('date')
-                                    case 2: return getArrowIcon('customer')
+                                    case 0: return getArrowIcon(columnsSortAvailable.orderId)
+                                    case 1: return getArrowIcon(columnsSortAvailable.date)
+                                    case 2: return getArrowIcon(columnsSortAvailable.customer)
                                     default: return null
                                 }
                             })()}
@@ -303,7 +325,7 @@ export const Contact = () => {
                 </paginationJS.ButtonSwitchPage>
             </paginationJS.DivCtnPagination>
 
-        </contactJS.SectionPageContact >
+        </contactStyles.SectionPageContact >
 
     )
 }

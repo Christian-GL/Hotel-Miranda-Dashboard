@@ -1,5 +1,10 @@
 
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+import { ApiStatus } from '../../common/enums/ApiStatus.ts'
+import { ContactStateInterface } from '../interfaces/contactStateInterface.ts'
+import { ContactInterface } from '../interfaces/contactInterface.ts'
+import { RootState } from '../../common/redux/store.ts'
 import { ContactFetchAllThunk } from './thunks/contactFetchAllThunk'
 import { ContactFetchByIDThunk } from './thunks/contactFetchByIDThunk'
 import { ContactCreateThunk } from './thunks/contactCreateThunk'
@@ -10,19 +15,19 @@ import { ContactDeleteByIdThunk } from './thunks/contactDeleteByIdThunk'
 export const ContactSlice = createSlice({
     name: 'contact',
     initialState: {
-        allData: [],
-        notArchived: [],
-        archived: [],
-        idData: {},
-        allStatus: 'idle',
-        idStatus: 'idle',
-        createStatus: 'idle',
-        updateStatus: 'idle',
-        deleteStatus: 'idle',
+        allData: [] as ContactInterface[],
+        notArchived: [] as ContactInterface[],
+        archived: [] as ContactInterface[],
+        idData: {} as ContactInterface | null,
+        allStatus: ApiStatus.idle,
+        idStatus: ApiStatus.idle,
+        createStatus: ApiStatus.idle,
+        updateStatus: ApiStatus.idle,
+        deleteStatus: ApiStatus.idle,
         error: false
-    },
+    } as ContactStateInterface,
     reducers: {
-        archiveContact: (state, action) => {
+        archiveContact: (state, action: PayloadAction<number>) => {
             const contactId = action.payload
             const contactInNotArchived = state.notArchived.find(contact => contact.id === contactId)
             if (contactInNotArchived) {
@@ -30,7 +35,7 @@ export const ContactSlice = createSlice({
                 state.archived.push(contactInNotArchived)
             }
         },
-        restoreContact: (state, action) => {
+        restoreContact: (state, action: PayloadAction<number>) => {
             const contactId = action.payload
             const contactInArchived = state.archived.find(contact => contact.id === contactId)
             if (contactInArchived) {
@@ -42,49 +47,49 @@ export const ContactSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(ContactFetchAllThunk.pending, (state) => {
-                state.allStatus = 'pending'
+                state.allStatus = ApiStatus.pending
             })
-            .addCase(ContactFetchAllThunk.fulfilled, (state, action) => {
-                state.allStatus = 'fulfilled'
+            .addCase(ContactFetchAllThunk.fulfilled, (state, action: PayloadAction<ContactInterface[]>) => {
+                state.allStatus = ApiStatus.fulfilled
                 state.allData = action.payload
                 state.notArchived = [...action.payload]
                 state.archived = []
             })
             .addCase(ContactFetchAllThunk.rejected, (state) => {
                 state.error = true
-                state.allStatus = 'rejected'
+                state.allStatus = ApiStatus.rejected
             })
 
             .addCase(ContactFetchByIDThunk.pending, (state) => {
-                state.idStatus = 'pending'
+                state.idStatus = ApiStatus.pending
             })
-            .addCase(ContactFetchByIDThunk.fulfilled, (state, action) => {
-                state.idStatus = 'fulfilled'
+            .addCase(ContactFetchByIDThunk.fulfilled, (state, action: PayloadAction<ContactInterface>) => {
+                state.idStatus = ApiStatus.fulfilled
                 state.idData = action.payload
             })
             .addCase(ContactFetchByIDThunk.rejected, (state) => {
                 state.error = true
-                state.idStatus = 'rejected'
+                state.idStatus = ApiStatus.rejected
             })
 
             .addCase(ContactCreateThunk.pending, (state) => {
-                state.createStatus = 'pending'
+                state.createStatus = ApiStatus.pending
             })
-            .addCase(ContactCreateThunk.fulfilled, (state, action) => {
-                state.createStatus = 'fulfilled'
+            .addCase(ContactCreateThunk.fulfilled, (state, action: PayloadAction<ContactInterface>) => {
+                state.createStatus = ApiStatus.fulfilled
                 state.allData.push(action.payload)
                 state.notArchived.push(action.payload)
             })
             .addCase(ContactCreateThunk.rejected, (state) => {
                 state.error = true
-                state.createStatus = 'rejected'
+                state.createStatus = ApiStatus.rejected
             })
 
             .addCase(ContactUpdateThunk.pending, (state) => {
-                state.updateStatus = 'pending'
+                state.updateStatus = ApiStatus.pending
             })
-            .addCase(ContactUpdateThunk.fulfilled, (state, action) => {
-                state.updateStatus = 'fulfilled'
+            .addCase(ContactUpdateThunk.fulfilled, (state, action: PayloadAction<ContactInterface>) => {
+                state.updateStatus = ApiStatus.fulfilled
                 const contactToUpdate = action.payload
                 const index = state.allData.findIndex(contact => contact.id === contactToUpdate.id)
                 if (index !== -1) {
@@ -105,14 +110,14 @@ export const ContactSlice = createSlice({
             })
             .addCase(ContactUpdateThunk.rejected, (state) => {
                 state.error = true
-                state.updateStatus = 'rejected'
+                state.updateStatus = ApiStatus.rejected
             })
 
             .addCase(ContactDeleteByIdThunk.pending, (state) => {
-                state.deleteStatus = 'pending'
+                state.deleteStatus = ApiStatus.pending
             })
-            .addCase(ContactDeleteByIdThunk.fulfilled, (state, action) => {
-                state.deleteStatus = 'fulfilled'
+            .addCase(ContactDeleteByIdThunk.fulfilled, (state, action: PayloadAction<number>) => {
+                state.deleteStatus = ApiStatus.fulfilled
                 const contactIdToDelete = action.payload
                 state.allData = state.allData.filter(contact => contact.id !== contactIdToDelete)
                 state.notArchived = state.notArchived.filter(contact => contact.id !== contactIdToDelete)
@@ -123,7 +128,7 @@ export const ContactSlice = createSlice({
             })
             .addCase(ContactDeleteByIdThunk.rejected, (state) => {
                 state.error = true
-                state.deleteStatus = 'rejected'
+                state.deleteStatus = ApiStatus.rejected
             })
     }
 })
@@ -131,15 +136,15 @@ export const ContactSlice = createSlice({
 
 export const { archiveContact, restoreContact } = ContactSlice.actions
 
-export const getContactAllData = (state) => state.contactSlice.allData
-export const getContactNotArchived = (state) => state.contactSlice.notArchived
-export const getContactArchived = (state) => state.contactSlice.archived
-export const getContactIdData = (state) => state.contactSlice.idData
+export const getContactAllData = (state: RootState): ContactInterface[] => state.contactSlice.allData
+export const getContactNotArchived = (state: RootState): ContactInterface[] => state.contactSlice.notArchived
+export const getContactArchived = (state: RootState): ContactInterface[] => state.contactSlice.archived
+export const getContactIdData = (state: RootState): ContactInterface | null => state.contactSlice.idData
 
-export const getContactAllStatus = (state) => state.contactSlice.allStatus
-export const getContactIdStatus = (state) => state.contactSlice.idStatus
-export const getContactCreateStatus = (state) => state.contactSlice.createStatus
-export const getContactUpdateStatus = (state) => state.contactSlice.updateStatus
-export const getContactDeleteStatus = (state) => state.contactSlice.deleteStatus
+export const getContactAllStatus = (state: RootState) => state.contactSlice.allStatus
+export const getContactIdStatus = (state: RootState) => state.contactSlice.idStatus
+export const getContactCreateStatus = (state: RootState) => state.contactSlice.createStatus
+export const getContactUpdateStatus = (state: RootState) => state.contactSlice.updateStatus
+export const getContactDeleteStatus = (state: RootState) => state.contactSlice.deleteStatus
 
-export const getContactError = (state) => state.contactSlice.allError
+export const getContactError = (state: RootState) => state.contactSlice.error

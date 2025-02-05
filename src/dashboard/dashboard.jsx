@@ -5,11 +5,11 @@ import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as dashboardJS from "./dashboard.js"
-import { ArticleReview } from "../common/components/articleReview/articleReview.jsx"
+import { ArticleReview } from "../common/components/articleReview/articleReview.tsx"
 import { getBookingAllData, getBookingAllStatus, getBookingError } from '../booking/features/bookingSlice.js'
 import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk.js'
-import { getContactAllData, getContactAllStatus } from "../contact/features/contactSlice.js"
-import { ContactFetchAllThunk } from "../contact/features/thunks/contactFetchAllThunk.js"
+import { getContactAllData, getContactAllStatus } from "../contact/features/contactSlice.ts"
+import { ContactFetchAllThunk } from "../contact/features/thunks/contactFetchAllThunk.ts"
 
 
 export const Dashboard = () => {
@@ -101,9 +101,9 @@ export const Dashboard = () => {
                     {contactAll.map((contact, index) => {
                         return <SwiperSlide key={index}>
                             <ArticleReview
-                                nameprofile={contact.full_name}
-                                timesince={`${contact.publish_date} - ${contact.publish_time}`}
-                                textreview={contact.comment}
+                                nameProfile={contact.full_name}
+                                timeSince={`${contact.publish_date} - ${contact.publish_time}`}
+                                textReview={contact.comment}
                             />
                         </SwiperSlide>
                     })}

@@ -1,25 +1,29 @@
 
-
+import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as contactCreateJS from "./contactCreate.js"
+import * as contactCreateStyles from "./contactCreateStyles.ts"
+import { AppDispatch } from "../../../common/redux/store.ts"
+import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
+import { ContactInterface } from "../../interfaces/contactInterface.ts"
 import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/utils/formUtils.js'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconPlus, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
 } from "../../../common/styles/form.ts"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getContactAllData, getContactAllStatus, getContactError } from "../../../contact/features/contactSlice.js"
-import { ContactFetchAllThunk } from "../../../contact/features/thunks/contactFetchAllThunk.js"
-import { ContactCreateThunk } from "../../../contact/features/thunks/contactCreateThunk.js"
+import { getContactAllData, getContactAllStatus, getContactError } from "../../../contact/features/contactSlice.ts"
+import { ContactFetchAllThunk } from "../../../contact/features/thunks/contactFetchAllThunk.ts"
+import { ContactCreateThunk } from "../../../contact/features/thunks/contactCreateThunk.ts"
 
 
 export const ContactCreate = () => {
 
+    const dispatch = useDispatch<AppDispatch>()
     const contactAll = useSelector(getContactAllData) || []
     const contactAllLoading = useSelector(getContactAllStatus)
-    const [newContact, setNewContact] = useState({
+    const [newContact, setNewContact] = useState<ContactInterface>({
         id: 0,
         publish_date: '',
         publish_time: '',
@@ -28,12 +32,11 @@ export const ContactCreate = () => {
         contact: '',
         comment: ''
     })
-    const [nextIdAvailable, setNextIdAvailable] = useState(null)
+    const [nextIdAvailable, setNextIdAvailable] = useState<number>(0)
 
-    const dispatch = useDispatch()
     useEffect(() => {
-        if (contactAllLoading === "idle") { dispatch(ContactFetchAllThunk()) }
-        else if (contactAllLoading === "fulfilled") {
+        if (contactAllLoading === ApiStatus.idle) { dispatch(ContactFetchAllThunk()) }
+        else if (contactAllLoading === ApiStatus.fulfilled) {
             if (contactAll.length > 0) {
                 const id = checkFirstIDAvailable(contactAll)
                 setNextIdAvailable(id)
@@ -42,39 +45,39 @@ export const ContactCreate = () => {
                 setNextIdAvailable(1)
             }
         }
-        else if (contactAllLoading === "rejected") { alert("Error en la api") }
+        else if (contactAllLoading === ApiStatus.rejected) { alert("Error en la api de contact create") }
     }, [contactAllLoading, contactAll])
 
 
-    const handleFullNameChange = (e) => {
+    const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewContact({
             ...newContact,
             [name]: value
         })
     }
-    const handleEmailChange = (e) => {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewContact({
             ...newContact,
             [name]: value
         })
     }
-    const handlePhoneNumberChange = (e) => {
+    const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewContact({
             ...newContact,
             [name]: value
         })
     }
-    const handleCommentChange = (e) => {
+    const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setNewContact({
             ...newContact,
             [name]: value
         })
     }
-    const handleSubmit = e => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const newContactToDispatch = {
             ...newContact,
@@ -87,14 +90,14 @@ export const ContactCreate = () => {
                 alert(`Contact #${newContactToDispatch.id} created`)
             })
             .catch((error) => {
-                alert('Error creating the contact: ', error)
+                alert(error)
             })
     }
 
 
     return (
 
-        <contactCreateJS.SectionPageContactCreate>
+        <contactCreateStyles.SectionPageContactCreate>
             <DivCtnForm>
                 <DivIcon>
                     <DivCtnIcons>
@@ -122,7 +125,7 @@ export const ContactCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Comment</LabelText>
-                        <TextAreaJobDescription name="comment" type='text' onChange={handleCommentChange} ></TextAreaJobDescription>
+                        <TextAreaJobDescription name="comment" onChange={handleCommentChange} ></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
@@ -130,7 +133,7 @@ export const ContactCreate = () => {
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>
-        </contactCreateJS.SectionPageContactCreate>
+        </contactCreateStyles.SectionPageContactCreate>
 
     )
 }

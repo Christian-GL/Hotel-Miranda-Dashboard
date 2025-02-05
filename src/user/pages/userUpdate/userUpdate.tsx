@@ -56,7 +56,7 @@ export const UserUpdate = () => {
                 })
             }
         }
-        else if (userByIdLoading === ApiStatus.rejected) { alert("Error en la api") }
+        else if (userByIdLoading === ApiStatus.rejected) { alert("Error en la api de user update") }
     }, [userByIdLoading, userById])
 
     const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {

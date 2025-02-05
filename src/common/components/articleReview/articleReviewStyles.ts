@@ -35,6 +35,8 @@ export const PTextReview = styled.p`
     font-size: 1em;
     line-height: 1.6rem;
     color: ${gb.colorGrayTextReview};
+
+    cursor: pointer;
 `
 
 export const DivCtnDetails = styled.div`

@@ -9,8 +9,8 @@ import * as gb from '../common/styles/globalVars.js'
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { UserInterface } from "./interfaces/userInterface.ts"
-import { ArrowType } from "../common/enums/ArrowType.js"
 import { UserColumnsArrowStatesInterface } from "./interfaces/userColumnsArrowStatesInterface.ts"
+import { ArrowType } from "../common/enums/ArrowType.ts"
 import { dateFormatToYYYYMMDD } from "../common/utils/formUtils.js"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
@@ -172,6 +172,7 @@ export const User = () => {
     const deleteUserById = (id: number, index: number) => {
         dispatch(UserDeleteByIdThunk(id))
         displayMenuOptions(index)
+        resetPage()
     }
 
 
@@ -205,7 +206,7 @@ export const User = () => {
                         </THTable> :
                         <THTable key={index}>{nameColumn}</THTable>
                 )}
-                {currentPageItems.map((userData, index) => {
+                {currentPageItems.map((userData: UserInterface, index: number) => {
                     return [
                         <DivImgTable key={index + '-1'}>
                             <ImgTableUser src={`${userData.photo}`} />

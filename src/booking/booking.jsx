@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux"
 import * as bookingsJS from "./booking.js"
 import * as gb from '../common/styles/globalVars.js'
 import { dateFormatToYYYYMMDD, hourFormatTo24H } from "../common/utils/formUtils.js"
-import { PopupText } from "../common/components/popupText/popupText.jsx"
+import { PopupText } from "../common/components/popupText/popupText.tsx"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"

@@ -2,12 +2,12 @@
 import { useState } from 'react'
 
 import { UserInterface } from '../../user/interfaces/userInterface.ts'
+import { ContactInterface } from '../../contact/interfaces/contactInterface.ts'
 
 
-export const usePagination = (data: UserInterface[], itemsPerPage: number) => {
+export const usePagination = <T>(data: T[], itemsPerPage: number) => {
 
     const sortedData = [...data]
-
     const [currentPage, setCurrentPage] = useState(1)
     const totalPages = Math.ceil(sortedData.length / itemsPerPage)
     const startIndex = (currentPage - 1) * itemsPerPage
