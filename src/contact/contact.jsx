@@ -8,12 +8,12 @@ import * as contactJS from "./contact.js"
 import * as gb from '../common/styles/globalVars.js'
 import { dateFormatToYYYYMMDD, hourFormatTo24H } from "../common/utils/formUtils.js"
 import { ArticleReview } from "../common/components/articleReview/articleReview.jsx"
-import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
-import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx"
-import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
-import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, PTable, IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
+import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
+import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
+import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
+import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, PTable, IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.styles.tsx"
 import { usePagination } from "../common/hooks/usePagination.js"
-import * as paginationJS from '../common/styles/pagination.js'
+import * as paginationJS from '../common/styles/pagination.tsx'
 import { getContactAllData, getContactAllStatus, getContactNotArchived, getContactArchived } from "./features/contactSlice.js"
 import { archiveContact, restoreContact } from "./features/contactSlice.js"
 import { ContactFetchAllThunk } from "./features/thunks/contactFetchAllThunk.js"

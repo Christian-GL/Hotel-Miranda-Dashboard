@@ -1,0 +1,276 @@
+
+import React from "react"
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
+
+import * as userStyles from "./user.styles.tsx"
+import * as gb from '../common/styles/globalVars.js'
+import { AppDispatch } from '../common/redux/store.tsx'
+import { UserInterface } from "./interfaces/user.interface.js"
+import { RootState } from "../common/redux/store.tsx"
+import { ArrowType } from "../common/enums/ArrowType.js"
+import { ColumnArrowStates } from "./interfaces/columnArrowStates.interface.js"
+import { dateFormatToYYYYMMDD } from "../common/utils/formUtils.js"
+import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
+import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
+import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
+import {
+    Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableUser, PTable,
+    PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption
+} from "../common/styles/table.styles.tsx"
+import { usePagination } from "../common/hooks/usePagination.js"
+import * as paginationStyles from '../common/styles/pagination.tsx'
+import { getUserAllData, getUserAllStatus } from "./features/userSlice.tsx"
+import { UserFetchAllThunk } from "./features/thunks/userFetchAllThunk.js"
+import { UserDeleteByIdThunk } from "./features/thunks/userDeleteByIdThunk.js"
+
+
+export const User = () => {
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>()
+    enum ButtonType {
+        all = "all",
+        active = "active",
+        inactive = "inactive"
+    }
+    enum columnsSortAvailable {
+        name = 'name',
+        startDate = 'startDate'
+    }
+    const nameColumnList = ['', 'Name', 'Start date', 'Job description', 'Contact', 'Status', '']
+    const userAll = useSelector(getUserAllData)
+    const userAllLoading = useSelector(getUserAllStatus)
+    const [inputText, setInputText] = useState<string>('')
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
+    const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([])
+    const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
+    const [arrowStates, setArrowStates] = useState<ColumnArrowStates>({
+        name: ArrowType.right,
+        startDate: ArrowType.down
+    })
+    const {
+        currentPageItems,
+        currentPage,
+        totalPages,
+        goToNextPage,
+        goToPrevPage,
+        resetPage,
+        lastPage
+    } = usePagination(filteredUsers, 10)
+
+    useEffect(() => {
+        if (userAllLoading === "idle") { dispatch(UserFetchAllThunk()) }
+        else if (userAllLoading === "fulfilled") { displayEmployee() }
+        else if (userAllLoading === "rejected") { alert("Error en la api") }
+    }, [userAllLoading, userAll, inputText, selectedButton, arrowStates])
+
+    const navigateToUserCreate = (): void => {
+        navigate('user-create')
+    }
+    const navigateToUserUpdate = (id: number): void => {
+        navigate(`user-update/${id}`)
+    }
+
+    const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        setInputText(e.target.value)
+        resetPage()
+    }
+    const handleTableFilter = (type: ButtonType): void => {
+        setSelectedButton(type)
+        displayEmployee()
+    }
+    const displayEmployee = (): void => {
+        let filteredData: UserInterface[]
+        switch (selectedButton) {
+            case ButtonType.all:
+                filteredData = userAll.filter(user =>
+                    user.full_name.toLowerCase().includes(inputText.toLowerCase())
+                )
+                break
+            case ButtonType.active:
+                filteredData = userAll.filter(user =>
+                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status_active === true
+                )
+                break
+            case ButtonType.inactive:
+                filteredData = userAll.filter(user =>
+                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status_active === false
+                )
+                break
+        }
+        const sortedData = sortData(filteredData)
+        setFilteredUsers(sortedData)
+    }
+    const sortData = (filteredData: UserInterface[]): UserInterface[] => {
+        const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
+        let sortedData: UserInterface[] = [...filteredData]
+        if (activeColumn) {
+            sortedData.sort((a, b) => {
+                let valueA: string | Date
+                let valueB: string | Date
+
+                if (activeColumn === columnsSortAvailable.name) {
+                    valueA = a.full_name.toLowerCase()
+                    valueB = b.full_name.toLowerCase()
+                }
+                else if (activeColumn === columnsSortAvailable.startDate) {
+                    valueA = new Date(dateFormatToYYYYMMDD(a.start_date))
+                    valueB = new Date(dateFormatToYYYYMMDD(b.start_date))
+                }
+                else {
+                    valueA = 'activeColumn no encontrada'
+                    valueB = 'activeColumn no encontrada'
+                }
+
+                if (arrowStates[activeColumn] === ArrowType.down) {
+                    return valueB > valueA ? -1 : 1
+                } else {
+                    return valueA > valueB ? -1 : 1
+                }
+            })
+        }
+        return sortedData
+    }
+    const handleColumnClick = (nameColumn: columnsSortAvailable) => {
+        setArrowStates(prevState => {
+            const newState: ColumnArrowStates = { ...prevState }
+            console.log(nameColumn)
+            console.log(newState)
+
+            if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
+            else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
+            else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
+
+            Object.keys(newState).forEach(key => {
+                if (key !== nameColumn) {
+                    newState[key] = ArrowType.right
+                }
+            })
+
+            return newState
+        })
+
+        handleTableFilter(selectedButton)
+    }
+    const getArrowIcon = (nameColumn: columnsSortAvailable) => {
+        const state = arrowStates[nameColumn]
+        if (state === ArrowType.up) { return <TriangleUp /> }
+        else if (state === ArrowType.down) { return <TriangleDown /> }
+        else { return <TriangleRight /> }
+    }
+    const displayMenuOptions = (index: number) => {
+        tableOptionsDisplayed === index ?
+            setTableOptionsDisplayed(-1) :
+            setTableOptionsDisplayed(index)
+    }
+    const deleteUserById = (id: number, index: number) => {
+        dispatch(UserDeleteByIdThunk(id))
+        displayMenuOptions(index)
+    }
+
+
+    return (
+
+        <userStyles.SectionPageUser>
+
+            <userStyles.DivCtnFuncionality>
+                <userStyles.DivCtnTableDisplayFilter>
+                    <TableDisplayIndicator text='All Employee' onClick={() => handleTableFilter(ButtonType.all)} isSelected={selectedButton === ButtonType.all} />
+                    <TableDisplayIndicator text='Active Employee' onClick={() => handleTableFilter(ButtonType.active)} isSelected={selectedButton === ButtonType.active} />
+                    <TableDisplayIndicator text='Inactive Employee' onClick={() => handleTableFilter(ButtonType.inactive)} isSelected={selectedButton === ButtonType.inactive} />
+                </userStyles.DivCtnTableDisplayFilter>
+
+                <userStyles.DivCtnSearch>
+                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search employee by name' />
+                </userStyles.DivCtnSearch>
+
+                <userStyles.DivCtnButton>
+                    <ButtonCreate onClick={navigateToUserCreate} children='+ New Employee' />
+                </userStyles.DivCtnButton>
+            </userStyles.DivCtnFuncionality>
+
+
+            <Table rowlistlength={filteredUsers.length + 1} columnlistlength={nameColumnList.length}>
+                {nameColumnList.map((nameColumn, index) =>
+                    index === 1 || index === 2 ?
+                        <THTable key={index} onClick={() => handleColumnClick(index === 1 ? columnsSortAvailable.name : columnsSortAvailable.startDate)} cursorPointer='yes'>
+                            {nameColumn}
+                            {index === 1 ? getArrowIcon(columnsSortAvailable.name) : getArrowIcon(columnsSortAvailable.startDate)}
+                        </THTable> :
+                        <THTable key={index}>{nameColumn}</THTable>
+                )}
+                {currentPageItems.map((userData, index) => {
+                    return [
+                        <DivImgTable key={index + '-1'}>
+                            <ImgTableUser src={`${userData.photo}`} />
+                        </DivImgTable>,
+
+                        <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <div style={{ color: `${gb.colorGreen}` }}>
+                                <b>{userData.full_name}</b>
+                            </div>
+                            <div>#<b>{userData.id}</b></div>
+                            <div>{userData.email}</div>
+                        </PTable>,
+
+                        <PTable key={index + '-3'}>
+                            {userData.start_date}
+                        </PTable>,
+
+                        <PTable key={index + '-4'}>
+                            {userData.description}
+                        </PTable>,
+
+                        <PTable key={index + '-5'} flexdirection='row'>
+                            <IconPhone />
+                            {userData.phone_number}
+                        </PTable>,
+
+                        <PTable key={index + '-6'}>
+                            {userData.status_active === true ?
+                                <PStatusAvailableUsers status={userData.status_active}>
+                                    Active
+                                </PStatusAvailableUsers> :
+
+                                <PStatusAvailableUsers status={userData.status_active}>
+                                    Inactive
+                                </PStatusAvailableUsers>
+                            }
+                        </PTable>,
+
+                        <PTable key={index + '-7'}>
+                            <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                            <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
+                                <ButtonOption onClick={() => { navigateToUserUpdate(userData.id) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { deleteUserById(parseInt(userData.id), index) }}>Delete</ButtonOption>
+                            </DivCtnOptions>
+                        </PTable>
+                    ]
+                }
+                )}
+            </Table>
+
+            <paginationStyles.DivCtnPagination>
+                <paginationStyles.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
+                    &lt;&lt;
+                </paginationStyles.ButtonSwitchPage>
+                <paginationStyles.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
+                    &lt;
+                </paginationStyles.ButtonSwitchPage>
+                <paginationStyles.SpanPageCount>
+                    {currentPage} of {totalPages}
+                </paginationStyles.SpanPageCount>
+                <paginationStyles.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
+                    &gt;
+                </paginationStyles.ButtonSwitchPage>
+                <paginationStyles.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
+                    &gt;&gt;
+                </paginationStyles.ButtonSwitchPage>
+            </paginationStyles.DivCtnPagination>
+
+        </userStyles.SectionPageUser >
+
+    )
+}

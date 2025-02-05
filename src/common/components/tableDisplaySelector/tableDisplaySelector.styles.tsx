@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 import * as gb from '../../styles/globalVars.js'
 
 
-export const DisplayIndicator = styled.button`
+export const DisplayIndicator = styled.button<{ isSelected: boolean }>`
     flex: 1 1 0;
     padding: 1em;
     text-align: center;

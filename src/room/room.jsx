@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as roomJS from "./room.js"
-import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.jsx"
-import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.jsx"
-import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.jsx"
+import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
+import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
+import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
 import { applyDiscount } from "../common/utils/tableUtils.js"
 import { usePagination } from "../common/hooks/usePagination.js"
-import * as paginationJS from '../common/styles/pagination.js'
-import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.js"
+import * as paginationJS from '../common/styles/pagination.tsx'
+import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/table.styles.tsx"
 import { getRoomAllData, getRoomAllStatus } from "./features/roomSlice.js";
 import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.js"
 import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.js"

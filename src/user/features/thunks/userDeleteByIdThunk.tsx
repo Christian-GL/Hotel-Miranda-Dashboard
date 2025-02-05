@@ -2,10 +2,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
-export const UserDeleteByIdThunk = createAsyncThunk("user/deleteById", async (userIdToDelete) => {
+type RequestResponse = {
+    ok: boolean
+    json: () => number
+}
+
+export const UserDeleteByIdThunk = createAsyncThunk("user/deleteById", async (userIdToDelete: number) => {
 
     try {
-        const request = await new Promise((resolve) => {
+        const request: RequestResponse = await new Promise((resolve) => {
             if (userIdToDelete) {
                 setTimeout(() => resolve({
                     ok: true,
@@ -15,7 +20,7 @@ export const UserDeleteByIdThunk = createAsyncThunk("user/deleteById", async (us
             else {
                 setTimeout(() => resolve({
                     ok: false,
-                    json: () => { }
+                    json: () => 0
                 }), 200)
             }
 
@@ -25,11 +30,12 @@ export const UserDeleteByIdThunk = createAsyncThunk("user/deleteById", async (us
             const userDataDeleted = await request.json()
             return userDataDeleted
         }
-        else return {}
+        else return 0
     }
     catch (error) {
         console.log(error)
-        throw error
+        return 0
+        // throw error
     }
 
 })

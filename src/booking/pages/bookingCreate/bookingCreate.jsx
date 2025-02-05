@@ -8,7 +8,7 @@ import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, LabelTextNote, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
 } from "../../../common/styles/form.js"
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
+import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
 import { getBookingAllData, getBookingAllStatus, getBookingError } from "../../../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.js"
 import { BookingCreateThunk } from "../../../booking/features/thunks/bookingCreateThunk.js"

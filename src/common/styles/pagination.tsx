@@ -11,7 +11,7 @@ export const DivCtnPagination = styled.div`
     background-color: ${gb.colorGrayBackgroundPage};
 `
 
-export const ButtonSwitchPage = styled.button`
+export const ButtonSwitchPage = styled.button<{ margin?: string }>`
     margin: ${props => props.margin};
     padding: 1em;
     font-family: ${gb.fontPoppins};

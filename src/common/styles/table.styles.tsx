@@ -10,7 +10,10 @@ import { GoTriangleDown } from "react-icons/go"
 import * as gb from './globalVars.js'
 
 
-export const Table = styled.table`
+export const Table = styled.table<{
+    rowlistlength: number;
+    columnlistlength: number;
+}>`
     display: grid;
     grid-template-rows: repeat(${props => props.rowlistlength}, auto);
     grid-template-columns: repeat(${props => props.columnlistlength}, auto);
@@ -19,7 +22,7 @@ export const Table = styled.table`
     background-color: ${gb.colorWhiteFull};
 `
 
-export const THTable = styled.th`
+export const THTable = styled.th<{ cursorPointer?: 'yes' | 'no' }>`
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -53,7 +56,11 @@ export const TriangleDown = styled(GoTriangleDown)`
     background-color: ${gb.colorWhiteFull};
 `
 
-export const PTable = styled.p`
+export const PTable = styled.p<{
+    justifycontent?: string;
+    alignitems?: string;
+    flexdirection?: string;
+}>`
     position: relative;
     display: flex;
     justify-content: ${props => props.justifycontent === 'center' ? 'center' : 'flex-start'};
@@ -91,7 +98,7 @@ export const ImgTableUser = styled.img`
     aspect-ratio: 1 / 1;
 `
 
-export const IconPhone = styled(ImPhone)`
+export const IconPhone = styled(ImPhone) <{ width?: string }>`
     padding-right: 0.5em;
     width: 2rem;
     width: ${props => props.width};
@@ -100,7 +107,7 @@ export const IconPhone = styled(ImPhone)`
     background-color: ${gb.colorWhiteFull};
 `
 
-export const PStatusRoomList = styled.p`
+export const PStatusRoomList = styled.p<{ status: string }>`
     padding: 1em 0;
     text-align: center;
     width: 6.5rem;
@@ -109,7 +116,7 @@ export const PStatusRoomList = styled.p`
     background-color: ${props => (props.status === 'Available' ? gb.colorLightGreenButton : gb.colorRed)};
 `
 
-export const PStatusAvailableUsers = styled.p`
+export const PStatusAvailableUsers = styled.p<{ status: boolean }>`
     position: relative;
     padding: 1em;
     font-family: ${gb.fontPoppins};
@@ -128,7 +135,7 @@ export const IconOptions = styled(SlOptionsVertical)`
     background-color: ${gb.colorWhiteFull};
 `
 
-export const DivCtnOptions = styled.div`
+export const DivCtnOptions = styled.div<{ display: string }>`
     z-index: 1;
     position: absolute;
     top: 50%;
@@ -162,7 +169,7 @@ export const ButtonOption = styled.button`
     }
 `
 
-export const PStatusBooking = styled.p`
+export const PStatusBooking = styled.p<{ backgroundcolor: string }>`
     padding: 1em 0;
     text-align: center;
     width: 6.5rem;
@@ -183,7 +190,7 @@ export const ButtonView = styled.button`
     background-color: ${gb.colorGrayButtonTable};
 `
 
-export const ButtonPublishArchive = styled.button`
+export const ButtonPublishArchive = styled.button<{ color: string }>`
     margin-right: 1rem;
     padding: 0.5em;
     font-family: ${gb.fontPoppins};

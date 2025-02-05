@@ -10,8 +10,8 @@ import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
 } from "../../../common/styles/form.js"
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
-import { getUserIdData, getUserIdStatus, getUserError } from "../../features/userSlice.js"
+import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
+import { getUserIdData, getUserIdStatus, getUserError } from "../../features/userSlice.tsx"
 import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk.js"
 import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk.js"
 

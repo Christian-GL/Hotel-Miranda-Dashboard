@@ -8,7 +8,7 @@ import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconUpdate, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
 } from "../../../common/styles/form.js"
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.jsx'
+import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
 import { getContactIdData, getContactIdStatus, getContactError } from "../../../contact/features/contactSlice.js"
 import { ContactFetchByIDThunk } from "../../../contact/features/thunks/contactFetchByIDThunk.js"
 import { ContactUpdateThunk } from '../../../contact/features/thunks/contactUpdateThunk.js'

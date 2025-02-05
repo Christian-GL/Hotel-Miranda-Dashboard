@@ -1,12 +1,13 @@
 
 import { styled } from 'styled-components'
+import { InputHTMLAttributes } from "react"
 
-import { HiMiniMagnifyingGlass } from "react-icons/hi2";
+import { HiMiniMagnifyingGlass } from "react-icons/hi2"
 
 import * as gb from '../../styles/globalVars.js'
 
 
-export const InputSearchEmployee = styled.input`
+export const InputSearchEmployee = styled.input<InputHTMLAttributes<HTMLInputElement>>`
     padding: 1em 1em 1em 4em;
     text-align: center;
     width: 100%;
