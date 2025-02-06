@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as roomStyles from "./roomStyles.ts"
+import { ToastContainer, toast } from 'react-toastify'
+import { Toastify } from "../common/components/toastify/toastify.tsx"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { RoomInterface } from "./interfaces/roomInterface.ts"
@@ -62,6 +64,7 @@ export const Room = () => {
         resetPage,
         lastPage
     } = usePagination(filteredRooms, 10)
+    const [toastShown, setToastShown] = useState<boolean>(false)
 
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
@@ -73,6 +76,14 @@ export const Room = () => {
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
         else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de bookings") }
     }, [bookingAllLoading, bookingAll])
+    useEffect(() => {
+        if (bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending) {
+            if (!toastShown) {
+                Toastify()
+                setToastShown(true)
+            }
+        } else { toast.dismiss() }
+    }, [bookingAllLoading, roomAllLoading])
 
     const navigateToRoomCreate = (): void => {
         navigate('room-create')
@@ -191,117 +202,117 @@ export const Room = () => {
 
 
     return (
+        bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending ?
+            <ToastContainer /> :
+            <roomStyles.SectionPageRoom>
+                <roomStyles.DivCtnFuncionality>
+                    <roomStyles.DivCtnTableDisplayFilter>
+                        <TableDisplayIndicator text='All Rooms' onClick={() => handleTableFilter(ButtonType.all)} isSelected={selectedButton === ButtonType.all} />
+                        <TableDisplayIndicator text='Available Rooms' onClick={() => handleTableFilter(ButtonType.available)} isSelected={selectedButton === ButtonType.available} />
+                        <TableDisplayIndicator text='Booked Rooms' onClick={() => handleTableFilter(ButtonType.booked)} isSelected={selectedButton === ButtonType.booked} />
+                    </roomStyles.DivCtnTableDisplayFilter>
 
-        <roomStyles.SectionPageRoom>
-            <roomStyles.DivCtnFuncionality>
-                <roomStyles.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='All Rooms' onClick={() => handleTableFilter(ButtonType.all)} isSelected={selectedButton === ButtonType.all} />
-                    <TableDisplayIndicator text='Available Rooms' onClick={() => handleTableFilter(ButtonType.available)} isSelected={selectedButton === ButtonType.available} />
-                    <TableDisplayIndicator text='Booked Rooms' onClick={() => handleTableFilter(ButtonType.booked)} isSelected={selectedButton === ButtonType.booked} />
-                </roomStyles.DivCtnTableDisplayFilter>
+                    <roomStyles.DivCtnSearch>
+                        <TableSearchTerm onchange={handleInputTerm} placeholder='Search by room number' />
+                    </roomStyles.DivCtnSearch>
 
-                <roomStyles.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search by room number' />
-                </roomStyles.DivCtnSearch>
+                    <roomStyles.DivCtnButton>
+                        <ButtonCreate onClick={navigateToRoomCreate} children='+ New Room' />
+                    </roomStyles.DivCtnButton>
+                </roomStyles.DivCtnFuncionality>
 
-                <roomStyles.DivCtnButton>
-                    <ButtonCreate onClick={navigateToRoomCreate} children='+ New Room' />
-                </roomStyles.DivCtnButton>
-            </roomStyles.DivCtnFuncionality>
-
-            <Table rowlistlength={filteredRooms.length + 1} columnlistlength={nameColumnList.length} >
-                {nameColumnList.map((nameColumn, index) =>
-                    index === 1 || index === 4 || index === 5 ?
-                        <THTable key={index} cursorPointer='yes' onClick={() => {
-                            switch (index) {
-                                case 1: handleColumnClick(columnsSortAvailable.roomNumber); break
-                                case 4: handleColumnClick(columnsSortAvailable.price); break
-                                case 5: handleColumnClick(columnsSortAvailable.offerPrice); break
-                                default: ; break
-                            }
-                        }}
-                        >
-                            {nameColumn}
-                            {(() => {
+                <Table rowlistlength={filteredRooms.length + 1} columnlistlength={nameColumnList.length} >
+                    {nameColumnList.map((nameColumn, index) =>
+                        index === 1 || index === 4 || index === 5 ?
+                            <THTable key={index} cursorPointer='yes' onClick={() => {
                                 switch (index) {
-                                    case 1: return getArrowIcon(columnsSortAvailable.roomNumber)
-                                    case 4: return getArrowIcon(columnsSortAvailable.price)
-                                    case 5: return getArrowIcon(columnsSortAvailable.offerPrice)
-                                    default: return null
+                                    case 1: handleColumnClick(columnsSortAvailable.roomNumber); break
+                                    case 4: handleColumnClick(columnsSortAvailable.price); break
+                                    case 5: handleColumnClick(columnsSortAvailable.offerPrice); break
+                                    default: ; break
                                 }
-                            })()}
-                        </THTable> :
-                        <THTable key={index}>{nameColumn}</THTable>
-                )}
-                {currentPageItems.map((roomData, index) => {
-                    return [
-                        <DivImgTable key={index + '-1'}>
-                            <ImgTableRoom src={`${roomData.photos[0]}`} />
-                        </DivImgTable>,
+                            }}
+                            >
+                                {nameColumn}
+                                {(() => {
+                                    switch (index) {
+                                        case 1: return getArrowIcon(columnsSortAvailable.roomNumber)
+                                        case 4: return getArrowIcon(columnsSortAvailable.price)
+                                        case 5: return getArrowIcon(columnsSortAvailable.offerPrice)
+                                        default: return null
+                                    }
+                                })()}
+                            </THTable> :
+                            <THTable key={index}>{nameColumn}</THTable>
+                    )}
+                    {currentPageItems.map((roomData, index) => {
+                        return [
+                            <DivImgTable key={index + '-1'}>
+                                <ImgTableRoom src={`${roomData.photos[0]}`} />
+                            </DivImgTable>,
 
-                        <PTable key={index + '-2'}>
-                            #<b>{roomData.id}</b>
-                        </PTable>,
+                            <PTable key={index + '-2'}>
+                                #<b>{roomData.id}</b>
+                            </PTable>,
 
-                        <PTable key={index + '-3'}>
-                            {roomData.type}
-                        </PTable>,
+                            <PTable key={index + '-3'}>
+                                {roomData.type}
+                            </PTable>,
 
-                        <PTable key={index + '-4'}>
-                            <p>{roomData.amenities.join(', ')}</p>
-                        </PTable>,
+                            <PTable key={index + '-4'}>
+                                <p>{roomData.amenities.join(', ')}</p>
+                            </PTable>,
 
-                        <PTable key={index + '-5'}>
-                            <b>${roomData.price}</b>&nbsp;/night
-                        </PTable>,
+                            <PTable key={index + '-5'}>
+                                <b>${roomData.price}</b>&nbsp;/night
+                            </PTable>,
 
-                        <PTable key={index + '-6'}>
-                            {roomData.discount === 0 ?
-                                <>No Discount</> :
-                                <><b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;(-{roomData.discount}%)</>
-                            }
-                        </PTable>,
+                            <PTable key={index + '-6'}>
+                                {roomData.discount === 0 ?
+                                    <>No Discount</> :
+                                    <><b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;(-{roomData.discount}%)</>
+                                }
+                            </PTable>,
 
-                        <PTable key={index + '-7'}>
-                            {
-                                bookingAll.filter((booking) => roomData.booking_list.includes(booking.id)).length === 0 ?
-                                    // roomData.booking_list.length === 0 ?
-                                    <PStatusRoomList status='Available'>Available</PStatusRoomList> :
-                                    <PStatusRoomList status='Booking'>Booking</PStatusRoomList>
-                            }
-                        </PTable>,
+                            <PTable key={index + '-7'}>
+                                {
+                                    bookingAll.filter((booking) => roomData.booking_list.includes(booking.id)).length === 0 ?
+                                        // roomData.booking_list.length === 0 ?
+                                        <PStatusRoomList status='Available'>Available</PStatusRoomList> :
+                                        <PStatusRoomList status='Booking'>Booking</PStatusRoomList>
+                                }
+                            </PTable>,
 
-                        <PTable key={index + '-8'}>
-                            <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                            <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
-                                <ButtonOption onClick={() => { navigateToRoomUpdate(roomData.id) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteRoomById(roomData.id, index) }}>Delete</ButtonOption>
-                            </DivCtnOptions>
-                        </PTable>
-                    ]
-                }
-                )}
-            </Table>
+                            <PTable key={index + '-8'}>
+                                <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                                <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
+                                    <ButtonOption onClick={() => { navigateToRoomUpdate(roomData.id) }}>Update</ButtonOption>
+                                    <ButtonOption onClick={() => { deleteRoomById(roomData.id, index) }}>Delete</ButtonOption>
+                                </DivCtnOptions>
+                            </PTable>
+                        ]
+                    }
+                    )}
+                </Table>
 
-            <paginationJS.DivCtnPagination>
-                <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
-                    &lt;&lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
-                    &lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.SpanPageCount>
-                    {currentPage} of {totalPages}
-                </paginationJS.SpanPageCount>
-                <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
-                    &gt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
-                    &gt;&gt;
-                </paginationJS.ButtonSwitchPage>
-            </paginationJS.DivCtnPagination>
+                <paginationJS.DivCtnPagination>
+                    <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
+                        &lt;&lt;
+                    </paginationJS.ButtonSwitchPage>
+                    <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
+                        &lt;
+                    </paginationJS.ButtonSwitchPage>
+                    <paginationJS.SpanPageCount>
+                        {currentPage} of {totalPages}
+                    </paginationJS.SpanPageCount>
+                    <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
+                        &gt;
+                    </paginationJS.ButtonSwitchPage>
+                    <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
+                        &gt;&gt;
+                    </paginationJS.ButtonSwitchPage>
+                </paginationJS.DivCtnPagination>
 
-        </roomStyles.SectionPageRoom>
-
+            </roomStyles.SectionPageRoom>
     )
 }

@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as bookingsStyles from './bookingStyles.ts'
 import * as gb from '../common/styles/globalVars.ts'
+import { ToastContainer, toast } from 'react-toastify'
+import { Toastify } from "../common/components/toastify/toastify.tsx"
 import { BookingStatus } from './data/bookingStatus.ts'
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
@@ -77,6 +79,7 @@ export const Bookings = () => {
     } = usePagination(filteredBookings, 10)
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoViewNotes, setInfoViewNotes] = useState<PopupTextInterface>({ title: '', text: '' })
+    const [toastShown, setToastShown] = useState<boolean>(false)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -88,6 +91,14 @@ export const Bookings = () => {
         else if (roomAllLoading === ApiStatus.fulfilled) { }
         else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de rooms") }
     }, [roomAllLoading, roomAll])
+    useEffect(() => {
+        if (bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending) {
+            if (!toastShown) {
+                Toastify()
+                setToastShown(true)
+            }
+        } else { toast.dismiss() }
+    }, [bookingAllLoading, roomAllLoading])
 
     const navigateToBookingCreate = (): void => {
         navigate('booking-create')
@@ -231,158 +242,159 @@ export const Bookings = () => {
 
 
     return (
+        bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending ?
+            <ToastContainer /> :
+            <bookingsStyles.SectionPageBookings>
+                <bookingsStyles.DivCtnFuncionality>
+                    <bookingsStyles.DivCtnTableDisplayFilter>
+                        <TableDisplayIndicator text='All Bookings' onClick={() => handleTableFilter(ButtonType.all)} isSelected={selectedButton === ButtonType.all} />
+                        <TableDisplayIndicator text='Check In' onClick={() => handleTableFilter(ButtonType.checkin)} isSelected={selectedButton === ButtonType.checkin} />
+                        <TableDisplayIndicator text='In Progress' onClick={() => handleTableFilter(ButtonType.inprogress)} isSelected={selectedButton === ButtonType.inprogress} />
+                        <TableDisplayIndicator text='Check Out' onClick={() => handleTableFilter(ButtonType.checkout)} isSelected={selectedButton === ButtonType.checkout} />
+                    </bookingsStyles.DivCtnTableDisplayFilter>
 
-        <bookingsStyles.SectionPageBookings>
-            <bookingsStyles.DivCtnFuncionality>
-                <bookingsStyles.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='All Bookings' onClick={() => handleTableFilter(ButtonType.all)} isSelected={selectedButton === ButtonType.all} />
-                    <TableDisplayIndicator text='Check In' onClick={() => handleTableFilter(ButtonType.checkin)} isSelected={selectedButton === ButtonType.checkin} />
-                    <TableDisplayIndicator text='In Progress' onClick={() => handleTableFilter(ButtonType.inprogress)} isSelected={selectedButton === ButtonType.inprogress} />
-                    <TableDisplayIndicator text='Check Out' onClick={() => handleTableFilter(ButtonType.checkout)} isSelected={selectedButton === ButtonType.checkout} />
-                </bookingsStyles.DivCtnTableDisplayFilter>
+                    <bookingsStyles.DivCtnSearch>
+                        <TableSearchTerm onchange={handleInputTerm} placeholder='Search booking by client name' />
+                    </bookingsStyles.DivCtnSearch>
 
-                <bookingsStyles.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search booking by client name' />
-                </bookingsStyles.DivCtnSearch>
+                    <bookingsStyles.DivCtnButton>
+                        <ButtonCreate onClick={navigateToBookingCreate} children='+ New Booking' />
+                    </bookingsStyles.DivCtnButton>
+                </bookingsStyles.DivCtnFuncionality>
 
-                <bookingsStyles.DivCtnButton>
-                    <ButtonCreate onClick={navigateToBookingCreate} children='+ New Booking' />
-                </bookingsStyles.DivCtnButton>
-            </bookingsStyles.DivCtnFuncionality>
+                {showPopup && <PopupText title={infoViewNotes.title} text={infoViewNotes.text} onClose={() => setShowPopup(false)} />}
 
-            {showPopup && <PopupText title={infoViewNotes.title} text={infoViewNotes.text} onClose={() => setShowPopup(false)} />}
-
-            <Table rowlistlength={filteredBookings.length + 1} columnlistlength={nameColumnList.length} >
-                {nameColumnList.map((nameColumn, index) =>
-                    index === 1 || index === 3 || index === 4 || index === 5 || index === 7 ?
-                        <THTable key={index} cursorPointer='yes' onClick={() => {
-                            switch (index) {
-                                case 1: handleColumnClick(columnsSortAvailable.guest); break
-                                case 3: handleColumnClick(columnsSortAvailable.orderDate); break
-                                case 4: handleColumnClick(columnsSortAvailable.checkIn); break
-                                case 5: handleColumnClick(columnsSortAvailable.checkOut); break
-                                case 7: handleColumnClick(columnsSortAvailable.roomNumber); break
-                                default: ; break
-                            }
-                        }}
-                        >
-                            {nameColumn}
-                            {(() => {
+                <Table rowlistlength={filteredBookings.length + 1} columnlistlength={nameColumnList.length} >
+                    {nameColumnList.map((nameColumn, index) =>
+                        index === 1 || index === 3 || index === 4 || index === 5 || index === 7 ?
+                            <THTable key={index} cursorPointer='yes' onClick={() => {
                                 switch (index) {
-                                    case 1: return getArrowIcon(columnsSortAvailable.guest)
-                                    case 3: return getArrowIcon(columnsSortAvailable.orderDate)
-                                    case 4: return getArrowIcon(columnsSortAvailable.checkIn)
-                                    case 5: return getArrowIcon(columnsSortAvailable.checkOut)
-                                    case 7: return getArrowIcon(columnsSortAvailable.roomNumber)
-                                    default: return null
+                                    case 1: handleColumnClick(columnsSortAvailable.guest); break
+                                    case 3: handleColumnClick(columnsSortAvailable.orderDate); break
+                                    case 4: handleColumnClick(columnsSortAvailable.checkIn); break
+                                    case 5: handleColumnClick(columnsSortAvailable.checkOut); break
+                                    case 7: handleColumnClick(columnsSortAvailable.roomNumber); break
+                                    default: ; break
                                 }
-                            })()}
-                        </THTable> :
-                        <THTable key={index}>{nameColumn}</THTable>
-                )}
-                {currentPageItems.map((bookingData, index) => {
-                    return [
-                        <DivImgTable key={index + '-1'}>
-                            <ImgTableUser src={`${bookingData.photo}`} />
-                        </DivImgTable>,
-
-                        <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div style={{ color: `${gb.colorGreen}` }}>
-                                <b>{bookingData.full_name_guest}</b>
-                            </div>
-                            <div>#<b>{bookingData.id}</b></div>
-                        </PTable>,
-
-                        <PTable key={index + '-3'}>
-                            <ButtonView onClick={() => navigateToBookingDetail(bookingData.id)}>View Details</ButtonView>
-                        </PTable>,
-
-                        <PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center' >
-                            <div>{bookingData.order_date}</div>
-                            <div>{bookingData.order_time}</div>
-                        </PTable>,
-
-                        <PTable key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div>{bookingData.check_in_date}</div>
-                            <div>{bookingData.check_in_time}</div>
-                        </PTable>,
-
-                        <PTable key={index + '-6'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div>{bookingData.check_out_date}</div>
-                            <div>{bookingData.check_out_time}</div>
-                        </PTable>,
-
-                        <PTable key={index + '-7'}>
-                            <ButtonView onClick={() => {
-                                setInfoViewNotes({
-                                    title: `Special request #${bookingData.id} by ${bookingData.full_name_guest}`,
-                                    text: bookingData.special_request
-                                })
-                                openPopup()
-                            }
-                            }>View Notes</ButtonView>
-                        </PTable>,
-
-                        <PTable key={index + '-8'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div>Nº {bookingData.room_id}</div>
-                            <div>{bookingData.room_type}</div>
-                        </PTable>,
-
-                        <PTable key={index + '-9'}>
-                            {
-                                (() => {
-                                    switch (bookingData.room_booking_status) {
-                                        case 'Check In':
-                                            return <PStatusBooking color={`${gb.colorGreen}`} backgroundcolor={`${gb.colorLightGreenButtonTable}`}>
-                                                Check In
-                                            </PStatusBooking>
-                                        case 'Check Out':
-                                            return <PStatusBooking color={`${gb.colorRed}`} backgroundcolor={`${gb.colorLightRedButtonTable}`}>
-                                                Check Out
-                                            </PStatusBooking>
-                                        case 'In Progress':
-                                            return <PStatusBooking color={`${gb.colorLightRedButtonTable2}`} backgroundcolor={`${gb.colorLightGreenButtonTable2}`}>
-                                                In Progress
-                                            </PStatusBooking>
-                                        default:
-                                            return <></>
+                            }}
+                            >
+                                {nameColumn}
+                                {(() => {
+                                    switch (index) {
+                                        case 1: return getArrowIcon(columnsSortAvailable.guest)
+                                        case 3: return getArrowIcon(columnsSortAvailable.orderDate)
+                                        case 4: return getArrowIcon(columnsSortAvailable.checkIn)
+                                        case 5: return getArrowIcon(columnsSortAvailable.checkOut)
+                                        case 7: return getArrowIcon(columnsSortAvailable.roomNumber)
+                                        default: return null
                                     }
+                                })()}
+                            </THTable> :
+                            <THTable key={index}>{nameColumn}</THTable>
+                    )}
+                    {currentPageItems.map((bookingData, index) => {
+                        return [
+                            <DivImgTable key={index + '-1'}>
+                                <ImgTableUser src={`${bookingData.photo}`} />
+                            </DivImgTable>,
+
+                            <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                                <div style={{ color: `${gb.colorGreen}` }}>
+                                    <b>{bookingData.full_name_guest}</b>
+                                </div>
+                                <div>#<b>{bookingData.id}</b></div>
+                            </PTable>,
+
+                            <PTable key={index + '-3'}>
+                                <ButtonView onClick={() => navigateToBookingDetail(bookingData.id)}>View Details</ButtonView>
+                            </PTable>,
+
+                            <PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center' >
+                                <div>{bookingData.order_date}</div>
+                                <div>{bookingData.order_time}</div>
+                            </PTable>,
+
+                            <PTable key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
+                                <div>{bookingData.check_in_date}</div>
+                                <div>{bookingData.check_in_time}</div>
+                            </PTable>,
+
+                            <PTable key={index + '-6'} flexdirection='column' alignitems='left' justifycontent='center'>
+                                <div>{bookingData.check_out_date}</div>
+                                <div>{bookingData.check_out_time}</div>
+                            </PTable>,
+
+                            <PTable key={index + '-7'}>
+                                <ButtonView onClick={() => {
+                                    setInfoViewNotes({
+                                        title: `Special request #${bookingData.id} by ${bookingData.full_name_guest}`,
+                                        text: bookingData.special_request
+                                    })
+                                    openPopup()
                                 }
-                                )()
-                            }
-                        </PTable>,
+                                }>View Notes</ButtonView>
+                            </PTable>,
 
-                        <PTable key={index + '-9'}>
-                            <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                            <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
-                                <ButtonOption onClick={() => { navigateToBookingUpdate(bookingData.id) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteBookingById(bookingData.id, index) }}>Delete</ButtonOption>
-                            </DivCtnOptions>
-                        </PTable>
-                    ]
-                }
-                )}
-            </Table>
+                            <PTable key={index + '-8'} flexdirection='column' alignitems='left' justifycontent='center'>
+                                <div>Nº {bookingData.room_id}</div>
+                                <div>{bookingData.room_type}</div>
+                            </PTable>,
 
-            <paginationJS.DivCtnPagination>
-                <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
-                    &lt;&lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
-                    &lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.SpanPageCount>
-                    {currentPage} of {totalPages}
-                </paginationJS.SpanPageCount>
-                <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
-                    &gt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
-                    &gt;&gt;
-                </paginationJS.ButtonSwitchPage>
-            </paginationJS.DivCtnPagination>
+                            <PTable key={index + '-9'}>
+                                {
+                                    (() => {
+                                        switch (bookingData.room_booking_status) {
+                                            case 'Check In':
+                                                return <PStatusBooking color={`${gb.colorGreen}`} backgroundcolor={`${gb.colorLightGreenButtonTable}`}>
+                                                    Check In
+                                                </PStatusBooking>
+                                            case 'Check Out':
+                                                return <PStatusBooking color={`${gb.colorRed}`} backgroundcolor={`${gb.colorLightRedButtonTable}`}>
+                                                    Check Out
+                                                </PStatusBooking>
+                                            case 'In Progress':
+                                                return <PStatusBooking color={`${gb.colorLightRedButtonTable2}`} backgroundcolor={`${gb.colorLightGreenButtonTable2}`}>
+                                                    In Progress
+                                                </PStatusBooking>
+                                            default:
+                                                return <></>
+                                        }
+                                    }
+                                    )()
+                                }
+                            </PTable>,
 
-        </bookingsStyles.SectionPageBookings>
+                            <PTable key={index + '-9'}>
+                                <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                                <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
+                                    <ButtonOption onClick={() => { navigateToBookingUpdate(bookingData.id) }}>Update</ButtonOption>
+                                    <ButtonOption onClick={() => { deleteBookingById(bookingData.id, index) }}>Delete</ButtonOption>
+                                </DivCtnOptions>
+                            </PTable>
+                        ]
+                    }
+                    )}
+                </Table>
+
+                <paginationJS.DivCtnPagination>
+                    <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
+                        &lt;&lt;
+                    </paginationJS.ButtonSwitchPage>
+                    <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
+                        &lt;
+                    </paginationJS.ButtonSwitchPage>
+                    <paginationJS.SpanPageCount>
+                        {currentPage} of {totalPages}
+                    </paginationJS.SpanPageCount>
+                    <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
+                        &gt;
+                    </paginationJS.ButtonSwitchPage>
+                    <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
+                        &gt;&gt;
+                    </paginationJS.ButtonSwitchPage>
+                </paginationJS.DivCtnPagination>
+
+            </bookingsStyles.SectionPageBookings>
 
     )
 }

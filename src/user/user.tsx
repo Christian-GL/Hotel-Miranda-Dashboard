@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as userStyles from "./userStyles.ts"
 import * as gb from '../common/styles/globalVars.ts'
+import { ToastContainer, toast } from 'react-toastify'
+import { Toastify } from "../common/components/toastify/toastify.tsx"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { UserInterface } from "./interfaces/userInterface.ts"
@@ -59,12 +61,21 @@ export const User = () => {
         resetPage,
         lastPage
     } = usePagination(filteredUsers, 10)
+    const [toastShown, setToastShown] = useState<boolean>(false)
 
     useEffect(() => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
         else if (userAllLoading === ApiStatus.fulfilled) { displayEmployee() }
         else if (userAllLoading === ApiStatus.rejected) { alert("Error en la api de users") }
     }, [userAllLoading, userAll, inputText, selectedButton, arrowStates])
+    useEffect(() => {
+        if (userAllLoading === ApiStatus.pending) {
+            if (!toastShown) {
+                Toastify()
+                setToastShown(true)
+            }
+        } else { toast.dismiss() }
+    }, [userAllLoading])
 
     const navigateToUserCreate = (): void => {
         navigate('user-create')
@@ -177,105 +188,105 @@ export const User = () => {
 
 
     return (
+        userAllLoading === ApiStatus.pending ?
+            <ToastContainer /> :
+            <userStyles.SectionPageUser>
 
-        <userStyles.SectionPageUser>
+                <userStyles.DivCtnFuncionality>
+                    <userStyles.DivCtnTableDisplayFilter>
+                        <TableDisplayIndicator text='All Employee' onClick={() => handleTableFilter(ButtonType.all)} isSelected={selectedButton === ButtonType.all} />
+                        <TableDisplayIndicator text='Active Employee' onClick={() => handleTableFilter(ButtonType.active)} isSelected={selectedButton === ButtonType.active} />
+                        <TableDisplayIndicator text='Inactive Employee' onClick={() => handleTableFilter(ButtonType.inactive)} isSelected={selectedButton === ButtonType.inactive} />
+                    </userStyles.DivCtnTableDisplayFilter>
 
-            <userStyles.DivCtnFuncionality>
-                <userStyles.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='All Employee' onClick={() => handleTableFilter(ButtonType.all)} isSelected={selectedButton === ButtonType.all} />
-                    <TableDisplayIndicator text='Active Employee' onClick={() => handleTableFilter(ButtonType.active)} isSelected={selectedButton === ButtonType.active} />
-                    <TableDisplayIndicator text='Inactive Employee' onClick={() => handleTableFilter(ButtonType.inactive)} isSelected={selectedButton === ButtonType.inactive} />
-                </userStyles.DivCtnTableDisplayFilter>
+                    <userStyles.DivCtnSearch>
+                        <TableSearchTerm onchange={handleInputTerm} placeholder='Search employee by name' />
+                    </userStyles.DivCtnSearch>
 
-                <userStyles.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search employee by name' />
-                </userStyles.DivCtnSearch>
-
-                <userStyles.DivCtnButton>
-                    <ButtonCreate onClick={navigateToUserCreate} children='+ New Employee' />
-                </userStyles.DivCtnButton>
-            </userStyles.DivCtnFuncionality>
+                    <userStyles.DivCtnButton>
+                        <ButtonCreate onClick={navigateToUserCreate} children='+ New Employee' />
+                    </userStyles.DivCtnButton>
+                </userStyles.DivCtnFuncionality>
 
 
-            <Table rowlistlength={filteredUsers.length + 1} columnlistlength={nameColumnList.length}>
-                {nameColumnList.map((nameColumn, index) =>
-                    index === 1 || index === 2 ?
-                        <THTable key={index} onClick={() => handleColumnClick(index === 1 ? columnsSortAvailable.name : columnsSortAvailable.startDate)} cursorPointer='yes'>
-                            {nameColumn}
-                            {index === 1 ? getArrowIcon(columnsSortAvailable.name) : getArrowIcon(columnsSortAvailable.startDate)}
-                        </THTable> :
-                        <THTable key={index}>{nameColumn}</THTable>
-                )}
-                {currentPageItems.map((userData: UserInterface, index: number) => {
-                    return [
-                        <DivImgTable key={index + '-1'}>
-                            <ImgTableUser src={`${userData.photo}`} />
-                        </DivImgTable>,
+                <Table rowlistlength={filteredUsers.length + 1} columnlistlength={nameColumnList.length}>
+                    {nameColumnList.map((nameColumn, index) =>
+                        index === 1 || index === 2 ?
+                            <THTable key={index} onClick={() => handleColumnClick(index === 1 ? columnsSortAvailable.name : columnsSortAvailable.startDate)} cursorPointer='yes'>
+                                {nameColumn}
+                                {index === 1 ? getArrowIcon(columnsSortAvailable.name) : getArrowIcon(columnsSortAvailable.startDate)}
+                            </THTable> :
+                            <THTable key={index}>{nameColumn}</THTable>
+                    )}
+                    {currentPageItems.map((userData: UserInterface, index: number) => {
+                        return [
+                            <DivImgTable key={index + '-1'}>
+                                <ImgTableUser src={`${userData.photo}`} />
+                            </DivImgTable>,
 
-                        <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div style={{ color: `${gb.colorGreen}` }}>
-                                <b>{userData.full_name}</b>
-                            </div>
-                            <div>#<b>{userData.id}</b></div>
-                            <div>{userData.email}</div>
-                        </PTable>,
+                            <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                                <div style={{ color: `${gb.colorGreen}` }}>
+                                    <b>{userData.full_name}</b>
+                                </div>
+                                <div>#<b>{userData.id}</b></div>
+                                <div>{userData.email}</div>
+                            </PTable>,
 
-                        <PTable key={index + '-3'}>
-                            {userData.start_date}
-                        </PTable>,
+                            <PTable key={index + '-3'}>
+                                {userData.start_date}
+                            </PTable>,
 
-                        <PTable key={index + '-4'}>
-                            {userData.description}
-                        </PTable>,
+                            <PTable key={index + '-4'}>
+                                {userData.description}
+                            </PTable>,
 
-                        <PTable key={index + '-5'} flexdirection='row'>
-                            <IconPhone />
-                            {userData.phone_number}
-                        </PTable>,
+                            <PTable key={index + '-5'} flexdirection='row'>
+                                <IconPhone />
+                                {userData.phone_number}
+                            </PTable>,
 
-                        <PTable key={index + '-6'}>
-                            {userData.status_active === true ?
-                                <PStatusAvailableUsers status={userData.status_active}>
-                                    Active
-                                </PStatusAvailableUsers> :
+                            <PTable key={index + '-6'}>
+                                {userData.status_active === true ?
+                                    <PStatusAvailableUsers status={userData.status_active}>
+                                        Active
+                                    </PStatusAvailableUsers> :
 
-                                <PStatusAvailableUsers status={userData.status_active}>
-                                    Inactive
-                                </PStatusAvailableUsers>
-                            }
-                        </PTable>,
+                                    <PStatusAvailableUsers status={userData.status_active}>
+                                        Inactive
+                                    </PStatusAvailableUsers>
+                                }
+                            </PTable>,
 
-                        <PTable key={index + '-7'}>
-                            <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                            <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
-                                <ButtonOption onClick={() => { navigateToUserUpdate(userData.id) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteUserById(userData.id, index) }}>Delete</ButtonOption>
-                            </DivCtnOptions>
-                        </PTable>
-                    ]
-                }
-                )}
-            </Table>
+                            <PTable key={index + '-7'}>
+                                <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                                <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
+                                    <ButtonOption onClick={() => { navigateToUserUpdate(userData.id) }}>Update</ButtonOption>
+                                    <ButtonOption onClick={() => { deleteUserById(userData.id, index) }}>Delete</ButtonOption>
+                                </DivCtnOptions>
+                            </PTable>
+                        ]
+                    }
+                    )}
+                </Table>
 
-            <paginationStyles.DivCtnPagination>
-                <paginationStyles.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
-                    &lt;&lt;
-                </paginationStyles.ButtonSwitchPage>
-                <paginationStyles.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
-                    &lt;
-                </paginationStyles.ButtonSwitchPage>
-                <paginationStyles.SpanPageCount>
-                    {currentPage} of {totalPages}
-                </paginationStyles.SpanPageCount>
-                <paginationStyles.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
-                    &gt;
-                </paginationStyles.ButtonSwitchPage>
-                <paginationStyles.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
-                    &gt;&gt;
-                </paginationStyles.ButtonSwitchPage>
-            </paginationStyles.DivCtnPagination>
+                <paginationStyles.DivCtnPagination>
+                    <paginationStyles.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
+                        &lt;&lt;
+                    </paginationStyles.ButtonSwitchPage>
+                    <paginationStyles.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
+                        &lt;
+                    </paginationStyles.ButtonSwitchPage>
+                    <paginationStyles.SpanPageCount>
+                        {currentPage} of {totalPages}
+                    </paginationStyles.SpanPageCount>
+                    <paginationStyles.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
+                        &gt;
+                    </paginationStyles.ButtonSwitchPage>
+                    <paginationStyles.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
+                        &gt;&gt;
+                    </paginationStyles.ButtonSwitchPage>
+                </paginationStyles.DivCtnPagination>
 
-        </userStyles.SectionPageUser >
-
+            </userStyles.SectionPageUser >
     )
 }

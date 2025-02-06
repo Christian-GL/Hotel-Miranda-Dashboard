@@ -7,6 +7,8 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as contactStyles from "./contactStyles.ts"
 import * as gb from '../common/styles/globalVars.ts'
+import { ToastContainer, toast } from 'react-toastify'
+import { Toastify } from "../common/components/toastify/toastify.tsx"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { ContactInterface } from './interfaces/contactInterface.ts'
@@ -65,6 +67,7 @@ export const Contact = () => {
         resetPage,
         lastPage
     } = usePagination(filteredContacts, 10)
+    const [toastShown, setToastShown] = useState<boolean>(false)
 
     useEffect(() => {
         if (contactAllLoading === ApiStatus.idle) { dispatch(ContactFetchAllThunk()) }
@@ -85,6 +88,14 @@ export const Contact = () => {
             displayNotArchivedContacts() :
             displayArchivedContacts()
     }, [archived])
+    useEffect(() => {
+        if (contactAllLoading === ApiStatus.pending) {
+            if (!toastShown) {
+                Toastify()
+                setToastShown(true)
+            }
+        } else { toast.dismiss() }
+    }, [contactAllLoading])
 
     const navigateToContactCreate = (): void => {
         navigate('contact-create')
@@ -199,133 +210,133 @@ export const Contact = () => {
 
 
     return (
+        contactAllLoading === ApiStatus.pending ?
+            <ToastContainer /> :
+            <contactStyles.SectionPageContact>
 
-        <contactStyles.SectionPageContact>
-
-            <contactStyles.SectionReviews>
-                <contactStyles.DivCtnReviews>
-                    <Swiper
-                        spaceBetween={0}
-                        slidesPerView={3}
-                        navigation={false}
-                        pagination={{ clickable: true }}
-                        loop={true}
-                    >
-                        {filteredContacts.map((contact: ContactInterface, index: number) => {
-                            return <SwiperSlide key={index}>
-                                <ArticleReview
-                                    nameProfile={contact.full_name}
-                                    timeSince={`${contact.publish_date} - ${contact.publish_time}`}
-                                    textReview={contact.comment}
-                                />
-                            </SwiperSlide>
-                        })}
-                    </Swiper>
-                </contactStyles.DivCtnReviews>
-            </contactStyles.SectionReviews>
-
-            <contactStyles.DivCtnFuncionality>
-                <contactStyles.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='Contacts' onClick={() => handleTableFilter(ButtonType.notArchived)} isSelected={selectedButton === ButtonType.notArchived} />
-                    <TableDisplayIndicator text='Archived' onClick={() => handleTableFilter(ButtonType.archived)} isSelected={selectedButton === ButtonType.archived} />
-                </contactStyles.DivCtnTableDisplayFilter>
-
-                <contactStyles.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search by contact name' />
-                </contactStyles.DivCtnSearch>
-
-                <contactStyles.DivCtnButton>
-                    <ButtonCreate onClick={navigateToContactCreate} children='+ New Contact' />
-                </contactStyles.DivCtnButton>
-            </contactStyles.DivCtnFuncionality>
-
-            <Table rowlistlength={filteredContacts.length + 1} columnlistlength={nameColumnList.length} >
-                {nameColumnList.map((nameColumn, index) =>
-                    index <= 2 ?
-                        <THTable key={index} cursorPointer='yes' onClick={() => {
-                            switch (index) {
-                                case 0: handleColumnClick(columnsSortAvailable.orderId); break
-                                case 1: handleColumnClick(columnsSortAvailable.date); break
-                                case 2: handleColumnClick(columnsSortAvailable.customer); break
-                                default: ; break
-                            }
-                        }}
+                <contactStyles.SectionReviews>
+                    <contactStyles.DivCtnReviews>
+                        <Swiper
+                            spaceBetween={0}
+                            slidesPerView={3}
+                            navigation={false}
+                            pagination={{ clickable: true }}
+                            loop={true}
                         >
-                            {nameColumn}
-                            {(() => {
+                            {filteredContacts.map((contact: ContactInterface, index: number) => {
+                                return <SwiperSlide key={index}>
+                                    <ArticleReview
+                                        nameProfile={contact.full_name}
+                                        timeSince={`${contact.publish_date} - ${contact.publish_time}`}
+                                        textReview={contact.comment}
+                                    />
+                                </SwiperSlide>
+                            })}
+                        </Swiper>
+                    </contactStyles.DivCtnReviews>
+                </contactStyles.SectionReviews>
+
+                <contactStyles.DivCtnFuncionality>
+                    <contactStyles.DivCtnTableDisplayFilter>
+                        <TableDisplayIndicator text='Contacts' onClick={() => handleTableFilter(ButtonType.notArchived)} isSelected={selectedButton === ButtonType.notArchived} />
+                        <TableDisplayIndicator text='Archived' onClick={() => handleTableFilter(ButtonType.archived)} isSelected={selectedButton === ButtonType.archived} />
+                    </contactStyles.DivCtnTableDisplayFilter>
+
+                    <contactStyles.DivCtnSearch>
+                        <TableSearchTerm onchange={handleInputTerm} placeholder='Search by contact name' />
+                    </contactStyles.DivCtnSearch>
+
+                    <contactStyles.DivCtnButton>
+                        <ButtonCreate onClick={navigateToContactCreate} children='+ New Contact' />
+                    </contactStyles.DivCtnButton>
+                </contactStyles.DivCtnFuncionality>
+
+                <Table rowlistlength={filteredContacts.length + 1} columnlistlength={nameColumnList.length} >
+                    {nameColumnList.map((nameColumn, index) =>
+                        index <= 2 ?
+                            <THTable key={index} cursorPointer='yes' onClick={() => {
                                 switch (index) {
-                                    case 0: return getArrowIcon(columnsSortAvailable.orderId)
-                                    case 1: return getArrowIcon(columnsSortAvailable.date)
-                                    case 2: return getArrowIcon(columnsSortAvailable.customer)
-                                    default: return null
+                                    case 0: handleColumnClick(columnsSortAvailable.orderId); break
+                                    case 1: handleColumnClick(columnsSortAvailable.date); break
+                                    case 2: handleColumnClick(columnsSortAvailable.customer); break
+                                    default: ; break
                                 }
-                            })()}
-                        </THTable> :
-                        <THTable key={index}>{nameColumn}</THTable>
-                )}
-                {currentPageItems.map((contactData, index) => {
-                    return [
-                        <PTable key={index + '-1'}>
-                            #<b>{contactData.id}</b>
-                        </PTable>,
+                            }}
+                            >
+                                {nameColumn}
+                                {(() => {
+                                    switch (index) {
+                                        case 0: return getArrowIcon(columnsSortAvailable.orderId)
+                                        case 1: return getArrowIcon(columnsSortAvailable.date)
+                                        case 2: return getArrowIcon(columnsSortAvailable.customer)
+                                        default: return null
+                                    }
+                                })()}
+                            </THTable> :
+                            <THTable key={index}>{nameColumn}</THTable>
+                    )}
+                    {currentPageItems.map((contactData, index) => {
+                        return [
+                            <PTable key={index + '-1'}>
+                                #<b>{contactData.id}</b>
+                            </PTable>,
 
-                        <PTable key={index + '-2'} >
-                            {contactData.publish_date} {contactData.publish_time}
-                        </PTable>,
+                            <PTable key={index + '-2'} >
+                                {contactData.publish_date} {contactData.publish_time}
+                            </PTable>,
 
-                        <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div style={{ color: `${gb.colorGreen}` }}>
-                                <b>{contactData.full_name}</b>
-                            </div>
-                            <div>{contactData.email}</div>
-                            <div style={{ display: 'flex', alignItems: 'bottom' }}>
-                                <IconPhone width='1.3rem' />
-                                <div>{contactData.contact}</div>
-                            </div>
-                        </PTable>,
+                            <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center'>
+                                <div style={{ color: `${gb.colorGreen}` }}>
+                                    <b>{contactData.full_name}</b>
+                                </div>
+                                <div>{contactData.email}</div>
+                                <div style={{ display: 'flex', alignItems: 'bottom' }}>
+                                    <IconPhone width='1.3rem' />
+                                    <div>{contactData.contact}</div>
+                                </div>
+                            </PTable>,
 
-                        <PTable key={index + '-4'} >
-                            {contactData.comment}
-                        </PTable>,
+                            <PTable key={index + '-4'} >
+                                {contactData.comment}
+                            </PTable>,
 
-                        <PTable key={index + '-5'}>
-                            {
-                                selectedButton === 'notarchived' ?
-                                    <ButtonPublishArchive onClick={() => archive(contactData.id)} color={gb.colorRed}>Archive</ButtonPublishArchive> :
-                                    <ButtonPublishArchive onClick={() => publish(contactData.id)} color={gb.colorGreen}>Publish</ButtonPublishArchive>
-                            }
-                        </PTable>,
+                            <PTable key={index + '-5'}>
+                                {
+                                    selectedButton === 'notarchived' ?
+                                        <ButtonPublishArchive onClick={() => archive(contactData.id)} color={gb.colorRed}>Archive</ButtonPublishArchive> :
+                                        <ButtonPublishArchive onClick={() => publish(contactData.id)} color={gb.colorGreen}>Publish</ButtonPublishArchive>
+                                }
+                            </PTable>,
 
-                        <PTable key={index + '-8'}>
-                            <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                            <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
-                                <ButtonOption onClick={() => { navigateToContactUpdate(contactData.id) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteContactById(contactData.id, index) }}>Delete</ButtonOption>
-                            </DivCtnOptions>
-                        </PTable>
-                    ]
-                })}
-            </Table>
+                            <PTable key={index + '-8'}>
+                                <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                                <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
+                                    <ButtonOption onClick={() => { navigateToContactUpdate(contactData.id) }}>Update</ButtonOption>
+                                    <ButtonOption onClick={() => { deleteContactById(contactData.id, index) }}>Delete</ButtonOption>
+                                </DivCtnOptions>
+                            </PTable>
+                        ]
+                    })}
+                </Table>
 
-            <paginationJS.DivCtnPagination>
-                <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
-                    &lt;&lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
-                    &lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.SpanPageCount>
-                    {currentPage} of {totalPages}
-                </paginationJS.SpanPageCount>
-                <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
-                    &gt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
-                    &gt;&gt;
-                </paginationJS.ButtonSwitchPage>
-            </paginationJS.DivCtnPagination>
+                <paginationJS.DivCtnPagination>
+                    <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
+                        &lt;&lt;
+                    </paginationJS.ButtonSwitchPage>
+                    <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
+                        &lt;
+                    </paginationJS.ButtonSwitchPage>
+                    <paginationJS.SpanPageCount>
+                        {currentPage} of {totalPages}
+                    </paginationJS.SpanPageCount>
+                    <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
+                        &gt;
+                    </paginationJS.ButtonSwitchPage>
+                    <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
+                        &gt;&gt;
+                    </paginationJS.ButtonSwitchPage>
+                </paginationJS.DivCtnPagination>
 
-        </contactStyles.SectionPageContact >
-
+            </contactStyles.SectionPageContact >
     )
 }
