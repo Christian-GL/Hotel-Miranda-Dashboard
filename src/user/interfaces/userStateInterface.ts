@@ -4,7 +4,7 @@ import { ApiStatus } from "../../common/enums/ApiStatus.ts"
 
 export interface UserStateInterface {
     allData: UserInterface[]
-    idData: UserInterface | null
+    idData: UserInterface
     allStatus: ApiStatus
     idStatus: ApiStatus
     createStatus: ApiStatus

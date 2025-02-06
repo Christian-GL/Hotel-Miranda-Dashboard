@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 import { FaRegCheckCircle } from "react-icons/fa";
 import { RxCrossCircled } from "react-icons/rx";
 
-import * as gb from '../../styles/globalVars.js'
+import * as gb from '../../styles/globalVars.ts'
 
 
 export const ArticleReview = styled.article`

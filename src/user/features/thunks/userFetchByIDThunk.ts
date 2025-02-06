@@ -2,7 +2,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 import userJSON from '../../data/userData.json'
-import { UserInterface } from '../../interfaces/userInterface'
+import { UserInterface } from '../../interfaces/userInterface.ts'
 
 
 type RequestResponse = {

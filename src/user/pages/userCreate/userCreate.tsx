@@ -7,7 +7,7 @@ import * as userCreateStyles from "./userCreate.ts"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
-import { checkFirstIDAvailable } from '../../../common/utils/formUtils.js'
+import { checkFirstIDAvailable } from '../../../common/utils/formUtils.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
@@ -21,7 +21,7 @@ import { UserCreateThunk } from "../../features/thunks/userCreateThunk.ts"
 export const UserCreate = () => {
 
     const dispatch = useDispatch<AppDispatch>()
-    const userAll = useSelector(getUserAllData) || []
+    const userAll = useSelector(getUserAllData)
     const userAllLoading = useSelector(getUserAllStatus)
     const [newUser, setNewUser] = useState<UserInterface>({
         id: 0,
@@ -42,9 +42,7 @@ export const UserCreate = () => {
                 const id = checkFirstIDAvailable(userAll)
                 setNextIdAvailable(id)
             }
-            else {
-                setNextIdAvailable(1)
-            }
+            else { setNextIdAvailable(1) }
         }
         else if (userAllLoading === ApiStatus.rejected) { alert("Error en la api de user create") }
     }, [userAllLoading, userAll])

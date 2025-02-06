@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as userStyles from "./userStyles.ts"
-import * as gb from '../common/styles/globalVars.js'
+import * as gb from '../common/styles/globalVars.ts'
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { UserInterface } from "./interfaces/userInterface.ts"
 import { UserColumnsArrowStatesInterface } from "./interfaces/userColumnsArrowStatesInterface.ts"
 import { ArrowType } from "../common/enums/ArrowType.ts"
-import { dateFormatToYYYYMMDD } from "../common/utils/formUtils.js"
+import { dateFormatToYYYYMMDD } from "../common/utils/formUtils.ts"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
@@ -133,7 +133,7 @@ export const User = () => {
         }
         return sortedData
     }
-    const handleColumnClick = (nameColumn: columnsSortAvailable) => {
+    const handleColumnClick = (nameColumn: columnsSortAvailable): void => {
         setArrowStates(prevState => {
             const newState: UserColumnsArrowStatesInterface = { ...prevState }
 
@@ -158,18 +158,18 @@ export const User = () => {
 
         handleTableFilter(selectedButton)
     }
-    const getArrowIcon = (nameColumn: columnsSortAvailable) => {
+    const getArrowIcon = (nameColumn: columnsSortAvailable): JSX.Element => {
         const state = arrowStates[nameColumn]
         if (state === ArrowType.up) { return <TriangleUp /> }
         else if (state === ArrowType.down) { return <TriangleDown /> }
         else { return <TriangleRight /> }
     }
-    const displayMenuOptions = (index: number) => {
+    const displayMenuOptions = (index: number): void => {
         tableOptionsDisplayed === index ?
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteUserById = (id: number, index: number) => {
+    const deleteUserById = (id: number, index: number): void => {
         dispatch(UserDeleteByIdThunk(id))
         displayMenuOptions(index)
         resetPage()

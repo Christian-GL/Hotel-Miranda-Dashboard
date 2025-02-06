@@ -1,7 +1,7 @@
 
 import { styled } from 'styled-components'
 
-import * as gb from '../../../common/styles/globalVars.js'
+import * as gb from '../../../common/styles/globalVars.ts'
 
 
 export const SectionPageContactUpdate = styled.section`

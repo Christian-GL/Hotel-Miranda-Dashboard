@@ -1,13 +1,12 @@
 
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as dashboardJS from "./dashboard.js"
 import { ArticleReview } from "../common/components/articleReview/articleReview.tsx"
-import { getBookingAllData, getBookingAllStatus, getBookingError } from '../booking/features/bookingSlice.js'
-import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk.js'
+import { getBookingAllData, getBookingAllStatus } from '../booking/features/bookingSlice.ts'
+import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk.ts'
 import { getContactAllData, getContactAllStatus } from "../contact/features/contactSlice.ts"
 import { ContactFetchAllThunk } from "../contact/features/thunks/contactFetchAllThunk.ts"
 

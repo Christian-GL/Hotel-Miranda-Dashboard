@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 
 import { RiCloseCircleLine } from "react-icons/ri";
 
-import * as gb from '../../../common/styles/globalVars.js'
+import * as gb from '../../../common/styles/globalVars.ts'
 
 
 export const DialogPopup = styled.dialog`

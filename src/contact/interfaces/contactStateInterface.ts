@@ -6,7 +6,7 @@ export interface ContactStateInterface {
     allData: ContactInterface[]
     notArchived: ContactInterface[]
     archived: ContactInterface[]
-    idData: ContactInterface | null
+    idData: ContactInterface
     allStatus: ApiStatus
     idStatus: ApiStatus
     createStatus: ApiStatus

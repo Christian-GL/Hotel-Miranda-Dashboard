@@ -41,17 +41,15 @@ export const ContactUpdate = () => {
     useEffect(() => {
         if (contactByIdLoading === ApiStatus.idle) { dispatch(ContactFetchByIDThunk(idParams)) }
         else if (contactByIdLoading === ApiStatus.fulfilled) {
-            if (contactById) {
-                setContactUpdated({
-                    id: contactById.id,
-                    publish_date: contactById.publish_date || '',
-                    publish_time: contactById.publish_time || '',
-                    full_name: contactById.full_name || '',
-                    email: contactById.email || '',
-                    contact: contactById.contact || '',
-                    comment: contactById.comment || ''
-                })
-            }
+            setContactUpdated({
+                id: contactById.id,
+                publish_date: contactById.publish_date || '',
+                publish_time: contactById.publish_time || '',
+                full_name: contactById.full_name || '',
+                email: contactById.email || '',
+                contact: contactById.contact || '',
+                comment: contactById.comment || ''
+            })
         }
         else if (contactByIdLoading === ApiStatus.rejected) { alert("Error en la api de contact update") }
     }, [contactByIdLoading, contactById])

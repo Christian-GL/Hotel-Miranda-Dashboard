@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 
 import { RiHotelFill } from "react-icons/ri";
 
-import * as gb from '../../styles/globalVars.js'
+import * as gb from '../../styles/globalVars.ts'
 
 
 export const SectionPageSignIn = styled.section`

@@ -16,7 +16,7 @@ export const UserSlice = createSlice({
     name: 'user',
     initialState: {
         allData: [] as UserInterface[],
-        idData: {} as UserInterface | null,
+        idData: {} as UserInterface,
         allStatus: ApiStatus.idle,
         idStatus: ApiStatus.idle,
         createStatus: ApiStatus.idle,
@@ -90,9 +90,6 @@ export const UserSlice = createSlice({
                 state.deleteStatus = ApiStatus.fulfilled
                 const userIdToDelete = action.payload
                 state.allData = state.allData.filter(user => user.id !== userIdToDelete)
-                if (state.idData && state.idData.id === userIdToDelete) {
-                    state.idData = null
-                }
             })
             .addCase(UserDeleteByIdThunk.rejected, (state) => {
                 state.error = true
@@ -102,7 +99,7 @@ export const UserSlice = createSlice({
 })
 
 export const getUserAllData = (state: RootState): UserInterface[] => state.userSlice.allData
-export const getUserIdData = (state: RootState): UserInterface | null => state.userSlice.idData
+export const getUserIdData = (state: RootState): UserInterface => state.userSlice.idData
 
 export const getUserAllStatus = (state: RootState) => state.userSlice.allStatus
 export const getUserIdStatus = (state: RootState) => state.userSlice.idStatus

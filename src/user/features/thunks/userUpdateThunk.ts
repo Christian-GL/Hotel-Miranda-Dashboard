@@ -1,6 +1,6 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { UserInterface } from '../../interfaces/userInterface'
+import { UserInterface } from '../../interfaces/userInterface.ts'
 
 
 type RequestResponse = {

@@ -18,7 +18,7 @@ export const ContactSlice = createSlice({
         allData: [] as ContactInterface[],
         notArchived: [] as ContactInterface[],
         archived: [] as ContactInterface[],
-        idData: {} as ContactInterface | null,
+        idData: {} as ContactInterface,
         allStatus: ApiStatus.idle,
         idStatus: ApiStatus.idle,
         createStatus: ApiStatus.idle,
@@ -122,9 +122,6 @@ export const ContactSlice = createSlice({
                 state.allData = state.allData.filter(contact => contact.id !== contactIdToDelete)
                 state.notArchived = state.notArchived.filter(contact => contact.id !== contactIdToDelete)
                 state.archived = state.archived.filter(contact => contact.id !== contactIdToDelete)
-                if (state.idData && state.idData.id === contactIdToDelete) {
-                    state.idData = null
-                }
             })
             .addCase(ContactDeleteByIdThunk.rejected, (state) => {
                 state.error = true
@@ -139,7 +136,7 @@ export const { archiveContact, restoreContact } = ContactSlice.actions
 export const getContactAllData = (state: RootState): ContactInterface[] => state.contactSlice.allData
 export const getContactNotArchived = (state: RootState): ContactInterface[] => state.contactSlice.notArchived
 export const getContactArchived = (state: RootState): ContactInterface[] => state.contactSlice.archived
-export const getContactIdData = (state: RootState): ContactInterface | null => state.contactSlice.idData
+export const getContactIdData = (state: RootState): ContactInterface => state.contactSlice.idData
 
 export const getContactAllStatus = (state: RootState) => state.contactSlice.allStatus
 export const getContactIdStatus = (state: RootState) => state.contactSlice.idStatus

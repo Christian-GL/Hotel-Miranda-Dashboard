@@ -1,7 +1,7 @@
 
 import { styled } from 'styled-components'
 
-import * as gb from './globalVars.js'
+import * as gb from './globalVars.ts'
 
 
 export const DivCtnPagination = styled.div`

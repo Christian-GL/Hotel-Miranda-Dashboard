@@ -1,7 +1,7 @@
 
 import { styled } from 'styled-components'
 
-import * as gb from '../../styles/globalVars.js'
+import * as gb from '../../styles/globalVars.ts'
 
 
 export const DisplayIndicator = styled.button<{ isSelected: boolean }>`

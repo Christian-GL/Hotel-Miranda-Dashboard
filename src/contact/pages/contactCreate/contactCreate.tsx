@@ -7,7 +7,7 @@ import * as contactCreateStyles from "./contactCreateStyles.ts"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { ContactInterface } from "../../interfaces/contactInterface.ts"
-import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/utils/formUtils.js'
+import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/utils/formUtils.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconPlus, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
@@ -21,7 +21,7 @@ import { ContactCreateThunk } from "../../../contact/features/thunks/contactCrea
 export const ContactCreate = () => {
 
     const dispatch = useDispatch<AppDispatch>()
-    const contactAll = useSelector(getContactAllData) || []
+    const contactAll = useSelector(getContactAllData)
     const contactAllLoading = useSelector(getContactAllStatus)
     const [newContact, setNewContact] = useState<ContactInterface>({
         id: 0,
@@ -41,9 +41,7 @@ export const ContactCreate = () => {
                 const id = checkFirstIDAvailable(contactAll)
                 setNextIdAvailable(id)
             }
-            else {
-                setNextIdAvailable(1)
-            }
+            else { setNextIdAvailable(1) }
         }
         else if (contactAllLoading === ApiStatus.rejected) { alert("Error en la api de contact create") }
     }, [contactAllLoading, contactAll])

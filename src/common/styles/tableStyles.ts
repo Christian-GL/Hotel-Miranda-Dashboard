@@ -7,7 +7,7 @@ import { GoTriangleUp } from "react-icons/go"
 import { GoTriangleRight } from "react-icons/go"
 import { GoTriangleDown } from "react-icons/go"
 
-import * as gb from './globalVars.js'
+import * as gb from './globalVars.ts'
 
 
 export const Table = styled.table<{

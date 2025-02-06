@@ -7,7 +7,7 @@ import { FaRegCalendarCheck } from "react-icons/fa"
 import { IoLogInOutline } from "react-icons/io5"
 import { IoLogOutOutline } from "react-icons/io5"
 
-import * as gb from '../common/styles/globalVars.js'
+import * as gb from '../common/styles/globalVars.ts'
 
 
 export const SwiperCustom = styled(Swiper)`

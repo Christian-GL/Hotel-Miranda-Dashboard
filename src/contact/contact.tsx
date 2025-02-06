@@ -6,13 +6,13 @@ import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as contactStyles from "./contactStyles.ts"
-import * as gb from '../common/styles/globalVars.js'
+import * as gb from '../common/styles/globalVars.ts'
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { ContactInterface } from './interfaces/contactInterface.ts'
 import { ContactColumnsArrowStatesInterface } from './interfaces/contactColumnsArrowStatesInterface.ts'
 import { ArrowType } from "../common/enums/ArrowType.ts"
-import { dateFormatToYYYYMMDD, hourFormatTo24H } from "../common/utils/formUtils.js"
+import { dateFormatToYYYYMMDD, hourFormatTo24H } from "../common/utils/formUtils.ts"
 import { ArticleReview } from "../common/components/articleReview/articleReview.tsx"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
@@ -151,7 +151,7 @@ export const Contact = () => {
         }
         return sortedData
     }
-    const handleColumnClick = (nameColumn: columnsSortAvailable) => {
+    const handleColumnClick = (nameColumn: columnsSortAvailable): void => {
         setArrowStates(prevState => {
             const newState = { ...prevState }
 
@@ -170,7 +170,7 @@ export const Contact = () => {
 
         handleTableFilter(selectedButton)
     }
-    const getArrowIcon = (nameColumn: columnsSortAvailable) => {
+    const getArrowIcon = (nameColumn: columnsSortAvailable): JSX.Element => {
         const state = arrowStates[nameColumn]
         if (state === ArrowType.up) { return <TriangleUp /> }
         else if (state === ArrowType.down) { return <TriangleDown /> }
@@ -186,12 +186,12 @@ export const Contact = () => {
             dispatch(archiveContact(id))
         }
     }
-    const displayMenuOptions = (index: number) => {
+    const displayMenuOptions = (index: number): void => {
         tableOptionsDisplayed === index ?
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteContactById = (id: number, index: number) => {
+    const deleteContactById = (id: number, index: number): void => {
         dispatch(ContactDeleteByIdThunk(id))
         displayMenuOptions(index)
         resetPage()

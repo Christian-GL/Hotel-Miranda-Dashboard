@@ -8,7 +8,7 @@ import * as userUpdateStyles from "./userUpdate.ts"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
-import { dateFormatToYYYYMMDD, dateFormatToDDMMYYYY } from '../../../common/utils/formUtils.js'
+import { dateFormatToYYYYMMDD, dateFormatToDDMMYYYY } from '../../../common/utils/formUtils.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
@@ -43,18 +43,16 @@ export const UserUpdate = () => {
     useEffect(() => {
         if (userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(idParams)) }
         else if (userByIdLoading === ApiStatus.fulfilled) {
-            if (userById) {         // Comprobación necesaria al poder devolver null el Slice
-                setUserUpdated({
-                    id: userById.id,
-                    photo: userById.photo || '',
-                    full_name: userById.full_name || '',
-                    email: userById.email || '',
-                    start_date: userById.start_date || '',
-                    description: userById.description || '',
-                    phone_number: userById.phone_number || '',
-                    status_active: userById.status_active || false
-                })
-            }
+            setUserUpdated({
+                id: userById.id,
+                photo: userById.photo || '',
+                full_name: userById.full_name || '',
+                email: userById.email || '',
+                start_date: userById.start_date || '',
+                description: userById.description || '',
+                phone_number: userById.phone_number || '',
+                status_active: userById.status_active || false
+            })
         }
         else if (userByIdLoading === ApiStatus.rejected) { alert("Error en la api de user update") }
     }, [userByIdLoading, userById])

@@ -4,7 +4,7 @@ import { InputHTMLAttributes } from "react"
 
 import { HiMiniMagnifyingGlass } from "react-icons/hi2"
 
-import * as gb from '../../styles/globalVars.js'
+import * as gb from '../../styles/globalVars.ts'
 
 
 export const InputSearchEmployee = styled.input<InputHTMLAttributes<HTMLInputElement>>`
