@@ -4,10 +4,10 @@ import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 
 import HC from '../../../assets/img/HC.png'
-import * as layoutJS from "./layout.js"
-import * as headerJS from "./header.js"
-import * as sidebarJS from "./sidebarMenu.js"
-import { useLoginOptionsContext } from "../signIn/features/loginProvider.jsx"
+import * as layoutJS from "./layoutStyles.ts"
+import * as headerJS from "./headerStyles.ts"
+import * as sidebarJS from "./sidebarMenuStyles.ts"
+import { useLoginOptionsContext } from "../signIn/features/loginProvider.tsx"
 
 
 export const Layout = () => {

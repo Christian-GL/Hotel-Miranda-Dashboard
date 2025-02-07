@@ -18,7 +18,7 @@ export const ArticleReview: React.FC<ArticleReviewInterface> = ({ nameProfile, t
 
     return (<>
 
-        {showPopup && <PopupText title={nameProfile} text={textReview} onClose={() => setShowPopup(false)} />}
+        {showPopup && <PopupText isSlider={true} title={nameProfile} text={textReview} onClose={() => setShowPopup(false)} />}
 
         <articleReviewStyles.ArticleReview>
             <articleReviewStyles.PTextReview onClick={openPopup}>

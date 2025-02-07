@@ -8,7 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import * as contactStyles from "./contactStyles.ts"
 import * as gb from '../common/styles/globalVars.ts'
 import { ToastContainer, toast } from 'react-toastify'
-import { Toastify } from "../common/components/toastify/toastify.tsx"
+import { ToastifyPopup } from "../common/components/toastify/toastifyPopup.tsx"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { ContactInterface } from './interfaces/contactInterface.ts'
@@ -44,15 +44,16 @@ export const Contact = () => {
         date = 'date',
         customer = 'customer'
     }
-    const nameColumnList = ['Order ID', 'Date', 'Customer', 'Comment', 'Action', '']
-    const contactAll = useSelector(getContactAllData)
-    const contactAllLoading = useSelector(getContactAllStatus)
-    const notArchived = useSelector(getContactNotArchived)
-    const archived = useSelector(getContactArchived)
+    const nameColumnList: string[] = ['Order ID', 'Date', 'Customer', 'Comment', 'Action', '']
+    const contactAll: ContactInterface[] = useSelector(getContactAllData)
+    const contactAllLoading: ApiStatus = useSelector(getContactAllStatus)
+    const notArchived: ContactInterface[] = useSelector(getContactNotArchived)
+    const archived: ContactInterface[] = useSelector(getContactArchived)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredContacts, setFilteredContacts] = useState<ContactInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.notArchived)
+    const [toastShown, setToastShown] = useState<boolean>(false)
     const [arrowStates, setArrowStates] = useState<ContactColumnsArrowStatesInterface>({
         orderId: ArrowType.right,
         date: ArrowType.down,
@@ -66,8 +67,7 @@ export const Contact = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination(filteredContacts, 10)
-    const [toastShown, setToastShown] = useState<boolean>(false)
+    } = usePagination<ContactInterface>(filteredContacts, 10)
 
     useEffect(() => {
         if (contactAllLoading === ApiStatus.idle) { dispatch(ContactFetchAllThunk()) }
@@ -91,18 +91,14 @@ export const Contact = () => {
     useEffect(() => {
         if (contactAllLoading === ApiStatus.pending) {
             if (!toastShown) {
-                Toastify()
+                ToastifyPopup()
                 setToastShown(true)
             }
         } else { toast.dismiss() }
     }, [contactAllLoading])
 
-    const navigateToContactCreate = (): void => {
-        navigate('contact-create')
-    }
-    const navigateToContactUpdate = (id: number): void => {
-        navigate(`contact-update/${id}`)
-    }
+    const navigateToContactCreate = () => navigate('contact-create')
+    const navigateToContactUpdate = (id: number) => navigate(`contact-update/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -208,7 +204,6 @@ export const Contact = () => {
         resetPage()
     }
 
-
     return (
         contactAllLoading === ApiStatus.pending ?
             <ToastContainer /> :
@@ -218,12 +213,12 @@ export const Contact = () => {
                     <contactStyles.DivCtnReviews>
                         <Swiper
                             spaceBetween={0}
-                            slidesPerView={3}
+                            slidesPerView={filteredContacts.length === 1 ? 1 : filteredContacts.length === 2 ? 2 : 3}
                             navigation={false}
                             pagination={{ clickable: true }}
                             loop={true}
                         >
-                            {filteredContacts.map((contact: ContactInterface, index: number) => {
+                            {currentPageItems.map((contact: ContactInterface, index: number) => {
                                 return <SwiperSlide key={index}>
                                     <ArticleReview
                                         nameProfile={contact.full_name}

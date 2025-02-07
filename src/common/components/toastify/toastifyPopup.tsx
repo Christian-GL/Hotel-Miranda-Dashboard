@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import * as toastifyStyles from './toastifyStyles.ts'
 
 
-export const Toastify = () => {
+export const ToastifyPopup = () => {
     toast(
         <toastifyStyles.DivMessage>
             <toastifyStyles.GlobalToastStyles />

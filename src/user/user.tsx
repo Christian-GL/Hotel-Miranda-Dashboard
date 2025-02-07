@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux"
 import * as userStyles from "./userStyles.ts"
 import * as gb from '../common/styles/globalVars.ts'
 import { ToastContainer, toast } from 'react-toastify'
-import { Toastify } from "../common/components/toastify/toastify.tsx"
+import { ToastifyPopup } from "../common/components/toastify/toastifyPopup.tsx"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { UserInterface } from "./interfaces/userInterface.ts"
@@ -41,13 +41,14 @@ export const User = () => {
         name = 'name',
         startDate = 'startDate'
     }
-    const nameColumnList = ['', 'Name', 'Start date', 'Job description', 'Contact', 'Status', '']
-    const userAll = useSelector(getUserAllData)
-    const userAllLoading = useSelector(getUserAllStatus)
+    const nameColumnList: string[] = ['', 'Name', 'Start date', 'Job description', 'Contact', 'Status', '']
+    const userAll: UserInterface[] = useSelector(getUserAllData)
+    const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
+    const [toastShown, setToastShown] = useState<boolean>(false)
     const [arrowStates, setArrowStates] = useState<UserColumnsArrowStatesInterface>({
         name: ArrowType.right,
         startDate: ArrowType.down
@@ -60,8 +61,7 @@ export const User = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination(filteredUsers, 10)
-    const [toastShown, setToastShown] = useState<boolean>(false)
+    } = usePagination<UserInterface>(filteredUsers, 10)
 
     useEffect(() => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
@@ -71,18 +71,14 @@ export const User = () => {
     useEffect(() => {
         if (userAllLoading === ApiStatus.pending) {
             if (!toastShown) {
-                Toastify()
+                ToastifyPopup()
                 setToastShown(true)
             }
         } else { toast.dismiss() }
     }, [userAllLoading])
 
-    const navigateToUserCreate = (): void => {
-        navigate('user-create')
-    }
-    const navigateToUserUpdate = (id: number): void => {
-        navigate(`user-update/${id}`)
-    }
+    const navigateToUserCreate = () => navigate('user-create')
+    const navigateToUserUpdate = (id: number) => navigate(`user-update/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)

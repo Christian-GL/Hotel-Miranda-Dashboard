@@ -6,8 +6,8 @@ import { RiCloseCircleLine } from "react-icons/ri";
 import * as gb from '../../../common/styles/globalVars.ts'
 
 
-export const DialogPopup = styled.dialog`
-    position: fixed;
+export const DialogPopup = styled.dialog<{ isSlider?: boolean }>`
+    position: ${({ isSlider }) => (isSlider ? 'absolute' : 'fixed')};
     display: block;
     z-index: 1;
     top: 50%;
@@ -15,9 +15,9 @@ export const DialogPopup = styled.dialog`
     transform: translate(-50%, -50%);
     overflow: auto;
     padding: 2em;
-    width: 100%;
+    width: ${({ isSlider }) => (isSlider ? '75%' : '100%')};
     max-width: 40rem;
-    height: auto;
+    height: ${({ isSlider }) => (isSlider ? '75%' : 'auto')};
     max-height: 30rem;
     border: none;
     border-radius: 1rem;

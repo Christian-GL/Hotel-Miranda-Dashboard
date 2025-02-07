@@ -10,7 +10,7 @@ import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import * as gb from '../../styles/globalVars.ts'
 
 
-export const Header = styled.header`
+export const Header = styled.header<{ display?: string }>`
     position: fixed;
     z-index: 2;
     left: ${props => props.display === 'collapsed' ? `${gb.widthSidebarMenuCollapsed}` : `${gb.widthSidebarMenuNotCollapsed}`};

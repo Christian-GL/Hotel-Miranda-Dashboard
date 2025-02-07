@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as dashboardStyles from "./dashboardStyles.ts"
 import { ToastContainer, toast } from 'react-toastify'
-import { Toastify } from "../common/components/toastify/toastify.tsx"
+import { ToastifyPopup } from "../common/components/toastify/toastifyPopup.tsx"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { ArticleReview } from "../common/components/articleReview/articleReview.tsx"
@@ -14,15 +14,17 @@ import { getBookingAllData, getBookingAllStatus } from '../booking/features/book
 import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk.ts'
 import { getContactAllData, getContactAllStatus } from "../contact/features/contactSlice.ts"
 import { ContactFetchAllThunk } from "../contact/features/thunks/contactFetchAllThunk.ts"
+import { BookingInterface } from "../booking/interfaces/bookingInterface.ts"
+import { ContactInterface } from "../contact/interfaces/contactInterface.ts"
 
 
 export const Dashboard = () => {
 
     const dispatch = useDispatch<AppDispatch>()
-    const bookingAll = useSelector(getBookingAllData)
-    const bookingAllLoading = useSelector(getBookingAllStatus)
-    const contactAll = useSelector(getContactAllData)
-    const contactAllLoading = useSelector(getContactAllStatus)
+    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
+    const contactAll: ContactInterface[] = useSelector(getContactAllData)
+    const contactAllLoading: ApiStatus = useSelector(getContactAllStatus)
     const [toastShown, setToastShown] = useState<boolean>(false)
 
     useEffect(() => {
@@ -38,7 +40,7 @@ export const Dashboard = () => {
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.pending || contactAllLoading === ApiStatus.pending) {
             if (!toastShown) {
-                Toastify()
+                ToastifyPopup()
                 setToastShown(true)
             }
         } else { toast.dismiss() }
@@ -108,7 +110,7 @@ export const Dashboard = () => {
                     > */}
                     <Swiper
                         spaceBetween={0}
-                        slidesPerView={3}
+                        slidesPerView={contactAll.length === 1 ? 1 : contactAll.length === 2 ? 2 : 3}
                         navigation={false}
                         pagination={{ clickable: true }}
                         loop={true}

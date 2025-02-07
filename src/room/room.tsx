@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as roomStyles from "./roomStyles.ts"
 import { ToastContainer, toast } from 'react-toastify'
-import { Toastify } from "../common/components/toastify/toastify.tsx"
+import { ToastifyPopup } from "../common/components/toastify/toastifyPopup.tsx"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { RoomInterface } from "./interfaces/roomInterface.ts"
@@ -18,13 +18,17 @@ import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx
 import { applyDiscount } from "../common/utils/tableUtils.ts"
 import { usePagination } from "../common/hooks/usePagination.ts"
 import * as paginationJS from '../common/styles/pagination.ts'
-import { Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption } from "../common/styles/tableStyles.ts"
+import {
+    Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable,
+    ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption
+} from "../common/styles/tableStyles.ts"
 import { getRoomAllData, getRoomAllStatus } from "./features/roomSlice.ts"
 import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.ts"
 import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.ts"
 import { getBookingAllData, getBookingAllStatus } from "../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../booking/features/thunks/bookingFetchAllThunk.js"
 import { BookingDeleteByIdThunk } from "../booking/features/thunks/bookingDeleteByIdThunk.js"
+import { BookingInterface } from "../booking/interfaces/bookingInterface.ts"
 
 
 export const Room = () => {
@@ -41,16 +45,17 @@ export const Room = () => {
         price = 'price',
         offerPrice = 'offerPrice'
     }
-    const nameColumnList = ['', 'Room number', 'Room type', 'Amenities', 'Price', 'Offer price', 'Booking status', '']
-    const roomAll = useSelector(getRoomAllData)
-    const roomAllLoading = useSelector(getRoomAllStatus)
-    const bookingAll = useSelector(getBookingAllData)
-    const bookingAllLoading = useSelector(getBookingAllStatus)
+    const nameColumnList: string[] = ['', 'Room number', 'Room type', 'Amenities', 'Price', 'Offer price', 'Booking status', '']
+    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
+    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredRooms, setFilteredRooms] = useState<RoomInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
-    const [arrowStates, setArrowStates] = useState({
+    const [toastShown, setToastShown] = useState<boolean>(false)
+    const [arrowStates, setArrowStates] = useState<RoomColumnsArrowStatesInterface>({
         roomNumber: ArrowType.down,
         price: ArrowType.right,
         offerPrice: ArrowType.right
@@ -63,8 +68,7 @@ export const Room = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination(filteredRooms, 10)
-    const [toastShown, setToastShown] = useState<boolean>(false)
+    } = usePagination<RoomInterface>(filteredRooms, 10)
 
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
@@ -79,18 +83,14 @@ export const Room = () => {
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending) {
             if (!toastShown) {
-                Toastify()
+                ToastifyPopup()
                 setToastShown(true)
             }
         } else { toast.dismiss() }
     }, [bookingAllLoading, roomAllLoading])
 
-    const navigateToRoomCreate = (): void => {
-        navigate('room-create')
-    }
-    const navigateToRoomUpdate = (id: number): void => {
-        navigate(`room-update/${id}`)
-    }
+    const navigateToRoomCreate = () => navigate('room-create')
+    const navigateToRoomUpdate = (id: number) => navigate(`room-update/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)

@@ -11,7 +11,7 @@ import { FaUser } from "react-icons/fa";
 import * as gb from '../../styles/globalVars.ts'
 
 
-export const AsideSideNavigationBar = styled.aside`
+export const AsideSideNavigationBar = styled.aside<{ display?: string }>`
     position: fixed;
     z-index: 1;
     display: flex;
@@ -26,7 +26,7 @@ export const AsideSideNavigationBar = styled.aside`
     background: ${gb.colorWhiteFull};
 `
 
-export const IconHotel = styled(RiHotelFill)`
+export const IconHotel = styled(RiHotelFill) <{ display?: string }>`
     display: inline-block;
     vertical-align: middle;
     margin-bottom: ${props => props.display === 'collapsed' ? '2rem' : '0'};
@@ -42,7 +42,7 @@ export const IconHotel = styled(RiHotelFill)`
     }
 `
 
-export const DivCtnTitle = styled.div`
+export const DivCtnTitle = styled.div<{ display?: string }>`
     display: ${props => props.display === 'collapsed' ? 'none' : 'inline-block'};
     vertical-align: middle;
     margin-left: 1rem;
@@ -115,7 +115,7 @@ export const IconUsers = styled(FaUser)`
     color: ${gb.colorGreen};
 `
 
-export const PNavOptionText = styled.p`
+export const PNavOptionText = styled.p<{ display?: string }>`
     display: ${props => props.display === 'collapsed' ? 'none' : 'inline-block'};
     vertical-align: middle;
     margin-left: 1.5rem;
@@ -125,7 +125,7 @@ export const PNavOptionText = styled.p`
     color: ${gb.colorGreen};
 `
 
-export const DivCtnNavOption = styled.div`
+export const DivCtnNavOption = styled.div<{ display?: string, routeIsActive: string }>`
     text-align: ${props => props.display === 'collapsed' ? 'center' : 'left'};
     padding: 1em 0;
     cursor: pointer;
@@ -151,7 +151,7 @@ export const DivCtnNavOption = styled.div`
     }
 `
 
-export const DivCtnUser = styled.div`
+export const DivCtnUser = styled.div<{ display?: string }>`
     display: ${props => props.display === 'collapsed' ? 'none' : 'block'};
     position: relative;
     margin-top: 2rem;
@@ -192,7 +192,7 @@ export const ButtonEdit = styled.button`
     background-color: ${gb.colorGrayButtonProfile};
 `
 
-export const DivCtnCredits = styled.div`
+export const DivCtnCredits = styled.div<{ display?: string }>`
     display: ${props => props.display === 'collapsed' ? 'none' : 'block'};
 `
 

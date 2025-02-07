@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux"
 import * as bookingsStyles from './bookingStyles.ts'
 import * as gb from '../common/styles/globalVars.ts'
 import { ToastContainer, toast } from 'react-toastify'
-import { Toastify } from "../common/components/toastify/toastify.tsx"
+import { ToastifyPopup } from "../common/components/toastify/toastifyPopup.tsx"
 import { BookingStatus } from './data/bookingStatus.ts'
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
@@ -52,15 +52,18 @@ export const Bookings = () => {
         checkOut = 'checkOut',
         roomNumber = 'roomNumber'
     }
-    const nameColumnList = ['', 'Guest', 'Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
-    const bookingAll = useSelector(getBookingAllData)
-    const bookingAllLoading = useSelector(getBookingAllStatus)
-    const roomAll = useSelector(getRoomAllData)
-    const roomAllLoading = useSelector(getRoomAllStatus)
+    const nameColumnList: string[] = ['', 'Guest', 'Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
+    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
+    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredBookings, setFilteredBookings] = useState<BookingInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
+    const [showPopup, setShowPopup] = useState<boolean>(false)
+    const [infoViewNotes, setInfoViewNotes] = useState<PopupTextInterface>({ title: '', text: '' })
+    const [toastShown, setToastShown] = useState<boolean>(false)
     const [arrowStates, setArrowStates] = useState<BookingColumnsArrowStatesInterface>({
         guest: ArrowType.right,
         orderDate: ArrowType.right,
@@ -76,10 +79,7 @@ export const Bookings = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination(filteredBookings, 10)
-    const [showPopup, setShowPopup] = useState<boolean>(false)
-    const [infoViewNotes, setInfoViewNotes] = useState<PopupTextInterface>({ title: '', text: '' })
-    const [toastShown, setToastShown] = useState<boolean>(false)
+    } = usePagination<BookingInterface>(filteredBookings, 10)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -89,29 +89,22 @@ export const Bookings = () => {
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de rooms") }
+        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de bookings > rooms") }
     }, [roomAllLoading, roomAll])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending) {
             if (!toastShown) {
-                Toastify()
+                ToastifyPopup()
                 setToastShown(true)
             }
         } else { toast.dismiss() }
     }, [bookingAllLoading, roomAllLoading])
 
-    const navigateToBookingCreate = (): void => {
-        navigate('booking-create')
-    }
-    const navigateToBookingUpdate = (id: number): void => {
-        navigate(`booking-update/${id}`)
-    }
-    const navigateToBookingDetail = (id: number): void => {
-        navigate(`booking-details/${id}`)
-    }
-    const openPopup = (): void => {
-        setShowPopup(true)
-    }
+    const navigateToBookingCreate = () => navigate('booking-create')
+    const navigateToBookingUpdate = (id: number) => navigate(`booking-update/${id}`)
+    const navigateToBookingDetail = (id: number) => navigate(`booking-details/${id}`)
+
+    const openPopup = (): void => setShowPopup(true)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -262,7 +255,7 @@ export const Bookings = () => {
                     </bookingsStyles.DivCtnButton>
                 </bookingsStyles.DivCtnFuncionality>
 
-                {showPopup && <PopupText title={infoViewNotes.title} text={infoViewNotes.text} onClose={() => setShowPopup(false)} />}
+                {showPopup && <PopupText isSlider={false} title={infoViewNotes.title} text={infoViewNotes.text} onClose={() => setShowPopup(false)} />}
 
                 <Table rowlistlength={filteredBookings.length + 1} columnlistlength={nameColumnList.length} >
                     {nameColumnList.map((nameColumn, index) =>
