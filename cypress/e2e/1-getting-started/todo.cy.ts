@@ -25,7 +25,7 @@ describe('test login', () => {
 
     cy.get('[data-cy=submit-button]').click()
 
-    cy.on('window:alert', (textAlert) => {
+    cy.on('window:alert', (textAlert: string) => {
       expect(textAlert).to.contains('Email or password wrong')
     })
 

@@ -1,4 +1,5 @@
 
+import React from "react"
 import { useEffect, useState } from "react"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
@@ -15,7 +16,7 @@ export const Layout = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const { logout, isAuthenticated } = useLoginOptionsContext()
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(true)
+    const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(true)
 
     useEffect(() => {
         if (!isAuthenticated()) {
@@ -30,7 +31,7 @@ export const Layout = () => {
     const displaySidebarMenu = () => {
         setSidebarCollapsed(!sidebarCollapsed)
     }
-    const formatRouteTitle = (pathname) => {
+    const formatRouteTitle = (pathname: string) => {
         const formattedTitle = pathname
             .replace(/^\/|\/$/g, '')
             .split('/')
@@ -39,7 +40,7 @@ export const Layout = () => {
                     .replace(/-/g, ' ')
                     .replace(/\b\w/g, char => char.toUpperCase())
 
-                if (index === array.length - 1 && !isNaN(segment)) {
+                if (index === array.length - 1 && !isNaN(parseInt(segment))) {
                     formattedSegment = `#${segment}`
                 }
 
@@ -49,7 +50,7 @@ export const Layout = () => {
 
         return formattedTitle || "Empty Route"
     }
-    const routeIsActive = (route) => {
+    const routeIsActive = (route: string) => {
         return location.pathname.startsWith(route)
     }
 

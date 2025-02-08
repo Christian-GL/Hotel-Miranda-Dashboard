@@ -1,9 +1,15 @@
 
+import React from "react"
 import { useReducer, useContext, createContext } from "react"
+
+import { StateInterface } from '../interfaces/stateInterface.ts'
+import { ActionInterface } from "../interfaces/actionInterface.ts"
+import { LoginContextTypeInterface } from '../interfaces/loginContextTypeInterface.ts'
+import { LoginProviderInterface } from '../interfaces/loginProviderInterface.ts'
 import accountsData from '../data/accountsData.json'
 
 
-const loginReducer = (state, action) => {
+const loginReducer = (state: StateInterface, action: ActionInterface): StateInterface => {
     switch (action.type) {
         case 'LOGIN':
             return { ...state, loggedUser: action.payload }
@@ -16,19 +22,24 @@ const loginReducer = (state, action) => {
     }
 }
 
-const loginOptionsContext = createContext()
-export const useLoginOptionsContext = () => {
-    return useContext(loginOptionsContext)
+const loginOptionsContext = createContext<LoginContextTypeInterface | undefined>(undefined)
+
+export const useLoginOptionsContext = (): LoginContextTypeInterface => {
+    const context = useContext(loginOptionsContext)
+    if (!context) {
+        throw new Error('useLoginOptionsContext must be used within a LoginProvider')
+    }
+    return context
 }
 
-export const LoginProvider = ({ children }) => {
+export const LoginProvider = ({ children }: LoginProviderInterface) => {
 
-    const initialState = {
-        loggedUser: localStorage.getItem('isAuthenticated') ? true : null
+    const initialState: StateInterface = {
+        loggedUser: localStorage.getItem('isAuthenticated') ? { userEmail: '', userPassword: '' } : null
     }
-    const [state, dispatch] = useReducer(loginReducer, initialState)
+    const [state, dispatch] = useReducer<React.Reducer<StateInterface, ActionInterface>>(loginReducer, initialState)
 
-    const tryLogin = (userEmail, userPassword) => {
+    const tryLogin = (userEmail: string, userPassword: string): boolean => {
         const finded = accountsData.find((user) => userEmail === user.email && userPassword === user.password)
         if (finded) {
             dispatch({
@@ -41,7 +52,7 @@ export const LoginProvider = ({ children }) => {
         else return false
     }
 
-    const logout = () => {
+    const logout = (): void => {
         dispatch({ type: 'LOGOUT' })
         localStorage.removeItem('isAuthenticated')
     }

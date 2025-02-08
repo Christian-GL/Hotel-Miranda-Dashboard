@@ -5,7 +5,7 @@ import { useState } from "react"
 import * as articleReviewStyles from "./articleReviewStyles.ts"
 import { ArticleReviewInterface } from "./articleReviewInterface.ts"
 import PedroSanchez from '../../../assets/img/PedroSanchez.png'
-import { PopupText } from "../popupText/popupText.jsx"
+import { PopupText } from "../popupText/popupText.tsx"
 
 
 export const ArticleReview: React.FC<ArticleReviewInterface> = ({ nameProfile, textReview, timeSince }) => {

@@ -125,7 +125,7 @@ export const PNavOptionText = styled.p<{ display?: string }>`
     color: ${gb.colorGreen};
 `
 
-export const DivCtnNavOption = styled.div<{ display?: string, routeIsActive: string }>`
+export const DivCtnNavOption = styled.div<{ display?: string, routeIsActive: boolean }>`
     text-align: ${props => props.display === 'collapsed' ? 'center' : 'left'};
     padding: 1em 0;
     cursor: pointer;

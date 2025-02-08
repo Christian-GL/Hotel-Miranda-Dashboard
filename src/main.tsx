@@ -1,11 +1,13 @@
 
+import React from 'react'
 import { Provider } from 'react-redux'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 
+import { LoginProvider } from './common/components/signIn/features/loginProvider.tsx'
 import { store } from './common/redux/store.ts'
-import { Root } from './common/components/signIn/root/root.jsx'
-import { SignIn } from './common/components/signIn/signIn.jsx'
+import { Root } from './common/components/signIn/root/root.tsx'
+import { SignIn } from './common/components/signIn/signIn.tsx'
 import { Layout } from './common/components/layout/layout.tsx'
 import { Dashboard } from './dashboard/dashboard.tsx'
 import { Bookings } from './booking/booking.tsx'
@@ -22,11 +24,8 @@ import { User } from './user/user.tsx'
 import { UserCreate } from './user/pages/userCreate/userCreate.tsx'
 import { UserUpdate } from './user/pages/userUpdate/userUpdate.tsx'
 
-import { LoginProvider } from './common/components/signIn/features/loginProvider.jsx'
 
-
-
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root')!).render(
     <LoginProvider>
         <BrowserRouter>
             <Provider store={store}>
