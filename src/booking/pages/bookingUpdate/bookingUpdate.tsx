@@ -51,6 +51,9 @@ export const BookingUpdate = () => {
     useEffect(() => {
         if (bookingByIdLoading === ApiStatus.idle) { dispatch(BookingFetchByIDThunk(idParams)) }
         else if (bookingByIdLoading === ApiStatus.fulfilled) {
+            if (bookingById?.id !== idParams) {
+                dispatch(BookingFetchByIDThunk(idParams))
+            }
             setBookingUpdated({
                 id: bookingById.id,
                 photo: bookingById.photo || '',
@@ -68,15 +71,12 @@ export const BookingUpdate = () => {
             })
         }
         else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error en la api de booking update > bookings") }
-    }, [bookingByIdLoading, bookingById])
+    }, [bookingByIdLoading, bookingById, id])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
         else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de booking update > rooms") }
     }, [roomAllLoading, roomAll])
-    useEffect(() => {
-        dispatch(BookingFetchByIDThunk(idParams))
-    }, [id, dispatch])
 
     const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files } = e.target

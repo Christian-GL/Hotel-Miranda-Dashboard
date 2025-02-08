@@ -52,11 +52,11 @@ export const RoomUpdate = () => {
     })
 
     useEffect(() => {
-        dispatch(RoomFetchByIDThunk(idParams))
-    }, [id, dispatch])
-    useEffect(() => {
         if (roomByIdLoading === ApiStatus.idle) { dispatch(RoomFetchByIDThunk(idParams)) }
         else if (roomByIdLoading === ApiStatus.fulfilled) {
+            if (roomById?.id !== idParams) {
+                dispatch(RoomFetchByIDThunk(idParams))
+            }
             setRoomUpdated({
                 id: roomById.id || 0,
                 photos: roomById.photos || [],
@@ -68,7 +68,7 @@ export const RoomUpdate = () => {
             })
         }
         else if (roomByIdLoading === ApiStatus.rejected) { alert("Error en la api de room update") }
-    }, [roomByIdLoading, roomById, bookingAllLoading, bookingAll])
+    }, [roomByIdLoading, roomById, bookingAllLoading, bookingAll, id])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
@@ -91,9 +91,6 @@ export const RoomUpdate = () => {
     //     else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error en la api de bookings") }
     //     console.log('==============')
     // }, [roomByIdLoading, bookingByIdLoading, index])
-    useEffect(() => {
-        dispatch(RoomFetchByIDThunk(idParams))
-    }, [id, dispatch])
 
     const handlePhotoChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = e.target

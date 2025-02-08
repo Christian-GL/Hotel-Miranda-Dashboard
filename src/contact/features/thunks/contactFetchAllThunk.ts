@@ -28,7 +28,7 @@ export const ContactFetchAllThunk = createAsyncThunk
                 setTimeout(() => resolve({
                     ok: true,
                     json: () => contactJSON
-                }), 200)
+                }), 750)
             })
 
             if (request.ok) {

@@ -29,7 +29,7 @@ export const UserFetchAllThunk = createAsyncThunk
                 setTimeout(() => resolve({
                     ok: true,
                     json: () => userJSON
-                }), 200)
+                }), 750)
             })
 
             if (request.ok) {

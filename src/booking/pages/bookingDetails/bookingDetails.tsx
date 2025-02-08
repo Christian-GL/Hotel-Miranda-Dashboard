@@ -1,46 +1,75 @@
 
-import React from "react"
+import React, { useState } from "react"
 import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
 import * as gb from '../../../common/styles/globalVars.ts'
 import * as bookingDetailsStyles from "./bookingDetailsStyles.ts"
+import { BookingInterface } from "../../interfaces/bookingInterface.ts"
+import { RoomInterface } from "../../../room/interfaces/roomInterface.ts"
+import { DivCtnOptions, ButtonOption } from "../../../common/styles/tableStyles.ts"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { RoomAmenities } from "../../../room/data/roomAmenities.ts"
 import { applyDiscount } from '../../../common/utils/tableUtils.ts'
 import { getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice.ts"
+import { resetIdStatus } from "../../../booking/features/bookingSlice.ts"
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk.ts"
+import { BookingDeleteByIdThunk } from "../../features/thunks/bookingDeleteByIdThunk.ts"
 import { getRoomIdData, getRoomIdStatus } from '../../../room/features/roomSlice.ts'
 import { RoomFetchByIDThunk } from '../../../room/features/thunks/roomFetchByIDThunk.ts'
+import { RoomUpdateThunk } from "../../../room/features/thunks/roomUpdateThunk.ts"
 
 
 export const BookingDetails = () => {
 
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { id } = useParams()
     const idParams = parseInt(id!)
-    const bookingById = useSelector(getBookingIdData)
-    const bookingByIdLoading = useSelector(getBookingIdStatus)
-    const roomById = useSelector(getRoomIdData)
-    const roomByIdLoading = useSelector(getRoomIdStatus)
+    const bookingById: BookingInterface = useSelector(getBookingIdData)
+    const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
+    const roomById: RoomInterface = useSelector(getRoomIdData)
+    const roomByIdLoading: ApiStatus = useSelector(getRoomIdStatus)
+    const [optionsDisplayed, setOptionsDisplayed] = useState<boolean>(false)
 
     useEffect(() => {
         if (bookingByIdLoading === ApiStatus.idle) { dispatch(BookingFetchByIDThunk(idParams)) }
         else if (bookingByIdLoading === ApiStatus.fulfilled) {
             if (roomByIdLoading === ApiStatus.idle) { dispatch(RoomFetchByIDThunk(bookingById.room_id)) }
-            else if (roomByIdLoading === ApiStatus.fulfilled) { }
-            else if (roomByIdLoading === ApiStatus.rejected) { alert("Error en la api de rooms") }
+            else if (roomByIdLoading === ApiStatus.fulfilled) {
+                if (bookingById?.id !== idParams) {
+                    dispatch(BookingFetchByIDThunk(idParams))
+                    dispatch(resetIdStatus())
+                    if (bookingByIdLoading === ApiStatus.fulfilled) {
+                        dispatch(RoomFetchByIDThunk(bookingById.room_id))
+                    }
+                }
+            }
+            else if (roomByIdLoading === ApiStatus.rejected) { alert("Error en la api de booking details > rooms") }
         }
-        else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error en la api de bookings") }
-    }, [bookingByIdLoading, bookingById, roomByIdLoading, roomById])
-    useEffect(() => {
-        dispatch(BookingFetchByIDThunk(idParams))
-    }, [id])
-    useEffect(() => {
-        dispatch(RoomFetchByIDThunk(bookingById.room_id))
-    }, [bookingById])
+        else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error en la api de bookings details > booking") }
+    }, [bookingByIdLoading, bookingById, roomByIdLoading, roomById, id])
+    // useEffect(() => {
+    //     dispatch(RoomFetchByIDThunk(bookingById.room_id))
+    // }, [bookingById])
+
+    const navigateBackToBookings = () => navigate('../')
+
+    const switchDisplayMenuOptions = (): void => {
+        setOptionsDisplayed(!optionsDisplayed)
+    }
+    const deleteThisBooking = (): void => {
+        const roomUpdated: RoomInterface = {
+            ...roomById,
+            booking_list: roomById.booking_list.filter(bookingId => bookingId !== bookingById.room_id)
+        }
+        dispatch(RoomUpdateThunk(roomUpdated))
+        dispatch(BookingDeleteByIdThunk(bookingById.id))
+        navigateBackToBookings()
+    }
 
 
     return (
@@ -62,7 +91,15 @@ export const BookingDetails = () => {
                             </bookingDetailsStyles.ButtonSendMessage>
                         </bookingDetailsStyles.DivCtnContactMessage>
                     </bookingDetailsStyles.DivCtnMainData>
-                    <bookingDetailsStyles.IconOptions />
+
+
+                    <bookingDetailsStyles.IconOptions onClick={() => { switchDisplayMenuOptions() }} />
+                    <DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} isInTable={false} >
+                        <ButtonOption onClick={() => { navigateBackToBookings() }}>Go to bookings</ButtonOption>
+                        <ButtonOption onClick={() => { deleteThisBooking() }}>Delete</ButtonOption>
+                    </DivCtnOptions>
+
+
                 </bookingDetailsStyles.DivCtnImgAndMainData>
 
                 <bookingDetailsStyles.DivCheckInOut>

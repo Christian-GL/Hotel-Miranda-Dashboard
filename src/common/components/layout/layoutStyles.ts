@@ -9,4 +9,5 @@ export const Main = styled.main<{ display?: string }>`
     padding-top: ${gb.heightHeader};
     margin-left: ${props => props.display === 'collapsed' ? `${gb.widthSidebarMenuCollapsed}` : `${gb.widthSidebarMenuNotCollapsed}`};
     height: 100vh;
+    background-color: ${gb.colorGrayBackgroundPage};
 `

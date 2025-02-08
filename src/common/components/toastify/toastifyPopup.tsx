@@ -6,14 +6,15 @@ import 'react-toastify/dist/ReactToastify.css'
 import * as toastifyStyles from './toastifyStyles.ts'
 
 
-export const ToastifyPopup = () => {
+export const ToastifyPopup = (id: number, message: string) => {
     toast(
         <toastifyStyles.DivMessage>
             <toastifyStyles.GlobalToastStyles />
             <toastifyStyles.Spinner />
-            <toastifyStyles.PMessage>Loading Data...</toastifyStyles.PMessage>
+            <toastifyStyles.PMessage>{message}</toastifyStyles.PMessage>
         </toastifyStyles.DivMessage>,
         {
+            toastId: id,
             position: "top-center",
             autoClose: false,
             hideProgressBar: true,
@@ -27,4 +28,3 @@ export const ToastifyPopup = () => {
         }
     )
 }
-

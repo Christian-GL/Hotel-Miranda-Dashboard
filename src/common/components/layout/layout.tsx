@@ -3,12 +3,20 @@ import React from "react"
 import { useEffect, useState } from "react"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 import HC from '../../../assets/img/HC.png'
 import * as layoutJS from "./layoutStyles.ts"
 import * as headerJS from "./headerStyles.ts"
 import * as sidebarJS from "./sidebarMenuStyles.ts"
+import { ToastContainer, toast } from 'react-toastify'
+import { ToastifyPopup } from "../toastify/toastifyPopup.tsx"
 import { useLoginOptionsContext } from "../signIn/features/loginProvider.tsx"
+import { getBookingAllStatus, getBookingIdStatus } from "../../../booking/features/bookingSlice.ts"
+import { getRoomAllStatus, getRoomIdStatus } from "../../../room/features/roomSlice.ts"
+import { getContactAllStatus, getContactIdStatus } from "../../../contact/features/contactSlice.ts"
+import { getUserAllStatus, getUserIdStatus } from "../../../user/features/userSlice.ts"
+import { ApiStatus } from "../../enums/ApiStatus.ts"
 
 
 export const Layout = () => {
@@ -17,12 +25,31 @@ export const Layout = () => {
     const location = useLocation()
     const { logout, isAuthenticated } = useLoginOptionsContext()
     const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(true)
+    const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
+    const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
+    const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
+    const roomByIdLoading: ApiStatus = useSelector(getRoomIdStatus)
+    const contactAllLoading: ApiStatus = useSelector(getContactAllStatus)
+    const contactByIdLoading: ApiStatus = useSelector(getContactIdStatus)
+    const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
+    const userByIdLoading: ApiStatus = useSelector(getUserIdStatus)
 
     useEffect(() => {
         if (!isAuthenticated()) {
             navigate('/')
         }
     }, [navigate, isAuthenticated])
+    useEffect(() => {
+        if (bookingAllLoading === ApiStatus.pending || bookingByIdLoading === ApiStatus.pending) { ToastifyPopup(1, 'Loading booking data...') }
+        else { toast.dismiss(1) }
+        if (roomAllLoading === ApiStatus.pending || roomByIdLoading === ApiStatus.pending) { ToastifyPopup(2, 'Loading room data...') }
+        else { toast.dismiss(2) }
+        if (contactAllLoading === ApiStatus.pending || contactByIdLoading === ApiStatus.pending) { ToastifyPopup(3, 'Loading contact data...') }
+        else { toast.dismiss(3) }
+        if (userAllLoading === ApiStatus.pending || userByIdLoading === ApiStatus.pending) { ToastifyPopup(4, 'loading user data...') }
+        else { toast.dismiss(4) }
+    }, [bookingAllLoading, bookingByIdLoading, roomAllLoading, roomByIdLoading,
+        contactAllLoading, contactByIdLoading, userAllLoading, userByIdLoading])
 
     const closeSession = () => {
         logout()
@@ -148,7 +175,14 @@ export const Layout = () => {
             </sidebarJS.AsideSideNavigationBar>
 
             <layoutJS.Main display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
-                <Outlet />
+                {
+                    bookingAllLoading === ApiStatus.pending || bookingByIdLoading === ApiStatus.pending ||
+                        roomAllLoading === ApiStatus.pending || roomByIdLoading === ApiStatus.pending ||
+                        contactAllLoading === ApiStatus.pending || contactByIdLoading === ApiStatus.pending ||
+                        userAllLoading === ApiStatus.pending || userByIdLoading === ApiStatus.pending ?
+                        <ToastContainer /> :
+                        <Outlet />
+                }
             </layoutJS.Main>
 
         </>)

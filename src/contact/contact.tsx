@@ -88,14 +88,14 @@ export const Contact = () => {
             displayNotArchivedContacts() :
             displayArchivedContacts()
     }, [archived])
-    useEffect(() => {
-        if (contactAllLoading === ApiStatus.pending) {
-            if (!toastShown) {
-                ToastifyPopup()
-                setToastShown(true)
-            }
-        } else { toast.dismiss() }
-    }, [contactAllLoading])
+    // useEffect(() => {
+    //     if (contactAllLoading === ApiStatus.pending) {
+    //         if (!toastShown) {
+    //             ToastifyPopup()
+    //             setToastShown(true)
+    //         }
+    //     } else { toast.dismiss() }
+    // }, [contactAllLoading])
 
     const navigateToContactCreate = () => navigate('contact-create')
     const navigateToContactUpdate = (id: number) => navigate(`contact-update/${id}`)
@@ -205,10 +205,10 @@ export const Contact = () => {
     }
 
     return (
-        contactAllLoading === ApiStatus.pending ?
-            <ToastContainer /> :
-            <contactStyles.SectionPageContact>
+        // contactAllLoading === ApiStatus.pending ?
+        //     <ToastContainer /> :
 
+            <contactStyles.SectionPageContact>
                 <contactStyles.SectionReviews>
                     <contactStyles.DivCtnReviews>
                         <Swiper
@@ -305,7 +305,7 @@ export const Contact = () => {
 
                             <PTable key={index + '-8'}>
                                 <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
+                                <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                     <ButtonOption onClick={() => { navigateToContactUpdate(contactData.id) }}>Update</ButtonOption>
                                     <ButtonOption onClick={() => { deleteContactById(contactData.id, index) }}>Delete</ButtonOption>
                                 </DivCtnOptions>

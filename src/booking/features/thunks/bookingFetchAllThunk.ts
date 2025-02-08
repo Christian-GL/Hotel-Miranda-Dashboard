@@ -34,7 +34,7 @@ export const BookingFetchAllThunk = createAsyncThunk
                 setTimeout(() => resolve({
                     ok: true,
                     json: () => bookingJSON
-                }), 200)
+                }), 1500)
             })
 
             if (request.ok) {

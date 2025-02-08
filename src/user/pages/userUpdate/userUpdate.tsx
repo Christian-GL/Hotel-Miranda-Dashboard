@@ -37,12 +37,15 @@ export const UserUpdate = () => {
         status_active: false
     })
 
-    useEffect(() => {
-        dispatch(UserFetchByIDThunk(idParams))
-    }, [id, dispatch])
+    // useEffect(() => {
+    //     dispatch(UserFetchByIDThunk(idParams))
+    // }, [id, dispatch])
     useEffect(() => {
         if (userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(idParams)) }
         else if (userByIdLoading === ApiStatus.fulfilled) {
+            if (userById?.id !== idParams) {
+                dispatch(UserFetchByIDThunk(idParams))
+            }
             setUserUpdated({
                 id: userById.id,
                 photo: userById.photo || '',
@@ -55,7 +58,7 @@ export const UserUpdate = () => {
             })
         }
         else if (userByIdLoading === ApiStatus.rejected) { alert("Error en la api de user update") }
-    }, [userByIdLoading, userById])
+    }, [userByIdLoading, userById, id])
 
     const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files } = e.target

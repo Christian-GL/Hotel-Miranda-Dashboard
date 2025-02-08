@@ -1,8 +1,9 @@
 
 import { styled } from 'styled-components'
 
-import { RiHotelFill } from "react-icons/ri";
+import { RiHotelFill } from "react-icons/ri"
 
+import backgroundLogin from '../../../assets/img/backgroundLogin.png'
 import * as gb from '../../styles/globalVars.ts'
 
 
@@ -15,7 +16,7 @@ export const SectionPageSignIn = styled.section`
 
     width: 100%;
     height: 100vh;
-    background-image: url('src/assets/img/backgroundLogin.png');
+    background-image: url(${backgroundLogin});
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

@@ -93,6 +93,7 @@ export const IconPhone = styled(ImPhone)`
     border-radius: 0.75rem;
     border: 1px solid ${gb.colorGrayBorderIconBookingDetails};
     cursor: pointer;
+    background-color: ${gb.colorWhiteFull};
 `
 
 export const ButtonSendMessage = styled.button`

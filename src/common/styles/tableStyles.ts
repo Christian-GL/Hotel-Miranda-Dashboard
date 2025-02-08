@@ -135,19 +135,21 @@ export const IconOptions = styled(SlOptionsVertical)`
     background-color: ${gb.colorWhiteFull};
 `
 
-export const DivCtnOptions = styled.div<{ display: string }>`
+export const DivCtnOptions = styled.div<{ display: string, isInTable: boolean }>`
     z-index: 1;
     position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(-50%, 25%);
+    top: ${props => (props.isInTable ? '50%' : '30%')};
+    left: ${props => (props.isInTable ? '0' : 'unset')};
+    right: ${props => (props.isInTable ? 'unset' : '1%')};
+    transform: ${props => (props.isInTable ? 'translate(-50%, 25%)' : 'unset')};
     display: ${props => props.display};
     flex-direction: column;
     gap: 0.5rem;
     padding: 1em;
     font-family: ${gb.fontPoppins};
     border-radius: 0.75rem;
-    background-color: ${gb.colorGrayBackgroundPage};
+    // background-color: ${gb.colorGrayBackgroundPage};
+    background-color: ${props => (props.isInTable ? `${gb.colorGrayBorderIconBookingDetails}` : `${gb.colorGrayEmailProfile}`)};
 
     &:hover {
         box-shadow: ${gb.boxShadowCustomWithHover};

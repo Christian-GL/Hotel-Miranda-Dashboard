@@ -28,7 +28,7 @@ export const RoomFetchAllThunk = createAsyncThunk
                 setTimeout(() => resolve({
                     ok: true,
                     json: () => roomJSON
-                }), 200)
+                }), 750)
             })
 
             if (request.ok) {

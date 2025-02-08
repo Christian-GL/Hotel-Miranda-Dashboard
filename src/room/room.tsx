@@ -80,14 +80,14 @@ export const Room = () => {
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
         else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de bookings") }
     }, [bookingAllLoading, bookingAll])
-    useEffect(() => {
-        if (bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending) {
-            if (!toastShown) {
-                ToastifyPopup()
-                setToastShown(true)
-            }
-        } else { toast.dismiss() }
-    }, [bookingAllLoading, roomAllLoading])
+    // useEffect(() => {
+    //     if (bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending) {
+    //         if (!toastShown) {
+    //             ToastifyPopup()
+    //             setToastShown(true)
+    //         }
+    //     } else { toast.dismiss() }
+    // }, [bookingAllLoading, roomAllLoading])
 
     const navigateToRoomCreate = () => navigate('room-create')
     const navigateToRoomUpdate = (id: number) => navigate(`room-update/${id}`)
@@ -202,8 +202,8 @@ export const Room = () => {
 
 
     return (
-        bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending ?
-            <ToastContainer /> :
+        // bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending ?
+        //     <ToastContainer /> :
             <roomStyles.SectionPageRoom>
                 <roomStyles.DivCtnFuncionality>
                     <roomStyles.DivCtnTableDisplayFilter>
@@ -285,7 +285,7 @@ export const Room = () => {
 
                             <PTable key={index + '-8'}>
                                 <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} >
+                                <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                     <ButtonOption onClick={() => { navigateToRoomUpdate(roomData.id) }}>Update</ButtonOption>
                                     <ButtonOption onClick={() => { deleteRoomById(roomData.id, index) }}>Delete</ButtonOption>
                                 </DivCtnOptions>

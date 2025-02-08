@@ -36,11 +36,11 @@ export const ContactUpdate = () => {
     })
 
     useEffect(() => {
-        dispatch(ContactFetchByIDThunk(idParams))
-    }, [id, dispatch])
-    useEffect(() => {
         if (contactByIdLoading === ApiStatus.idle) { dispatch(ContactFetchByIDThunk(idParams)) }
         else if (contactByIdLoading === ApiStatus.fulfilled) {
+            if (contactById?.id !== idParams) {
+                dispatch(ContactFetchByIDThunk(idParams))
+            }
             setContactUpdated({
                 id: contactById.id,
                 publish_date: contactById.publish_date || '',
@@ -52,7 +52,7 @@ export const ContactUpdate = () => {
             })
         }
         else if (contactByIdLoading === ApiStatus.rejected) { alert("Error en la api de contact update") }
-    }, [contactByIdLoading, contactById])
+    }, [contactByIdLoading, contactById, id])
 
     const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
