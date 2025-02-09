@@ -13,7 +13,7 @@ import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
 import {
     checkFirstIDAvailable, validatePhoto, validateName, validateEmail,
-    validateNotVoid, validateTextArea, validatePhoneNumber
+    validateDateAndTime, validateTextArea, validatePhoneNumber
 } from '../../../common/utils/formUtils.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
@@ -133,7 +133,7 @@ export const UserCreate = () => {
         // const checkPhoto = validatePhoto(newUser.photo)
         const checkName = validateName(newUser.full_name)
         const checkEmail = validateEmail(newUser.email)
-        const checkStartDate = validateNotVoid(newUser.start_date)
+        const checkStartDate = validateDateAndTime(newUser.start_date)
         const checkTextArea = validateTextArea(newUser.description)
         const checkPhoneNumber = validatePhoneNumber(newUser.phone_number)
 

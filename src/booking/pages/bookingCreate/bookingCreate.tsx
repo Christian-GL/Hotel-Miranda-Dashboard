@@ -2,12 +2,19 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 import * as bookingCreateStyles from "./bookingCreateStyles.ts"
+import { ToastContainer } from 'react-toastify'
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { BookingInterface } from "../../interfaces/bookingInterface.ts"
-import { checkFirstIDAvailable, getActualDate, getActualTime, hourFormatTo12H, hourFormatTo24H, dateFormatToYYYYMMDD } from '../../../common/utils/formUtils.ts'
+import {
+    checkFirstIDAvailable, getActualDate, getActualTime, hourFormatTo12H, hourFormatTo24H, dateFormatToYYYYMMDD,
+    validatePhoto, validateName, validateDateAndTime, validateTextArea, validateRoomNumber, validateBookingStatus
+} from '../../../common/utils/formUtils.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, LabelTextNote, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
@@ -23,6 +30,7 @@ import { RoomUpdateThunk } from "../../../room/features/thunks/roomUpdateThunk.t
 
 export const BookingCreate = () => {
 
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
@@ -138,15 +146,14 @@ export const BookingCreate = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
+        if (!validateAllData()) { return }
+
         const room = roomAll.find(room => room.id === newBooking.room_id)
         if (!room) { return }
 
-        // checkAllData(newBooking)     // <--
-
         if (checkIsOccupied()) {
-            alert(`La habitación #${newBooking.room_id} esta ocupada en las fechas:
-                [${newBooking.check_in_date} ${newBooking.check_in_time}] ⭢ [${newBooking.check_out_date} ${newBooking.check_out_time}]`
-            )
+            ToastifyError(`La habitación #${newBooking.room_id} esta ocupada en las fechas:
+                [${newBooking.check_in_date} ${newBooking.check_in_time}] ⭢ [${newBooking.check_out_date} ${newBooking.check_out_time}]`)
         }
         else {
             const newBookingToDispatch = {
@@ -166,17 +173,21 @@ export const BookingCreate = () => {
 
             dispatch(BookingCreateThunk(newBookingToDispatch))
                 .then(() => {
-                    alert(`Booking #${newBookingToDispatch.id} created`)
+                    ToastifySuccess(`Booking #${newBookingToDispatch.id} created`, () => {
+                        navigate('../')
+                    })
                 })
                 .catch((error) => {
-                    alert(error)
+                    ToastifyError(error)
                 })
             dispatch(RoomUpdateThunk(roomUpdatedToDispatch))
                 .then(() => {
-                    alert(`Room #${roomUpdatedToDispatch.id} booking list updated to [${roomUpdatedToDispatch.booking_list}]`)
+                    ToastifySuccess(`Room #${roomUpdatedToDispatch.id} booking list updated to [${roomUpdatedToDispatch.booking_list}]`, () => {
+                        navigate('../')
+                    })
                 })
                 .catch((error) => {
-                    alert(error)
+                    ToastifyError(error)
                 })
         }
     }
@@ -202,13 +213,33 @@ export const BookingCreate = () => {
         return false
     }
 
-    // const checkAllData = (bookingData: BookingInterface) => {
-    //     checkName(bookingData.full_name_guest)
-    //     //Resto de checks de campos
-    // }
+    const validateAllData = (): boolean => {
+        // const checkPhoto = validatePhoto(newBooking.photo)
+        const checkGuestName = validateName(newBooking.full_name_guest)
+        const checkInDate = validateDateAndTime(newBooking.check_in_date)
+        const checkInTime = validateDateAndTime(newBooking.check_in_time)
+        const checkOutDate = validateDateAndTime(newBooking.check_out_date)
+        const checkOutTime = validateDateAndTime(newBooking.check_in_time)
+        const checkSpecialRequest = validateTextArea(newBooking.special_request)
+        const checkRoomNumber = validateRoomNumber(newBooking.room_id)
+        const checkBookingStatus = validateBookingStatus(newBooking.room_booking_status)
+
+        // if (!checkPhoto.test) { ToastifyError(checkPhoto.errorMessage); return false }
+        if (!checkGuestName.test) { ToastifyError(checkGuestName.errorMessage); return false }
+        if (!checkInDate.test) { ToastifyError(checkInDate.errorMessage); return false }
+        if (!checkInTime.test) { ToastifyError(checkInTime.errorMessage); return false }
+        if (!checkOutDate.test) { ToastifyError(checkOutDate.errorMessage); return false }
+        if (!checkOutTime.test) { ToastifyError(checkOutTime.errorMessage); return false }
+        if (!checkSpecialRequest.test) { ToastifyError(checkSpecialRequest.errorMessage); return false }
+        if (!checkRoomNumber.test) { ToastifyError(checkRoomNumber.errorMessage); return false }
+        if (!checkBookingStatus.test) { ToastifyError(checkBookingStatus.errorMessage); return false }
+
+        return true
+    }
 
 
     return (<>
+        <ToastContainer />
 
         <GlobalDateTimeStyles />
 

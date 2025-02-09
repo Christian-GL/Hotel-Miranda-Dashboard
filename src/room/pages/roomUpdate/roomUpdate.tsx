@@ -2,15 +2,20 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
 import * as roomUpdateStyles from "./roomUpdateStyles.ts"
+import { ToastContainer } from 'react-toastify'
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import * as gb from '../../../common/styles/globalVars.ts'
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { RoomInterface } from "../../interfaces/roomInterface.ts"
 import { RoomAmenities } from "../../data/roomAmenities.ts"
 import { RoomType } from "../../data/roomType.ts"
+import { validateRoomPhotoArray, validateRoomType, validateRoomPrice, validateRoomDiscount } from '../../../common/utils/formUtils.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form,
     ImgRoom, DivCtnEntry, LabelText, DivCtnEntryBookings, LabelBookings, LabelTextBookingStatus,
@@ -32,15 +37,12 @@ export const RoomUpdate = () => {
 
     const { id } = useParams()
     const idParams = parseInt(id!)
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const roomById = useSelector(getRoomIdData)
     const roomByIdLoading = useSelector(getRoomIdStatus)
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
-    // const bookingById = useSelector(getBookingIdData)
-    // const bookingByIdLoading = useSelector(getBookingIdStatus)
-    // const [index, setIndex] = useState(0)
-    // const [bookingListIds, setBookingListIds] = useState([])
     const [roomUpdated, setRoomUpdated] = useState<RoomInterface>({
         id: 0,
         photos: [],
@@ -74,23 +76,6 @@ export const RoomUpdate = () => {
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
         else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de room update > booking update") }
     }, [bookingAllLoading, bookingAll])
-    // useEffect(() => {
-    //     if (bookingByIdLoading === ApiStatus.idle && roomByIdLoading === ApiStatus.fulfilled && index < roomById.booking_list.length) {
-    //         console.log('B.List--> ', roomById.booking_list.length)
-    //         console.log('index--> ', index)
-    //         console.log('idle')
-    //         dispatch(BookingFetchByIDThunk(roomById.booking_list[index]))
-    //         setIndex(index + 1)
-    //         console.log('INDEX+1')
-    //     }
-    //     else if (bookingByIdLoading === ApiStatus.fulfilled) {
-    //         console.log('fulfilled')
-    //         setBookingListIds([...bookingListIds, bookingById])
-    //         dispatch(resetIdStatus())
-    //     }
-    //     else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error en la api de bookings") }
-    //     console.log('==============')
-    // }, [roomByIdLoading, bookingByIdLoading, index])
 
     const handlePhotoChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = e.target
@@ -130,28 +115,49 @@ export const RoomUpdate = () => {
         const { name, value } = e.target
         setRoomUpdated({
             ...roomUpdated,
-            [name]: parseInt(value)
+            [name]: value === "" ? 0 : parseFloat(value)
         })
     }
     const handleDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setRoomUpdated({
             ...roomUpdated,
-            [name]: parseInt(value)
+            [name]: value === "" ? 0 : parseFloat(value)
         })
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        if (!validateAllData()) { return }
+
         dispatch(RoomUpdateThunk(roomUpdated))
             .then(() => {
-                alert(`Room #${roomUpdated.id} updated`)
+                ToastifySuccess(`Room #${roomUpdated.id} updated`, () => {
+                    navigate('../')
+                })
             })
             .catch((error) => {
-                alert(error)
+                ToastifyError(error)
             })
     }
 
-    return (
+    const validateAllData = (): boolean => {
+        const checkPhotos = validateRoomPhotoArray(roomUpdated.photos)
+        const checkRoomType = validateRoomType(roomUpdated.type)
+        const checkRoomPrice = validateRoomPrice(roomUpdated.price)
+        const checkRoomDiscount = validateRoomDiscount(roomUpdated.discount)
+
+        if (!checkPhotos.test) { ToastifyError(checkPhotos.errorMessage); return false }
+        if (!checkRoomType.test) { ToastifyError(checkRoomType.errorMessage); return false }
+        if (!checkRoomPrice.test) { ToastifyError(checkRoomPrice.errorMessage); return false }
+        if (!checkRoomDiscount.test) { ToastifyError(checkRoomDiscount.errorMessage); return false }
+
+        return true
+    }
+
+
+    return (<>
+        <ToastContainer />
 
         <roomUpdateStyles.SectionPageRoomUpdate>
             <DivCtnForm>
@@ -226,13 +232,6 @@ export const RoomUpdate = () => {
                         <LabelText>Booking Status</LabelText>
                         <DivCtnEntryBookings>
                             {
-                                // bookingListIds.length === 0 ?
-                                //     <LabelTextBookingStatus color={gb.colorLightGreenButton}>Available</LabelTextBookingStatus> :
-                                //     (bookingListIds.map((booking, index) => (
-                                //         <LabelBookings key={index}>
-                                //             <b>Booking #{booking.id} -</b> {booking.check_in_date} {booking.check_in_time} ⭢ {booking.check_out_date} {booking.check_out_time}
-                                //         </LabelBookings>
-                                //     )))
                                 bookingAll.filter((booking) => roomUpdated.booking_list.includes(booking.id)).length === 0 ?
                                     <LabelTextBookingStatus color={gb.colorLightGreenButton}>Available</LabelTextBookingStatus> :
                                     (bookingAll.filter(booking => roomUpdated.booking_list.includes(booking.id))
@@ -257,6 +256,5 @@ export const RoomUpdate = () => {
                 </Form>
             </DivCtnForm>
         </roomUpdateStyles.SectionPageRoomUpdate>
-
-    )
+    </>)
 }

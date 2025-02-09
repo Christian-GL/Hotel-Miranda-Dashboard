@@ -2,12 +2,19 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 import * as contactCreateStyles from "./contactCreateStyles.ts"
+import { ToastContainer } from 'react-toastify'
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { ContactInterface } from "../../interfaces/contactInterface.ts"
-import { checkFirstIDAvailable, getActualDate, getActualTime } from '../../../common/utils/formUtils.ts'
+import {
+    checkFirstIDAvailable, getActualDate, getActualTime, validateName,
+    validateEmail, validateTextArea, validatePhoneNumber
+} from '../../../common/utils/formUtils.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconPlus, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
@@ -20,6 +27,7 @@ import { ContactCreateThunk } from "../../../contact/features/thunks/contactCrea
 
 export const ContactCreate = () => {
 
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const contactAll = useSelector(getContactAllData)
     const contactAllLoading = useSelector(getContactAllStatus)
@@ -77,6 +85,9 @@ export const ContactCreate = () => {
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        if (!validateAllData()) { return }
+
         const newContactToDispatch = {
             ...newContact,
             id: nextIdAvailable,
@@ -85,15 +96,32 @@ export const ContactCreate = () => {
         }
         dispatch(ContactCreateThunk(newContactToDispatch))
             .then(() => {
-                alert(`Contact #${newContactToDispatch.id} created`)
+                ToastifySuccess(`Contact #${newContactToDispatch.id} created`, () => {
+                    navigate('../')
+                })
             })
             .catch((error) => {
-                alert(error)
+                ToastifyError(error)
             })
     }
 
+    const validateAllData = (): boolean => {
+        const checkName = validateName(newContact.full_name)
+        const checkEmail = validateEmail(newContact.email)
+        const checkPhoneNumber = validatePhoneNumber(newContact.contact)
+        const checkTextArea = validateTextArea(newContact.comment)
 
-    return (
+        if (!checkName.test) { ToastifyError(checkName.errorMessage); return false }
+        if (!checkEmail.test) { ToastifyError(checkEmail.errorMessage); return false }
+        if (!checkPhoneNumber.test) { ToastifyError(checkPhoneNumber.errorMessage); return false }
+        if (!checkTextArea.test) { ToastifyError(checkTextArea.errorMessage); return false }
+
+        return true
+    }
+
+
+    return (<>
+        <ToastContainer />
 
         <contactCreateStyles.SectionPageContactCreate>
             <DivCtnForm>
@@ -132,6 +160,5 @@ export const ContactCreate = () => {
                 </Form>
             </DivCtnForm>
         </contactCreateStyles.SectionPageContactCreate>
-
-    )
+    </>)
 }

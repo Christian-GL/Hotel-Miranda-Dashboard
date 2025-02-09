@@ -2,12 +2,17 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
 import * as contactCreateJS from "./contactUpdateStyles.ts"
+import { ToastContainer } from 'react-toastify'
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { ContactInterface } from "../../interfaces/contactInterface.ts"
+import { validateName, validateEmail, validateTextArea, validatePhoneNumber } from '../../../common/utils/formUtils.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconUpdate, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
@@ -22,6 +27,7 @@ export const ContactUpdate = () => {
 
     const { id } = useParams()
     const idParams = parseInt(id!)
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const contactById = useSelector(getContactIdData)
     const contactByIdLoading = useSelector(getContactIdStatus)
@@ -83,17 +89,38 @@ export const ContactUpdate = () => {
         })
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        e.preventDefault()
+
+        if (!validateAllData()) { return }
+
         dispatch(ContactUpdateThunk(contactUpdated))
             .then(() => {
-                alert(`Contact #${contactUpdated.id} updated`)
+                ToastifySuccess(`Contact #${contactUpdated.id} updated`, () => {
+                    navigate('../')
+                })
             })
             .catch((error) => {
-                alert(error)
+                ToastifyError(error)
             })
     }
 
-    return (
+    const validateAllData = (): boolean => {
+        const checkName = validateName(contactUpdated.full_name)
+        const checkEmail = validateEmail(contactUpdated.email)
+        const checkPhoneNumber = validatePhoneNumber(contactUpdated.contact)
+        const checkTextArea = validateTextArea(contactUpdated.comment)
+
+        if (!checkName.test) { ToastifyError(checkName.errorMessage); return false }
+        if (!checkEmail.test) { ToastifyError(checkEmail.errorMessage); return false }
+        if (!checkPhoneNumber.test) { ToastifyError(checkPhoneNumber.errorMessage); return false }
+        if (!checkTextArea.test) { ToastifyError(checkTextArea.errorMessage); return false }
+
+        return true
+    }
+
+
+    return (<>
+        <ToastContainer />
 
         <contactCreateJS.SectionPageContactUpdate>
             <DivCtnForm>
@@ -133,5 +160,5 @@ export const ContactUpdate = () => {
             </DivCtnForm>
         </contactCreateJS.SectionPageContactUpdate>
 
-    )
+    </>)
 }

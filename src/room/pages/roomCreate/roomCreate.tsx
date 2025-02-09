@@ -2,14 +2,21 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 import * as roomCreateStyles from "./roomCreateStyles.ts"
+import { ToastContainer } from 'react-toastify'
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { RoomInterface } from "../../interfaces/roomInterface.ts"
 import { RoomAmenities } from "../../data/roomAmenities.ts"
 import { RoomType } from "../../data/roomType.ts"
-import { checkFirstIDAvailable } from '../../../common/utils/formUtils.ts'
+import {
+    checkFirstIDAvailable, validateRoomPhotoArray, validateRoomType,
+    validateRoomPrice, validateRoomDiscount
+} from '../../../common/utils/formUtils.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconPlus, TitleForm, Form, ImgRoom, DivCtnEntry,
     LabelText, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
@@ -22,6 +29,7 @@ import { RoomCreateThunk } from "../../features/thunks/roomCreateThunk.ts"
 
 export const RoomCreate = () => {
 
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
@@ -86,32 +94,53 @@ export const RoomCreate = () => {
         const { name, value } = e.target
         setNewRoom({
             ...newRoom,
-            [name]: parseFloat(value)
+            [name]: value === "" ? 0 : parseFloat(value)
         })
     }
     const handleDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewRoom({
             ...newRoom,
-            [name]: parseFloat(value)
+            [name]: value === "" ? 0 : parseFloat(value)
         })
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        if (!validateAllData()) { return }
+
         const newRoomToDispatch = {
             ...newRoom,
             id: nextIdAvailable
         }
         dispatch(RoomCreateThunk(newRoomToDispatch))
             .then(() => {
-                alert(`Room #${newRoomToDispatch.id} created`)
+                ToastifySuccess(`Room #${newRoomToDispatch.id} created`, () => {
+                    navigate('../')
+                })
             })
             .catch((error) => {
-                alert(error)
+                ToastifyError(error)
             })
     }
 
-    return (
+    const validateAllData = (): boolean => {
+        const checkPhotos = validateRoomPhotoArray(newRoom.photos)
+        const checkRoomType = validateRoomType(newRoom.type)
+        const checkRoomPrice = validateRoomPrice(newRoom.price)
+        const checkRoomDiscount = validateRoomDiscount(newRoom.discount)
+
+        if (!checkPhotos.test) { ToastifyError(checkPhotos.errorMessage); return false }
+        if (!checkRoomType.test) { ToastifyError(checkRoomType.errorMessage); return false }
+        if (!checkRoomPrice.test) { ToastifyError(checkRoomPrice.errorMessage); return false }
+        if (!checkRoomDiscount.test) { ToastifyError(checkRoomDiscount.errorMessage); return false }
+
+        return true
+    }
+
+
+    return (<>
+        <ToastContainer />
 
         <roomCreateStyles.SectionPageRoomCreate>
             <DivCtnForm>
@@ -180,7 +209,7 @@ export const RoomCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Discount (%)</LabelText>
-                        <InputText name="discount" onChange={handleDiscountChange} />
+                        <InputText name="discount" value={newRoom.discount} onChange={handleDiscountChange} />
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
@@ -189,6 +218,5 @@ export const RoomCreate = () => {
                 </Form>
             </DivCtnForm>
         </roomCreateStyles.SectionPageRoomCreate>
-
-    )
+    </>)
 }

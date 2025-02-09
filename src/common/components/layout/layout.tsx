@@ -165,7 +165,7 @@ export const Layout = () => {
                     <sidebarJS.ImgProfile src={HC} />
                     <sidebarJS.TitleH4>Henry Cavill</sidebarJS.TitleH4>
                     <sidebarJS.TitleH5>HenryCavill@gmail.com</sidebarJS.TitleH5>
-                    <sidebarJS.ButtonEdit>Editar</sidebarJS.ButtonEdit>
+                    <sidebarJS.ButtonEdit>Edit</sidebarJS.ButtonEdit>
                 </sidebarJS.DivCtnUser>
 
                 <sidebarJS.DivCtnCredits display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >

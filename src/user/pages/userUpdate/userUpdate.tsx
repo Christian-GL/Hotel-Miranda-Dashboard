@@ -14,7 +14,7 @@ import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
 import {
     dateFormatToYYYYMMDD, dateFormatToDDMMYYYY, validatePhoto,
-    validateName, validateEmail, validateNotVoid, validateTextArea, validatePhoneNumber
+    validateName, validateEmail, validateDateAndTime, validateTextArea, validatePhoneNumber
 } from '../../../common/utils/formUtils.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
@@ -137,7 +137,7 @@ export const UserUpdate = () => {
         // const checkPhoto = validatePhoto(newUser.photo)
         const checkName = validateName(userUpdated.full_name)
         const checkEmail = validateEmail(userUpdated.email)
-        const checkStartDate = validateNotVoid(userUpdated.start_date)
+        const checkStartDate = validateDateAndTime(userUpdated.start_date)
         const checkTextArea = validateTextArea(userUpdated.description)
         const checkPhoneNumber = validatePhoneNumber(userUpdated.phone_number)
 
