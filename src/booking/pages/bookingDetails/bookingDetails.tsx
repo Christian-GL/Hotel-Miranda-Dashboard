@@ -42,19 +42,18 @@ export const BookingDetails = () => {
             else if (roomByIdLoading === ApiStatus.fulfilled) {
                 if (bookingById?.id !== idParams) {
                     dispatch(BookingFetchByIDThunk(idParams))
-                    dispatch(resetIdStatus())
-                    if (bookingByIdLoading === ApiStatus.fulfilled) {
+                    if (bookingById?.room_id !== roomById.id) {
                         dispatch(RoomFetchByIDThunk(bookingById.room_id))
                     }
                 }
             }
             else if (roomByIdLoading === ApiStatus.rejected) { alert("Error en la api de booking details > rooms") }
         }
+        if (bookingById?.room_id !== roomById.id) {
+            dispatch(RoomFetchByIDThunk(bookingById.room_id))
+        }
         else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error en la api de bookings details > booking") }
     }, [bookingByIdLoading, bookingById, roomByIdLoading, roomById, id])
-    // useEffect(() => {
-    //     dispatch(RoomFetchByIDThunk(bookingById.room_id))
-    // }, [bookingById])
 
     const navigateBackToBookings = () => navigate('../')
 
