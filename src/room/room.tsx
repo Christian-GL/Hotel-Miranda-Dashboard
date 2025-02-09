@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as roomStyles from "./roomStyles.ts"
-import { ToastContainer, toast } from 'react-toastify'
-import { ToastifyPopup } from "../common/components/toastify/toastifyPopup.tsx"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { RoomInterface } from "./interfaces/roomInterface.ts"

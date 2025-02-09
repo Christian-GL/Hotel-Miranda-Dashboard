@@ -7,8 +7,6 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as contactStyles from "./contactStyles.ts"
 import * as gb from '../common/styles/globalVars.ts'
-import { ToastContainer, toast } from 'react-toastify'
-import { ToastifyPopup } from "../common/components/toastify/toastifyPopup.tsx"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { ContactInterface } from './interfaces/contactInterface.ts'

@@ -10,7 +10,7 @@ import * as layoutJS from "./layoutStyles.ts"
 import * as headerJS from "./headerStyles.ts"
 import * as sidebarJS from "./sidebarMenuStyles.ts"
 import { ToastContainer, toast } from 'react-toastify'
-import { ToastifyPopup } from "../toastify/toastifyPopup.tsx"
+import { ToastifyLoadingData } from "../toastify/loadingDataPopup/toastifyLoadingData.tsx"
 import { useLoginOptionsContext } from "../signIn/features/loginProvider.tsx"
 import { getBookingAllStatus, getBookingIdStatus } from "../../../booking/features/bookingSlice.ts"
 import { getRoomAllStatus, getRoomIdStatus } from "../../../room/features/roomSlice.ts"
@@ -40,14 +40,14 @@ export const Layout = () => {
         }
     }, [navigate, isAuthenticated])
     useEffect(() => {
-        if (bookingAllLoading === ApiStatus.pending || bookingByIdLoading === ApiStatus.pending) { ToastifyPopup(1, 'Loading booking data...') }
-        else { toast.dismiss(1) }
-        if (roomAllLoading === ApiStatus.pending || roomByIdLoading === ApiStatus.pending) { ToastifyPopup(2, 'Loading room data...') }
-        else { toast.dismiss(2) }
-        if (contactAllLoading === ApiStatus.pending || contactByIdLoading === ApiStatus.pending) { ToastifyPopup(3, 'Loading contact data...') }
-        else { toast.dismiss(3) }
-        if (userAllLoading === ApiStatus.pending || userByIdLoading === ApiStatus.pending) { ToastifyPopup(4, 'loading user data...') }
-        else { toast.dismiss(4) }
+        if (bookingAllLoading === ApiStatus.pending) { ToastifyLoadingData(1, 'Loading all booking data...') } else { toast.dismiss(1) }
+        if (bookingByIdLoading === ApiStatus.pending) { ToastifyLoadingData(2, 'Loading booking by ID data...') } else { toast.dismiss(2) }
+        if (roomAllLoading === ApiStatus.pending) { ToastifyLoadingData(3, 'Loading all room data...') } else { toast.dismiss(3) }
+        if (roomByIdLoading === ApiStatus.pending) { ToastifyLoadingData(4, 'Loading room by ID data...') } else { toast.dismiss(4) }
+        if (contactAllLoading === ApiStatus.pending) { ToastifyLoadingData(5, 'Loading all contact data...') } else { toast.dismiss(5) }
+        if (contactByIdLoading === ApiStatus.pending) { ToastifyLoadingData(6, 'Loading contact by ID data...') } else { toast.dismiss(6) }
+        if (userAllLoading === ApiStatus.pending) { ToastifyLoadingData(7, 'loading all user data...') } else { toast.dismiss(7) }
+        if (userByIdLoading === ApiStatus.pending) { ToastifyLoadingData(8, 'loading user by ID data...') } else { toast.dismiss(8) }
     }, [bookingAllLoading, bookingByIdLoading, roomAllLoading, roomByIdLoading,
         contactAllLoading, contactByIdLoading, userAllLoading, userByIdLoading])
 

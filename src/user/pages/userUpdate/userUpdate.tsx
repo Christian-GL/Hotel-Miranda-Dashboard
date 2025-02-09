@@ -2,13 +2,20 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
 import * as userUpdateStyles from "./userUpdate.ts"
+import { ToastContainer } from 'react-toastify'
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
-import { dateFormatToYYYYMMDD, dateFormatToDDMMYYYY } from '../../../common/utils/formUtils.ts'
+import {
+    dateFormatToYYYYMMDD, dateFormatToDDMMYYYY, validatePhoto,
+    validateName, validateEmail, validateNotVoid, validateTextArea, validatePhoneNumber
+} from '../../../common/utils/formUtils.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
@@ -23,6 +30,7 @@ export const UserUpdate = () => {
 
     const { id } = useParams()
     const idParams = parseInt(id!)
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const userById = useSelector(getUserIdData)
     const userByIdLoading = useSelector(getUserIdStatus)
@@ -37,9 +45,6 @@ export const UserUpdate = () => {
         status_active: false
     })
 
-    // useEffect(() => {
-    //     dispatch(UserFetchByIDThunk(idParams))
-    // }, [id, dispatch])
     useEffect(() => {
         if (userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(idParams)) }
         else if (userByIdLoading === ApiStatus.fulfilled) {
@@ -114,16 +119,40 @@ export const UserUpdate = () => {
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        if (!validateAllData()) { return }
+
         dispatch(UserUpdateThunk(userUpdated))
             .then(() => {
-                alert(`User #${userUpdated.id} updated`)
+                ToastifySuccess(`User #${userUpdated.id} updated`, () => {
+                    navigate('../')
+                })
             })
             .catch((error) => {
                 alert(error)
             })
     }
 
+    const validateAllData = (): boolean => {
+        // const checkPhoto = validatePhoto(newUser.photo)
+        const checkName = validateName(userUpdated.full_name)
+        const checkEmail = validateEmail(userUpdated.email)
+        const checkStartDate = validateNotVoid(userUpdated.start_date)
+        const checkTextArea = validateTextArea(userUpdated.description)
+        const checkPhoneNumber = validatePhoneNumber(userUpdated.phone_number)
+
+        // if (!checkPhoto.test) { ToastifyError(checkPhoto.errorMessage); return false }
+        if (!checkName.test) { ToastifyError(checkName.errorMessage); return false }
+        if (!checkEmail.test) { ToastifyError(checkEmail.errorMessage); return false }
+        if (!checkStartDate.test) { ToastifyError(checkStartDate.errorMessage); return false }
+        if (!checkTextArea.test) { ToastifyError(checkTextArea.errorMessage); return false }
+        if (!checkPhoneNumber.test) { ToastifyError(checkPhoneNumber.errorMessage); return false }
+
+        return true
+    }
+
     return (<>
+        <ToastContainer />
 
         <GlobalDateTimeStyles />
 

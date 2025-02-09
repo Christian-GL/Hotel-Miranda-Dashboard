@@ -74,33 +74,50 @@ export const hourFormatTo24H = (time12H: string) => {
 }
 
 
-// export const checkName = (name) => {
-//     if (typeof name !== "string") {
-//         throw new Error('error name isString')
-//     }
-//     if (name.length <= 2) {
-//         throw new Error('error name isMinLenght')
-//     }
-//     if (name.length >= 100) {
-//         throw new Error('error name isMaxLenght')
-//     }
-// }
+export const validatePhoto = (photo: string): { test: boolean, errorMessage: string } => {
+    const regex = /\.(png|jpg)$/i
+    if (typeof photo !== "string") { return { test: false, errorMessage: 'Not String' } }
+    if (!regex.test(photo)) { return { test: false, errorMessage: 'Not .png or .jpg file' } }
+    return { test: true, errorMessage: '' }
+}
 
-// export const checkEmail = (email) => {
-//     const regex = new RegExp(/^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-//     if (typeof email !== "string") {
-//         throw new Error('error email isString')
-//     }
-//     if (email.length <= 2) {
-//         throw new Error('error email isMinLenght')
-//     }
-//     if (email.length >= 100) {
-//         throw new Error('error email isMaxLenght')
-//     }
-//     if (!regex.test(email)) {
-//         throw new Error("error email isCorrectFormat")
-//     }
-// }
+export const validateName = (name: string): { test: boolean, errorMessage: string } => {
+    if (typeof name !== "string") { return { test: false, errorMessage: 'Not String' } }
+    if (name.length < 3) { return { test: false, errorMessage: 'Name length must be 3 characters or more' } }
+    if (name.length > 50) { return { test: false, errorMessage: 'Name length must be 50 characters or less' } }
+    return { test: true, errorMessage: '' }
+}
+
+export const validateTextArea = (text: string): { test: boolean, errorMessage: string } => {
+    if (typeof text !== "string") { return { test: false, errorMessage: 'Not String' } }
+    if (text.length < 10) { return { test: false, errorMessage: 'Text length must be 10 characters or more' } }
+    if (text.length > 250) { return { test: false, errorMessage: 'Text length must be 250 characters or less' } }
+    return { test: true, errorMessage: '' }
+}
+
+export const validateEmail = (email: string): { test: boolean, errorMessage: string } => {
+    const regex = new RegExp(/^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+    if (typeof email !== "string") { return { test: false, errorMessage: 'Not String' } }
+    if (!regex.test(email)) { return { test: false, errorMessage: 'Email format no valid' } }
+    return { test: true, errorMessage: '' }
+}
+
+export const validatePhoneNumber = (phoneNumber: string): { test: boolean, errorMessage: string } => {
+    const regex = /^(\d{3}[-\s]?\d{3}[-\s]?\d{3,4})$/
+    if (typeof phoneNumber !== "string") { return { test: false, errorMessage: 'Not String' } }
+    if (phoneNumber.length < 9) { return { test: false, errorMessage: 'Phone number length must be 9 characters or more' } }
+    if (phoneNumber.length > 20) { return { test: false, errorMessage: 'Phone number length must be 20 characters or less' } }
+    if (!regex.test(phoneNumber)) { return { test: false, errorMessage: 'Phone number only digits are available' } }
+    return { test: true, errorMessage: '' }
+}
+
+export const validateNotVoid = (data: string): { test: boolean, errorMessage: string } => {
+    if (data === '') { return { test: false, errorMessage: 'Some field is not set' } }
+    if (data === undefined) { return { test: false, errorMessage: 'Some field is undefined' } }
+    if (data === null) { return { test: false, errorMessage: 'Some field is null' } }
+    return { test: true, errorMessage: '' }
+}
+
 
 // export const checkCheckOut = (checkIn, checkOut) => {
 //     const currentDate = new Date()

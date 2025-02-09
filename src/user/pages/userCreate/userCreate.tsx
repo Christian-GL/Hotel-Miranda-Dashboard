@@ -2,12 +2,19 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 import * as userCreateStyles from "./userCreate.ts"
+import { ToastContainer } from 'react-toastify'
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
-import { checkFirstIDAvailable } from '../../../common/utils/formUtils.ts'
+import {
+    checkFirstIDAvailable, validatePhoto, validateName, validateEmail,
+    validateNotVoid, validateTextArea, validatePhoneNumber
+} from '../../../common/utils/formUtils.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
@@ -20,6 +27,7 @@ import { UserCreateThunk } from "../../features/thunks/userCreateThunk.ts"
 
 export const UserCreate = () => {
 
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const userAll = useSelector(getUserAllData)
     const userAllLoading = useSelector(getUserAllStatus)
@@ -103,21 +111,45 @@ export const UserCreate = () => {
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        if (!validateAllData()) { return }
+
         const newUserToDispatch = {
             ...newUser,
             id: nextIdAvailable
         }
         dispatch(UserCreateThunk(newUserToDispatch))
             .then(() => {
-                alert(`User #${newUserToDispatch.id} created`)
+                ToastifySuccess(`User #${newUserToDispatch.id} created`, () => {
+                    navigate('../')
+                })
             })
             .catch((error) => {
-                alert(error)
+                ToastifyError(error)
             })
+    }
+
+    const validateAllData = (): boolean => {
+        // const checkPhoto = validatePhoto(newUser.photo)
+        const checkName = validateName(newUser.full_name)
+        const checkEmail = validateEmail(newUser.email)
+        const checkStartDate = validateNotVoid(newUser.start_date)
+        const checkTextArea = validateTextArea(newUser.description)
+        const checkPhoneNumber = validatePhoneNumber(newUser.phone_number)
+
+        // if (!checkPhoto.test) { ToastifyError(checkPhoto.errorMessage); return false }
+        if (!checkName.test) { ToastifyError(checkName.errorMessage); return false }
+        if (!checkEmail.test) { ToastifyError(checkEmail.errorMessage); return false }
+        if (!checkStartDate.test) { ToastifyError(checkStartDate.errorMessage); return false }
+        if (!checkTextArea.test) { ToastifyError(checkTextArea.errorMessage); return false }
+        if (!checkPhoneNumber.test) { ToastifyError(checkPhoneNumber.errorMessage); return false }
+
+        return true
     }
 
 
     return (<>
+        <ToastContainer />
 
         <GlobalDateTimeStyles />
 
@@ -166,9 +198,8 @@ export const UserCreate = () => {
                     <DivCtnEntry>
                         <LabelText>Status</LabelText>
                         <Select name="status_active" onChange={handleStatusActiveChange}>
-                            <Option value="null" selected></Option>
                             <Option value="true">Active</Option>
-                            <Option value="false">Inactive</Option>
+                            <Option value="false" selected>Inactive</Option>
                         </Select>
                     </DivCtnEntry>
 
@@ -178,6 +209,5 @@ export const UserCreate = () => {
                 </Form>
             </DivCtnForm>
         </userCreateStyles.SectionPageUserCreate>
-
     </>)
 }

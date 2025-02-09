@@ -6,8 +6,6 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as userStyles from "./userStyles.ts"
 import * as gb from '../common/styles/globalVars.ts'
-import { ToastContainer, toast } from 'react-toastify'
-import { ToastifyPopup } from "../common/components/toastify/toastifyPopup.tsx"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { UserInterface } from "./interfaces/userInterface.ts"
@@ -46,9 +44,8 @@ export const User = () => {
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
-    const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
-    const [toastShown, setToastShown] = useState<boolean>(false)
+    const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([])
     const [arrowStates, setArrowStates] = useState<UserColumnsArrowStatesInterface>({
         name: ArrowType.right,
         startDate: ArrowType.down
@@ -68,14 +65,6 @@ export const User = () => {
         else if (userAllLoading === ApiStatus.fulfilled) { displayEmployee() }
         else if (userAllLoading === ApiStatus.rejected) { alert("Error en la api de users") }
     }, [userAllLoading, userAll, inputText, selectedButton, arrowStates])
-    // useEffect(() => {
-    //     if (userAllLoading === ApiStatus.pending) {
-    //         if (!toastShown) {
-    //             ToastifyPopup()
-    //             setToastShown(true)
-    //         }
-    //     } else { toast.dismiss() }
-    // }, [userAllLoading])
 
     const navigateToUserCreate = () => navigate('user-create')
     const navigateToUserUpdate = (id: number) => navigate(`user-update/${id}`)
@@ -156,13 +145,6 @@ export const User = () => {
 
             return newState
         })
-
-        // HECTOR DIJO DE HACERLO ASIN PERO AUN NO SALE
-        // setArrowStates({
-        //     ...arrowStates,
-        //     [nameColumn]: arrowStates[nameColumn] === ArrowType.right || ArrowType.up ? ArrowType.down : ArrowType.up
-        // })
-
         handleTableFilter(selectedButton)
     }
     const getArrowIcon = (nameColumn: columnsSortAvailable): JSX.Element => {
@@ -183,9 +165,7 @@ export const User = () => {
     }
 
 
-    return (
-        // userAllLoading === ApiStatus.pending ?
-        //     <ToastContainer /> :
+    return (<>
         <userStyles.SectionPageUser>
 
             <userStyles.DivCtnFuncionality>
@@ -284,5 +264,5 @@ export const User = () => {
             </paginationStyles.DivCtnPagination>
 
         </userStyles.SectionPageUser >
-    )
+    </>)
 }

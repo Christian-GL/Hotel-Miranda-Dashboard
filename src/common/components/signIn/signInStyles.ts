@@ -58,6 +58,11 @@ export const InputText = styled.input`
     border-radius: 1rem;
     outline: none;
     color: ${gb.colorBlack26};
+
+    &::placeholder {
+        color: ${gb.colorLightGray};
+        opacity: 1;
+    }
 `
 
 export const ButtonSignIn = styled.button`
