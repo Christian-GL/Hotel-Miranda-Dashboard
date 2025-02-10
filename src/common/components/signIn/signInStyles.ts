@@ -74,6 +74,11 @@ export const ButtonSignIn = styled.button`
     border: none;
     border-radius: 1rem;
     cursor: pointer;
+    transition: transform 0.25s ease;
     color: ${gb.colorWhiteFull};
     background-color: ${gb.colorRed};
+
+    &:hover {
+        transform: scale(1.1)
+    }
 `
