@@ -2,13 +2,20 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
 import * as bookingUpdateStyles from "./bookingUpdateStyles.ts"
+import { ToastContainer } from 'react-toastify'
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { BookingInterface } from "../../interfaces/bookingInterface.ts"
-import { dateFormatToYYYYMMDD, dateFormatToDDMMYYYY, hourFormatTo12H, hourFormatTo24H } from '../../../common/utils/formUtils.ts'
+import {
+    dateFormatToYYYYMMDD, dateFormatToDDMMYYYY, hourFormatTo12H, hourFormatTo24H,
+    validatePhoto, validateName, validateDateAndTime, validateTextArea, validateRoomNumber, validateBookingStatus
+} from '../../../common/utils/formUtils.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
@@ -26,6 +33,7 @@ export const BookingUpdate = () => {
 
     const { id } = useParams()
     const idParams = parseInt(id!)
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const bookingById = useSelector(getBookingIdData)
     const bookingByIdLoading = useSelector(getBookingIdStatus)
@@ -146,14 +154,25 @@ export const BookingUpdate = () => {
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        // const getRoomById = (id: number) => {
-        //     const room = roomAll.find(room => room.id === id)
-        //     return room ? room : 0
-        // }
+
+        if (!validateAllData()) { return }
+
         const room = roomAll.find(room => room.id === previusRoomId)
-        if (!room) { return }
+        if (!room) {
+            ToastifyError(`ERROR - room #${previusRoomId} nor found`)
+            return
+        }
         const room2 = roomAll.find(room => room.id === bookingUpdated.room_id)
-        if (!room2) { return }
+        if (!room2) {
+            ToastifyError(`ERROR - booking #${bookingUpdated.room_id} nor found`)
+            return
+        }
+        // HACER ESTO EN LA API? EL DE bookingCreate TAMBIEN ??
+        // if (checkIsOccupied()) {
+        //     ToastifyError(`Room #${bookingUpdated.room_id} is occupied on dates:
+        //                 [${bookingUpdated.check_in_date} ${bookingUpdated.check_in_time}] ⭢ [${bookingUpdated.check_out_date} ${newBooking.check_out_time}]`)
+        //     return
+        // }
 
         const roomUpdatedToDispatch = {
             ...room
@@ -164,10 +183,12 @@ export const BookingUpdate = () => {
 
         dispatch(BookingUpdateThunk(bookingUpdated))
             .then(() => {
-                alert(`Booking #${bookingUpdated.id} updated`)
+                ToastifySuccess(`Booking #${bookingUpdated.id} updated`, () => {
+                    navigate('../')
+                })
             })
             .catch((error) => {
-                alert(error)
+                ToastifyError(error)
             })
 
         if (previusRoomId !== bookingUpdated.room_id) {
@@ -183,22 +204,52 @@ export const BookingUpdate = () => {
 
             dispatch(RoomUpdateThunk(oldRoomUpdatedToDispatch))
                 .then(() => {
-                    alert(`Room #${previusRoomId} booking list updated to [${oldRoomUpdatedToDispatch.booking_list}]`)
+                    ToastifySuccess(`Room #${previusRoomId} booking list updated to [${oldRoomUpdatedToDispatch.booking_list}]`, () => {
+                        navigate('../')
+                    })
                 })
                 .catch((error) => {
-                    alert(error)
+                    ToastifyError(error)
                 })
             dispatch(RoomUpdateThunk(newRoomUpdatedToDispatch))
                 .then(() => {
-                    alert(`Room #${bookingUpdated.room_id} booking list updated to [${newRoomUpdatedToDispatch.booking_list}]`)
+                    ToastifySuccess(`Room #${bookingUpdated.room_id} booking list updated to [${newRoomUpdatedToDispatch.booking_list}]`, () => {
+                        navigate('../')
+                    })
                 })
                 .catch((error) => {
-                    alert(error)
+                    ToastifyError(error)
                 })
         }
     }
 
+    const validateAllData = (): boolean => {
+        // const checkPhoto = validatePhoto(bookingUpdated.photo)
+        const checkGuestName = validateName(bookingUpdated.full_name_guest)
+        const checkInDate = validateDateAndTime(bookingUpdated.check_in_date)
+        const checkInTime = validateDateAndTime(bookingUpdated.check_in_time)
+        const checkOutDate = validateDateAndTime(bookingUpdated.check_out_date)
+        const checkOutTime = validateDateAndTime(bookingUpdated.check_in_time)
+        const checkSpecialRequest = validateTextArea(bookingUpdated.special_request)
+        const checkRoomNumber = validateRoomNumber(bookingUpdated.room_id)
+        const checkBookingStatus = validateBookingStatus(bookingUpdated.room_booking_status)
+
+        // if (!checkPhoto.test) { ToastifyError(checkPhoto.errorMessage); return false }
+        if (!checkGuestName.test) { ToastifyError(checkGuestName.errorMessage); return false }
+        if (!checkInDate.test) { ToastifyError(checkInDate.errorMessage); return false }
+        if (!checkInTime.test) { ToastifyError(checkInTime.errorMessage); return false }
+        if (!checkOutDate.test) { ToastifyError(checkOutDate.errorMessage); return false }
+        if (!checkOutTime.test) { ToastifyError(checkOutTime.errorMessage); return false }
+        if (!checkSpecialRequest.test) { ToastifyError(checkSpecialRequest.errorMessage); return false }
+        if (!checkRoomNumber.test) { ToastifyError(checkRoomNumber.errorMessage); return false }
+        if (!checkBookingStatus.test) { ToastifyError(checkBookingStatus.errorMessage); return false }
+
+        return true
+    }
+
+
     return (<>
+        <ToastContainer />
 
         <GlobalDateTimeStyles />
 
@@ -273,6 +324,5 @@ export const BookingUpdate = () => {
                 </Form>
             </DivCtnForm>
         </bookingUpdateStyles.SectionPageBookingUpdate>
-
     </>)
 }

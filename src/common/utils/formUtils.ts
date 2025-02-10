@@ -4,7 +4,7 @@ import { RoomInterface } from '../../room/interfaces/roomInterface.ts'
 import { ContactInterface } from '../../contact/interfaces/contactInterface.ts'
 import { UserInterface } from '../../user/interfaces/userInterface.ts'
 import { RoomType } from '../../room/data/roomType.ts'
-// import {BookingStatus} crear interfaz 
+import { BookingStatus } from '../../booking/data/bookingStatus.ts'
 
 
 export const checkFirstIDAvailable = (list: BookingInterface[] | RoomInterface[] | ContactInterface[] | UserInterface[]) => {
@@ -79,7 +79,7 @@ export const hourFormatTo24H = (time12H: string) => {
 export const validateRoomPhotoArray = (photos: string[]): { test: boolean, errorMessage: string } => {
     const regex = /\.(png|jpg)$/i
     photos.map((photo, index) => {
-        if (typeof photo !== "string") { return { test: false, errorMessage: `Photo ${index} url is not String` } }
+        if (typeof photo !== "string") { return { test: false, errorMessage: `Photo ${index} url is not a String` } }
     })
     photos.map((photo, index) => {
         if (!regex.test(photo)) { return { test: false, errorMessage: `Photo ${index} is not .png or .jpg file` } }
@@ -90,20 +90,20 @@ export const validateRoomPhotoArray = (photos: string[]): { test: boolean, error
 
 export const validatePhoto = (photo: string): { test: boolean, errorMessage: string } => {
     const regex = /\.(png|jpg)$/i
-    if (typeof photo !== "string") { return { test: false, errorMessage: 'Photo url is not String' } }
+    if (typeof photo !== "string") { return { test: false, errorMessage: 'Photo url is not a String' } }
     if (!regex.test(photo)) { return { test: false, errorMessage: 'Not .png or .jpg file' } }
     return { test: true, errorMessage: '' }
 }
 
 export const validateName = (name: string): { test: boolean, errorMessage: string } => {
-    if (typeof name !== "string") { return { test: false, errorMessage: 'Name is not String' } }
+    if (typeof name !== "string") { return { test: false, errorMessage: 'Name is not a String' } }
     if (name.length < 3) { return { test: false, errorMessage: 'Name length must be 3 characters or more' } }
     if (name.length > 50) { return { test: false, errorMessage: 'Name length must be 50 characters or less' } }
     return { test: true, errorMessage: '' }
 }
 
 export const validateTextArea = (text: string): { test: boolean, errorMessage: string } => {
-    if (typeof text !== "string") { return { test: false, errorMessage: 'Text is not String' } }
+    if (typeof text !== "string") { return { test: false, errorMessage: 'Text is not a String' } }
     if (text.length < 10) { return { test: false, errorMessage: 'Text length must be 10 characters or more' } }
     if (text.length > 500) { return { test: false, errorMessage: 'Text length must be 500 characters or less' } }
     return { test: true, errorMessage: '' }
@@ -111,14 +111,14 @@ export const validateTextArea = (text: string): { test: boolean, errorMessage: s
 
 export const validateEmail = (email: string): { test: boolean, errorMessage: string } => {
     const regex = new RegExp(/^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-    if (typeof email !== "string") { return { test: false, errorMessage: 'Email is not String' } }
+    if (typeof email !== "string") { return { test: false, errorMessage: 'Email is not a String' } }
     if (!regex.test(email)) { return { test: false, errorMessage: 'Email format no valid' } }
     return { test: true, errorMessage: '' }
 }
 
 export const validatePhoneNumber = (phoneNumber: string): { test: boolean, errorMessage: string } => {
     const regex = /^(\d{3}[-\s]?\d{3}[-\s]?\d{3,4})$/
-    if (typeof phoneNumber !== "string") { return { test: false, errorMessage: 'phone number is not String' } }
+    if (typeof phoneNumber !== "string") { return { test: false, errorMessage: 'phone number is not a String' } }
     if (phoneNumber.length < 9) { return { test: false, errorMessage: 'Phone number length must be 9 characters or more' } }
     if (phoneNumber.length > 20) { return { test: false, errorMessage: 'Phone number length must be 20 characters or less' } }
     if (!regex.test(phoneNumber)) { return { test: false, errorMessage: 'Phone number only digits are available' } }
@@ -133,7 +133,7 @@ export const validateDateAndTime = (data: string): { test: boolean, errorMessage
 }
 
 export const validateRoomType = (type: string): { test: boolean, errorMessage: string } => {
-    if (typeof type !== "string") { return { test: false, errorMessage: 'Room Type is not String' } }
+    if (typeof type !== "string") { return { test: false, errorMessage: 'Room Type is not a String' } }
     if (!Object.values(RoomType).includes(type as RoomType)) { return { test: false, errorMessage: 'Rome type is not set' } }
     return { test: true, errorMessage: '' }
 }
@@ -154,14 +154,13 @@ export const validateRoomDiscount = (discount: number): { test: boolean, errorMe
 
 export const validateRoomNumber = (number: number): { test: boolean, errorMessage: string } => {
     if (typeof number !== "number") { return { test: false, errorMessage: 'Room number is not a number' } }
-    if (number === 0) { return { test: false, errorMessage: 'Rome number is not set' } }
+    if (number === 0) { return { test: false, errorMessage: 'Room number is not set' } }
     return { test: true, errorMessage: '' }
 }
 
 export const validateBookingStatus = (type: string): { test: boolean, errorMessage: string } => {
-    // if (typeof type !== "string") { return { test: false, errorMessage: 'Room Type is not String' } }
-    // if (!Object.values(RoomType).includes(type as RoomType)) { return { test: false, errorMessage: 'Rome type is not set' } }
-    // Crear interfaz de buking status
+    if (typeof type !== "string") { return { test: false, errorMessage: 'Booking Status is not a String' } }
+    if (!Object.values(BookingStatus).includes(type as BookingStatus)) { return { test: false, errorMessage: 'Booking Status is not set' } }
     return { test: true, errorMessage: '' }
 }
 
@@ -186,27 +185,5 @@ export const validateBookingStatus = (type: string): { test: boolean, errorMessa
 //     }
 //     if (checkIn < currentDate) {
 //         throw new Error('error checkInIsPastDate')
-//     }
-// }
-
-// export const checkPrice = (price) => {
-//     if (!Number.isInteger(price)) {
-//         throw new Error('error rate isInteger')
-//     }
-//     if (price <= 0) {
-//         throw new Error('error rate isPositive')
-//     }
-//     const maxPrice = 100000
-//     if (price > maxPrice) {
-//         throw new Error('error rate isOverMaxPrice')
-//     }
-// }
-
-// export const checkDiscount = (discount) => {
-//     if (typeof discount !== 'number') {
-//         throw new Error('error discount isNumber')
-//     }
-//     if (discount < 0 || discount > 100) {
-//         throw new Error('error discount isOutOfRange')
 //     }
 // }

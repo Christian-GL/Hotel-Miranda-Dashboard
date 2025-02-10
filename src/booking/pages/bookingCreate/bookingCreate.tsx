@@ -149,47 +149,49 @@ export const BookingCreate = () => {
         if (!validateAllData()) { return }
 
         const room = roomAll.find(room => room.id === newBooking.room_id)
-        if (!room) { return }
+        if (!room) {
+            ToastifyError(`ERROR - room #${newBooking.room_id} nor found`)
+            return
+        }
 
         if (checkIsOccupied()) {
-            ToastifyError(`La habitación #${newBooking.room_id} esta ocupada en las fechas:
+            ToastifyError(`Room #${newBooking.room_id} is occupied on dates:
                 [${newBooking.check_in_date} ${newBooking.check_in_time}] ⭢ [${newBooking.check_out_date} ${newBooking.check_out_time}]`)
+            return
         }
-        else {
-            const newBookingToDispatch = {
-                ...newBooking,
-                id: nextIdAvailable,
-                order_date: getActualDate(),
-                order_time: getActualTime(),
-                room_type: room.type
-            }
-            const roomUpdatedToDispatch = {
-                ...room,
-                booking_list: [
-                    ...room.booking_list,
-                    nextIdAvailable
-                ]
-            }
 
-            dispatch(BookingCreateThunk(newBookingToDispatch))
-                .then(() => {
-                    ToastifySuccess(`Booking #${newBookingToDispatch.id} created`, () => {
-                        navigate('../')
-                    })
-                })
-                .catch((error) => {
-                    ToastifyError(error)
-                })
-            dispatch(RoomUpdateThunk(roomUpdatedToDispatch))
-                .then(() => {
-                    ToastifySuccess(`Room #${roomUpdatedToDispatch.id} booking list updated to [${roomUpdatedToDispatch.booking_list}]`, () => {
-                        navigate('../')
-                    })
-                })
-                .catch((error) => {
-                    ToastifyError(error)
-                })
+        const newBookingToDispatch = {
+            ...newBooking,
+            id: nextIdAvailable,
+            order_date: getActualDate(),
+            order_time: getActualTime(),
+            room_type: room.type
         }
+        const roomUpdatedToDispatch = {
+            ...room,
+            booking_list: [
+                ...room.booking_list,
+                nextIdAvailable
+            ]
+        }
+        dispatch(BookingCreateThunk(newBookingToDispatch))
+            .then(() => {
+                ToastifySuccess(`Booking #${newBookingToDispatch.id} created`, () => {
+                    navigate('../')
+                })
+            })
+            .catch((error) => {
+                ToastifyError(error)
+            })
+        dispatch(RoomUpdateThunk(roomUpdatedToDispatch))
+            .then(() => {
+                ToastifySuccess(`Room #${roomUpdatedToDispatch.id} booking list updated to [${roomUpdatedToDispatch.booking_list}]`, () => {
+                    navigate('../')
+                })
+            })
+            .catch((error) => {
+                ToastifyError(error)
+            })
     }
 
     const checkIsOccupied = () => {
