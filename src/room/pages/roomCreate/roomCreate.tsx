@@ -48,7 +48,7 @@ export const RoomCreate = () => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) {
             if (roomAll.length > 0) {
-                const id = checkFirstIDAvailable(roomAll)
+                const id = checkFirstIDAvailable(roomAll.map(item => item.id))
                 setNextIdAvailable(id)
             }
             else { setNextIdAvailable(1) }
@@ -125,15 +125,26 @@ export const RoomCreate = () => {
     }
 
     const validateAllData = (): boolean => {
-        const checkPhotos = validateRoomPhotoArray(newRoom.photos)
+        // const checkPhotos = validateRoomPhotoArray(newRoom.photos)
+        // if (!checkPhotos.test) {
+        //     checkPhotos.errorMessages.map(error => ToastifyError(error))
+        //     return false
+        // }
         const checkRoomType = validateRoomType(newRoom.type)
+        if (!checkRoomType.test) {
+            checkRoomType.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkRoomPrice = validateRoomPrice(newRoom.price)
+        if (!checkRoomPrice.test) {
+            checkRoomPrice.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkRoomDiscount = validateRoomDiscount(newRoom.discount)
-
-        if (!checkPhotos.test) { ToastifyError(checkPhotos.errorMessage); return false }
-        if (!checkRoomType.test) { ToastifyError(checkRoomType.errorMessage); return false }
-        if (!checkRoomPrice.test) { ToastifyError(checkRoomPrice.errorMessage); return false }
-        if (!checkRoomDiscount.test) { ToastifyError(checkRoomDiscount.errorMessage); return false }
+        if (!checkRoomDiscount.test) {
+            checkRoomDiscount.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
 
         return true
     }

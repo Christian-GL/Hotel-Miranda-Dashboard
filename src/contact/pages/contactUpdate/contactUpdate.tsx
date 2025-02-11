@@ -106,14 +106,25 @@ export const ContactUpdate = () => {
 
     const validateAllData = (): boolean => {
         const checkName = validateName(contactUpdated.full_name)
+        if (!checkName.test) {
+            checkName.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkEmail = validateEmail(contactUpdated.email)
+        if (!checkEmail.test) {
+            checkEmail.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkPhoneNumber = validatePhoneNumber(contactUpdated.contact)
+        if (!checkPhoneNumber.test) {
+            checkPhoneNumber.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkTextArea = validateTextArea(contactUpdated.comment)
-
-        if (!checkName.test) { ToastifyError(checkName.errorMessage); return false }
-        if (!checkEmail.test) { ToastifyError(checkEmail.errorMessage); return false }
-        if (!checkPhoneNumber.test) { ToastifyError(checkPhoneNumber.errorMessage); return false }
-        if (!checkTextArea.test) { ToastifyError(checkTextArea.errorMessage); return false }
+        if (!checkTextArea.test) {
+            checkTextArea.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
 
         return true
     }

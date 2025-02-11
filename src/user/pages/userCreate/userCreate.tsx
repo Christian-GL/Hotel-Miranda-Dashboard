@@ -47,7 +47,7 @@ export const UserCreate = () => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
         else if (userAllLoading === ApiStatus.fulfilled) {
             if (userAll.length > 0) {
-                const id = checkFirstIDAvailable(userAll)
+                const id = checkFirstIDAvailable(userAll.map(item => item.id))
                 setNextIdAvailable(id)
             }
             else { setNextIdAvailable(1) }
@@ -131,18 +131,35 @@ export const UserCreate = () => {
 
     const validateAllData = (): boolean => {
         // const checkPhoto = validatePhoto(newUser.photo)
+        // if (!checkPhoto.test) {
+        //     checkPhoto.errorMessages.map(error => ToastifyError(error))
+        //     return false
+        // }
         const checkName = validateName(newUser.full_name)
+        if (!checkName.test) {
+            checkName.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkEmail = validateEmail(newUser.email)
+        if (!checkEmail.test) {
+            checkEmail.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkStartDate = validateDateAndTime(newUser.start_date)
+        if (!checkStartDate.test) {
+            checkStartDate.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkTextArea = validateTextArea(newUser.description)
+        if (!checkTextArea.test) {
+            checkTextArea.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkPhoneNumber = validatePhoneNumber(newUser.phone_number)
-
-        // if (!checkPhoto.test) { ToastifyError(checkPhoto.errorMessage); return false }
-        if (!checkName.test) { ToastifyError(checkName.errorMessage); return false }
-        if (!checkEmail.test) { ToastifyError(checkEmail.errorMessage); return false }
-        if (!checkStartDate.test) { ToastifyError(checkStartDate.errorMessage); return false }
-        if (!checkTextArea.test) { ToastifyError(checkTextArea.errorMessage); return false }
-        if (!checkPhoneNumber.test) { ToastifyError(checkPhoneNumber.errorMessage); return false }
+        if (!checkPhoneNumber.test) {
+            checkPhoneNumber.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
 
         return true
     }

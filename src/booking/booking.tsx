@@ -89,14 +89,6 @@ export const Bookings = () => {
         else if (roomAllLoading === ApiStatus.fulfilled) { }
         else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de bookings > rooms") }
     }, [roomAllLoading, roomAll])
-    // useEffect(() => {
-    //     if (bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending) {
-    //         if (!toastShown) {
-    //             ToastifyPopup()
-    //             setToastShown(true)
-    //         }
-    //     } else { toast.dismiss() }
-    // }, [bookingAllLoading, roomAllLoading])
 
     const navigateToBookingCreate = () => navigate('booking-create')
     const navigateToBookingUpdate = (id: number) => navigate(`booking-update/${id}`)
@@ -141,46 +133,68 @@ export const Bookings = () => {
         }
         const sortedData = sortData(filteredData)
         setFilteredBookings(sortedData)
+        resetPage()
     }
     const sortData = (filteredData: BookingInterface[]): BookingInterface[] => {
         const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
         let sortedData: BookingInterface[] = [...filteredData]
         if (activeColumn) {
-            sortedData.sort((a, b) => {
-                let valueA: string | number | Date
-                let valueB: string | number | Date
+            if (activeColumn === columnsSortAvailable.guest) {
+                sortedData.sort((a, b) => {
+                    let valueA: string = a.full_name_guest.toLowerCase()
+                    let valueB: string = b.full_name_guest.toLowerCase()
+                    if (arrowStates[activeColumn] === ArrowType.up) {
+                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
+                    } else {
+                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
+                    }
+                })
+            }
+            else if (activeColumn === columnsSortAvailable.orderDate) {
+                sortedData.sort((a, b) => {
+                    let valueA: Date = new Date(dateFormatToYYYYMMDD(a.order_date) + ' ' + hourFormatTo24H(a.order_time))
+                    let valueB: Date = new Date(dateFormatToYYYYMMDD(b.order_date) + ' ' + hourFormatTo24H(b.order_time))
+                    if (arrowStates[activeColumn] === ArrowType.up) {
+                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
+                    } else {
+                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
+                    }
+                })
+            }
+            else if (activeColumn === columnsSortAvailable.checkIn) {
+                sortedData.sort((a, b) => {
+                    let valueA: Date = new Date(dateFormatToYYYYMMDD(a.check_in_date) + ' ' + hourFormatTo24H(a.check_in_time))
+                    let valueB: Date = new Date(dateFormatToYYYYMMDD(b.check_in_date) + ' ' + hourFormatTo24H(b.check_in_time))
+                    if (arrowStates[activeColumn] === ArrowType.up) {
+                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
+                    } else {
+                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
+                    }
+                })
+            }
+            else if (activeColumn === columnsSortAvailable.checkOut) {
+                sortedData.sort((a, b) => {
+                    let valueA: Date = new Date(dateFormatToYYYYMMDD(a.check_out_date) + ' ' + hourFormatTo24H(a.check_out_time))
+                    let valueB: Date = new Date(dateFormatToYYYYMMDD(b.check_out_date) + ' ' + hourFormatTo24H(b.check_out_time))
+                    if (arrowStates[activeColumn] === ArrowType.up) {
+                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
+                    } else {
+                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
+                    }
+                })
+            }
+            else if (activeColumn === columnsSortAvailable.roomNumber) {
+                sortedData.sort((a, b) => {
+                    let valueA: number = a.room_id
+                    let valueB: number = b.room_id
+                    if (arrowStates[activeColumn] === ArrowType.up) {
+                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
+                    } else {
+                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
+                    }
+                })
+            }
 
-                if (activeColumn === columnsSortAvailable.guest) {
-                    valueA = a.full_name_guest.toLowerCase()
-                    valueB = b.full_name_guest.toLowerCase()
-                }
-                else if (activeColumn === columnsSortAvailable.orderDate) {
-                    valueA = new Date(dateFormatToYYYYMMDD(a.order_date) + ' ' + hourFormatTo24H(a.order_time))
-                    valueB = new Date(dateFormatToYYYYMMDD(b.order_date) + ' ' + hourFormatTo24H(b.order_time))
-                }
-                else if (activeColumn === columnsSortAvailable.checkIn) {
-                    valueA = new Date(dateFormatToYYYYMMDD(a.check_in_date) + ' ' + hourFormatTo24H(a.check_in_time))
-                    valueB = new Date(dateFormatToYYYYMMDD(b.check_in_date) + ' ' + hourFormatTo24H(b.check_in_time))
-                }
-                else if (activeColumn === columnsSortAvailable.checkOut) {
-                    valueA = new Date(dateFormatToYYYYMMDD(a.check_out_date) + ' ' + hourFormatTo24H(a.check_out_time))
-                    valueB = new Date(dateFormatToYYYYMMDD(b.check_out_date) + ' ' + hourFormatTo24H(b.check_out_time))
-                }
-                else if (activeColumn === columnsSortAvailable.roomNumber) {
-                    valueA = valueA = a.room_id
-                    valueB = b.room_id
-                }
-                else {
-                    valueA = 'activeColumn no encontrada'
-                    valueB = 'activeColumn no encontrada'
-                }
-
-                if (arrowStates[activeColumn] === ArrowType.down) {
-                    return valueB > valueA ? -1 : 1
-                } else {
-                    return valueA > valueB ? -1 : 1
-                }
-            })
         }
         return sortedData
     }

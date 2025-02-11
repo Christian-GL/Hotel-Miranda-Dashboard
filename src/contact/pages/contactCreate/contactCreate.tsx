@@ -46,7 +46,7 @@ export const ContactCreate = () => {
         if (contactAllLoading === ApiStatus.idle) { dispatch(ContactFetchAllThunk()) }
         else if (contactAllLoading === ApiStatus.fulfilled) {
             if (contactAll.length > 0) {
-                const id = checkFirstIDAvailable(contactAll)
+                const id = checkFirstIDAvailable(contactAll.map(item => item.id))
                 setNextIdAvailable(id)
             }
             else { setNextIdAvailable(1) }
@@ -107,14 +107,25 @@ export const ContactCreate = () => {
 
     const validateAllData = (): boolean => {
         const checkName = validateName(newContact.full_name)
+        if (!checkName.test) {
+            checkName.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkEmail = validateEmail(newContact.email)
+        if (!checkEmail.test) {
+            checkEmail.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkPhoneNumber = validatePhoneNumber(newContact.contact)
+        if (!checkPhoneNumber.test) {
+            checkPhoneNumber.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkTextArea = validateTextArea(newContact.comment)
-
-        if (!checkName.test) { ToastifyError(checkName.errorMessage); return false }
-        if (!checkEmail.test) { ToastifyError(checkEmail.errorMessage); return false }
-        if (!checkPhoneNumber.test) { ToastifyError(checkPhoneNumber.errorMessage); return false }
-        if (!checkTextArea.test) { ToastifyError(checkTextArea.errorMessage); return false }
+        if (!checkTextArea.test) {
+            checkTextArea.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
 
         return true
     }

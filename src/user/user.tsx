@@ -98,34 +98,34 @@ export const User = () => {
         }
         const sortedData = sortData(filteredData)
         setFilteredUsers(sortedData)
+        resetPage()
     }
     const sortData = (filteredData: UserInterface[]): UserInterface[] => {
         const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
         let sortedData: UserInterface[] = [...filteredData]
         if (activeColumn) {
-            sortedData.sort((a, b) => {
-                let valueA: string | Date
-                let valueB: string | Date
-
-                if (activeColumn === columnsSortAvailable.name) {
-                    valueA = a.full_name.toLowerCase()
-                    valueB = b.full_name.toLowerCase()
-                }
-                else if (activeColumn === columnsSortAvailable.startDate) {
-                    valueA = new Date(dateFormatToYYYYMMDD(a.start_date))
-                    valueB = new Date(dateFormatToYYYYMMDD(b.start_date))
-                }
-                else {
-                    valueA = 'activeColumn no encontrada'
-                    valueB = 'activeColumn no encontrada'
-                }
-
-                if (arrowStates[activeColumn] === ArrowType.down) {
-                    return valueB > valueA ? -1 : 1
-                } else {
-                    return valueA > valueB ? -1 : 1
-                }
-            })
+            if (activeColumn === columnsSortAvailable.name) {
+                sortedData.sort((a, b) => {
+                    let valueA: string = a.full_name.toLowerCase()
+                    let valueB: string = b.full_name.toLowerCase()
+                    if (arrowStates[activeColumn] === ArrowType.up) {
+                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
+                    } else {
+                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
+                    }
+                })
+            }
+            else if (activeColumn === columnsSortAvailable.startDate) {
+                sortedData.sort((a, b) => {
+                    let valueA: Date = new Date(dateFormatToYYYYMMDD(a.start_date))
+                    let valueB: Date = new Date(dateFormatToYYYYMMDD(b.start_date))
+                    if (arrowStates[activeColumn] === ArrowType.up) {
+                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
+                    } else {
+                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
+                    }
+                })
+            }
         }
         return sortedData
     }

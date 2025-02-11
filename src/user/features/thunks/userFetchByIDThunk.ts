@@ -26,7 +26,7 @@ export const UserFetchByIDThunk = createAsyncThunk
 
         try {
             const request: RequestResponse = await new Promise((resolve) => {
-                const user = userJSON.find((user) => user.id === userId);
+                const user = userJSON.find((user) => user.id === userId)
                 if (user) {
                     setTimeout(() => resolve({
                         ok: true,

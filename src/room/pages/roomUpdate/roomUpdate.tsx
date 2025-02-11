@@ -142,15 +142,26 @@ export const RoomUpdate = () => {
     }
 
     const validateAllData = (): boolean => {
-        const checkPhotos = validateRoomPhotoArray(roomUpdated.photos)
+        // const checkPhotos = validateRoomPhotoArray(roomUpdated.photos)
+        // if (!checkPhotos.test) {
+        //     checkPhotos.errorMessages.map(error => ToastifyError(error))
+        //     return false
+        // }
         const checkRoomType = validateRoomType(roomUpdated.type)
+        if (!checkRoomType.test) {
+            checkRoomType.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkRoomPrice = validateRoomPrice(roomUpdated.price)
+        if (!checkRoomPrice.test) {
+            checkRoomPrice.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkRoomDiscount = validateRoomDiscount(roomUpdated.discount)
-
-        if (!checkPhotos.test) { ToastifyError(checkPhotos.errorMessage); return false }
-        if (!checkRoomType.test) { ToastifyError(checkRoomType.errorMessage); return false }
-        if (!checkRoomPrice.test) { ToastifyError(checkRoomPrice.errorMessage); return false }
-        if (!checkRoomDiscount.test) { ToastifyError(checkRoomDiscount.errorMessage); return false }
+        if (!checkRoomDiscount.test) {
+            checkRoomDiscount.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
 
         return true
     }

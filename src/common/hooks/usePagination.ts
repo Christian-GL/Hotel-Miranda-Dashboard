@@ -1,9 +1,6 @@
 
 import { useState } from 'react'
 
-import { UserInterface } from '../../user/interfaces/userInterface.ts'
-import { ContactInterface } from '../../contact/interfaces/contactInterface.ts'
-
 
 export const usePagination = <T>(data: T[], itemsPerPage: number) => {
 

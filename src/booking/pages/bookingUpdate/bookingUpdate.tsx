@@ -224,25 +224,51 @@ export const BookingUpdate = () => {
     }
 
     const validateAllData = (): boolean => {
-        // const checkPhoto = validatePhoto(bookingUpdated.photo)
+        // const checkPhoto = validatePhoto(newBooking.photo)
+        // if (!checkPhoto.test) {
+        //     checkPhoto.errorMessages.map(error => ToastifyError(error))
+        //     return false
+        // }
         const checkGuestName = validateName(bookingUpdated.full_name_guest)
+        if (!checkGuestName.test) {
+            checkGuestName.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkInDate = validateDateAndTime(bookingUpdated.check_in_date)
+        if (!checkInDate.test) {
+            checkInDate.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkInTime = validateDateAndTime(bookingUpdated.check_in_time)
+        if (!checkInTime.test) {
+            checkInTime.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkOutDate = validateDateAndTime(bookingUpdated.check_out_date)
+        if (!checkOutDate.test) {
+            checkOutDate.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkOutTime = validateDateAndTime(bookingUpdated.check_in_time)
+        if (!checkOutTime.test) {
+            checkOutTime.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkSpecialRequest = validateTextArea(bookingUpdated.special_request)
+        if (!checkSpecialRequest.test) {
+            checkSpecialRequest.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkRoomNumber = validateRoomNumber(bookingUpdated.room_id)
+        if (!checkRoomNumber.test) {
+            checkRoomNumber.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
         const checkBookingStatus = validateBookingStatus(bookingUpdated.room_booking_status)
-
-        // if (!checkPhoto.test) { ToastifyError(checkPhoto.errorMessage); return false }
-        if (!checkGuestName.test) { ToastifyError(checkGuestName.errorMessage); return false }
-        if (!checkInDate.test) { ToastifyError(checkInDate.errorMessage); return false }
-        if (!checkInTime.test) { ToastifyError(checkInTime.errorMessage); return false }
-        if (!checkOutDate.test) { ToastifyError(checkOutDate.errorMessage); return false }
-        if (!checkOutTime.test) { ToastifyError(checkOutTime.errorMessage); return false }
-        if (!checkSpecialRequest.test) { ToastifyError(checkSpecialRequest.errorMessage); return false }
-        if (!checkRoomNumber.test) { ToastifyError(checkRoomNumber.errorMessage); return false }
-        if (!checkBookingStatus.test) { ToastifyError(checkBookingStatus.errorMessage); return false }
+        if (!checkBookingStatus.test) {
+            checkBookingStatus.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
 
         return true
     }
