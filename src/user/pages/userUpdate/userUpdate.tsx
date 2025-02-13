@@ -211,34 +211,17 @@ export const UserUpdate = () => {
                     <DivCtnEntry>
                         <LabelText>Full name</LabelText>
                         <InputText name="full_name" value={userUpdated.full_name} onChange={handleFullNameChange} />
-                    </DivCtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Email</LabelText>
+                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Email</LabelText>
                         <InputText name="email" value={userUpdated.email} onChange={handleEmailChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
-                        <InputDate name="start_date" type="date" value={dateFormatToYYYYMMDD(userUpdated.start_date)} onChange={handleStartDateChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
-                        <LabelText>Job Description</LabelText>
-                        <TextAreaJobDescription name="description" value={userUpdated.description} onChange={handleDescriptionChange}></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Contact</LabelText>
                         <InputText name="phone_number" value={userUpdated.phone_number} onChange={handleContactChange} />
-                    </DivCtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Status</LabelText>
-                        <Select name="status_active" value={userUpdated.status_active ? "true" : "false"} onChange={handleStatusActiveChange}>
-                            <Option value="true">Active</Option>
-                            <Option value="false">Inactive</Option>
-                        </Select>
+                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Start Date</LabelText>
+                        <InputDate name="start_date" type="date" value={dateFormatToYYYYMMDD(userUpdated.start_date)} onChange={handleStartDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
@@ -253,6 +236,19 @@ export const UserUpdate = () => {
                                 <EyeOpen onClick={switchPasswordVisibility} />
                             }
                         </DivButtonHidePassword>
+                    </DivCtnEntry>
+
+                    <DivCtnEntry>
+                        <LabelText>Job Description</LabelText>
+                        <TextAreaJobDescription name="description" value={userUpdated.description} onChange={handleDescriptionChange}></TextAreaJobDescription>
+                    </DivCtnEntry>
+
+                    <DivCtnEntry>
+                        <LabelText>Status</LabelText>
+                        <Select name="status_active" value={userUpdated.status_active ? "true" : "false"} onChange={handleStatusActiveChange}>
+                            <Option value="true">Active</Option>
+                            <Option value="false">Inactive</Option>
+                        </Select>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>

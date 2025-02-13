@@ -208,17 +208,6 @@ export const RoomUpdate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Room Type</LabelText>
-                        <Select name="type" value={roomUpdated.type} onChange={handleTypeChange}>
-                            {Object.values(RoomType).map((type, index) => (
-                                <option key={index} value={type}>
-                                    {type}
-                                </option>
-                            ))}
-                        </Select>
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
                         <LabelText>Amenities</LabelText>
                         <SelectAmenities name="amenities" value={roomUpdated.amenities} onChange={handleAmenitiesChange} multiple={true}>
                             {Object.values(RoomAmenities).map((amenity, index) => (
@@ -232,11 +221,20 @@ export const RoomUpdate = () => {
                     <DivCtnEntry>
                         <LabelText>Price</LabelText>
                         <InputText name="price" value={roomUpdated.price} onChange={handlePriceChange} />
+
+                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</LabelText>
+                        <InputText name="discount" value={roomUpdated.discount} onChange={handleDiscountChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Discount (%)</LabelText>
-                        <InputText name="discount" value={roomUpdated.discount} onChange={handleDiscountChange} />
+                        <LabelText>Room Type</LabelText>
+                        <Select name="type" value={roomUpdated.type} onChange={handleTypeChange}>
+                            {Object.values(RoomType).map((type, index) => (
+                                <option key={index} value={type}>
+                                    {type}
+                                </option>
+                            ))}
+                        </Select>
                     </DivCtnEntry>
 
                     <DivCtnEntry>

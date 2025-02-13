@@ -207,34 +207,17 @@ export const UserCreate = () => {
                     <DivCtnEntry>
                         <LabelText>Full name</LabelText>
                         <InputText name="full_name" onChange={handleFullNameChange} />
-                    </DivCtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Email</LabelText>
+                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Email</LabelText>
                         <InputText name="email" onChange={handleEmailChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
-                        <InputDate name="start_date" type="date" onChange={handleStartDateChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
-                        <LabelText>Job Description</LabelText>
-                        <TextAreaJobDescription name="description" onChange={handleDescriptionChange}></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Contact</LabelText>
                         <InputText name="phone_number" onChange={handleContactChange} />
-                    </DivCtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Status</LabelText>
-                        <Select name="status_active" onChange={handleStatusActiveChange}>
-                            <Option value="true">Active</Option>
-                            <Option value="false" selected>Inactive</Option>
-                        </Select>
+                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Start Date</LabelText>
+                        <InputDate name="start_date" type="date" onChange={handleStartDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
@@ -249,6 +232,19 @@ export const UserCreate = () => {
                                 <EyeOpen onClick={switchPasswordVisibility} />
                             }
                         </DivButtonHidePassword>
+                    </DivCtnEntry>
+
+                    <DivCtnEntry>
+                        <LabelText>Job Description</LabelText>
+                        <TextAreaJobDescription name="description" onChange={handleDescriptionChange}></TextAreaJobDescription>
+                    </DivCtnEntry>
+
+                    <DivCtnEntry>
+                        <LabelText>Status</LabelText>
+                        <Select name="status_active" onChange={handleStatusActiveChange}>
+                            <Option value="true">Active</Option>
+                            <Option value="false" selected>Inactive</Option>
+                        </Select>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>

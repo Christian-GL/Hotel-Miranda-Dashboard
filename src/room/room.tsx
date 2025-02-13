@@ -78,14 +78,6 @@ export const Room = () => {
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
         else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de bookings") }
     }, [bookingAllLoading, bookingAll])
-    // useEffect(() => {
-    //     if (bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending) {
-    //         if (!toastShown) {
-    //             ToastifyPopup()
-    //             setToastShown(true)
-    //         }
-    //     } else { toast.dismiss() }
-    // }, [bookingAllLoading, roomAllLoading])
 
     const navigateToRoomCreate = () => navigate('room-create')
     const navigateToRoomUpdate = (id: number) => navigate(`room-update/${id}`)

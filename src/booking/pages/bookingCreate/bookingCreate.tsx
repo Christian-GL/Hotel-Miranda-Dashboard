@@ -11,6 +11,7 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { BookingInterface } from "../../interfaces/bookingInterface.ts"
+import { BookingStatus } from "../../data/bookingStatus.ts"
 import {
     checkFirstIDAvailable, getActualDate, getActualTime, hourFormatTo12H, hourFormatTo24H, dateFormatToYYYYMMDD,
     validatePhoto, validateName, validateDateAndTime, validateTextArea, validateRoomNumber, validateBookingStatus
@@ -194,7 +195,7 @@ export const BookingCreate = () => {
             })
     }
 
-    const checkIsOccupied = () => {
+    const checkIsOccupied = () => { // NO DEBE ESTAR EN ESTE FICHERO. LO MISMO PARA EL BOOKINGUPDATE
 
         const room = roomAll.find(room => room.id === nextIdAvailable)
         if (!room) { return }
@@ -296,26 +297,17 @@ export const BookingCreate = () => {
                     <DivCtnEntry>
                         <LabelText>Check in date</LabelText>
                         <InputDate name="check_in_date" type="date" onChange={handleCheckInDateChange} />
-                    </DivCtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Check in time</LabelText>
+                        <LabelText minWidth="10rem" margin="0 0 0 5rem">Check in time</LabelText>
                         <InputDate name="check_in_time" type="time" onChange={handleCheckInTimeChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Check out date</LabelText>
                         <InputDate name="check_out_date" type="date" onChange={handleCheckOutDateChange} />
-                    </DivCtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Check out time</LabelText>
+                        <LabelText minWidth="10rem" margin="0 0 0 5rem">Check out time</LabelText>
                         <InputDate name="check_out_time" type="time" onChange={handleCheckOutTimeChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
-                        <LabelText>Special request</LabelText>
-                        <TextAreaJobDescription name="special_request" onChange={handleSpecialRequestChange} ></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivCtnEntry>
@@ -326,17 +318,21 @@ export const BookingCreate = () => {
                                 <Option key={index}>{room.id}</Option>
                             ))}
                         </Select>
-                        {/* <LabelTextNote><b>* Check in date/time</b> and <b>Check out date/time</b> must be especified before</LabelTextNote> */}
+
+                        <LabelText minWidth="10rem" margin="0 0 0 5rem">Booking Status</LabelText>
+                        <Select name="room_booking_status" onChange={handleBookingRoomStatusChange}>
+                            <Option value="null" selected></Option>
+                            {Object.values(BookingStatus).map((type, index) => (
+                                <option key={index} value={type}>
+                                    {type}
+                                </option>
+                            ))}
+                        </Select>
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Booking Status</LabelText>
-                        <Select name="room_booking_status" onChange={handleBookingRoomStatusChange}>
-                            <Option value="null" selected></Option>
-                            <Option value='Check In'>Check In</Option>
-                            <Option value='Check Out'>Check Out</Option>
-                            <Option value='In Progress'>In Progress</Option>
-                        </Select>
+                        <LabelText>Special request</LabelText>
+                        <TextAreaJobDescription name="special_request" onChange={handleSpecialRequestChange} ></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>

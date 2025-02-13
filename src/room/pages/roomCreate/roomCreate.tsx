@@ -191,18 +191,6 @@ export const RoomCreate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Room Type</LabelText>
-                        <Select name="type" onChange={handleTypeChange}>
-                            <Option value="null" selected></Option>
-                            {Object.values(RoomType).map((type, index) => (
-                                <option key={index} value={type}>
-                                    {type}
-                                </option>
-                            ))}
-                        </Select>
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
                         <LabelText>Amenities</LabelText>
                         <SelectAmenities name="amenities" onChange={handleAmenitiesChange} multiple={true}>
                             {Object.values(RoomAmenities).map((amenity, index) => (
@@ -216,11 +204,21 @@ export const RoomCreate = () => {
                     <DivCtnEntry>
                         <LabelText>Price</LabelText>
                         <InputText name="price" onChange={handlePriceChange} />
+
+                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</LabelText>
+                        <InputText name="discount" value={newRoom.discount} onChange={handleDiscountChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Discount (%)</LabelText>
-                        <InputText name="discount" value={newRoom.discount} onChange={handleDiscountChange} />
+                        <LabelText>Room Type</LabelText>
+                        <Select name="type" onChange={handleTypeChange}>
+                            <Option value="null" selected></Option>
+                            {Object.values(RoomType).map((type, index) => (
+                                <option key={index} value={type}>
+                                    {type}
+                                </option>
+                            ))}
+                        </Select>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>

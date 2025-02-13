@@ -124,8 +124,9 @@ export const DivCtnEntry = styled.div`
     padding: 1em 0;
 `
 
-export const LabelText = styled.label`
-    min-width: 10rem;
+export const LabelText = styled.label<{ minWidth?: string, margin?: string }>`
+    min-width: ${props => props.minWidth || '10rem'};
+    margin: ${props => props.margin || '0'};
     font-family: ${gb.fontPoppins};
     font-size: 1em;
     font-weight: 700;
@@ -253,6 +254,7 @@ export const SelectAmenities = styled.select`
 
 export const Select = styled.select`
     padding: 1em;
+    width: 100%;
     min-width: 10rem;
     max-height: 5rem;
     font-family: ${gb.fontPoppins};
@@ -287,6 +289,7 @@ export const EyeOpen = styled(IoEye)`
     width: 3rem;
     height: auto;
     border-radius: 0.5rem;
+    cursor: pointer;
     color: ${gb.colorWhiteFull};
     background-color: ${gb.colorGrayIconHotel};
 `
@@ -297,6 +300,7 @@ export const EyeClose = styled(IoMdEyeOff)`
     width: 3rem;
     height: auto;
     border-radius: 0.5rem;
+    cursor: pointer;
     color: ${gb.colorWhiteFull};
     background-color: ${gb.colorGrayIconHotel};
 `
