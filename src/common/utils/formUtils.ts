@@ -57,7 +57,7 @@ export const hourFormatTo12H = (time24H: string) => {
     let hour = parseInt(hours)
     const ampm = hour >= 12 ? 'PM' : 'AM'
     hour = hour % 12
-    hour = hour === 0 && ampm === 'AM' ? 0 : hour
+    hour = hour === 0 ? 12 : hour
     const minute = minutes
     return `${hour}:${minute} ${ampm}`
 }
@@ -66,13 +66,14 @@ export const hourFormatTo24H = (time12H: string) => {
     const [hour12HFormat, period] = time12H.split(' ')
     let [hours, minutes] = hour12HFormat.split(':')
     let hoursNumber = parseInt(hours)
+
     if (period === 'PM' && hoursNumber < 12) {
         hoursNumber += 12
     }
     if (period === 'AM' && hoursNumber === 12) {
         hoursNumber = 0
     }
-    return `${hoursNumber < 10 ? '0' + hours : hours}:${minutes}`
+    return `${hoursNumber < 10 ? '0' + hoursNumber : hoursNumber}:${minutes}`
 }
 
 
@@ -183,6 +184,34 @@ export const validateEmail = (email: string): { test: boolean, errorMessages: st
 
     return { test, errorMessages }
 }
+
+export const validatePassword = (password: string): { test: boolean, errorMessages: string[] } => {
+    let test: boolean = true
+    const errorMessages: string[] = []
+    const regexUppercase = /[A-Z]/
+    const regexNumber = /\d/
+    const regexSymbols = /[*\-.,!@#$%^&*()_+={}|\[\]:;"'<>,.?/~`]/
+
+    if (password.length < 8 || password.length > 20) {
+        test = false
+        errorMessages.push('Password length must be between 8 and 20 characters')
+    }
+    if (!regexUppercase.test(password)) {
+        test = false
+        errorMessages.push('Password must contain at least one uppercase letter')
+    }
+    if (!regexNumber.test(password)) {
+        test = false
+        errorMessages.push('Password must contain at least one number')
+    }
+    if (!regexSymbols.test(password)) {
+        test = false
+        errorMessages.push('Password must contain at least one symbol (*, -, ., etc)')
+    }
+
+    return { test, errorMessages }
+}
+
 
 export const validatePhoneNumber = (phoneNumber: string): { test: boolean, errorMessages: string[] } => {
     let test: boolean = true

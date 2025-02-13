@@ -6,7 +6,7 @@ import { StateInterface } from '../interfaces/stateInterface.ts'
 import { ActionInterface } from "../interfaces/actionInterface.ts"
 import { LoginContextTypeInterface } from '../interfaces/loginContextTypeInterface.ts'
 import { LoginProviderInterface } from '../interfaces/loginProviderInterface.ts'
-import accountsData from '../data/accountsData.json'
+import userData from '../../../../user/data/userData.json'
 
 
 const loginReducer = (state: StateInterface, action: ActionInterface): StateInterface => {
@@ -35,16 +35,16 @@ export const useLoginOptionsContext = (): LoginContextTypeInterface => {
 export const LoginProvider = ({ children }: LoginProviderInterface) => {
 
     const initialState: StateInterface = {
-        loggedUser: localStorage.getItem('isAuthenticated') ? { userEmail: '', userPassword: '' } : null
+        loggedUser: localStorage.getItem('isAuthenticated') ? { email: '', password: '' } : null
     }
     const [state, dispatch] = useReducer<React.Reducer<StateInterface, ActionInterface>>(loginReducer, initialState)
 
-    const tryLogin = (userEmail: string, userPassword: string): boolean => {
-        const finded = accountsData.find((user) => userEmail === user.email && userPassword === user.password)
+    const tryLogin = (user: string, password: string): boolean => {
+        const finded = userData.find(u => user === u.email && password === u.password)
         if (finded) {
             dispatch({
                 type: 'LOGIN',
-                payload: { userEmail, userPassword }
+                payload: { email: user, password: password }
             })
             localStorage.setItem('isAuthenticated', 'true')
             return true

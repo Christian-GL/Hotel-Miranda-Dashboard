@@ -13,12 +13,12 @@ import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
 import {
-    dateFormatToYYYYMMDD, dateFormatToDDMMYYYY, validatePhoto,
-    validateName, validateEmail, validateDateAndTime, validateTextArea, validatePhoneNumber
+    dateFormatToYYYYMMDD, dateFormatToDDMMYYYY, validatePhoto, validateName,
+    validateEmail, validateDateAndTime, validateTextArea, validatePhoneNumber, validatePassword
 } from '../../../common/utils/formUtils.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
-    LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
+    LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
 } from "../../../common/styles/form.ts"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
 import { getUserIdData, getUserIdStatus } from "../../features/userSlice.ts"
@@ -42,8 +42,10 @@ export const UserUpdate = () => {
         start_date: '',
         description: '',
         phone_number: '',
-        status_active: false
+        status_active: false,
+        password: ''
     })
+    const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
 
     useEffect(() => {
         if (userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(idParams)) }
@@ -59,12 +61,16 @@ export const UserUpdate = () => {
                 start_date: userById.start_date || '',
                 description: userById.description || '',
                 phone_number: userById.phone_number || '',
-                status_active: userById.status_active || false
+                status_active: userById.status_active || false,
+                password: userById.password || ''
             })
         }
         else if (userByIdLoading === ApiStatus.rejected) { alert("Error en la api de user update") }
     }, [userByIdLoading, userById, id])
 
+    const switchPasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible)
+    }
     const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files } = e.target
         if (files && files[0]) {
@@ -117,6 +123,13 @@ export const UserUpdate = () => {
             [name]: value === 'false' ? false : true
         })
     }
+    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        setUserUpdated({
+            ...userUpdated,
+            [name]: value
+        })
+    }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -162,6 +175,11 @@ export const UserUpdate = () => {
         const checkPhoneNumber = validatePhoneNumber(userUpdated.phone_number)
         if (!checkPhoneNumber.test) {
             checkPhoneNumber.errorMessages.map(error => ToastifyError(error))
+            return false
+        }
+        const checkPassword = validatePassword(userUpdated.password)
+        if (!checkPassword.test) {
+            checkPassword.errorMessages.map(error => ToastifyError(error))
             return false
         }
 
@@ -221,6 +239,20 @@ export const UserUpdate = () => {
                             <Option value="true">Active</Option>
                             <Option value="false">Inactive</Option>
                         </Select>
+                    </DivCtnEntry>
+
+                    <DivCtnEntry>
+                        <LabelText>Password</LabelText>
+                        {passwordVisible ?
+                            <InputText name="password" value={userUpdated.password} type="password" onChange={handlePassword} /> :
+                            <InputText name="password" value={userUpdated.password} onChange={handlePassword} />
+                        }
+                        <DivButtonHidePassword>
+                            {passwordVisible ?
+                                <EyeClose onClick={switchPasswordVisibility} /> :
+                                <EyeOpen onClick={switchPasswordVisibility} />
+                            }
+                        </DivButtonHidePassword>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>

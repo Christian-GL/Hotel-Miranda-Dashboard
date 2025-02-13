@@ -8,6 +8,8 @@ import { MdOutlineBedroomParent } from "react-icons/md"
 import { BiSolidPlusCircle } from "react-icons/bi"
 import { RiExchangeFill } from "react-icons/ri"
 import { MdContacts } from "react-icons/md"
+import { IoEye } from "react-icons/io5"
+import { IoMdEyeOff } from "react-icons/io"
 
 import * as gb from './globalVars.ts'
 
@@ -272,4 +274,29 @@ export const DivButtonCreateUser = styled.div`
     padding-top: 2em;
     text-align: center;
     background-color: ${gb.colorWhiteFull};
+`
+
+export const DivButtonHidePassword = styled.div`
+    margin-left: 1rem;
+    text-align: center;
+`
+
+export const EyeOpen = styled(IoEye)`
+    vertical-align: middle;
+    padding: 0.5em;
+    width: 3rem;
+    height: auto;
+    border-radius: 0.5rem;
+    color: ${gb.colorWhiteFull};
+    background-color: ${gb.colorGrayIconHotel};
+`
+
+export const EyeClose = styled(IoMdEyeOff)`
+    vertical-align: middle;
+    padding: 0.5em;
+    width: 3rem;
+    height: auto;
+    border-radius: 0.5rem;
+    color: ${gb.colorWhiteFull};
+    background-color: ${gb.colorGrayIconHotel};
 `

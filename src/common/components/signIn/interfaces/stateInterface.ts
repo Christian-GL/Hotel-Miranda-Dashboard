@@ -1,4 +1,4 @@
 
 export interface StateInterface {
-    loggedUser: { userEmail: string; userPassword: string } | undefined | null;
+    loggedUser: { email: string; password: string } | undefined | null
 }

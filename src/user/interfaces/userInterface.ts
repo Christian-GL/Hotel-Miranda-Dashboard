@@ -8,4 +8,5 @@ export interface UserInterface {
     description: string
     phone_number: string
     status_active: boolean
+    password: string
 }

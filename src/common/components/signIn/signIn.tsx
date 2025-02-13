@@ -12,14 +12,14 @@ import { useLoginOptionsContext } from "./features/loginProvider.tsx"
 export const SignIn = () => {
 
     const navigate = useNavigate()
-    const [userEmail, setUserEmail] = useState<string>('admin')
-    const [userPassword, setUserPassword] = useState<string>('1234')
+    const [userSet, setUserSet] = useState<string>('admin')
+    const [passwordSet, setPasswordSet] = useState<string>('1234')
     const { tryLogin } = useLoginOptionsContext()
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
 
-        const loginSuccessful = tryLogin(userEmail, userPassword)
+        const loginSuccessful = tryLogin(userSet, passwordSet)
         loginSuccessful ?
             navigate('/dashboard') :
             ToastifyError('Email or password wrong')
@@ -36,14 +36,14 @@ export const SignIn = () => {
                 <signInStyles.LabelText>Username
                     <signInStyles.InputText
                         placeholder="admin"
-                        onChange={(e) => setUserEmail(e.currentTarget.value)}
+                        onChange={(e) => setUserSet(e.currentTarget.value)}
                         data-cy="email-input"
                     />
                 </signInStyles.LabelText>
                 <signInStyles.LabelText>Password
                     <signInStyles.InputText type="password"
                         placeholder="1234"
-                        onChange={(e) => setUserPassword(e.currentTarget.value)}
+                        onChange={(e) => setPasswordSet(e.currentTarget.value)}
                         data-cy="password-input"
                     />
                 </signInStyles.LabelText>
