@@ -12,6 +12,6 @@ export const ButtonCreateStyle = styled.button<{ padding?: string, fontSize?: st
     border: none;
     border-radius: 0.75rem;
     cursor: pointer;
-    color: ${gb.colorWhiteFull};
-    background-color: ${gb.colorGrayIconHotel};
+    color: ${props => props.theme.textButtonCreate};
+    background-color: ${props => props.theme.backgroundButtonCreate};
 `

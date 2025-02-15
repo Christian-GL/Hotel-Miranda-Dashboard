@@ -23,7 +23,7 @@ export const AsideSideNavigationBar = styled.aside<{ display?: string }>`
     height: 100vh;
     text-align: left;
     transition: ${gb.transitionSidebarMenu};
-    background: ${gb.colorWhiteFull};
+    background-color: ${props => props.theme.backgroundLayout};
 `
 
 export const IconHotel = styled(RiHotelFill) <{ display?: string }>`
@@ -35,10 +35,10 @@ export const IconHotel = styled(RiHotelFill) <{ display?: string }>`
     text-align: center;
     cursor: pointer;
     transition: 0.25s ease;
-    color: ${gb.colorGrayIconHotel};
+    color: ${props => props.theme.iconSidebar};
 
     &:hover {
-        color: ${gb.colorRed};
+        color: ${props => props.theme.textHoverSidebar};
     }
 `
 
@@ -51,13 +51,13 @@ export const DivCtnTitle = styled.div<{ display?: string }>`
 export const TitleH1 = styled.h1`
     text-align: left;
     font-family: ${gb.fontPoppins};
-    color: ${gb.colorBlack21};
+    color: ${props => props.theme.titleSidebar};
 `
 
 export const PTitleText = styled.p`
     font-family: ${gb.fontPoppins};
     font-size: 0.6em;
-    color: ${gb.colorGray};
+    color: ${props => props.theme.subTitleSidebar};
 `
 
 export const IconDashboard = styled(LuLayoutDashboard)`
@@ -68,7 +68,7 @@ export const IconDashboard = styled(LuLayoutDashboard)`
     height: auto;
     border-radius: 25%;
     transition: 0.25s ease;
-    color: ${gb.colorGreen};
+    color: ${props => props.theme.iconSidebar};
 `
 
 export const IconBooking = styled(FaRegCalendarAlt)`
@@ -79,7 +79,7 @@ export const IconBooking = styled(FaRegCalendarAlt)`
     height: auto;
     border-radius: 25%;
     transition: 0.25s ease;
-    color: ${gb.colorGreen};
+    color: ${props => props.theme.iconSidebar};
 `
 
 export const IconRooms = styled(MdOutlineBedroomParent)`
@@ -90,7 +90,7 @@ export const IconRooms = styled(MdOutlineBedroomParent)`
     height: auto;
     border-radius: 25%;
     transition: 0.25s ease;
-    color: ${gb.colorGreen};
+    color: ${props => props.theme.iconSidebar};
 `
 
 export const IconContact = styled(MdContacts)`
@@ -101,7 +101,7 @@ export const IconContact = styled(MdContacts)`
     height: auto;
     border-radius: 25%;
     transition: 0.25s ease;
-    color: ${gb.colorGreen};
+    color: ${props => props.theme.iconSidebar};
 `
 
 export const IconUsers = styled(FaUser)`
@@ -112,7 +112,7 @@ export const IconUsers = styled(FaUser)`
     height: auto;
     border-radius: 25%;
     transition: 0.25s ease;
-    color: ${gb.colorGreen};
+    color: ${props => props.theme.iconSidebar};
 `
 
 export const PNavOptionText = styled.p<{ display?: string }>`
@@ -122,7 +122,7 @@ export const PNavOptionText = styled.p<{ display?: string }>`
     font-family: ${gb.fontPoppins};
     font-size: 0.85em;
     transition: 0.25s ease;
-    color: ${gb.colorGreen};
+    color: ${props => props.theme.textSidebar};
 `
 
 export const DivCtnNavOption = styled.div<{ display?: string, routeIsActive: boolean }>`
@@ -132,22 +132,22 @@ export const DivCtnNavOption = styled.div<{ display?: string, routeIsActive: boo
 
     &:hover {
         ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconContact}, ${IconUsers} {
-            color: ${props => (props.routeIsActive ? gb.colorWhiteFull : gb.colorRed)};
+            color: ${props => (props.routeIsActive ? props.theme.textHoverActiveSidebar2 : props.theme.textHoverSidebar)};
         }
         ${PNavOptionText} {
             font-weight: 700;
-            color: ${gb.colorRed};
+            color: ${props => props.theme.textHoverSidebar};
         }
     }
 
     ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconContact}, ${IconUsers} {
-        color: ${props => (props.routeIsActive ? gb.colorWhiteFull : gb.colorGreen)};
-        background-color: ${props => (props.routeIsActive ? gb.colorRed : gb.colorWhiteFull)};
+        color: ${props => (props.routeIsActive ? props.theme.textHoverActiveSidebar2 : props.theme.iconSidebar)};
+        background-color: ${props => (props.routeIsActive ? props.theme.textHoverSidebar : props.theme.textHoverActiveSidebar)};
     }
     ${PNavOptionText} {
         font-size: ${props => (props.routeIsActive ? '1.1em' : '0.9rem')};
         font-weight: ${props => (props.routeIsActive ? '700' : '400')};
-        color: ${props => (props.routeIsActive ? gb.colorRed : gb.colorGreen)};
+        color: ${props => (props.routeIsActive ? props.theme.textHoverSidebar : props.theme.iconSidebar)};
     }
 `
 
@@ -158,7 +158,7 @@ export const DivCtnUser = styled.div<{ display?: string }>`
     padding: 3em 1em 1em;
     text-align: center;
     border-radius: 15%;
-    box-shadow: ${gb.boxShadowCustom};
+    box-shadow: ${props => props.theme.boxShadowCustom};
 `
 
 export const ImgProfile = styled.img`
@@ -173,14 +173,14 @@ export const ImgProfile = styled.img`
 export const TitleH4 = styled.h4`
     font-family: ${gb.fontPoppins};
     font-weight: 600;
-    color: ${gb.colorGray39};
+    color: ${props => props.theme.titleSidebar};
 `
 
 export const TitleH5 = styled.h5`
     margin: 1rem 0;
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    color: ${gb.colorGrayEmailProfile};
+    color: ${props => props.theme.textSidebarz};
 `
 
 export const ButtonEdit = styled.button`
@@ -189,7 +189,7 @@ export const ButtonEdit = styled.button`
     border: none;
     border-radius: 1rem;
     cursor: pointer;
-    background-color: ${gb.colorGrayButtonProfile};
+    background-color: ${props => props.theme.buttonSidebar};
 `
 
 export const DivCtnCredits = styled.div<{ display?: string }>`
@@ -199,11 +199,11 @@ export const DivCtnCredits = styled.div<{ display?: string }>`
 export const TitleMayorCreditH5 = styled.h5`
     margin: 2rem 0 0.25rem;
     font-family: ${gb.fontPoppins};
-    color: ${gb.colorBlack21};
+    color: ${props => props.theme.titleSidebar};
 `
 
 export const TitleMinorCreditH6 = styled.h6`
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    color: ${gb.colorGreen};
+    color: ${props => props.theme.textSidebar};
 `

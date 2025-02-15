@@ -166,7 +166,7 @@ export const Contact = () => {
             else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
             else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
 
-            Object.keys(newState).forEach(key => {
+            Object.keys(newState).map(key => {
                 if (key !== nameColumn) {
                     newState[key] = ArrowType.right
                 }

@@ -97,56 +97,42 @@ export const BookingUpdate = () => {
             })
         }
     }
-    const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setBookingUpdated({
             ...bookingUpdated,
             [name]: value
         })
     }
-    const handleCheckInDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setBookingUpdated({
             ...bookingUpdated,
             [name]: dateFormatToDDMMYYYY(value)
         })
     }
-    const handleCheckInTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setBookingUpdated({
             ...bookingUpdated,
             [name]: hourFormatTo12H(value)
         })
     }
-    const handleCheckOutDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setBookingUpdated({
-            ...bookingUpdated,
-            [name]: dateFormatToDDMMYYYY(value)
-        })
-    }
-    const handleCheckOutTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setBookingUpdated({
-            ...bookingUpdated,
-            [name]: hourFormatTo12H(value)
-        })
-    }
-    const handleSpecialRequestChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setBookingUpdated({
             ...bookingUpdated,
             [name]: value
         })
     }
-    const handleIdRoomChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleNumberChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setBookingUpdated({
             ...bookingUpdated,
             [name]: parseInt(value)
         })
     }
-    const handleBookingRoomStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setBookingUpdated({
             ...bookingUpdated,
@@ -299,35 +285,35 @@ export const BookingUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Full name guest</LabelText>
-                        <InputText name="full_name_guest" value={bookingUpdated.full_name_guest} onChange={handleFullNameChange} />
+                        <InputText name="full_name_guest" value={bookingUpdated.full_name_guest} onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Check in date</LabelText>
-                        <InputDate name="check_in_date" value={dateFormatToYYYYMMDD(bookingUpdated.check_in_date)} type="date" onChange={handleCheckInDateChange} />
+                        <InputDate name="check_in_date" value={dateFormatToYYYYMMDD(bookingUpdated.check_in_date)} type="date" onChange={handleDateChange} />
 
                         <LabelText minWidth="10rem" margin="0 0 0 5rem">Check in time</LabelText>
-                        <InputDate name="check_in_time" value={hourFormatTo24H(bookingUpdated.check_in_time)} type="time" onChange={handleCheckInTimeChange} />
+                        <InputDate name="check_in_time" value={hourFormatTo24H(bookingUpdated.check_in_time)} type="time" onChange={handleTimeChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Check out date</LabelText>
-                        <InputDate name="check_out_date" value={dateFormatToYYYYMMDD(bookingUpdated.check_out_date)} type="date" onChange={handleCheckOutDateChange} />
+                        <InputDate name="check_out_date" value={dateFormatToYYYYMMDD(bookingUpdated.check_out_date)} type="date" onChange={handleDateChange} />
 
                         <LabelText minWidth="10rem" margin="0 0 0 5rem">Check out time</LabelText>
-                        <InputDate name="check_out_time" value={hourFormatTo24H(bookingUpdated.check_out_time)} type="time" onChange={handleCheckOutTimeChange} />
+                        <InputDate name="check_out_time" value={hourFormatTo24H(bookingUpdated.check_out_time)} type="time" onChange={handleTimeChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Room number</LabelText>
-                        <Select name="room_id" value={bookingUpdated.room_id} onChange={handleIdRoomChange}>
+                        <Select name="room_id" value={bookingUpdated.room_id} onChange={handleNumberChange}>
                             {roomAll.map((room, index) => (
                                 <Option key={index} value={room.id}>{room.id}</Option>
                             ))}
                         </Select>
 
                         <LabelText minWidth="10rem" margin="0 0 0 5rem">Booking Status</LabelText>
-                        <Select name="room_booking_status" value={bookingUpdated.room_booking_status} onChange={handleBookingRoomStatusChange}>
+                        <Select name="room_booking_status" value={bookingUpdated.room_booking_status} onChange={handleSelectChange}>
                             {Object.values(BookingStatus).map((type, index) => (
                                 <option key={index} value={type}>
                                     {type}
@@ -338,7 +324,7 @@ export const BookingUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Special request</LabelText>
-                        <TextAreaJobDescription name="special_request" value={bookingUpdated.special_request} onChange={handleSpecialRequestChange} ></TextAreaJobDescription>
+                        <TextAreaJobDescription name="special_request" value={bookingUpdated.special_request} onChange={handleTextAreaChange} ></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>

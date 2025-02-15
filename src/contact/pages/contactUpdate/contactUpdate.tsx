@@ -60,28 +60,14 @@ export const ContactUpdate = () => {
         else if (contactByIdLoading === ApiStatus.rejected) { alert("Error en la api de contact update") }
     }, [contactByIdLoading, contactById, id])
 
-    const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setContactUpdated({
             ...contactUpdated,
             [name]: value
         })
     }
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setContactUpdated({
-            ...contactUpdated,
-            [name]: value
-        })
-    }
-    const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setContactUpdated({
-            ...contactUpdated,
-            [name]: value
-        })
-    }
-    const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setContactUpdated({
             ...contactUpdated,
@@ -146,22 +132,22 @@ export const ContactUpdate = () => {
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
                         <LabelText>Full Name</LabelText>
-                        <InputText name="full_name" value={contactUpdated.full_name} onChange={handleFullNameChange} />
+                        <InputText name="full_name" value={contactUpdated.full_name} onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Email</LabelText>
-                        <InputText name="email" value={contactUpdated.email} onChange={handleEmailChange} />
+                        <InputText name="email" value={contactUpdated.email} onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Phone Number</LabelText>
-                        <InputText name="contact" value={contactUpdated.contact} onChange={handlePhoneNumberChange} />
+                        <InputText name="contact" value={contactUpdated.contact} onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Comment</LabelText>
-                        <TextAreaJobDescription name="comment" value={contactUpdated.comment} onChange={handleCommentChange} ></TextAreaJobDescription>
+                        <TextAreaJobDescription name="comment" value={contactUpdated.comment} onChange={handleTextAreaChange} ></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>

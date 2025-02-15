@@ -91,7 +91,7 @@ export const RoomUpdate = () => {
             })
         }
     }
-    const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setRoomUpdated({
             ...roomUpdated,
@@ -111,14 +111,7 @@ export const RoomUpdate = () => {
             [name]: selectedAmenities
         })
     }
-    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setRoomUpdated({
-            ...roomUpdated,
-            [name]: value === "" ? 0 : parseFloat(value)
-        })
-    }
-    const handleDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setRoomUpdated({
             ...roomUpdated,
@@ -220,15 +213,15 @@ export const RoomUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Price</LabelText>
-                        <InputText name="price" value={roomUpdated.price} onChange={handlePriceChange} />
+                        <InputText name="price" value={roomUpdated.price} onChange={handleNumberChange} />
 
                         <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</LabelText>
-                        <InputText name="discount" value={roomUpdated.discount} onChange={handleDiscountChange} />
+                        <InputText name="discount" value={roomUpdated.discount} onChange={handleNumberChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Room Type</LabelText>
-                        <Select name="type" value={roomUpdated.type} onChange={handleTypeChange}>
+                        <Select name="type" value={roomUpdated.type} onChange={handleSelectChange}>
                             {Object.values(RoomType).map((type, index) => (
                                 <option key={index} value={type}>
                                     {type}

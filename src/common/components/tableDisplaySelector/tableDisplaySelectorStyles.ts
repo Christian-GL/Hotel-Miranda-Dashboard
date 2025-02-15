@@ -14,19 +14,21 @@ export const DisplayIndicator = styled.button<{ isSelected: boolean }>`
     border: none;
     border-bottom: 2px solid ${gb.colorLightGray};
     cursor: pointer;
-    background-color: ${gb.colorGrayBackgroundPage};
+    color: ${props => props.theme.textDisplaySelector};
+    background-color: ${props => props.theme.backgroundDisplaySelector};
 
-    ${({ isSelected }) => !isSelected && `
+    ${({ isSelected, theme }) => isSelected ?
+        `
+        font-weight: 700;
+        color: ${theme.selectedDisplaySelector};
+        border-bottom: 2px solid ${theme.selectedDisplaySelector};
+    ` : `
         &:hover {
             font-weight: 700;
-            color: ${gb.colorBlueHoverFilterTableCustom};
-            border-bottom: 2px solid ${gb.colorBlueHoverFilterTableCustom};
+            color: ${theme.hoverDisplaySelector};
+            border-bottom: 2px solid ${theme.hoverBorderDisplaySelector};
         }
-    `}
-
-    ${({ isSelected }) => isSelected && `
-        font-weight: 700;
-        border-bottom: 2px solid ${gb.colorBlack26};
-    `}
+    `
+    }
         
 `

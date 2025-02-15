@@ -81,53 +81,32 @@ export const UserUpdate = () => {
             })
         }
     }
-    const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
             [name]: value
         })
     }
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setUserUpdated({
-            ...userUpdated,
-            [name]: value
-        })
-    }
-    const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
             [name]: dateFormatToDDMMYYYY(value),
         })
     }
-    const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
             [name]: value
         })
     }
-    const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setUserUpdated({
-            ...userUpdated,
-            [name]: value
-        })
-    }
-    const handleStatusActiveChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleBooleanChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
             [name]: value === 'false' ? false : true
-        })
-    }
-    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setUserUpdated({
-            ...userUpdated,
-            [name]: value
         })
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -210,25 +189,25 @@ export const UserUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Full name</LabelText>
-                        <InputText name="full_name" value={userUpdated.full_name} onChange={handleFullNameChange} />
+                        <InputText name="full_name" value={userUpdated.full_name} onChange={handleStringChange} />
 
                         <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Email</LabelText>
-                        <InputText name="email" value={userUpdated.email} onChange={handleEmailChange} />
+                        <InputText name="email" value={userUpdated.email} onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Contact</LabelText>
-                        <InputText name="phone_number" value={userUpdated.phone_number} onChange={handleContactChange} />
+                        <InputText name="phone_number" value={userUpdated.phone_number} onChange={handleStringChange} />
 
                         <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Start Date</LabelText>
-                        <InputDate name="start_date" type="date" value={dateFormatToYYYYMMDD(userUpdated.start_date)} onChange={handleStartDateChange} />
+                        <InputDate name="start_date" type="date" value={dateFormatToYYYYMMDD(userUpdated.start_date)} onChange={handleDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Password</LabelText>
                         {passwordVisible ?
-                            <InputText name="password" value={userUpdated.password} type="password" onChange={handlePassword} /> :
-                            <InputText name="password" value={userUpdated.password} onChange={handlePassword} />
+                            <InputText name="password" value={userUpdated.password} type="password" onChange={handleStringChange} /> :
+                            <InputText name="password" value={userUpdated.password} onChange={handleStringChange} />
                         }
                         <DivButtonHidePassword>
                             {passwordVisible ?
@@ -240,12 +219,12 @@ export const UserUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Job Description</LabelText>
-                        <TextAreaJobDescription name="description" value={userUpdated.description} onChange={handleDescriptionChange}></TextAreaJobDescription>
+                        <TextAreaJobDescription name="description" value={userUpdated.description} onChange={handleTextAreaChange}></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Status</LabelText>
-                        <Select name="status_active" value={userUpdated.status_active ? "true" : "false"} onChange={handleStatusActiveChange}>
+                        <Select name="status_active" value={userUpdated.status_active ? "true" : "false"} onChange={handleBooleanChange}>
                             <Option value="true">Active</Option>
                             <Option value="false">Inactive</Option>
                         </Select>

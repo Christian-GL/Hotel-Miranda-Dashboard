@@ -55,28 +55,14 @@ export const ContactCreate = () => {
     }, [contactAllLoading, contactAll])
 
 
-    const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewContact({
             ...newContact,
             [name]: value
         })
     }
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setNewContact({
-            ...newContact,
-            [name]: value
-        })
-    }
-    const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setNewContact({
-            ...newContact,
-            [name]: value
-        })
-    }
-    const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setNewContact({
             ...newContact,
@@ -147,22 +133,22 @@ export const ContactCreate = () => {
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
                         <LabelText>Full Name</LabelText>
-                        <InputText name="full_name" onChange={handleFullNameChange} />
+                        <InputText name="full_name" onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Email</LabelText>
-                        <InputText name="email" onChange={handleEmailChange} />
+                        <InputText name="email" onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Phone Number</LabelText>
-                        <InputText name="contact" onChange={handlePhoneNumberChange} />
+                        <InputText name="contact" onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Comment</LabelText>
-                        <TextAreaJobDescription name="comment" onChange={handleCommentChange} ></TextAreaJobDescription>
+                        <TextAreaJobDescription name="comment" onChange={handleTextAreaChange} ></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>

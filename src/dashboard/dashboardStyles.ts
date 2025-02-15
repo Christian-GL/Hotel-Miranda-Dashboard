@@ -10,41 +10,41 @@ import { IoLogOutOutline } from "react-icons/io5"
 import * as gb from '../common/styles/globalVars.ts'
 
 
-export const SwiperCustom = styled(Swiper)`
-    padding: 0 5rem;
-    position: relative;
+// export const SwiperCustom = styled(Swiper)`
+//     padding: 0 5rem;
+//     position: relative;
 
-    .swiper-button-prev {
-        z-index: 10;
-        position: absolute;
-        top: 50%;
-        left: 1.5rem;
-        padding: 1em 1.35em;
-        border-radius: 25%;
-        background-color: ${gb.colorGrayIconHotel};
-    }
+//     .swiper-button-prev {
+//         z-index: 10;
+//         position: absolute;
+//         top: 50%;
+//         left: 1.5rem;
+//         padding: 1em 1.35em;
+//         border-radius: 25%;
+//         background-color: ${gb.colorGrayIconHotel};
+//     }
 
-    .swiper-button-next {
-        position: absolute;
-        top: 50%;
-        right: 1.5rem;
-        padding: 1em 1.35em;
-        border-radius: 25%;
-        background-color: ${gb.colorGrayIconHotel};
-    }
+//     .swiper-button-next {
+//         position: absolute;
+//         top: 50%;
+//         right: 1.5rem;
+//         padding: 1em 1.35em;
+//         border-radius: 25%;
+//         background-color: ${gb.colorGrayIconHotel};
+//     }
 
-    .swiper-button-prev::after, .swiper-button-next::after {
-        color: ${gb.colorWhiteFull};
-        font-size: 1rem;
-        font-weight: 700;
-    }
-`
+//     .swiper-button-prev::after, .swiper-button-next::after {
+//         color: ${gb.colorWhiteFull};
+//         font-size: 1rem;
+//         font-weight: 700;
+//     }
+// `
 
 export const SectionPageDashboard = styled.section`
     padding: 2em;
     height: 100%;
     overflow-y: auto;
-    background-color: ${gb.colorGrayBackgroundPage};
+    background-color: ${props => props.theme.backgroundPage};
 `
 
 export const SectionKPIs = styled.section`
@@ -59,13 +59,8 @@ export const IconBooking = styled(MdOutlineBedroomParent)`
     width: 4rem;
     height: auto;
     border-radius: 0.6rem;
-    color: ${gb.colorRed};
-    background-color: ${gb.colorLightRed};
-
-    &:hover {
-        color: ${gb.colorWhiteFull};
-        background-color: ${gb.colorRed};
-    }
+    color: ${props => props.theme.iconDashboard};
+    background-color: ${props => props.theme.iconBackgroundDashboard};
 `
 
 export const IconCalendar = styled(FaRegCalendarCheck)`
@@ -75,8 +70,8 @@ export const IconCalendar = styled(FaRegCalendarCheck)`
     width: 4rem;
     height: auto;
     border-radius: 0.6rem;
-    color: ${gb.colorRed};
-    background-color: ${gb.colorLightRed};
+    color: ${props => props.theme.iconDashboard};
+    background-color: ${props => props.theme.iconBackgroundDashboard};
 `
 
 export const IconLogIn = styled(IoLogInOutline)`
@@ -86,8 +81,8 @@ export const IconLogIn = styled(IoLogInOutline)`
     width: 4.25rem;
     height: auto;
     border-radius: 0.6rem;
-    color: ${gb.colorRed};
-    background-color: ${gb.colorLightRed};
+    color: ${props => props.theme.iconDashboard};
+    background-color: ${props => props.theme.iconBackgroundDashboard};
 `
 
 export const IconLogOut = styled(IoLogOutOutline)`
@@ -97,8 +92,8 @@ export const IconLogOut = styled(IoLogOutOutline)`
     width: 4.25rem;
     height: auto;
     border-radius: 0.6rem;
-    color: ${gb.colorRed};
-    background-color: ${gb.colorLightRed};
+    color: ${props => props.theme.iconDashboard};
+    background-color: ${props => props.theme.iconBackgroundDashboard};
 `
 
 export const ArticleKPI = styled.article`
@@ -107,15 +102,15 @@ export const ArticleKPI = styled.article`
     margin: 0 1rem;
     padding: 1em;
     border-radius: 1rem;
-    box-shadow: ${gb.boxShadowCustom};
-    background-color: ${gb.colorWhiteFull};
+    box-shadow: ${props => props.theme.boxShadowCustom};
+    background-color: ${props => props.theme.backgroundKPI};
 
     &:hover {
-        box-shadow: ${gb.boxShadowCustomWithHover};
+        box-shadow: ${props => props.theme.boxShadowCustomWithHover};
         
         ${IconBooking}, ${IconCalendar}, ${IconLogIn}, ${IconLogOut} {
-            color: ${gb.colorWhiteFull};
-            background-color: ${gb.colorRed};
+            color: ${props => props.theme.iconHoverDashboard};
+            background-color: ${props => props.theme.iconHoverBackgroundDashboard};
         }
     }
     
@@ -130,13 +125,13 @@ export const DivCtnInfo = styled.div`
 export const NumberH4 = styled.h4`
     font-family: ${gb.fontPoppins};
     font-size: 1.5em;
-    color: ${gb.colorGray39}
+    color: ${props => props.theme.titleKPI};
 `
 
 export const TextH5 = styled.h5`
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    color: ${gb.colorGrayTextKPI};
+    color: ${props => props.theme.textKPI};
 `
 
 export const SectionReviews = styled.section`
@@ -147,7 +142,7 @@ export const TitleSectionReviewsH5 = styled.h5`
     padding: 1em;
     font-family: ${gb.fontPoppins};
     font-size: 1em;
-    color: ${gb.colorGray39};
+    color: ${props => props.theme.titleReviewsDashboard};
 `
 
 export const DivCtnReviews = styled.div`

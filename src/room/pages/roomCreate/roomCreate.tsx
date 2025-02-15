@@ -70,7 +70,7 @@ export const RoomCreate = () => {
             })
         }
     }
-    const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setNewRoom({
             ...newRoom,
@@ -90,14 +90,7 @@ export const RoomCreate = () => {
             [name]: selectedAmenities
         })
     }
-    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setNewRoom({
-            ...newRoom,
-            [name]: value === "" ? 0 : parseFloat(value)
-        })
-    }
-    const handleDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewRoom({
             ...newRoom,
@@ -203,15 +196,15 @@ export const RoomCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Price</LabelText>
-                        <InputText name="price" onChange={handlePriceChange} />
+                        <InputText name="price" onChange={handleNumberChange} />
 
                         <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</LabelText>
-                        <InputText name="discount" value={newRoom.discount} onChange={handleDiscountChange} />
+                        <InputText name="discount" value={newRoom.discount} onChange={handleNumberChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Room Type</LabelText>
-                        <Select name="type" onChange={handleTypeChange}>
+                        <Select name="type" onChange={handleSelectChange}>
                             <Option value="null" selected></Option>
                             {Object.values(RoomType).map((type, index) => (
                                 <option key={index} value={type}>

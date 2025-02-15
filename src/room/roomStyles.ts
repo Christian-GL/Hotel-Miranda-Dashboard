@@ -1,16 +1,14 @@
 
 import { styled } from 'styled-components'
 
-import { HiMiniMagnifyingGlass } from "react-icons/hi2";
-
-import * as gb from '../common/styles/globalVars.ts'
+import { HiMiniMagnifyingGlass } from "react-icons/hi2"
 
 
 export const SectionPageRoom = styled.section`
     padding: 2em;
     height: 100%;
     overflow-y: auto;
-    background-color: ${gb.colorGrayBackgroundPage};
+    background-color: ${props => props.theme.backgroundPage};
 `
 export const DivCtnFuncionality = styled.div`
     display: flex;

@@ -21,11 +21,11 @@ export const DialogPopup = styled.dialog<{ isSlider?: boolean }>`
     max-height: 30rem;
     border: none;
     border-radius: 1rem;
-    box-shadow: ${gb.boxShadowCustom};
-    background-color: ${gb.colorGrayBackgroundPage};
+    box-shadow: ${props => props.theme.boxShadowCustom};
+    background-color: ${props => props.theme.backgroundPopup};
 
     &:hover {
-        box-shadow: ${gb.boxShadowCustomWithHover};
+        box-shadow: ${props => props.theme.boxShadowCustomWithHover};
     }
 `
 
@@ -33,14 +33,14 @@ export const TitleH2 = styled.h2`
     max-width: 95%;
     font-family: ${gb.fontPoppins};
     font-size: 1em;
-    color: ${gb.colorBlack21};
+    color: ${props => props.theme.textPopup};
 `
 
 export const PText = styled.p`
     margin-top: 1rem;
     font-family: ${gb.fontPoppins};
     font-size: 1em;
-    color: ${gb.colorBlack21};
+    color: ${props => props.theme.textPopup};
 `
 
 export const IconClose = styled(RiCloseCircleLine)`
@@ -51,5 +51,5 @@ export const IconClose = styled(RiCloseCircleLine)`
     height: auto;
     border-radius: 50%;
     cursor: pointer;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.iconPopup};
 `

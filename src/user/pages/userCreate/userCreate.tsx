@@ -70,21 +70,14 @@ export const UserCreate = () => {
             })
         }
     }
-    const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewUser({
             ...newUser,
             [name]: value
         })
     }
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setNewUser({
-            ...newUser,
-            [name]: value
-        })
-    }
-    const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         const [year, month, day] = value.split("-")
         const dateFormatted = `${day}-${month}-${year}`
@@ -93,32 +86,18 @@ export const UserCreate = () => {
             [name]: dateFormatted
         })
     }
-    const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setNewUser({
             ...newUser,
             [name]: value
         })
     }
-    const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setNewUser({
-            ...newUser,
-            [name]: value
-        })
-    }
-    const handleStatusActiveChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleBooleanChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setNewUser({
             ...newUser,
             [name]: value === 'false' ? false : true
-        })
-    }
-    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setNewUser({
-            ...newUser,
-            [name]: value
         })
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -206,25 +185,25 @@ export const UserCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Full name</LabelText>
-                        <InputText name="full_name" onChange={handleFullNameChange} />
+                        <InputText name="full_name" onChange={handleStringChange} />
 
                         <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Email</LabelText>
-                        <InputText name="email" onChange={handleEmailChange} />
+                        <InputText name="email" onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Contact</LabelText>
-                        <InputText name="phone_number" onChange={handleContactChange} />
+                        <InputText name="phone_number" onChange={handleStringChange} />
 
                         <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Start Date</LabelText>
-                        <InputDate name="start_date" type="date" onChange={handleStartDateChange} />
+                        <InputDate name="start_date" type="date" onChange={handleDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Password</LabelText>
                         {passwordVisible ?
-                            <InputText name="password" type="password" onChange={handlePassword} /> :
-                            <InputText name="password" onChange={handlePassword} />
+                            <InputText name="password" type="password" onChange={handleStringChange} /> :
+                            <InputText name="password" onChange={handleStringChange} />
                         }
                         <DivButtonHidePassword>
                             {passwordVisible ?
@@ -236,12 +215,12 @@ export const UserCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Job Description</LabelText>
-                        <TextAreaJobDescription name="description" onChange={handleDescriptionChange}></TextAreaJobDescription>
+                        <TextAreaJobDescription name="description" onChange={handleTextAreaChange}></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Status</LabelText>
-                        <Select name="status_active" onChange={handleStatusActiveChange}>
+                        <Select name="status_active" onChange={handleBooleanChange}>
                             <Option value="true">Active</Option>
                             <Option value="false" selected>Inactive</Option>
                         </Select>

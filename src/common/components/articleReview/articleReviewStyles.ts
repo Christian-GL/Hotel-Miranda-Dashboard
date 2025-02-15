@@ -14,11 +14,11 @@ export const ArticleReview = styled.article`
     padding: 1em;
     min-width: 18.5rem;
     border-radius: 1rem;
-    box-shadow: ${gb.boxShadowCustom};
-    background-color: ${gb.colorWhiteFull};
+    box-shadow: ${props => props.theme.boxShadowCustom};
+    background-color: ${props => props.theme.backgroundReview};
 
     &:hover {
-        box-shadow: ${gb.boxShadowCustomWithHover};
+        box-shadow: ${props => props.theme.boxShadowCustomWithHover};
     }
 `
 
@@ -34,7 +34,7 @@ export const PTextReview = styled.p`
     font-family: ${gb.fontPoppins};
     font-size: 1em;
     line-height: 1.6rem;
-    color: ${gb.colorGrayTextReview};
+    color: ${props => props.theme.textReview};
 
     cursor: pointer;
 `
@@ -73,7 +73,7 @@ export const DivCtnInfoDetails = styled.div`
 export const TextH5 = styled.h5`
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    color: ${gb.colorGrayTextKPI};
+    color: ${props => props.theme.textReview};
 `
 
 export const TitleNameProfile = styled.h6`
@@ -81,7 +81,7 @@ export const TitleNameProfile = styled.h6`
     vertical-align: middle;
     font-family: ${gb.fontPoppins};
     font-size: 1em;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.nameUserReview};
 `
 
 export const DivCtnIcons = styled.div`
@@ -96,14 +96,14 @@ export const IconCheckConfirm = styled(FaRegCheckCircle)`
     width: 1.85rem;
     height: auto;
     cursor: pointer;
-    color: ${gb.colorGreen};
-    background-color: ${gb.colorWhiteFull};
+    color: ${props => props.theme.iconCheckConfirmReview};
+    background-color: ${props => props.theme.iconBackgroundReview};
 `
 
 export const IconCheckCross = styled(RxCrossCircled)`
     width: 2rem;
     height: auto;
     cursor: pointer;
-    color: ${gb.colorRed};
-    background-color: ${gb.colorWhiteFull};
+    color: ${props => props.theme.iconCheckCrossReview};
+    background-color: ${props => props.theme.iconBackgroundReview};
 `

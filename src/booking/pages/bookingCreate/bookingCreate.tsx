@@ -82,14 +82,14 @@ export const BookingCreate = () => {
             })
         }
     }
-    const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewBooking({
             ...newBooking,
             [name]: value
         })
     }
-    const handleCheckInDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         const [year, month, day] = value.split("-")
         const dateFormatted = `${day}/${month}/${year}`
@@ -98,7 +98,7 @@ export const BookingCreate = () => {
             [name]: dateFormatted
         })
     }
-    const handleCheckInTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         const timeFormatted = hourFormatTo12H(value)
         setNewBooking({
@@ -106,38 +106,21 @@ export const BookingCreate = () => {
             [name]: timeFormatted
         })
     }
-    const handleCheckOutDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        const [year, month, day] = value.split("-")
-        const dateFormatted = `${day}/${month}/${year}`
-        setNewBooking({
-            ...newBooking,
-            [name]: dateFormatted
-        })
-    }
-    const handleCheckOutTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        const timeFormatted = hourFormatTo12H(value)
-        setNewBooking({
-            ...newBooking,
-            [name]: timeFormatted
-        })
-    }
-    const handleSpecialRequestChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setNewBooking({
             ...newBooking,
             [name]: value
         })
     }
-    const handleIdRoomChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleNumberChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setNewBooking({
             ...newBooking,
             [name]: parseInt(value)
         })
     }
-    const handleBookingRoomStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setNewBooking({
             ...newBooking,
@@ -291,28 +274,28 @@ export const BookingCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Full name guest</LabelText>
-                        <InputText name="full_name_guest" onChange={handleFullNameChange} />
+                        <InputText name="full_name_guest" onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Check in date</LabelText>
-                        <InputDate name="check_in_date" type="date" onChange={handleCheckInDateChange} />
+                        <InputDate name="check_in_date" type="date" onChange={handleDateChange} />
 
                         <LabelText minWidth="10rem" margin="0 0 0 5rem">Check in time</LabelText>
-                        <InputDate name="check_in_time" type="time" onChange={handleCheckInTimeChange} />
+                        <InputDate name="check_in_time" type="time" onChange={handleTimeChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Check out date</LabelText>
-                        <InputDate name="check_out_date" type="date" onChange={handleCheckOutDateChange} />
+                        <InputDate name="check_out_date" type="date" onChange={handleDateChange} />
 
                         <LabelText minWidth="10rem" margin="0 0 0 5rem">Check out time</LabelText>
-                        <InputDate name="check_out_time" type="time" onChange={handleCheckOutTimeChange} />
+                        <InputDate name="check_out_time" type="time" onChange={handleTimeChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Room number</LabelText>
-                        <Select name="room_id" onChange={handleIdRoomChange}>
+                        <Select name="room_id" onChange={handleNumberChange}>
                             <Option value="null" selected></Option>
                             {roomAll.map((room, index) => (
                                 <Option key={index}>{room.id}</Option>
@@ -320,7 +303,7 @@ export const BookingCreate = () => {
                         </Select>
 
                         <LabelText minWidth="10rem" margin="0 0 0 5rem">Booking Status</LabelText>
-                        <Select name="room_booking_status" onChange={handleBookingRoomStatusChange}>
+                        <Select name="room_booking_status" onChange={handleSelectChange}>
                             <Option value="null" selected></Option>
                             {Object.values(BookingStatus).map((type, index) => (
                                 <option key={index} value={type}>
@@ -332,7 +315,7 @@ export const BookingCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Special request</LabelText>
-                        <TextAreaJobDescription name="special_request" onChange={handleSpecialRequestChange} ></TextAreaJobDescription>
+                        <TextAreaJobDescription name="special_request" onChange={handleTextAreaChange} ></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
