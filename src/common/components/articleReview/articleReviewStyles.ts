@@ -105,5 +105,5 @@ export const IconCheckCross = styled(RxCrossCircled)`
     height: auto;
     cursor: pointer;
     color: ${props => props.theme.iconCheckCrossReview};
-    background-color: ${props => props.theme.iconBackgroundReview};
+    background-color: transparent;
 `

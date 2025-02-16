@@ -349,18 +349,12 @@ export const Bookings = () => {
                             {
                                 (() => {
                                     switch (bookingData.room_booking_status) {
-                                        case 'Check In':
-                                            return <PStatusBooking color={`${gb.colorGreen}`} backgroundcolor={`${gb.colorLightGreenButtonTable}`}>
-                                                Check In
-                                            </PStatusBooking>
-                                        case 'Check Out':
-                                            return <PStatusBooking color={`${gb.colorRed}`} backgroundcolor={`${gb.colorLightRedButtonTable}`}>
-                                                Check Out
-                                            </PStatusBooking>
-                                        case 'In Progress':
-                                            return <PStatusBooking color={`${gb.colorLightRedButtonTable2}`} backgroundcolor={`${gb.colorLightGreenButtonTable2}`}>
-                                                In Progress
-                                            </PStatusBooking>
+                                        case BookingStatus.checkIn:
+                                            return <PStatusBooking status={BookingStatus.checkIn}>Check In</PStatusBooking>
+                                        case BookingStatus.checkOut:
+                                            return <PStatusBooking status={BookingStatus.checkOut}>Check Out</PStatusBooking>
+                                        case BookingStatus.inProgress:
+                                            return <PStatusBooking status={BookingStatus.inProgress}>In Progress</PStatusBooking>
                                         default:
                                             return <></>
                                     }

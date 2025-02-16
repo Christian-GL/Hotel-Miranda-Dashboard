@@ -21,6 +21,7 @@ import { BookingDeleteByIdThunk } from "../../features/thunks/bookingDeleteByIdT
 import { getRoomIdData, getRoomIdStatus } from '../../../room/features/roomSlice.ts'
 import { RoomFetchByIDThunk } from '../../../room/features/thunks/roomFetchByIDThunk.ts'
 import { RoomUpdateThunk } from "../../../room/features/thunks/roomUpdateThunk.ts"
+import { SiTrueup } from "react-icons/si"
 
 
 export const BookingDetails = () => {
@@ -80,7 +81,7 @@ export const BookingDetails = () => {
                     <bookingDetailsStyles.DivCtnMainData>
                         <bookingDetailsStyles.DivCtnNameId>
                             <bookingDetailsStyles.NameProfileH2>{bookingById.full_name_guest}</bookingDetailsStyles.NameProfileH2>
-                            <bookingDetailsStyles.SubTittleH4 color={`${gb.colorGreen}`}>ID Booking: #{bookingById.id}</bookingDetailsStyles.SubTittleH4>
+                            <bookingDetailsStyles.SubTittleH4 isId={true}>ID Booking: #{bookingById.id}</bookingDetailsStyles.SubTittleH4>
                         </bookingDetailsStyles.DivCtnNameId>
                         <bookingDetailsStyles.DivCtnContactMessage>
                             <bookingDetailsStyles.IconPhone />

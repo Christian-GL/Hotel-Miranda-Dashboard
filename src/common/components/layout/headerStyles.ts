@@ -23,7 +23,6 @@ export const Header = styled.header<{ display?: string }>`
     padding: 2em;
     width: ${props => props.display === 'collapsed' ? `calc(100% - ${gb.widthSidebarMenuCollapsed})` : `calc(100% - ${gb.widthSidebarMenuNotCollapsed})`};
     height: ${gb.heightHeader};
-    // box-shadow: 5px -5px 15px 0px rgba(254,209,209,0.45) inset;
     box-shadow: 5px 0px 15px 0px rgba(254,209,209,0.45);
     background-color: ${props => props.theme.backgroundLayout};
 `
@@ -84,7 +83,13 @@ export const Moon = styled(FaMoon)`
     height: auto;
     border-radius: 50%;
     cursor: pointer;
+    transition: 0.25s ease;
     color: ${props => props.theme.iconHeader};
+
+    &:hover {
+        color: ${props => props.theme.iconHoverHeader};
+        background-color: ${props => props.theme.iconThemeHoverBackgroundHeader};
+    }
 `
 
 export const Sun = styled(FiSun)`
@@ -95,7 +100,13 @@ export const Sun = styled(FiSun)`
     height: auto;
     border-radius: 50%;
     cursor: pointer;
+    transition: 0.25s ease;
     color: ${props => props.theme.iconHeader};
+
+    &:hover {
+        color: ${props => props.theme.iconHoverHeader};
+        background-color: ${props => props.theme.iconThemeHoverBackgroundHeader};
+    }
 `
 
 export const IconLogOut = styled(AiOutlineLogout)`

@@ -103,7 +103,7 @@ export const ArticleKPI = styled.article`
     padding: 1em;
     border-radius: 1rem;
     box-shadow: ${props => props.theme.boxShadowCustom};
-    background-color: ${props => props.theme.backgroundKPI};
+    background-color: ${props => props.theme.backgroundKPIDashboard};
 
     &:hover {
         box-shadow: ${props => props.theme.boxShadowCustomWithHover};
@@ -125,13 +125,13 @@ export const DivCtnInfo = styled.div`
 export const NumberH4 = styled.h4`
     font-family: ${gb.fontPoppins};
     font-size: 1.5em;
-    color: ${props => props.theme.titleKPI};
+    color: ${props => props.theme.titleKPIDashboard};
 `
 
 export const TextH5 = styled.h5`
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    color: ${props => props.theme.textKPI};
+    color: ${props => props.theme.textKPIDashboard};
 `
 
 export const SectionReviews = styled.section`

@@ -298,8 +298,8 @@ export const Contact = () => {
                         <PTable key={index + '-5'}>
                             {
                                 selectedButton === 'notarchived' ?
-                                    <ButtonPublishArchive onClick={() => archive(contactData.id)} color={gb.colorRed}>Archive</ButtonPublishArchive> :
-                                    <ButtonPublishArchive onClick={() => publish(contactData.id)} color={gb.colorGreen}>Publish</ButtonPublishArchive>
+                                    <ButtonPublishArchive onClick={() => archive(contactData.id)} archived={true}>Archive</ButtonPublishArchive> :
+                                    <ButtonPublishArchive onClick={() => publish(contactData.id)} archived={false}>Publish</ButtonPublishArchive>
                             }
                         </PTable>,
 

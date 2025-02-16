@@ -15,7 +15,7 @@ export const DisplayIndicator = styled.button<{ isSelected: boolean }>`
     border-bottom: 2px solid ${gb.colorLightGray};
     cursor: pointer;
     color: ${props => props.theme.textDisplaySelector};
-    background-color: ${props => props.theme.backgroundDisplaySelector};
+    background-color: transparent;
 
     ${({ isSelected, theme }) => isSelected ?
         `

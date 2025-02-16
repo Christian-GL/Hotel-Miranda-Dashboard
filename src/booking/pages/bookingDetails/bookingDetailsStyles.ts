@@ -17,7 +17,7 @@ export const SectionPageBookingDetails = styled.section`
     padding: 2em;
     height: 100%;
     overflow-y: auto;
-    background-color: ${gb.colorGrayBackgroundPage};
+    background-color: ${props => props.theme.backgroundBookingDetails};
 `
 
 export const DivSection = styled.div<{ padding?: string }>`
@@ -42,7 +42,7 @@ export const IconOptions = styled(SlOptionsVertical)`
     width: 2.5rem;
     height: auto;
     cursor: pointer;
-    color: ${gb.colorGray};
+    color: ${props => props.theme.iconOptionsBookingDetails};
 `
 
 export const ImgProfile = styled.img`
@@ -68,17 +68,17 @@ export const DivCtnNameId = styled.div`
 export const NameProfileH2 = styled.h2`
     font-family: ${gb.fontPoppins};
     font-size: 1.5em;
-    color: ${gb.colorBlack21};
+    color: ${props => props.theme.textBookingDetails};
 `
 
-export const SubTittleH4 = styled.h4<{ paddingtop?: string, fontsize?: string }>`
+export const SubTittleH4 = styled.h4<{ isId?: boolean, paddingtop?: string, fontsize?: string }>`
     padding-top: 0;
     padding-top: ${props => props.paddingtop};
     font-family: ${gb.fontPoppins};
     font-size: 0.75em;
     font-size: ${props => props.fontsize};
     font-weight: 500;
-    color: ${props => props.color};
+    color: ${props => props.isId ? props.theme.idBookingDetails : props.theme.textBookingDetails};
 `
 
 export const DivCtnContactMessage = styled.div`
@@ -91,9 +91,10 @@ export const IconPhone = styled(ImPhone)`
     width: 3rem;
     height: auto;
     border-radius: 0.75rem;
-    border: 1px solid ${gb.colorGrayBorderIconBookingDetails};
+    border: 1px solid ${props => props.theme.iconPhoneBorderBookingDetails};
     cursor: pointer;
-    background-color: ${gb.colorWhiteFull};
+    color: ${props => props.theme.iconPhoneBookingDetails};
+    background-color: ${props => props.theme.iconPhoneBackgroundBookingDetails};
 `
 
 export const ButtonSendMessage = styled.button`
@@ -107,8 +108,8 @@ export const ButtonSendMessage = styled.button`
     border-radius: 0.75rem;
     border: none;
     cursor: pointer;
-    color: ${gb.colorWhiteFull};
-    background-color: ${gb.colorGrayIconHotel};
+    color: ${props => props.theme.textButtonBookingDetails};
+    background-color: ${props => props.theme.backgroundButtonBookingDetails};
 `
 
 export const IconChat = styled(BsChatDots)`
@@ -119,7 +120,7 @@ export const IconChat = styled(BsChatDots)`
     padding: 0.75em;
     width: 2.5rem;
     height: auto;
-    color: ${gb.colorWhiteFull};
+    color: ${props => props.theme.textButtonBookingDetails};
 `
 
 export const DivCheckInOut = styled.div`
@@ -138,7 +139,7 @@ export const PTextInfo = styled.p`
     font-family: ${gb.fontPoppins};
     font-size: 0.75em;
     font-weight: 400;
-    color: ${gb.colorGrayTextInfoBookingDetails};
+    color: ${props => props.theme.textInfoBookingDetails};
 `
 
 export const DivCtnInfo = styled.div`
@@ -160,8 +161,8 @@ export const ButtonFacility = styled.button<{ withicon?: string }>`
     border-radius: 0.75rem;
     border: none;
     cursor: pointer;
-    color: ${gb.colorGrayIconHotel};
-    background-color: ${gb.colorLightGray};
+    color: ${props => props.theme.iconPhoneBookingDetails};
+    background-color: ${props => props.theme.iconFacilityBackgroundBookingDetails};
 `
 
 export const IconBed = styled(IoBedSharp)`
@@ -172,7 +173,7 @@ export const IconBed = styled(IoBedSharp)`
     padding: 0.75em;
     width: 2.5rem;
     height: auto;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.iconPhoneBookingDetails};
 `
 
 export const IconShieldCheck = styled(GoShieldCheck)`
@@ -183,7 +184,7 @@ export const IconShieldCheck = styled(GoShieldCheck)`
     padding: 0.75em;
     width: 2.5rem;
     height: auto;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.iconPhoneBookingDetails};
 `
 
 export const IconWiFi = styled(FaWifi)`
@@ -194,7 +195,7 @@ export const IconWiFi = styled(FaWifi)`
     padding: 0.75em;
     width: 2.5rem;
     height: auto;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.iconPhoneBookingDetails};
 `
 
 export const ImgRoom = styled.img`

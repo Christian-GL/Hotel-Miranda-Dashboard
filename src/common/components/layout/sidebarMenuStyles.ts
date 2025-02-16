@@ -158,7 +158,7 @@ export const DivCtnUser = styled.div<{ display?: string }>`
     padding: 3em 1em 1em;
     text-align: center;
     border-radius: 15%;
-    box-shadow: ${props => props.theme.boxShadowCustom};
+    box-shadow: ${props => props.theme.boxShadowCustomProfile};
 `
 
 export const ImgProfile = styled.img`
@@ -180,7 +180,7 @@ export const TitleH5 = styled.h5`
     margin: 1rem 0;
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    color: ${props => props.theme.textSidebarz};
+    color: ${props => props.theme.textSidebar};
 `
 
 export const ButtonEdit = styled.button`

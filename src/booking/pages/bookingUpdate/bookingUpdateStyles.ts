@@ -8,5 +8,5 @@ export const SectionPageBookingUpdate = styled.section`
     padding: 2em;
     height: 100%;
     overflow-y: auto;
-    background-color: ${gb.colorGrayBackgroundPage};
+    background-color: ${props => props.theme.backgroundPage};
 `

@@ -16,7 +16,7 @@ import * as gb from './globalVars.ts'
 
 export const DivCtnForm = styled.div`
     padding: 2em;
-    background-color: ${gb.colorGrayBackgroundPage};
+    background-color: ${props => props.theme.backgroundPage};
 `
 
 export const DivIcon = styled.div`
@@ -24,7 +24,7 @@ export const DivIcon = styled.div`
     text-align: center;
     border-top-left-radius: 2.5rem;
     border-top-right-radius: 2.5rem;
-    background-color: ${gb.colorWhiteFull};
+    background-color: transparent;
 `
 
 export const DivCtnIcons = styled.div`
@@ -38,25 +38,25 @@ export const DivCtnIcons = styled.div`
 export const IconUser = styled(FaUser)`
     width: 4rem;
     height: auto;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.iconForm};
 `
 
 export const IconCalendar = styled(FaRegCalendarAlt)`
     width: 4.5rem;
     height: auto;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.iconForm};
 `
 
 export const IconBed = styled(MdOutlineBedroomParent)`
     width: 5rem;
     height: auto;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.iconForm};
 `
 
 export const IconContact = styled(MdContacts)`
     width: 4.5rem;
     height: auto;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.iconForm};
 `
 
 export const IconPlus = styled(BiSolidPlusCircle)`
@@ -67,8 +67,8 @@ export const IconPlus = styled(BiSolidPlusCircle)`
     width: 3rem;
     height: auto;
     border-radius: 50%;
-    color: ${gb.colorBlack26};
-    background-color: ${gb.colorWhiteFull};
+    color: ${props => props.theme.iconForm};
+    background-color: ${props => props.theme.backgroundPage};
 `
 
 export const IconUpdate = styled(RiExchangeFill)`
@@ -79,8 +79,8 @@ export const IconUpdate = styled(RiExchangeFill)`
     width: 3rem;
     height: auto;
     border-radius: 50%;
-    color: ${gb.colorBlack26};
-    background-color: ${gb.colorWhiteFull};
+    color: ${props => props.theme.iconForm};
+    background-color: ${props => props.theme.backgroundPage};
 `
 
 export const TitleForm = styled.h2`
@@ -89,8 +89,8 @@ export const TitleForm = styled.h2`
     font-family: ${gb.fontPoppins};
     font-size: 1.75em;
     font-weight: 600;
-    color: ${gb.colorBlack26};
-    background-color: ${gb.colorWhiteFull};
+    color: ${props => props.theme.textLabelForm};
+    background-color: ${props => props.theme.backgroundPage};
 `
 
 export const Form = styled.form`
@@ -98,7 +98,7 @@ export const Form = styled.form`
     width: 100%;
     border-bottom-left-radius: 2.5rem;
     border-bottom-right-radius: 2.5rem;
-    background-color: ${gb.colorWhiteFull};
+    background-color: ${props => props.theme.backgroundPage};
 `
 
 export const ImgRoom = styled.img`
@@ -130,7 +130,7 @@ export const LabelText = styled.label<{ minWidth?: string, margin?: string }>`
     font-family: ${gb.fontPoppins};
     font-size: 1em;
     font-weight: 700;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.textLabelForm};
 `
 
 export const LabelTextNote = styled.label`
@@ -138,7 +138,7 @@ export const LabelTextNote = styled.label`
     font-family: ${gb.fontPoppins};
     font-size: 0.75em;
     font-weight: 500;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.textLabelForm};
 `
 
 export const DivCtnEntryBookings = styled.div`
@@ -153,16 +153,16 @@ export const LabelBookings = styled.label`
     font-family: ${gb.fontPoppins};
     font-size: 0.8em;
     font-weight: 500;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.textLabelForm};
 `
 
-export const LabelTextBookingStatus = styled.label <{ color?: string }> `
+export const LabelTextBookingStatus = styled.label`     // se le pasaba un string ?!!?!?!??!?!
     min-width: 10rem;
     font-family: ${gb.fontPoppins};
     font-size: 1em;
     font-weight: 700;
     text-transform: uppercase;
-    color: ${props => props.color};
+    color: ${props => props.theme.textLabelForm};
 `
 
 export const InputText = styled.input`
@@ -172,16 +172,16 @@ export const InputText = styled.input`
     min-width: 10rem;
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    border: 1px solid ${gb.colorBlack26};
+    border: none;
     border-radius: 1rem;
     outline: none;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.textForm};
 `
 
 export const InputTextPhoto = styled.input`
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.textLabelForm};
 `
 
 export const GlobalDateTimeStyles = createGlobalStyle`
@@ -207,27 +207,10 @@ export const InputDate = styled.input`
     padding: 1em;
     width: 100%;
     font-family: ${gb.fontPoppins};
-    border: 1px solid ${gb.colorBlack26};
+    border: none;
     border-radius: 1rem;
     outline: none;
-    color: ${gb.colorBlack26};
-
-    // COMO APLICAR LO DE ABAJO ??? (ver home.scss del proyecto web)
-    // input {
-    //     position: relative;
-    // }
-
-    // input[type="date"]::-webkit-calendar-picker-indicator {
-    //     position: absolute;
-    //     top: 0;
-    //     right: 0;
-    //     bottom: 0;
-    //     left: 0;
-    //     width: auto;
-    //     height: auto;
-    //     background: transparent;
-    //     cursor: pointer;
-    // }
+    color: ${props => props.theme.textForm};
 `
 
 export const TextAreaJobDescription = styled.textarea`
@@ -237,10 +220,10 @@ export const TextAreaJobDescription = styled.textarea`
     height: 7.5rem;
     font-family: ${gb.fontPoppins};
     font-weight: 400;
-    border: 1px solid ${gb.colorBlack26};
+    border: none;
     border-radius: 1rem;
     outline: none;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.textForm};
 `
 
 export const SelectAmenities = styled.select`
@@ -248,8 +231,8 @@ export const SelectAmenities = styled.select`
     padding: 1em;
     height: 10rem;
     font-family: ${gb.fontPoppins};
-    border: 1px solid ${gb.colorBlack26};
-    color: ${gb.colorBlack26};
+    border: none;
+    color: ${props => props.theme.textForm};
 `
 
 export const Select = styled.select`
@@ -259,9 +242,9 @@ export const Select = styled.select`
     max-height: 5rem;
     font-family: ${gb.fontPoppins};
     font-weight: 500;
-    border: 1px solid ${gb.colorBlack26};
+    border: none;
     border-radius: 1rem;
-    color: ${gb.colorBlack26};
+    color: ${props => props.theme.textForm};
 
     option[value="null"] {
         display: none;
@@ -275,7 +258,7 @@ export const Option = styled.option`
 export const DivButtonCreateUser = styled.div`
     padding-top: 2em;
     text-align: center;
-    background-color: ${gb.colorWhiteFull};
+    background-color: ${props => props.theme.backgroundPage};
 `
 
 export const DivButtonHidePassword = styled.div`
@@ -290,8 +273,8 @@ export const EyeOpen = styled(IoEye)`
     height: auto;
     border-radius: 0.5rem;
     cursor: pointer;
-    color: ${gb.colorWhiteFull};
-    background-color: ${gb.colorGrayIconHotel};
+    color: ${props => props.theme.iconEye};
+    background-color: ${props => props.theme.iconEyeBackground};
 `
 
 export const EyeClose = styled(IoMdEyeOff)`
@@ -301,6 +284,6 @@ export const EyeClose = styled(IoMdEyeOff)`
     height: auto;
     border-radius: 0.5rem;
     cursor: pointer;
-    color: ${gb.colorWhiteFull};
-    background-color: ${gb.colorGrayIconHotel};
+    color: ${props => props.theme.iconEye};
+    background-color: ${props => props.theme.iconEyeBackground};
 `

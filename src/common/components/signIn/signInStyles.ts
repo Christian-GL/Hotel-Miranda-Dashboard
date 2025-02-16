@@ -27,9 +27,9 @@ export const IconHotel = styled(RiHotelFill)`
     width: 6rem;
     height: auto;
     border-radius: 50%;
-    border: 2px solid ${gb.colorRed};
-    color: ${gb.colorRed};
-    background-color: ${gb.colorWhiteFull};
+    border: 2px solid #E23428;
+    color: #E23428;
+    background-color: #FFFFFF;
 `
 
 export const Form = styled.form`
@@ -41,9 +41,8 @@ export const LabelText = styled.label`
     font-family: ${gb.fontPoppins};
     font-size: 1.5em;
     font-weight: 700;
-    color: ${gb.colorWhiteFull};
-    text-shadow: 3px 3px ${gb.colorBlack26};
-    // -webkit-text-stroke: 1px red;    // Afecta también al imput.
+    color: #FFFFFF;
+    text-shadow: 3px 3px #262626;
 `
 
 export const InputText = styled.input`
@@ -57,10 +56,10 @@ export const InputText = styled.input`
     border: none;
     border-radius: 1rem;
     outline: none;
-    color: ${gb.colorBlack26};
+    color: #262626;
 
     &::placeholder {
-        color: ${gb.colorLightGray};
+        color: #D3D3D3;
         opacity: 1;
     }
 `
@@ -75,8 +74,8 @@ export const ButtonSignIn = styled.button`
     border-radius: 1rem;
     cursor: pointer;
     transition: transform 0.25s ease;
-    color: ${gb.colorWhiteFull};
-    background-color: ${gb.colorRed};
+    color: #FFFFFF;
+    background-color: #E23428;
 
     &:hover {
         transform: scale(1.1)
