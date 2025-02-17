@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 
 import { RiCloseCircleLine } from "react-icons/ri";
 
-import * as gb from '../../../common/styles/globalVars.ts'
+import * as globalConstStyles from '../../../common/styles/globalConstStyles.ts'
 
 
 export const DialogPopup = styled.dialog<{ isSlider?: boolean }>`
@@ -31,14 +31,14 @@ export const DialogPopup = styled.dialog<{ isSlider?: boolean }>`
 
 export const TitleH2 = styled.h2`
     max-width: 95%;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
     color: ${props => props.theme.textPopup};
 `
 
 export const PText = styled.p`
     margin-top: 1rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
     color: ${props => props.theme.textPopup};
 `

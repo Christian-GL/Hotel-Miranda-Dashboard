@@ -1,7 +1,7 @@
 
 import { styled } from 'styled-components'
 
-import * as gb from './globalVars.ts'
+import * as globalConstStyles from './globalConstStyles.ts'
 
 
 export const DivCtnPagination = styled.div`
@@ -14,7 +14,7 @@ export const DivCtnPagination = styled.div`
 export const ButtonSwitchPage = styled.button<{ margin?: string }>`
     margin: ${props => props.margin};
     padding: 1em;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
     font-weight: 400;
     border: none;
@@ -26,7 +26,7 @@ export const ButtonSwitchPage = styled.button<{ margin?: string }>`
 
 export const SpanPageCount = styled.span`
     margin: 0 1rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
     font: weight: 400;
     color: ${props => props.theme.textPageCountPagination};

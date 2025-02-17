@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as contactStyles from "./contactStyles.ts"
-import * as gb from '../common/styles/globalVars.ts'
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { ContactInterface } from './interfaces/contactInterface.ts'
@@ -18,7 +17,7 @@ import { TableDisplayIndicator } from "../common/components/tableDisplaySelector
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
 import {
-    Table, THTable, TriangleUp, TriangleRight, TriangleDown, PTable,
+    Table, THTable, TriangleUp, DivNameTable, TriangleRight, TriangleDown, PTable,
     IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption
 } from "../common/styles/tableStyles.ts"
 import { usePagination } from "../common/hooks/usePagination.ts"
@@ -281,9 +280,9 @@ export const Contact = () => {
                         </PTable>,
 
                         <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div style={{ color: `${gb.colorGreen}` }}>
+                            <DivNameTable>
                                 <b>{contactData.full_name}</b>
-                            </div>
+                            </DivNameTable>
                             <div>{contactData.email}</div>
                             <div style={{ display: 'flex', alignItems: 'bottom' }}>
                                 <IconPhone width='1.3rem' />

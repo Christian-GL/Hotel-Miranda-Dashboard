@@ -2,7 +2,7 @@
 import { styled } from 'styled-components'
 import { createGlobalStyle } from 'styled-components'
 import { ImSpinner9 } from "react-icons/im"
-import * as gb from '../../../styles/globalVars.ts'
+import * as globalConstStyles from '../../../styles/globalConstStyles.ts'
 
 
 export const GlobalToastStyles = createGlobalStyle`
@@ -26,7 +26,6 @@ export const Spinner = styled(ImSpinner9)`
     margin-right: 1rem;
     width: 1.25rem;
     height: auto;
-    color: ${gb.colorWhiteFull};
 
     animation: rotate 1.5s linear infinite;
     @keyframes rotate {
@@ -42,7 +41,6 @@ export const Spinner = styled(ImSpinner9)`
 export const PMessage = styled.p`
     display: inline-block;
     vertical-align: middle;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
-    color: ${gb.colorWhiteFull};
 `

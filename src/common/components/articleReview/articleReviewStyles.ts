@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 import { FaRegCheckCircle } from "react-icons/fa";
 import { RxCrossCircled } from "react-icons/rx";
 
-import * as gb from '../../styles/globalVars.ts'
+import * as globalConstStyles from '../../styles/globalConstStyles.ts'
 
 
 export const ArticleReview = styled.article`
@@ -31,7 +31,7 @@ export const PTextReview = styled.p`
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 6;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
     line-height: 1.6rem;
     color: ${props => props.theme.textReview};
@@ -71,7 +71,7 @@ export const DivCtnInfoDetails = styled.div`
 `
 
 export const TextH5 = styled.h5`
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     color: ${props => props.theme.textReview};
 `
@@ -79,7 +79,7 @@ export const TextH5 = styled.h5`
 export const TitleNameProfile = styled.h6`
     display: inline-block;
     vertical-align: middle;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
     color: ${props => props.theme.nameUserReview};
 `

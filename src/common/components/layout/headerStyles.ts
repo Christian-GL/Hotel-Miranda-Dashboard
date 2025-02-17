@@ -9,20 +9,20 @@ import { FaMoon } from "react-icons/fa"
 import { FiSun } from "react-icons/fi"
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md"
 
-import * as gb from '../../styles/globalVars.ts'
+import * as globalConstStyles from '../../styles/globalConstStyles.ts'
 
 
 export const Header = styled.header<{ display?: string }>`
     position: fixed;
     z-index: 2;
-    left: ${props => props.display === 'collapsed' ? `${gb.widthSidebarMenuCollapsed}` : `${gb.widthSidebarMenuNotCollapsed}`};
-    transition: ${gb.transitionSidebarMenu};
+    left: ${props => props.display === 'collapsed' ? `${globalConstStyles.widthSidebarMenuCollapsed}` : `${globalConstStyles.widthSidebarMenuNotCollapsed}`};
+    transition: ${globalConstStyles.transitionSidebarMenu};
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 2em;
-    width: ${props => props.display === 'collapsed' ? `calc(100% - ${gb.widthSidebarMenuCollapsed})` : `calc(100% - ${gb.widthSidebarMenuNotCollapsed})`};
-    height: ${gb.heightHeader};
+    width: ${props => props.display === 'collapsed' ? `calc(100% - ${globalConstStyles.widthSidebarMenuCollapsed})` : `calc(100% - ${globalConstStyles.widthSidebarMenuNotCollapsed})`};
+    height: ${globalConstStyles.heightHeader};
     box-shadow: 5px 0px 15px 0px rgba(254,209,209,0.45);
     background-color: ${props => props.theme.backgroundLayout};
 `
@@ -47,7 +47,7 @@ export const TitleH2 = styled.h2`
     display: inline-block;
     vertical-align: middle;
     margin-left: 2.5rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1.5em;
     font-weight: 700;
     color: ${props => props.theme.iconHeader};

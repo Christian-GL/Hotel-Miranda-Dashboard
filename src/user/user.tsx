@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as userStyles from "./userStyles.ts"
-import * as gb from '../common/styles/globalVars.ts'
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { UserInterface } from "./interfaces/userInterface.ts"
@@ -16,7 +15,7 @@ import { TableDisplayIndicator } from "../common/components/tableDisplaySelector
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
 import {
-    Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableUser, PTable,
+    Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
     PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption
 } from "../common/styles/tableStyles.ts"
 import { usePagination } from "../common/hooks/usePagination.ts"
@@ -201,9 +200,9 @@ export const User = () => {
                         </DivImgTable>,
 
                         <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div style={{ color: `${gb.colorGreen}` }}>
+                            <DivNameTable>
                                 <b>{userData.full_name}</b>
-                            </div>
+                            </DivNameTable>
                             <div>#<b>{userData.id}</b></div>
                             <div>{userData.email}</div>
                         </PTable>,

@@ -4,14 +4,14 @@ import { InputHTMLAttributes } from "react"
 
 import { HiMiniMagnifyingGlass } from "react-icons/hi2"
 
-import * as gb from '../../styles/globalVars.ts'
+import * as globalConstStyles from '../../styles/globalConstStyles.ts'
 
 
 export const InputSearch = styled.input<InputHTMLAttributes<HTMLInputElement>>`
     padding: 1em 1em 1em 4em;
     text-align: center;
     width: 100%;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     border: none;
     // border: 1px solid black;

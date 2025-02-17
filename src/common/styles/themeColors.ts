@@ -45,7 +45,9 @@ export const themeLight = {
     textLabelForm: ' #262626',
 
     backgroundTable: ' #FFFFFF',
+    nameTable: ' #5AD07A',
     textTable: ' #393939',
+    textTable2: ' #FFFFFF',
     borderTable: ' #D3D3D3',
     iconTable: ' #262626',
     iconBackgroundTable: ' #FFFFFF',
@@ -140,7 +142,9 @@ export const themeDark = {
     textLabelForm: ' #F8F8F8',
 
     backgroundTable: ' #BDBDBD',
+    nameTable: ' #2C9E80',
     textTable: ' #393939',
+    textTable2: ' #F8F8F8',
     borderTable: ' #E9E9E9',
     iconTable: ' #262626',
     iconBackground: ' #BDBDBD',
@@ -155,7 +159,7 @@ export const themeDark = {
     checkOutBackgroundTable: ' #FFCDD2 ',
     buttonTextTable: ' #262626 ',
     buttonBackgroundTable: ' #EEF9F2 ',
-    availableTable: ' #5AD07A',
+    availableTable: ' #2c9e80',
     notAvailableTable: ' #E23428',
 
     textButtonPagination: ' #F8F8F8',

@@ -9,7 +9,6 @@ import * as roomUpdateStyles from "./roomUpdateStyles.ts"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
-import * as gb from '../../../common/styles/globalVars.ts'
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { RoomInterface } from "../../interfaces/roomInterface.ts"
@@ -235,7 +234,7 @@ export const RoomUpdate = () => {
                         <DivCtnEntryBookings>
                             {
                                 bookingAll.filter((booking) => roomUpdated.booking_list.includes(booking.id)).length === 0 ?
-                                    <LabelTextBookingStatus color={gb.colorLightGreenButton}>Available</LabelTextBookingStatus> :
+                                    <LabelTextBookingStatus>Available</LabelTextBookingStatus> :
                                     (bookingAll.filter(booking => roomUpdated.booking_list.includes(booking.id))
                                         .map((booking, index) => (
                                             <LabelBookings key={index}>

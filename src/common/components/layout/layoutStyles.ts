@@ -1,13 +1,13 @@
 
 import { styled } from 'styled-components'
 
-import * as gb from '../../styles/globalVars.ts'
+import * as globalConstStyles from '../../styles/globalConstStyles.ts'
 
 
 export const Main = styled.main<{ display?: string }>`
-    transition: ${gb.transitionSidebarMenu};
-    padding-top: ${gb.heightHeader};
-    margin-left: ${props => props.display === 'collapsed' ? `${gb.widthSidebarMenuCollapsed}` : `${gb.widthSidebarMenuNotCollapsed}`};
+    transition: ${globalConstStyles.transitionSidebarMenu};
+    padding-top: ${globalConstStyles.heightHeader};
+    margin-left: ${props => props.display === 'collapsed' ? `${globalConstStyles.widthSidebarMenuCollapsed}` : `${globalConstStyles.widthSidebarMenuNotCollapsed}`};
     height: 100vh;
     background-color: ${props => props.theme.backgroundLayout};
 `

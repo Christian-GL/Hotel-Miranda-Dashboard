@@ -7,7 +7,7 @@ import { GoTriangleUp } from "react-icons/go"
 import { GoTriangleRight } from "react-icons/go"
 import { GoTriangleDown } from "react-icons/go"
 
-import * as gb from './globalVars.ts'
+import * as globalConstStyles from './globalConstStyles.ts'
 import { BookingStatus } from '../../booking/data/bookingStatus.ts'
 
 
@@ -25,7 +25,7 @@ export const THTable = styled.th<{ cursorPointer?: 'yes' | 'no' }>`
     justify-content: flex-start;
     align-items: center;
     padding: 1em;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
     font-weight: 700;
     cursor: ${props => props.cursorPointer === 'yes' ? `pointer` : ``};
@@ -65,11 +65,15 @@ export const PTable = styled.p<{
     align-items: ${props => props.alignitems === 'left' ? 'left' : 'center'};
     flex-direction: ${props => props.flexdirection === 'column' ? 'column' : 'row'};
     padding: 1em;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
     font-weight: 500;
     border-bottom: 1px solid ${props => props.theme.borderTable};
     color: ${props => props.theme.textTable};
+`
+
+export const DivNameTable = styled.div`
+    color: ${props => props.theme.nameTable};
 `
 
 export const DivImgTable = styled.div`
@@ -110,14 +114,14 @@ export const PStatusRoomList = styled.p<{ status: string }>`
     text-align: center;
     width: 6.5rem;
     border-radius: 1.25rem;
-    color: ${gb.colorWhiteFull};
+    color: ${props => props.theme.textTable2};
     background-color: ${props => props.status === 'Available' ? props.theme.availableTable : props.theme.notAvailableTable};
 `
 
 export const PStatusAvailableUsers = styled.p<{ status: boolean }>`
     position: relative;
     padding: 1em;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 700;
     text-transform: uppercase;
     color: ${props => props.status === true ? props.theme.availableTable : props.theme.notAvailableTable};
@@ -144,7 +148,7 @@ export const DivCtnOptions = styled.div<{ display: string, isInTable: boolean }>
     flex-direction: column;
     gap: 0.5rem;
     padding: 1em;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     border-radius: 0.75rem;
     background-color: ${props => props.isInTable ? props.theme.containerOptionsTable : props.theme.containerOptionsNotInTable};
 
@@ -173,7 +177,7 @@ export const PStatusBooking = styled.p<{ status: BookingStatus }>`
     text-align: center;
     width: 6.5rem;
     border-radius: 0.75rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 700;
     ${({ status, theme }) => {
         switch (status) {
@@ -203,7 +207,7 @@ export const PStatusBooking = styled.p<{ status: BookingStatus }>`
 
 export const ButtonView = styled.button`
     padding: 1em 2em;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     border: none;
     border-radius: 1rem;
     cursor: pointer;
@@ -214,7 +218,7 @@ export const ButtonView = styled.button`
 export const ButtonPublishArchive = styled.button<{ archived: boolean }>`
     margin-right: 1rem;
     padding: 0.5em;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 600; 
     border: none;
     border-radius: 1rem;

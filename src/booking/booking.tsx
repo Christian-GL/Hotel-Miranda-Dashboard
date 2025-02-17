@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as bookingsStyles from './bookingStyles.ts'
-import * as gb from '../common/styles/globalVars.ts'
 import { BookingStatus } from './data/bookingStatus.ts'
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
@@ -20,7 +19,7 @@ import { TableDisplayIndicator } from "../common/components/tableDisplaySelector
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
 import {
-    Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, ImgTableUser, PTable,
+    Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
     IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption
 } from "../common/styles/tableStyles.ts"
 import { usePagination } from "../common/hooks/usePagination.ts"
@@ -304,9 +303,9 @@ export const Bookings = () => {
                         </DivImgTable>,
 
                         <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div style={{ color: `${gb.colorGreen}` }}>
+                            <DivNameTable>
                                 <b>{bookingData.full_name_guest}</b>
-                            </div>
+                            </DivNameTable>
                             <div>#<b>{bookingData.id}</b></div>
                         </PTable>,
 

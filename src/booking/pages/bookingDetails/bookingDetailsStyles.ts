@@ -8,7 +8,7 @@ import { FaWifi } from "react-icons/fa";
 import { IoBedSharp } from "react-icons/io5";
 import { GoShieldCheck } from "react-icons/go";
 
-import * as gb from '../../../common/styles/globalVars.ts'
+import * as globalConstStyles from '../../../common/styles/globalConstStyles.ts'
 
 
 export const SectionPageBookingDetails = styled.section`
@@ -66,7 +66,7 @@ export const DivCtnNameId = styled.div`
 `
 
 export const NameProfileH2 = styled.h2`
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1.5em;
     color: ${props => props.theme.textBookingDetails};
 `
@@ -74,7 +74,7 @@ export const NameProfileH2 = styled.h2`
 export const SubTittleH4 = styled.h4<{ isId?: boolean, paddingtop?: string, fontsize?: string }>`
     padding-top: 0;
     padding-top: ${props => props.paddingtop};
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
     font-size: ${props => props.fontsize};
     font-weight: 500;
@@ -102,7 +102,7 @@ export const ButtonSendMessage = styled.button`
     margin-left: 1rem;
     vertical-align: middle;
     padding: 1.25em 2em 1.25em 4.5em;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
     font-weight: 400;
     border-radius: 0.75rem;
@@ -125,7 +125,7 @@ export const IconChat = styled(BsChatDots)`
 
 export const DivCheckInOut = styled.div`
     padding: 2em 0;
-    border-bottom: 1px solid ${gb.colorLightGray};
+    border-bottom: 1px solid ${props => props.theme.iconPhoneBorderBookingDetails};
 `
 
 export const Div50PercentageSection = styled.div`
@@ -136,7 +136,7 @@ export const Div50PercentageSection = styled.div`
 
 export const PTextInfo = styled.p`
     padding: 1em 0;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
     font-weight: 400;
     color: ${props => props.theme.textInfoBookingDetails};
@@ -155,7 +155,7 @@ export const ButtonFacility = styled.button<{ withicon?: string }>`
     vertical-align: middle;
     margin: 1rem 1rem 0 0;
     padding: ${props => props.withicon === 'true' ? '1.25em 2em 1.25em 4.5em' : '1em'};
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
     font-weight: 400;
     border-radius: 0.75rem;

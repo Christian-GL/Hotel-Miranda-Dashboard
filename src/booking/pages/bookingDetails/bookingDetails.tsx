@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
-import * as gb from '../../../common/styles/globalVars.ts'
 import * as bookingDetailsStyles from "./bookingDetailsStyles.ts"
 import { BookingInterface } from "../../interfaces/bookingInterface.ts"
 import { RoomInterface } from "../../../room/interfaces/roomInterface.ts"
@@ -21,7 +20,6 @@ import { BookingDeleteByIdThunk } from "../../features/thunks/bookingDeleteByIdT
 import { getRoomIdData, getRoomIdStatus } from '../../../room/features/roomSlice.ts'
 import { RoomFetchByIDThunk } from '../../../room/features/thunks/roomFetchByIDThunk.ts'
 import { RoomUpdateThunk } from "../../../room/features/thunks/roomUpdateThunk.ts"
-import { SiTrueup } from "react-icons/si"
 
 
 export const BookingDetails = () => {
@@ -94,7 +92,7 @@ export const BookingDetails = () => {
 
 
                     <bookingDetailsStyles.IconOptions onClick={() => { switchDisplayMenuOptions() }} />
-                    <DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} isInTable={false} >
+                    <DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} isInTable={false}>
                         <ButtonOption onClick={() => { navigateBackToBookings() }}>Go to bookings</ButtonOption>
                         <ButtonOption onClick={() => { deleteThisBooking() }}>Delete</ButtonOption>
                     </DivCtnOptions>
@@ -104,18 +102,18 @@ export const BookingDetails = () => {
 
                 <bookingDetailsStyles.DivCheckInOut>
                     <bookingDetailsStyles.Div50PercentageSection>
-                        <bookingDetailsStyles.SubTittleH4 color={`${gb.colorGraySubTitleBookingDetails}`}>
+                        <bookingDetailsStyles.SubTittleH4 isId={true}>
                             Check In
                         </bookingDetailsStyles.SubTittleH4>
-                        <bookingDetailsStyles.SubTittleH4 paddingtop='1em' color={`${gb.colorBlack26}`}>
+                        <bookingDetailsStyles.SubTittleH4 paddingtop='1em'>
                             {bookingById.check_in_date} | {bookingById.check_in_time}
                         </bookingDetailsStyles.SubTittleH4>
                     </bookingDetailsStyles.Div50PercentageSection>
                     <bookingDetailsStyles.Div50PercentageSection>
-                        <bookingDetailsStyles.SubTittleH4 color={`${gb.colorGraySubTitleBookingDetails}`}>
+                        <bookingDetailsStyles.SubTittleH4 isId={true}>
                             Check Out
                         </bookingDetailsStyles.SubTittleH4>
-                        <bookingDetailsStyles.SubTittleH4 paddingtop='1em' color={`${gb.colorBlack26}`}>
+                        <bookingDetailsStyles.SubTittleH4 paddingtop='1em'>
                             {bookingById.check_out_date} | {bookingById.check_out_time}
                         </bookingDetailsStyles.SubTittleH4>
                     </bookingDetailsStyles.Div50PercentageSection>
@@ -123,20 +121,20 @@ export const BookingDetails = () => {
 
                 <bookingDetailsStyles.DivCtnInfo>
                     <bookingDetailsStyles.Div50PercentageSection>
-                        <bookingDetailsStyles.SubTittleH4 color={`${gb.colorGraySubTitleBookingDetails}`}>
+                        <bookingDetailsStyles.SubTittleH4 isId={true}>
                             Room Info
                         </bookingDetailsStyles.SubTittleH4>
-                        <bookingDetailsStyles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em' color={`${gb.colorBlack26}`}>
+                        <bookingDetailsStyles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em'>
                             Room Nº {bookingById.room_id}
                             <br />
                             {bookingById.room_type}
                         </bookingDetailsStyles.SubTittleH4>
                     </bookingDetailsStyles.Div50PercentageSection>
                     <bookingDetailsStyles.Div50PercentageSection>
-                        <bookingDetailsStyles.SubTittleH4 color={`${gb.colorGraySubTitleBookingDetails}`}>
+                        <bookingDetailsStyles.SubTittleH4 isId={true}>
                             Price
                         </bookingDetailsStyles.SubTittleH4>
-                        <bookingDetailsStyles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em' color={`${gb.colorBlack26}`}>
+                        <bookingDetailsStyles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em'>
                             <del>${roomById.price} /night</del>
                             <br />
                             ${applyDiscount(roomById.price, roomById.discount)} /night (-{roomById.discount}%)
@@ -149,7 +147,7 @@ export const BookingDetails = () => {
                 </bookingDetailsStyles.PTextInfo>
 
                 <bookingDetailsStyles.DivCtnFacilities>
-                    <bookingDetailsStyles.SubTittleH4 color={`${gb.colorGraySubTitleBookingDetails}`} fontsize='1em'>Facilities</bookingDetailsStyles.SubTittleH4>
+                    <bookingDetailsStyles.SubTittleH4 isId={true} fontsize='1em'>Facilities</bookingDetailsStyles.SubTittleH4>
                     {Array.isArray(roomById.amenities) ? (
                         roomById.amenities.map((amenity, index) => {
                             switch (amenity) {
@@ -183,7 +181,7 @@ export const BookingDetails = () => {
                             }
                         })
                     ) :
-                        (<bookingDetailsStyles.SubTittleH4 fontsize='1em' color={`${gb.colorBlack26}`}>
+                        (<bookingDetailsStyles.SubTittleH4 fontsize='1em'>
                             No amenities available
                         </bookingDetailsStyles.SubTittleH4>)
                     }

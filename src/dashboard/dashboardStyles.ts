@@ -7,7 +7,7 @@ import { FaRegCalendarCheck } from "react-icons/fa"
 import { IoLogInOutline } from "react-icons/io5"
 import { IoLogOutOutline } from "react-icons/io5"
 
-import * as gb from '../common/styles/globalVars.ts'
+import * as globalConstStyles from '../common/styles/globalConstStyles.ts'
 
 
 // export const SwiperCustom = styled(Swiper)`
@@ -21,7 +21,7 @@ import * as gb from '../common/styles/globalVars.ts'
 //         left: 1.5rem;
 //         padding: 1em 1.35em;
 //         border-radius: 25%;
-//         background-color: ${gb.colorGrayIconHotel};
+//         background-color: gray;
 //     }
 
 //     .swiper-button-next {
@@ -30,11 +30,11 @@ import * as gb from '../common/styles/globalVars.ts'
 //         right: 1.5rem;
 //         padding: 1em 1.35em;
 //         border-radius: 25%;
-//         background-color: ${gb.colorGrayIconHotel};
+//         background-color: gray;
 //     }
 
 //     .swiper-button-prev::after, .swiper-button-next::after {
-//         color: ${gb.colorWhiteFull};
+//         color: white;
 //         font-size: 1rem;
 //         font-weight: 700;
 //     }
@@ -123,13 +123,13 @@ export const DivCtnInfo = styled.div`
 `
 
 export const NumberH4 = styled.h4`
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1.5em;
     color: ${props => props.theme.titleKPIDashboard};
 `
 
 export const TextH5 = styled.h5`
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     color: ${props => props.theme.textKPIDashboard};
 `
@@ -140,7 +140,7 @@ export const SectionReviews = styled.section`
 
 export const TitleSectionReviewsH5 = styled.h5`
     padding: 1em;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
     color: ${props => props.theme.titleReviewsDashboard};
 `

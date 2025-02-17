@@ -1,8 +1,6 @@
 
 import { styled } from 'styled-components'
 
-import * as gb from '../../../common/styles/globalVars.ts'
-
 
 export const SectionPageBookingCreate = styled.section`
     padding: 2em;

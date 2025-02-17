@@ -1,6 +1,6 @@
 
 import { styled } from 'styled-components'
-import * as gb from '../../../styles/globalVars.ts'
+import * as globalConstStyles from '../../../styles/globalConstStyles.ts'
 
 
 export const DivMessage = styled.div`
@@ -12,7 +12,6 @@ export const DivMessage = styled.div`
 export const PMessage = styled.p`
     display: inline-block;
     vertical-align: middle;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
-    color: ${gb.colorWhiteFull};
 `

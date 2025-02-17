@@ -8,7 +8,7 @@ import { MdOutlineBedroomParent } from "react-icons/md";
 import { MdContacts } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 
-import * as gb from '../../styles/globalVars.ts'
+import * as globalConstStyles from '../../styles/globalConstStyles.ts'
 
 
 export const AsideSideNavigationBar = styled.aside<{ display?: string }>`
@@ -19,10 +19,10 @@ export const AsideSideNavigationBar = styled.aside<{ display?: string }>`
     align-items: ${props => props.display === 'collapsed' ? 'center' : 'left'};
     justify-content: ${props => props.display === 'collapsed' ? 'flex-start' : 'space-between'};
     padding: ${props => props.display === 'collapsed' ? '1em' : '1em 2.5em'};
-    width: ${props => props.display === 'collapsed' ? `${gb.widthSidebarMenuCollapsed}` : `${gb.widthSidebarMenuNotCollapsed}`};
+    width: ${props => props.display === 'collapsed' ? `${globalConstStyles.widthSidebarMenuCollapsed}` : `${globalConstStyles.widthSidebarMenuNotCollapsed}`};
     height: 100vh;
     text-align: left;
-    transition: ${gb.transitionSidebarMenu};
+    transition: ${globalConstStyles.transitionSidebarMenu};
     background-color: ${props => props.theme.backgroundLayout};
 `
 
@@ -50,12 +50,12 @@ export const DivCtnTitle = styled.div<{ display?: string }>`
 
 export const TitleH1 = styled.h1`
     text-align: left;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     color: ${props => props.theme.titleSidebar};
 `
 
 export const PTitleText = styled.p`
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.6em;
     color: ${props => props.theme.subTitleSidebar};
 `
@@ -119,7 +119,7 @@ export const PNavOptionText = styled.p<{ display?: string }>`
     display: ${props => props.display === 'collapsed' ? 'none' : 'inline-block'};
     vertical-align: middle;
     margin-left: 1.5rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.85em;
     transition: 0.25s ease;
     color: ${props => props.theme.textSidebar};
@@ -171,21 +171,21 @@ export const ImgProfile = styled.img`
 `
 
 export const TitleH4 = styled.h4`
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 600;
     color: ${props => props.theme.titleSidebar};
 `
 
 export const TitleH5 = styled.h5`
     margin: 1rem 0;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     color: ${props => props.theme.textSidebar};
 `
 
 export const ButtonEdit = styled.button`
     padding: 1em 2em;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     border: none;
     border-radius: 1rem;
     cursor: pointer;
@@ -198,12 +198,12 @@ export const DivCtnCredits = styled.div<{ display?: string }>`
 
 export const TitleMayorCreditH5 = styled.h5`
     margin: 2rem 0 0.25rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     color: ${props => props.theme.titleSidebar};
 `
 
 export const TitleMinorCreditH6 = styled.h6`
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     color: ${props => props.theme.textSidebar};
 `

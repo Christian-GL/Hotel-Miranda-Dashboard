@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 import { RiHotelFill } from "react-icons/ri"
 
 import backgroundLogin from '../../../assets/img/backgroundLogin.png'
-import * as gb from '../../styles/globalVars.ts'
+import * as globalConstStyles from '../../styles/globalConstStyles.ts'
 
 
 export const SectionPageSignIn = styled.section`
@@ -38,7 +38,7 @@ export const Form = styled.form`
 `
 
 export const LabelText = styled.label`
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1.5em;
     font-weight: 700;
     color: #FFFFFF;
@@ -51,7 +51,7 @@ export const InputText = styled.input`
     padding: 0.75em;
     text-align: center;
     width: 100%;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 700;
     border: none;
     border-radius: 1rem;
@@ -67,7 +67,7 @@ export const InputText = styled.input`
 export const ButtonSignIn = styled.button`
     margin-top: 2rem;
     padding: 0.5em 2em;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1.25em;
     font-weight: 400;
     border: none;

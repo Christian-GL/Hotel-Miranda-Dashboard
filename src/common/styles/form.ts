@@ -11,7 +11,7 @@ import { MdContacts } from "react-icons/md"
 import { IoEye } from "react-icons/io5"
 import { IoMdEyeOff } from "react-icons/io"
 
-import * as gb from './globalVars.ts'
+import * as globalConstStyles from './globalConstStyles.ts'
 
 
 export const DivCtnForm = styled.div`
@@ -86,7 +86,7 @@ export const IconUpdate = styled(RiExchangeFill)`
 export const TitleForm = styled.h2`
     padding-top: 1.5rem;
     text-align: center;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1.75em;
     font-weight: 600;
     color: ${props => props.theme.textLabelForm};
@@ -127,7 +127,7 @@ export const DivCtnEntry = styled.div`
 export const LabelText = styled.label<{ minWidth?: string, margin?: string }>`
     min-width: ${props => props.minWidth || '10rem'};
     margin: ${props => props.margin || '0'};
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
     font-weight: 700;
     color: ${props => props.theme.textLabelForm};
@@ -135,7 +135,7 @@ export const LabelText = styled.label<{ minWidth?: string, margin?: string }>`
 
 export const LabelTextNote = styled.label`
     margin-left: 1rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
     font-weight: 500;
     color: ${props => props.theme.textLabelForm};
@@ -150,15 +150,15 @@ export const DivCtnEntryBookings = styled.div`
 `
 
 export const LabelBookings = styled.label`
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.8em;
     font-weight: 500;
     color: ${props => props.theme.textLabelForm};
 `
 
-export const LabelTextBookingStatus = styled.label`     // se le pasaba un string ?!!?!?!??!?!
+export const LabelTextBookingStatus = styled.label`
     min-width: 10rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
     font-weight: 700;
     text-transform: uppercase;
@@ -170,7 +170,7 @@ export const InputText = styled.input`
     text-align: left;
     width: 100%;
     min-width: 10rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     border: none;
     border-radius: 1rem;
@@ -179,7 +179,7 @@ export const InputText = styled.input`
 `
 
 export const InputTextPhoto = styled.input`
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     color: ${props => props.theme.textLabelForm};
 `
@@ -206,7 +206,7 @@ export const GlobalDateTimeStyles = createGlobalStyle`
 export const InputDate = styled.input`
     padding: 1em;
     width: 100%;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     border: none;
     border-radius: 1rem;
     outline: none;
@@ -218,7 +218,7 @@ export const TextAreaJobDescription = styled.textarea`
     text-align: left;
     width: 100%;
     height: 7.5rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     border: none;
     border-radius: 1rem;
@@ -230,7 +230,7 @@ export const SelectAmenities = styled.select`
     min-width: 10rem;
     padding: 1em;
     height: 10rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     border: none;
     color: ${props => props.theme.textForm};
 `
@@ -240,7 +240,7 @@ export const Select = styled.select`
     width: 100%;
     min-width: 10rem;
     max-height: 5rem;
-    font-family: ${gb.fontPoppins};
+    font-family: ${globalConstStyles.fontPoppins};
     font-weight: 500;
     border: none;
     border-radius: 1rem;
