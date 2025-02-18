@@ -57,7 +57,7 @@ export const TitleH1 = styled.h1`
 export const PTitleText = styled.p`
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.6em;
-    color: ${props => props.theme.subTitleSidebar};
+    color: ${props => props.theme.textSidebar};
 `
 
 export const IconDashboard = styled(LuLayoutDashboard)`

@@ -11,7 +11,7 @@ import * as headerStyles from "./headerStyles.ts"
 import * as sidebarStyles from "./sidebarMenuStyles.ts"
 import { ThemeProvider } from 'styled-components'
 import { Theme } from "../../context/darkModeContext.tsx"
-import { themeLight, themeDark } from "../../styles/themeColors.ts"
+import { themeLight, themeDark } from "../../styles/themes.ts"
 import { ToastContainer, toast } from 'react-toastify'
 import { ToastifyLoadingData } from "../toastify/loadingDataPopup/toastifyLoadingData.tsx"
 import { useLoginOptionsContext } from "../signIn/features/loginProvider.tsx"
