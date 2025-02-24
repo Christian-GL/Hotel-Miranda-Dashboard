@@ -11,16 +11,13 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { ContactInterface } from "../../interfaces/contactInterface.ts"
-import {
-    checkFirstIDAvailable, getActualDate, getActualTime, validateName,
-    validateEmail, validateTextArea, validatePhoneNumber
-} from '../../../common/utils/formUtils.ts'
+import { validateFullName, validateEmail, validateTextArea, validatePhoneNumber } from '../../../common/utils/validators.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconPlus, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
 } from "../../../common/styles/form.ts"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getContactAllData, getContactAllStatus, getContactError } from "../../../contact/features/contactSlice.ts"
+import { getContactAllData, getContactAllStatus } from "../../../contact/features/contactSlice.ts"
 import { ContactFetchAllThunk } from "../../../contact/features/thunks/contactFetchAllThunk.ts"
 import { ContactCreateThunk } from "../../../contact/features/thunks/contactCreateThunk.ts"
 
@@ -32,28 +29,20 @@ export const ContactCreate = () => {
     const contactAll = useSelector(getContactAllData)
     const contactAllLoading = useSelector(getContactAllStatus)
     const [newContact, setNewContact] = useState<ContactInterface>({
-        id: 0,
+        _id: '',        // <-- ELIMINAR
         publish_date: '',
-        publish_time: '',
         full_name: '',
         email: '',
-        contact: '',
-        comment: ''
+        phone_number: '',
+        comment: '',
+        archived: false
     })
-    const [nextIdAvailable, setNextIdAvailable] = useState<number>(0)
 
     useEffect(() => {
         if (contactAllLoading === ApiStatus.idle) { dispatch(ContactFetchAllThunk()) }
-        else if (contactAllLoading === ApiStatus.fulfilled) {
-            if (contactAll.length > 0) {
-                const id = checkFirstIDAvailable(contactAll.map(item => item.id))
-                setNextIdAvailable(id)
-            }
-            else { setNextIdAvailable(1) }
-        }
-        else if (contactAllLoading === ApiStatus.rejected) { alert("Error en la api de contact create") }
+        else if (contactAllLoading === ApiStatus.fulfilled) { }
+        else if (contactAllLoading === ApiStatus.rejected) { alert("Error in API create contact") }
     }, [contactAllLoading, contactAll])
-
 
     const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -76,13 +65,12 @@ export const ContactCreate = () => {
 
         const newContactToDispatch = {
             ...newContact,
-            id: nextIdAvailable,
-            publish_date: getActualDate(),
-            publish_time: getActualTime()
+            publish_date: new Date().toISOString()
         }
+
         dispatch(ContactCreateThunk(newContactToDispatch))
             .then(() => {
-                ToastifySuccess(`Contact #${newContactToDispatch.id} created`, () => {
+                ToastifySuccess('Contact created', () => {
                     navigate('../')
                 })
             })
@@ -92,26 +80,18 @@ export const ContactCreate = () => {
     }
 
     const validateAllData = (): boolean => {
-        const checkName = validateName(newContact.full_name)
-        if (!checkName.test) {
-            checkName.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkEmail = validateEmail(newContact.email)
-        if (!checkEmail.test) {
-            checkEmail.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkPhoneNumber = validatePhoneNumber(newContact.contact)
-        if (!checkPhoneNumber.test) {
-            checkPhoneNumber.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkTextArea = validateTextArea(newContact.comment)
-        if (!checkTextArea.test) {
-            checkTextArea.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
+
+        const errorsFullName = validateFullName(newContact.full_name, 'Full Name')
+        if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }
+
+        const errorsEmail = validateEmail(newContact.email, 'Email')
+        if (errorsEmail.length > 0) { errorsEmail.map(error => ToastifyError(error)); return false }
+
+        const errorsPhoneNumber = validatePhoneNumber(newContact.phone_number, 'Phone Number')
+        if (errorsPhoneNumber.length > 0) { errorsPhoneNumber.map(error => ToastifyError(error)); return false }
+
+        const errorsTextArea = validateTextArea(newContact.comment, 'Comment')
+        if (errorsTextArea.length > 0) { errorsTextArea.map(error => ToastifyError(error)); return false }
 
         return true
     }
@@ -143,7 +123,7 @@ export const ContactCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Phone Number</LabelText>
-                        <InputText name="contact" onChange={handleStringChange} />
+                        <InputText name="phone_number" onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>

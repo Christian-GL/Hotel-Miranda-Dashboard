@@ -15,7 +15,7 @@ import * as globalConstStyles from './globalConstStyles.ts'
 
 
 export const DivCtnForm = styled.div`
-    padding: 2em;
+    padding: 0 2em;
     background-color: ${props => props.theme.backgroundPage};
 `
 

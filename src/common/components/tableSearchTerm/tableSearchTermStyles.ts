@@ -17,7 +17,7 @@ export const InputSearch = styled.input<InputHTMLAttributes<HTMLInputElement>>`
     // border: 1px solid black;
     border-radius: 1.5rem;
     outline: none;
-    color: ${props => props.theme.backgroundSearchTerm};
+    color: ${props => props.theme.textSearchTerm};
 `
 
 export const IconMagnifyingGlass = styled(HiMiniMagnifyingGlass)`

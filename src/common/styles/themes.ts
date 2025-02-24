@@ -89,7 +89,7 @@ export const themeLight = {
     backgroundButtonCreate: color.greenDark,
     textButtonCreate: color.white,
 
-    backgroundSearchTerm: color.blackSmooth,
+    textSearchTerm: color.blackSmooth,
 
     boxShadowCustom: `0 0.25em 0.5em ${color.graySmoothX3}`,
     boxShadowCustomProfile: `0 0.25em 0.5em ${color.graySmoothX3}`,
@@ -185,7 +185,7 @@ export const themeDark = {
     backgroundButtonCreate: color.greenSmoothX4,
     textButtonCreate: color.whiteSmooth,
 
-    backgroundSearchTerm: color.blackSmooth,
+    textSearchTerm: color.blackSmooth,
 
     boxShadowCustom: `0 0.25em 0.5em ${color.blackSmoothX2}`,
     boxShadowCustomProfile: `0 0.25em 0.5em ${color.graySmooth}`,

@@ -4,6 +4,7 @@ import { styled } from 'styled-components'
 import { RiHotelFill } from "react-icons/ri"
 
 import backgroundLogin from '../../../assets/img/backgroundLogin.png'
+import { white, graySmoothX3, red, blackSmooth } from '../../styles/colors.ts'
 import * as globalConstStyles from '../../styles/globalConstStyles.ts'
 
 
@@ -27,9 +28,9 @@ export const IconHotel = styled(RiHotelFill)`
     width: 6rem;
     height: auto;
     border-radius: 50%;
-    border: 2px solid #E23428;
-    color: #E23428;
-    background-color: #FFFFFF;
+    border: 2px solid ${red};
+    color: ${red};
+    background-color: ${white};
 `
 
 export const Form = styled.form`
@@ -41,7 +42,7 @@ export const LabelText = styled.label`
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 1.5em;
     font-weight: 700;
-    color: #FFFFFF;
+    color: ${white};
     text-shadow: 3px 3px #262626;
 `
 
@@ -56,10 +57,10 @@ export const InputText = styled.input`
     border: none;
     border-radius: 1rem;
     outline: none;
-    color: #262626;
+    color: ${blackSmooth};
 
     &::placeholder {
-        color: #D3D3D3;
+        color: ${graySmoothX3};
         opacity: 1;
     }
 `
@@ -74,8 +75,8 @@ export const ButtonSignIn = styled.button`
     border-radius: 1rem;
     cursor: pointer;
     transition: transform 0.25s ease;
-    color: #FFFFFF;
-    background-color: #E23428;
+    color: ${white};
+    background-color: ${red};
 
     &:hover {
         transform: scale(1.1)

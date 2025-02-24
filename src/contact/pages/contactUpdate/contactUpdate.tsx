@@ -12,13 +12,13 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { ContactInterface } from "../../interfaces/contactInterface.ts"
-import { validateName, validateEmail, validateTextArea, validatePhoneNumber } from '../../../common/utils/formUtils.ts'
+import { validateFullName, validateEmail, validateTextArea, validatePhoneNumber } from '../../../common/utils/validators.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconUpdate, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
 } from "../../../common/styles/form.ts"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getContactIdData, getContactIdStatus, getContactError } from "../../../contact/features/contactSlice.ts"
+import { getContactIdData, getContactIdStatus } from "../../../contact/features/contactSlice.ts"
 import { ContactFetchByIDThunk } from "../../../contact/features/thunks/contactFetchByIDThunk.ts"
 import { ContactUpdateThunk } from '../../../contact/features/thunks/contactUpdateThunk.ts'
 
@@ -26,38 +26,38 @@ import { ContactUpdateThunk } from '../../../contact/features/thunks/contactUpda
 export const ContactUpdate = () => {
 
     const { id } = useParams()
-    const idParams = parseInt(id!)
+    const idParams = id!
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const contactById = useSelector(getContactIdData)
     const contactByIdLoading = useSelector(getContactIdStatus)
     const [contactUpdated, setContactUpdated] = useState<ContactInterface>({
-        id: 0,
+        _id: '0',
         publish_date: '',
-        publish_time: '',
         full_name: '',
         email: '',
-        contact: '',
-        comment: ''
+        phone_number: '',
+        comment: '',
+        archived: false
     })
 
     useEffect(() => {
         if (contactByIdLoading === ApiStatus.idle) { dispatch(ContactFetchByIDThunk(idParams)) }
         else if (contactByIdLoading === ApiStatus.fulfilled) {
-            if (contactById?.id !== idParams) {
+            if (contactById?._id !== idParams) {
                 dispatch(ContactFetchByIDThunk(idParams))
             }
             setContactUpdated({
-                id: contactById.id,
+                _id: contactById._id,
                 publish_date: contactById.publish_date || '',
-                publish_time: contactById.publish_time || '',
                 full_name: contactById.full_name || '',
                 email: contactById.email || '',
-                contact: contactById.contact || '',
-                comment: contactById.comment || ''
+                phone_number: contactById.phone_number || '',
+                comment: contactById.comment || '',
+                archived: contactById.archived
             })
         }
-        else if (contactByIdLoading === ApiStatus.rejected) { alert("Error en la api de contact update") }
+        else if (contactByIdLoading === ApiStatus.rejected) { alert("Error in API update contact") }
     }, [contactByIdLoading, contactById, id])
 
     const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,9 +79,9 @@ export const ContactUpdate = () => {
 
         if (!validateAllData()) { return }
 
-        dispatch(ContactUpdateThunk(contactUpdated))
+        dispatch(ContactUpdateThunk({ idContact: contactUpdated._id, updatedContactData: contactUpdated }))
             .then(() => {
-                ToastifySuccess(`Contact #${contactUpdated.id} updated`, () => {
+                ToastifySuccess('Contact updated', () => {
                     navigate('../')
                 })
             })
@@ -91,26 +91,18 @@ export const ContactUpdate = () => {
     }
 
     const validateAllData = (): boolean => {
-        const checkName = validateName(contactUpdated.full_name)
-        if (!checkName.test) {
-            checkName.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkEmail = validateEmail(contactUpdated.email)
-        if (!checkEmail.test) {
-            checkEmail.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkPhoneNumber = validatePhoneNumber(contactUpdated.contact)
-        if (!checkPhoneNumber.test) {
-            checkPhoneNumber.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkTextArea = validateTextArea(contactUpdated.comment)
-        if (!checkTextArea.test) {
-            checkTextArea.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
+
+        const errorsFullName = validateFullName(contactUpdated.full_name, 'Full Name')
+        if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }
+
+        const errorsEmail = validateEmail(contactUpdated.email, 'Email')
+        if (errorsEmail.length > 0) { errorsEmail.map(error => ToastifyError(error)); return false }
+
+        const errorsPhoneNumber = validatePhoneNumber(contactUpdated.phone_number, 'Phone Number')
+        if (errorsPhoneNumber.length > 0) { errorsPhoneNumber.map(error => ToastifyError(error)); return false }
+
+        const errorsTextArea = validateTextArea(contactUpdated.comment, 'Comment')
+        if (errorsTextArea.length > 0) { errorsTextArea.map(error => ToastifyError(error)); return false }
 
         return true
     }
@@ -127,7 +119,7 @@ export const ContactUpdate = () => {
                         <IconUpdate />
                     </DivCtnIcons>
                 </DivIcon>
-                <TitleForm>Update Contact #{contactUpdated.id}</TitleForm>
+                <TitleForm>Update Contact #{contactUpdated._id}</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
@@ -142,7 +134,7 @@ export const ContactUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Phone Number</LabelText>
-                        <InputText name="contact" value={contactUpdated.contact} onChange={handleStringChange} />
+                        <InputText name="phone_number" value={contactUpdated.phone_number} onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
@@ -156,6 +148,5 @@ export const ContactUpdate = () => {
                 </Form>
             </DivCtnForm>
         </contactCreateJS.SectionPageContactUpdate>
-
     </>)
 }

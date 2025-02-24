@@ -1,10 +1,10 @@
 
 export interface ContactInterface {
-    id: number
+    _id: string
     publish_date: string
-    publish_time: string
     full_name: string
     email: string
-    contact: string
+    phone_number: string
     comment: string
+    archived: boolean
 }

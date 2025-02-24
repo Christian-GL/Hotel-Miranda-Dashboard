@@ -1,51 +1,50 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-
-import contactJSON from '../../data/contactData.json'
 import { ContactInterface } from "../../interfaces/contactInterface"
 
 
-type RequestResponse = {
-    ok: boolean
-    json: () => ContactInterface
-}
-
 const contactDefaultIfError: ContactInterface = {
-    id: 0,
+    _id: '',
     publish_date: '',
-    publish_time: '',
     full_name: '',
     email: '',
-    contact: '',
-    comment: ''
+    phone_number: '',
+    comment: '',
+    archived: false
 }
 
+const tokenAccesKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik5hdGhhbmlhbF9NdXJwaHlAeWFob28uY29tIiwiaWF0IjoxNzQwNDA0MTU4LCJleHAiOjE3NDEwMDg5NTh9.MDZKkwNBWOXxilJYj0AB-4Vikxk52KS2OGdvVO83I28'
+const API_URL = "http://localhost:3002"
+const API_END_POINT = "api-dashboard/v2/contacts"
+
 export const ContactFetchByIDThunk = createAsyncThunk
-    ("contact/fetchById", async (contactId: number) => {
+    ("contact/fetchById", async (contactId: string) => {
 
         try {
-            const request: RequestResponse = await new Promise((resolve) => {
-                const contact = contactJSON.find((contact) => contact.id === contactId);
-                if (contact) {
-                    setTimeout(() => resolve({
-                        ok: true,
-                        json: () => contact
-                    }), 200)
+            const request = await fetch(`${API_URL}/${API_END_POINT}/${contactId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${tokenAccesKey}`
                 }
-                else {
-                    setTimeout(() => resolve({
-                        ok: false,
-                        json: () => contactDefaultIfError
-                    }), 200)
-                }
-
             })
-
             if (request.ok) {
-                const contactFinded = await request.json()
-                return contactFinded
+                const json = await request.json()
+                let contact: ContactInterface = {
+                    _id: json._id,
+                    publish_date: json.publish_date,
+                    full_name: json.full_name,
+                    email: json.email,
+                    phone_number: json.phone_number,
+                    comment: json.comment,
+                    archived: json.archived
+                }
+                return contact
             }
-            else return contactDefaultIfError
+            else {
+                console.log('Error: ', request.statusText)
+                return contactDefaultIfError
+            }
         }
         catch (error) {
             console.log(error)
