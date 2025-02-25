@@ -70,11 +70,11 @@ export const UserSlice = createSlice({
             .addCase(UserUpdateThunk.fulfilled, (state, action: PayloadAction<UserInterface>) => {
                 state.updateStatus = ApiStatus.fulfilled
                 const userToUpdate = action.payload
-                const index = state.allData.findIndex(user => user.id === userToUpdate.id)
+                const index = state.allData.findIndex(user => user._id === userToUpdate._id)
                 if (index !== -1) {
                     state.allData[index] = userToUpdate
                 }
-                if (state.idData && state.idData.id === userToUpdate.id) {
+                if (state.idData && state.idData._id === userToUpdate._id) {
                     state.idData = userToUpdate
                 }
             })
@@ -86,10 +86,10 @@ export const UserSlice = createSlice({
             .addCase(UserDeleteByIdThunk.pending, (state) => {
                 state.deleteStatus = ApiStatus.pending
             })
-            .addCase(UserDeleteByIdThunk.fulfilled, (state, action: PayloadAction<number>) => {
+            .addCase(UserDeleteByIdThunk.fulfilled, (state, action: PayloadAction<string>) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const userIdToDelete = action.payload
-                state.allData = state.allData.filter(user => user.id !== userIdToDelete)
+                state.allData = state.allData.filter(user => user._id !== userIdToDelete)
             })
             .addCase(UserDeleteByIdThunk.rejected, (state) => {
                 state.error = true

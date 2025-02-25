@@ -111,3 +111,25 @@ export const validateBoolean = (bool: boolean, fieldName: string): string[] => {
 
     return errorMessages
 }
+
+export const validateCreatePassword = (password: string, fieldName: string): string[] => {
+    const errorMessages: string[] = []
+    const regexUppercase = /[A-Z]/
+    const regexNumber = /\d/
+    const regexSymbols = /[*\-.,!@#$%^&*()_+={}|\[\]:;"'<>,.?/~`]/
+
+    if (password.length < 8 || password.length > 20) {
+        errorMessages.push(`${fieldName} length must be between 8 and 20 characters`)
+    }
+    if (!regexUppercase.test(password)) {
+        errorMessages.push(`${fieldName} must contain at least one uppercase letter`)
+    }
+    if (!regexNumber.test(password)) {
+        errorMessages.push(`${fieldName} must contain at least one number`)
+    }
+    if (!regexSymbols.test(password)) {
+        errorMessages.push(`${fieldName} must contain at least one symbol (*, -, ., etc)`)
+    }
+
+    return errorMessages
+}

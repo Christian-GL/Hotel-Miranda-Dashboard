@@ -1,49 +1,50 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { UserInterface } from '../../interfaces/userInterface.ts'
+import { UserStatus } from "../../data/userStatus.ts"
+import { apiUrl, apiEndPointUsers, apiToken } from '../../../common/globalParameters/routes.ts'
 
-
-type RequestResponse = {
-    ok: boolean
-    json: () => UserInterface
-}
 
 const userDefaultIfError: UserInterface = {
-    id: 0,
+    _id: '',
     photo: '',
     full_name: '',
     email: '',
+    password: '',
     start_date: '',
     description: '',
     phone_number: '',
-    status_active: false
+    status: UserStatus.inactive
 }
 
 export const UserCreateThunk = createAsyncThunk
-    ("user/create", async (newUserData: UserInterface) => {
+    ("user/create", async (newUserData: Partial<UserInterface>) => {
+
+        if (newUserData.photo === undefined) { console.error('user.photo is undefined'); return userDefaultIfError }
+        if (newUserData.full_name === undefined) { console.error('user.full_name is undefined'); return userDefaultIfError }
+        if (newUserData.email === undefined) { console.error('user.email is undefined'); return userDefaultIfError }
+        if (newUserData.password === undefined) { console.error('user.password is undefined'); return userDefaultIfError }
+        if (newUserData.start_date === undefined) { console.error('user.start_date is undefined'); return userDefaultIfError }
+        if (newUserData.description === undefined) { console.error('user.description is undefined'); return userDefaultIfError }
+        if (newUserData.phone_number === undefined) { console.error('user.phone_number is undefined'); return userDefaultIfError }
+        if (newUserData.status === undefined) { console.error('user.status is undefined'); return userDefaultIfError }
 
         try {
-            const request: RequestResponse = await new Promise((resolve) => {
-                if (newUserData) {
-                    setTimeout(() => resolve({
-                        ok: true,
-                        json: () => newUserData
-                    }), 200)
-                }
-                else {
-                    setTimeout(() => resolve({
-                        ok: false,
-                        json: () => userDefaultIfError
-                    }), 200)
-                }
-
+            const request = await fetch(`${apiUrl}/${apiEndPointUsers}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiToken}`
+                },
+                body: JSON.stringify(newUserData)
             })
-
             if (request.ok) {
-                const userDataCreated = await request.json()
-                return userDataCreated
+                const userCreated = await request.json()
+                return userCreated
+            } else {
+                console.log("Error: ", request.statusText)
+                return userDefaultIfError
             }
-            else return userDefaultIfError
         }
         catch (error) {
             console.log(error)

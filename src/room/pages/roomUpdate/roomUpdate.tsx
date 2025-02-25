@@ -27,9 +27,6 @@ import { RoomUpdateThunk } from '../../features/thunks/roomUpdateThunk.ts'
 
 import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice.ts"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.ts"
-// import { getBookingIdData, getBookingIdStatus, getBookingError } from "../../../booking/features/bookingSlice.ts"
-// import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk.ts"
-// import { resetIdStatus } from "../../../booking/features/bookingSlice.ts"
 
 
 export const RoomUpdate = () => {

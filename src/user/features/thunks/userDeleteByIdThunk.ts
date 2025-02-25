@@ -1,41 +1,29 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
+import { apiUrl, apiEndPointUsers, apiToken } from '../../../common/globalParameters/routes.ts'
 
-
-type RequestResponse = {
-    ok: boolean
-    json: () => number
-}
 
 export const UserDeleteByIdThunk = createAsyncThunk
-    ("user/deleteById", async (userIdToDelete: number) => {
+    ("user/deleteById", async (userId: string) => {
 
         try {
-            const request: RequestResponse = await new Promise((resolve) => {
-                if (userIdToDelete) {
-                    setTimeout(() => resolve({
-                        ok: true,
-                        json: () => userIdToDelete
-                    }), 200)
-                }
-                else {
-                    setTimeout(() => resolve({
-                        ok: false,
-                        json: () => 0
-                    }), 200)
-                }
-
+            const request = await fetch(`${apiUrl}/${apiEndPointUsers}/${userId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiToken}`
+                },
             })
-
             if (request.ok) {
-                const userDataDeleted = await request.json()
-                return userDataDeleted
+                return userId
+            } else {
+                console.log("Error: ", request.statusText)
+                return '0'
             }
-            else return 0
         }
         catch (error) {
             console.log(error)
-            return 0
+            return '0'
         }
 
     })

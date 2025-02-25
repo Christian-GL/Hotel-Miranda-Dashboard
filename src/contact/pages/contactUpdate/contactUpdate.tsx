@@ -44,7 +44,7 @@ export const ContactUpdate = () => {
     useEffect(() => {
         if (contactByIdLoading === ApiStatus.idle) { dispatch(ContactFetchByIDThunk(idParams)) }
         else if (contactByIdLoading === ApiStatus.fulfilled) {
-            if (contactById?._id !== idParams) {
+            if (contactById._id !== idParams) {
                 dispatch(ContactFetchByIDThunk(idParams))
             }
             setContactUpdated({

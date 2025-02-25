@@ -74,6 +74,19 @@ export const hourFormatTo24H = (time12H: string) => {
     return `${hoursNumber.toString().padStart(2, '0')}:${minutes}`
 }
 
+export const formatDateForInput = (isoString: string): string => {
+    if (!isoString) return ""
+
+    const date = new Date(isoString)
+    const localDateTime = date.toISOString().slice(0, 16)
+
+    return localDateTime
+}
+
+
+
+
+
 
 
 export const validateRoomPhotoArray = (photos: string[]): { test: boolean, errorMessages: string[] } => {
@@ -183,7 +196,7 @@ export const validateEmail = (email: string): { test: boolean, errorMessages: st
     return { test, errorMessages }
 }
 
-export const validatePassword = (password: string): { test: boolean, errorMessages: string[] } => {
+export const validateCreatePassword = (password: string): { test: boolean, errorMessages: string[] } => {
     let test: boolean = true
     const errorMessages: string[] = []
     const regexUppercase = /[A-Z]/

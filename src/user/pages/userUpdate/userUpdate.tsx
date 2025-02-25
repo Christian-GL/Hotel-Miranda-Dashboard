@@ -12,10 +12,14 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
+import { UserStatus } from "../../data/userStatus.ts"
+import { formatDateForInput } from "../../../common/utils/formUtils.ts"
 import {
-    dateFormatToYYYYMMDD, dateFormatToDDMMYYYY, validatePhoto, validateName,
-    validateEmail, validateDateAndTime, validateTextArea, validatePhoneNumber, validatePassword
-} from '../../../common/utils/formUtils.ts'
+    validatePhoto, validateFullName, validateEmail, validateTextArea,
+    validatePhoneNumber, validateDateRelativeToNow,
+    validateCreatePassword
+} from '../../../common/utils/validators.ts'
+import { comparePasswords } from '../../../common/utils/hashPassword.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
@@ -29,43 +33,45 @@ import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk.ts"
 export const UserUpdate = () => {
 
     const { id } = useParams()
-    const idParams = parseInt(id!)
+    const idParams = id!
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const userById = useSelector(getUserIdData)
     const userByIdLoading = useSelector(getUserIdStatus)
     const [userUpdated, setUserUpdated] = useState<UserInterface>({
-        id: 0,
+        _id: '0',
         photo: '',
         full_name: '',
         email: '',
+        password: '',
         start_date: '',
         description: '',
         phone_number: '',
-        status_active: false,
-        password: ''
+        status: UserStatus.inactive
     })
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
+    const [oldPassword, setOldPassword] = useState<String>('')
 
     useEffect(() => {
         if (userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(idParams)) }
         else if (userByIdLoading === ApiStatus.fulfilled) {
-            if (userById?.id !== idParams) {
+            if (userById._id !== idParams) {
                 dispatch(UserFetchByIDThunk(idParams))
             }
             setUserUpdated({
-                id: userById.id,
+                _id: userById._id,
                 photo: userById.photo || '',
                 full_name: userById.full_name || '',
                 email: userById.email || '',
+                password: userById.password || '',
                 start_date: userById.start_date || '',
                 description: userById.description || '',
                 phone_number: userById.phone_number || '',
-                status_active: userById.status_active || false,
-                password: userById.password || ''
+                status: userById.status || UserStatus.inactive
             })
+            setOldPassword(userById.password)
         }
-        else if (userByIdLoading === ApiStatus.rejected) { alert("Error en la api de user update") }
+        else if (userByIdLoading === ApiStatus.rejected) { alert("Error in API update users") }
     }, [userByIdLoading, userById, id])
 
     const switchPasswordVisibility = () => {
@@ -90,9 +96,14 @@ export const UserUpdate = () => {
     }
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
+
+        if (!value) return
+        const date = new Date(value)
+        const dateISO = date.toISOString()
+
         setUserUpdated({
             ...userUpdated,
-            [name]: dateFormatToDDMMYYYY(value),
+            [name]: dateISO
         })
     }
     const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -102,11 +113,11 @@ export const UserUpdate = () => {
             [name]: value
         })
     }
-    const handleBooleanChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setUserUpdated({
             ...userUpdated,
-            [name]: value === 'false' ? false : true
+            [name]: value
         })
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -114,9 +125,14 @@ export const UserUpdate = () => {
 
         if (!validateAllData()) { return }
 
-        dispatch(UserUpdateThunk(userUpdated))
+        // if (oldPassword === userUpdated.password) {
+        //     const errorsPassword = validateCreatePassword(userUpdated.password, 'Password')
+        //     if (errorsPassword.length > 0) { errorsPassword.map(error => ToastifyError(error)); return false }
+        // }
+
+        dispatch(UserUpdateThunk({ idUser: userUpdated._id, updatedUserData: userUpdated }))
             .then(() => {
-                ToastifySuccess(`User #${userUpdated.id} updated`, () => {
+                ToastifySuccess('User updated', () => {
                     navigate('../')
                 })
             })
@@ -126,41 +142,33 @@ export const UserUpdate = () => {
     }
 
     const validateAllData = (): boolean => {
-        // const checkPhoto = validatePhoto(userUpdated.photo)
-        // if (!checkPhoto.test) {
-        //     checkPhoto.errorMessages.map(error => ToastifyError(error))
-        //     return false
-        // }
-        const checkName = validateName(userUpdated.full_name)
-        if (!checkName.test) {
-            checkName.errorMessages.map(error => ToastifyError(error))
-            return false
+
+        // const errorsPhoto = validatePhoto(userUpdated.photo, 'Photo')
+        // if (errorsPhoto.length > 0) { errorsPhoto.map(error => ToastifyError(error)); return false }
+
+        const errorsFullName = validateFullName(userUpdated.full_name, 'Full Name')
+        if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }
+
+        const errorsEmail = validateEmail(userUpdated.email, 'Email')
+        if (errorsEmail.length > 0) { errorsEmail.map(error => ToastifyError(error)); return false }
+
+        const errorsStartDate = validateDateRelativeToNow(new Date(userUpdated.start_date), false, 'Start Date')
+        if (errorsStartDate.length > 0) { errorsStartDate.map(error => ToastifyError(error)); return false }
+
+        const errorsTextArea = validateTextArea(userUpdated.description, 'Description')
+        if (errorsTextArea.length > 0) { errorsTextArea.map(error => ToastifyError(error)); return false }
+
+        const errorsPhoneNumber = validatePhoneNumber(userUpdated.phone_number, 'Phone Number')
+        if (errorsPhoneNumber.length > 0) { errorsPhoneNumber.map(error => ToastifyError(error)); return false }
+
+        // HACER FUNCION QUE PERMITA CAMBIAR UNA CONTRASEÑA SI SE CONOCE lA ANTERIOR?...
+        // ...O SI SE ES "ADMIN" SE PUEDE SIEMPRE ?
+        // await comparePasswords(blablabla)
+        if (oldPassword !== userUpdated.password) {
+            const errorsPassword = validateCreatePassword(userUpdated.password, 'Password')
+            if (errorsPassword.length > 0) { errorsPassword.map(error => ToastifyError(error)); return false }
         }
-        const checkEmail = validateEmail(userUpdated.email)
-        if (!checkEmail.test) {
-            checkEmail.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkStartDate = validateDateAndTime(userUpdated.start_date)
-        if (!checkStartDate.test) {
-            checkStartDate.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkTextArea = validateTextArea(userUpdated.description)
-        if (!checkTextArea.test) {
-            checkTextArea.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkPhoneNumber = validatePhoneNumber(userUpdated.phone_number)
-        if (!checkPhoneNumber.test) {
-            checkPhoneNumber.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkPassword = validatePassword(userUpdated.password)
-        if (!checkPassword.test) {
-            checkPassword.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
+
 
         return true
     }
@@ -178,7 +186,7 @@ export const UserUpdate = () => {
                         <IconUpdate />
                     </DivCtnIcons>
                 </DivIcon>
-                <TitleForm>Update User #{userUpdated.id}</TitleForm>
+                <TitleForm>Update User #{userUpdated._id}</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
@@ -200,7 +208,7 @@ export const UserUpdate = () => {
                         <InputText name="phone_number" value={userUpdated.phone_number} onChange={handleStringChange} />
 
                         <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Start Date</LabelText>
-                        <InputDate name="start_date" type="date" value={dateFormatToYYYYMMDD(userUpdated.start_date)} onChange={handleDateChange} />
+                        <InputDate name="start_date" type="datetime-local" value={formatDateForInput(userUpdated.start_date)} onChange={handleDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
@@ -224,9 +232,9 @@ export const UserUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Status</LabelText>
-                        <Select name="status_active" value={userUpdated.status_active ? "true" : "false"} onChange={handleBooleanChange}>
-                            <Option value="true">Active</Option>
-                            <Option value="false">Inactive</Option>
+                        <Select name="status" value={userUpdated.status ? "true" : "false"} onChange={handleSelectChange}>
+                            <Option value={UserStatus.active}>Active</Option>
+                            <Option value={UserStatus.inactive}>Inactive</Option>
                         </Select>
                     </DivCtnEntry>
 

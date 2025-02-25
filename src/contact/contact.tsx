@@ -11,7 +11,6 @@ import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { ContactInterface } from './interfaces/contactInterface.ts'
 import { ContactColumnsArrowStatesInterface } from './interfaces/contactColumnsArrowStatesInterface.ts'
 import { ArrowType } from "../common/enums/ArrowType.ts"
-import { dateFormatToYYYYMMDD, hourFormatTo24H } from "../common/utils/formUtils.ts"
 import { ArticleReview } from "../common/components/articleReview/articleReview.tsx"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
@@ -43,7 +42,7 @@ export const Contact = () => {
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredContacts, setFilteredContacts] = useState<ContactInterface[]>([])
-    const [displayNotArchived, setDisplayNotArchived] = useState<boolean>(true)
+    const [isDisplayedNotArchived, setisDisplayedNotArchived] = useState<boolean>(true)
     const [arrowStates, setArrowStates] = useState<ContactColumnsArrowStatesInterface>({
         orderId: ArrowType.right,
         date: ArrowType.down,
@@ -61,9 +60,9 @@ export const Contact = () => {
 
     useEffect(() => {
         if (contactAllLoading === ApiStatus.idle) { dispatch(ContactFetchAllThunk()) }
-        else if (contactAllLoading === ApiStatus.fulfilled) { displayContacts(displayNotArchived) }
+        else if (contactAllLoading === ApiStatus.fulfilled) { displayContacts(isDisplayedNotArchived) }
         else if (contactAllLoading === ApiStatus.rejected) { alert("Error en la api de contacts") }
-    }, [contactAllLoading, contactAll, inputText, displayNotArchived, arrowStates])
+    }, [contactAllLoading, contactAll, inputText, isDisplayedNotArchived, arrowStates])
 
     const navigateToContactCreate = () => navigate('contact-create')
     const navigateToContactUpdate = (id: string) => navigate(`contact-update/${id}`)
@@ -73,12 +72,12 @@ export const Contact = () => {
         resetPage()
     }
     const handleTableFilter = (bool: boolean): void => {
-        setDisplayNotArchived(bool)
-        displayContacts(displayNotArchived)
+        setisDisplayedNotArchived(bool)
+        displayContacts(isDisplayedNotArchived)
     }
-    const displayContacts = (archived: boolean): void => {
+    const displayContacts = (isDisplayedNotArchived: boolean): void => {
         const selectArchiveType = contactAll.filter(contact =>
-            contact.archived !== archived
+            contact.archived !== isDisplayedNotArchived
         )
         const filteredData = selectArchiveType.filter(contact =>
             contact.full_name.toLowerCase().includes(inputText.toLowerCase())
@@ -146,7 +145,7 @@ export const Contact = () => {
             return newState
         })
 
-        handleTableFilter(displayNotArchived)
+        handleTableFilter(isDisplayedNotArchived)
     }
     const getArrowIcon = (nameColumn: columnsSortAvailable): JSX.Element => {
         const state = arrowStates[nameColumn]
@@ -205,8 +204,8 @@ export const Contact = () => {
 
             <contactStyles.DivCtnFuncionality>
                 <contactStyles.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='Contacts' onClick={() => handleTableFilter(true)} isSelected={displayNotArchived} />
-                    <TableDisplayIndicator text='Archived' onClick={() => handleTableFilter(false)} isSelected={!displayNotArchived} />
+                    <TableDisplayIndicator text='Contacts' onClick={() => handleTableFilter(true)} isSelected={isDisplayedNotArchived} />
+                    <TableDisplayIndicator text='Archived' onClick={() => handleTableFilter(false)} isSelected={!isDisplayedNotArchived} />
                 </contactStyles.DivCtnTableDisplayFilter>
 
                 <contactStyles.DivCtnSearch>

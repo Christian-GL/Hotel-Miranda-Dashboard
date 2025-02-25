@@ -1,49 +1,43 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { UserInterface } from '../../interfaces/userInterface.ts'
+import { UserStatus } from "../../data/userStatus.ts"
+import { apiUrl, apiEndPointUsers, apiToken } from '../../../common/globalParameters/routes.ts'
 
-
-type RequestResponse = {
-    ok: boolean
-    json: () => UserInterface
-}
 
 const userDefaultIfError: UserInterface = {
-    id: 0,
+    _id: '',
     photo: '',
     full_name: '',
     email: '',
+    password: '',
     start_date: '',
     description: '',
     phone_number: '',
-    status_active: false
+    status: UserStatus.inactive
 }
 
 export const UserUpdateThunk = createAsyncThunk
-    ("user/update", async (userData: UserInterface) => {
+    ("user/update", async ({ idUser, updatedUserData }
+        : { idUser: string, updatedUserData: UserInterface }) => {
 
         try {
-            const request: RequestResponse = await new Promise((resolve) => {
-                if (userData) {
-                    setTimeout(() => resolve({
-                        ok: true,
-                        json: () => userData
-                    }), 200)
-                }
-                else {
-                    setTimeout(() => resolve({
-                        ok: false,
-                        json: () => userDefaultIfError
-                    }), 200)
-                }
-
+            const request = await fetch(`${apiUrl}/${apiEndPointUsers}/${idUser}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiToken}`
+                },
+                body: JSON.stringify(updatedUserData)
             })
 
             if (request.ok) {
-                const userDataUpdated = await request.json()
-                return userDataUpdated
+                const userUpdated = await request.json()
+                return userUpdated
+            } else {
+                console.log("Error: ", request.statusText)
+                return userDefaultIfError
             }
-            else return userDefaultIfError
         }
         catch (error) {
             console.log(error)

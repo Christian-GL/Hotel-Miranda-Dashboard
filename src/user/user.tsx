@@ -7,10 +7,10 @@ import { useSelector, useDispatch } from "react-redux"
 import * as userStyles from "./userStyles.ts"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
+import { UserStatus } from './data/userStatus.ts'
 import { UserInterface } from "./interfaces/userInterface.ts"
 import { UserColumnsArrowStatesInterface } from "./interfaces/userColumnsArrowStatesInterface.ts"
 import { ArrowType } from "../common/enums/ArrowType.ts"
-import { dateFormatToYYYYMMDD } from "../common/utils/formUtils.ts"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
@@ -66,7 +66,7 @@ export const User = () => {
     }, [userAllLoading, userAll, inputText, selectedButton, arrowStates])
 
     const navigateToUserCreate = () => navigate('user-create')
-    const navigateToUserUpdate = (id: number) => navigate(`user-update/${id}`)
+    const navigateToUserUpdate = (id: string) => navigate(`user-update/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -86,12 +86,12 @@ export const User = () => {
                 break
             case ButtonType.active:
                 filteredData = userAll.filter(user =>
-                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status_active === true
+                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status === UserStatus.active
                 )
                 break
             case ButtonType.inactive:
                 filteredData = userAll.filter(user =>
-                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status_active === false
+                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status === UserStatus.inactive
                 )
                 break
         }
@@ -116,8 +116,8 @@ export const User = () => {
             }
             else if (activeColumn === columnsSortAvailable.startDate) {
                 sortedData.sort((a, b) => {
-                    let valueA: Date = new Date(dateFormatToYYYYMMDD(a.start_date))
-                    let valueB: Date = new Date(dateFormatToYYYYMMDD(b.start_date))
+                    let valueA: Date = new Date(a.start_date)
+                    let valueB: Date = new Date(b.start_date)
                     if (arrowStates[activeColumn] === ArrowType.up) {
                         return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
                     } else {
@@ -157,7 +157,7 @@ export const User = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteUserById = (id: number, index: number): void => {
+    const deleteUserById = (id: string, index: number): void => {
         dispatch(UserDeleteByIdThunk(id))
         displayMenuOptions(index)
         resetPage()
@@ -203,8 +203,8 @@ export const User = () => {
                             <DivNameTable>
                                 <b>{userData.full_name}</b>
                             </DivNameTable>
-                            <div>#<b>{userData.id}</b></div>
                             <div>{userData.email}</div>
+                            <div>#<b>{userData._id}</b></div>
                         </PTable>,
 
                         <PTable key={index + '-3'}>
@@ -221,12 +221,12 @@ export const User = () => {
                         </PTable>,
 
                         <PTable key={index + '-6'}>
-                            {userData.status_active === true ?
-                                <PStatusAvailableUsers status={userData.status_active}>
+                            {userData.status === UserStatus.active ?
+                                <PStatusAvailableUsers status={true}>
                                     Active
                                 </PStatusAvailableUsers> :
 
-                                <PStatusAvailableUsers status={userData.status_active}>
+                                <PStatusAvailableUsers status={false}>
                                     Inactive
                                 </PStatusAvailableUsers>
                             }
@@ -235,8 +235,8 @@ export const User = () => {
                         <PTable key={index + '-7'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { navigateToUserUpdate(userData.id) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteUserById(userData.id, index) }}>Delete</ButtonOption>
+                                <ButtonOption onClick={() => { navigateToUserUpdate(userData._id) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { deleteUserById(userData._id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>
                     ]

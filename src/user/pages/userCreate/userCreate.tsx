@@ -11,10 +11,13 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
+import { UserStatus } from "../../data/userStatus.ts"
 import {
-    checkFirstIDAvailable, validatePhoto, validateName, validateEmail,
-    validateDateAndTime, validateTextArea, validatePhoneNumber, validatePassword
-} from '../../../common/utils/formUtils.ts'
+    validatePhoto, validateFullName, validateEmail, validateTextArea,
+    validatePhoneNumber, validateDateRelativeToNow,
+    validateCreatePassword
+} from '../../../common/utils/validators.ts'
+// import { hashPassword } from '../../../common/utils/hashPassword.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
@@ -31,30 +34,22 @@ export const UserCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const userAll = useSelector(getUserAllData)
     const userAllLoading = useSelector(getUserAllStatus)
-    const [newUser, setNewUser] = useState<UserInterface>({
-        id: 0,
+    const [newUser, setNewUser] = useState<Partial<UserInterface>>({
         photo: '',
         full_name: '',
         email: '',
+        password: '',
         start_date: '',
         description: '',
         phone_number: '',
-        status_active: false,
-        password: ''
+        status: UserStatus.inactive
     })
-    const [nextIdAvailable, setNextIdAvailable] = useState<number>(0)
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
 
     useEffect(() => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
-        else if (userAllLoading === ApiStatus.fulfilled) {
-            if (userAll.length > 0) {
-                const id = checkFirstIDAvailable(userAll.map(item => item.id))
-                setNextIdAvailable(id)
-            }
-            else { setNextIdAvailable(1) }
-        }
-        else if (userAllLoading === ApiStatus.rejected) { alert("Error en la api de user create") }
+        else if (userAllLoading === ApiStatus.fulfilled) { }
+        else if (userAllLoading === ApiStatus.rejected) { alert("Error in API create user") }
     }, [userAllLoading, userAll])
 
     const switchPasswordVisibility = () => {
@@ -79,11 +74,14 @@ export const UserCreate = () => {
     }
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        const [year, month, day] = value.split("-")
-        const dateFormatted = `${day}-${month}-${year}`
+
+        if (!value) return
+        const date = new Date(value)
+        const dateISO = date.toISOString()
+
         setNewUser({
             ...newUser,
-            [name]: dateFormatted
+            [name]: dateISO
         })
     }
     const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -93,25 +91,44 @@ export const UserCreate = () => {
             [name]: value
         })
     }
-    const handleBooleanChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // const handleBooleanChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    //     const { name, value } = e.target
+    //     setNewUser({
+    //         ...newUser,
+    //         [name]: value === 'false' ? false : true
+    //     })
+    // }
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setNewUser({
             ...newUser,
-            [name]: value === 'false' ? false : true
+            [name]: value
         })
     }
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         if (!validateAllData()) { return }
 
+        if (newUser.password === undefined) { console.error('user.password is undefined'); return }
+        // const hashedPassword = await hashPassword(newUser.password)
         const newUserToDispatch = {
-            ...newUser,
-            id: nextIdAvailable
+            ...newUser
+            // password: hashedPassword
         }
+
+        if (newUserToDispatch.photo === undefined) { console.error('user.photo is undefined'); return }
+        if (newUserToDispatch.full_name === undefined) { console.error('user.full_name is undefined'); return }
+        if (newUserToDispatch.email === undefined) { console.error('user.email is undefined'); return }
+        if (newUserToDispatch.password === undefined) { console.error('user.password is undefined'); return }
+        if (newUserToDispatch.start_date === undefined) { console.error('user.start_date is undefined'); return }
+        if (newUserToDispatch.description === undefined) { console.error('user.description is undefined'); return }
+        if (newUserToDispatch.phone_number === undefined) { console.error('user.phone_number is undefined'); return }
+        if (newUserToDispatch.status === undefined) { console.error('user.status is undefined'); return }
+
         dispatch(UserCreateThunk(newUserToDispatch))
             .then(() => {
-                ToastifySuccess(`User #${newUserToDispatch.id} created`, () => {
+                ToastifySuccess('User created', () => {
                     navigate('../')
                 })
             })
@@ -121,41 +138,35 @@ export const UserCreate = () => {
     }
 
     const validateAllData = (): boolean => {
-        // const checkPhoto = validatePhoto(newUser.photo)
-        // if (!checkPhoto.test) {
-        //     checkPhoto.errorMessages.map(error => ToastifyError(error))
-        //     return false
-        // }
-        const checkName = validateName(newUser.full_name)
-        if (!checkName.test) {
-            checkName.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkEmail = validateEmail(newUser.email)
-        if (!checkEmail.test) {
-            checkEmail.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkStartDate = validateDateAndTime(newUser.start_date)
-        if (!checkStartDate.test) {
-            checkStartDate.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkTextArea = validateTextArea(newUser.description)
-        if (!checkTextArea.test) {
-            checkTextArea.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkPhoneNumber = validatePhoneNumber(newUser.phone_number)
-        if (!checkPhoneNumber.test) {
-            checkPhoneNumber.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkPassword = validatePassword(newUser.password)
-        if (!checkPassword.test) {
-            checkPassword.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
+        if (newUser.photo === undefined) { console.error('user.photo is undefined'); return false }
+        if (newUser.full_name === undefined) { console.error('user.full_name is undefined'); return false }
+        if (newUser.email === undefined) { console.error('user.email is undefined'); return false }
+        if (newUser.password === undefined) { console.error('user.password is undefined'); return false }
+        if (newUser.start_date === undefined) { console.error('user.start_date is undefined'); return false }
+        if (newUser.description === undefined) { console.error('user.description is undefined'); return false }
+        if (newUser.phone_number === undefined) { console.error('user.phone_number is undefined'); return false }
+        if (newUser.status === undefined) { console.error('user.status is undefined'); return false }
+
+        // const errorsPhoto = validatePhoto(newUser.photo, 'Photo')
+        // if (errorsPhoto.length > 0) { errorsPhoto.map(error => ToastifyError(error)); return false }
+
+        const errorsFullName = validateFullName(newUser.full_name, 'Full Name')
+        if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }
+
+        const errorsEmail = validateEmail(newUser.email, 'Email')
+        if (errorsEmail.length > 0) { errorsEmail.map(error => ToastifyError(error)); return false }
+
+        const errorsStartDate = validateDateRelativeToNow(new Date(newUser.start_date), false, 'Start Date')
+        if (errorsStartDate.length > 0) { errorsStartDate.map(error => ToastifyError(error)); return false }
+
+        const errorsTextArea = validateTextArea(newUser.description, 'Description')
+        if (errorsTextArea.length > 0) { errorsTextArea.map(error => ToastifyError(error)); return false }
+
+        const errorsPhoneNumber = validatePhoneNumber(newUser.phone_number, 'Phone Number')
+        if (errorsPhoneNumber.length > 0) { errorsPhoneNumber.map(error => ToastifyError(error)); return false }
+
+        const errorsPassword = validateCreatePassword(newUser.password, 'Password')
+        if (errorsPassword.length > 0) { errorsPassword.map(error => ToastifyError(error)); return false }
 
         return true
     }
@@ -196,7 +207,7 @@ export const UserCreate = () => {
                         <InputText name="phone_number" onChange={handleStringChange} />
 
                         <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Start Date</LabelText>
-                        <InputDate name="start_date" type="date" onChange={handleDateChange} />
+                        <InputDate name="start_date" type="datetime-local" onChange={handleDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
@@ -220,9 +231,9 @@ export const UserCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Status</LabelText>
-                        <Select name="status_active" onChange={handleBooleanChange}>
-                            <Option value="true">Active</Option>
-                            <Option value="false" selected>Inactive</Option>
+                        <Select name="status" onChange={handleSelectChange}>
+                            <Option value={UserStatus.active}>Active</Option>
+                            <Option value={UserStatus.inactive} selected>Inactive</Option>
                         </Select>
                     </DivCtnEntry>
 

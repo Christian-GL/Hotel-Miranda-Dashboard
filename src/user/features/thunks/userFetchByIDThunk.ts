@@ -1,52 +1,52 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-
-import userJSON from '../../data/userData.json'
 import { UserInterface } from '../../interfaces/userInterface.ts'
+import { UserStatus } from "../../data/userStatus.ts"
+import { apiUrl, apiEndPointUsers, apiToken } from '../../../common/globalParameters/routes.ts'
 
-
-type RequestResponse = {
-    ok: boolean
-    json: () => UserInterface
-}
 
 const userDefaultIfError: UserInterface = {
-    id: 0,
+    _id: '',
     photo: '',
     full_name: '',
     email: '',
+    password: '',
     start_date: '',
     description: '',
     phone_number: '',
-    status_active: false
+    status: UserStatus.inactive
 }
 
 export const UserFetchByIDThunk = createAsyncThunk
-    ("user/fetchById", async (userId: number) => {
+    ("user/fetchById", async (userId: string) => {
 
         try {
-            const request: RequestResponse = await new Promise((resolve) => {
-                const user = userJSON.find((user) => user.id === userId)
-                if (user) {
-                    setTimeout(() => resolve({
-                        ok: true,
-                        json: () => user
-                    }), 200)
+            const request = await fetch(`${apiUrl}/${apiEndPointUsers}/${userId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiToken}`
                 }
-                else {
-                    setTimeout(() => resolve({
-                        ok: false,
-                        json: () => userDefaultIfError
-                    }), 200)
-                }
-
             })
-
             if (request.ok) {
-                const userFinded = await request.json()
-                return userFinded
+                const json = await request.json()
+                let user: UserInterface = {
+                    _id: json._id,
+                    photo: json.photo,
+                    full_name: json.full_name,
+                    email: json.email,
+                    password: json.password,
+                    start_date: json.start_date,
+                    description: json.description,
+                    phone_number: json.phone_number,
+                    status: json.status
+                }
+                return user
             }
-            else return userDefaultIfError
+            else {
+                console.log('Error: ', request.statusText)
+                return userDefaultIfError
+            }
         }
         catch (error) {
             console.log(error)

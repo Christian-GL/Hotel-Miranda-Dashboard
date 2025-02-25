@@ -185,8 +185,7 @@ export const InputTextPhoto = styled.input`
 `
 
 export const GlobalDateTimeStyles = createGlobalStyle`
-    input[type="date"]::-webkit-calendar-picker-indicator,
-    input[type="time"]::-webkit-calendar-picker-indicator {
+    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
         position: absolute;
         top: 0;
         right: 0;
@@ -198,8 +197,8 @@ export const GlobalDateTimeStyles = createGlobalStyle`
         cursor: pointer;
     }
 
-    input[type="date"], input[type="time"] {
-        position: relative;  // Establecer posición relativa en los inputs de fecha y hora
+    input[type="datetime-local"] {
+        position: relative;
     }
 `
 
