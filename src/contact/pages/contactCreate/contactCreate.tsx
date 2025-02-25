@@ -28,8 +28,7 @@ export const ContactCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const contactAll = useSelector(getContactAllData)
     const contactAllLoading = useSelector(getContactAllStatus)
-    const [newContact, setNewContact] = useState<ContactInterface>({
-        _id: '',        // <-- ELIMINAR
+    const [newContact, setNewContact] = useState<Partial<ContactInterface>>({
         publish_date: '',
         full_name: '',
         email: '',
@@ -68,6 +67,11 @@ export const ContactCreate = () => {
             publish_date: new Date().toISOString()
         }
 
+        if (newContactToDispatch.full_name === undefined) { ToastifyError('contact.full_name is undefined'); return }
+        if (newContactToDispatch.email === undefined) { ToastifyError('contact.email is undefined'); return }
+        if (newContactToDispatch.phone_number === undefined) { ToastifyError('contact.phone_number is undefined'); return }
+        if (newContactToDispatch.comment === undefined) { ToastifyError('contact.comment is undefined'); return }
+
         dispatch(ContactCreateThunk(newContactToDispatch))
             .then(() => {
                 ToastifySuccess('Contact created', () => {
@@ -80,6 +84,10 @@ export const ContactCreate = () => {
     }
 
     const validateAllData = (): boolean => {
+        if (newContact.full_name === undefined) { ToastifyError('contact.full_name is undefined'); return false }
+        if (newContact.email === undefined) { ToastifyError('contact.email is undefined'); return false }
+        if (newContact.phone_number === undefined) { ToastifyError('contact.phone_number is undefined'); return false }
+        if (newContact.comment === undefined) { ToastifyError('contact.comment is undefined'); return false }
 
         const errorsFullName = validateFullName(newContact.full_name, 'Full Name')
         if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }

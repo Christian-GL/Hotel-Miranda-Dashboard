@@ -18,7 +18,14 @@ const API_URL = "http://localhost:3002"
 const API_END_POINT = "api-dashboard/v2/contacts"
 
 export const ContactCreateThunk = createAsyncThunk
-    ("contact/create", async (newContactData: ContactInterface) => {
+    ("contact/create", async (newContactData: Partial<ContactInterface>) => {
+
+        if (newContactData.publish_date === undefined) { console.error('contact.publish_date is undefined'); return contactDefaultIfError }
+        if (newContactData.full_name === undefined) { console.error('contact.full_name is undefined'); return contactDefaultIfError }
+        if (newContactData.email === undefined) { console.error('contact.email is undefined'); return contactDefaultIfError }
+        if (newContactData.phone_number === undefined) { console.error('contact.phone_number is undefined'); return contactDefaultIfError }
+        if (newContactData.comment === undefined) { console.error('contact.comment is undefined'); return contactDefaultIfError }
+        if (newContactData.archived === undefined) { console.error('contact.archived is undefined'); return contactDefaultIfError }
 
         try {
             const request = await fetch(`${API_URL}/${API_END_POINT}`, {
