@@ -1,7 +1,6 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { ContactInterface } from "../../interfaces/contactInterface.ts"
-import { apiUrl, apiEndPointContacts, apiToken } from "../../../common/globalParameters/routes.ts"
 
 
 const contactDefaultIfError: ContactInterface = {
@@ -18,8 +17,11 @@ export const ContactUpdateThunk = createAsyncThunk
     ("contact/update", async ({ idContact, updatedContactData }
         : { idContact: string, updatedContactData: ContactInterface }) => {
 
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return contactDefaultIfError
+
         try {
-            const request = await fetch(`${apiUrl}/${apiEndPointContacts}/${idContact}`, {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CONTACTS}/${idContact}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

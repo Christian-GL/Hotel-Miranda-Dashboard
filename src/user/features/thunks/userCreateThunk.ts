@@ -2,7 +2,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { UserInterface } from '../../interfaces/userInterface.ts'
 import { UserStatus } from "../../data/userStatus.ts"
-import { apiUrl, apiEndPointUsers, apiToken } from '../../../common/globalParameters/routes.ts'
 
 
 const userDefaultIfError: UserInterface = {
@@ -17,8 +16,12 @@ const userDefaultIfError: UserInterface = {
     status: UserStatus.inactive
 }
 
+
 export const UserCreateThunk = createAsyncThunk
     ("user/create", async (newUserData: Partial<UserInterface>) => {
+
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return userDefaultIfError
 
         if (newUserData.photo === undefined) { console.error('user.photo is undefined'); return userDefaultIfError }
         if (newUserData.full_name === undefined) { console.error('user.full_name is undefined'); return userDefaultIfError }
@@ -30,7 +33,7 @@ export const UserCreateThunk = createAsyncThunk
         if (newUserData.status === undefined) { console.error('user.status is undefined'); return userDefaultIfError }
 
         try {
-            const request = await fetch(`${apiUrl}/${apiEndPointUsers}`, {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_USERS}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

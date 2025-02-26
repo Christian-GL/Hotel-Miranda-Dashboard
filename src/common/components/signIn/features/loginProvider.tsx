@@ -1,26 +1,13 @@
 
 import React from "react"
-import { useReducer, useContext, createContext } from "react"
+import { useContext, createContext } from "react"
+import { useDispatch } from "react-redux"
 
-import { StateInterface } from '../interfaces/stateInterface.ts'
-import { ActionInterface } from "../interfaces/actionInterface.ts"
+import { AppDispatch } from "../../../redux/store.ts"
 import { LoginContextTypeInterface } from '../interfaces/loginContextTypeInterface.ts'
 import { LoginProviderInterface } from '../interfaces/loginProviderInterface.ts'
-import userData from '../../../../user/data/userData.json'
+import { LoginThunk } from "./loginThunk.ts"
 
-
-const loginReducer = (state: StateInterface, action: ActionInterface): StateInterface => {
-    switch (action.type) {
-        case 'LOGIN':
-            return { ...state, loggedUser: action.payload }
-
-        case 'LOGOUT':
-            return { ...state, loggedUser: null }
-
-        default:
-            return state
-    }
-}
 
 const loginOptionsContext = createContext<LoginContextTypeInterface | undefined>(undefined)
 
@@ -34,31 +21,28 @@ export const useLoginOptionsContext = (): LoginContextTypeInterface => {
 
 export const LoginProvider = ({ children }: LoginProviderInterface) => {
 
-    const initialState: StateInterface = {
-        loggedUser: localStorage.getItem('isAuthenticated') ? { email: '', password: '' } : null
-    }
-    const [state, dispatch] = useReducer<React.Reducer<StateInterface, ActionInterface>>(loginReducer, initialState)
+    const dispatchRedux = useDispatch<AppDispatch>()
 
-    const tryLogin = (user: string, password: string): boolean => {
-        const finded = userData.find(u => user === u.email && password === u.password)
-        if (finded) {
-            dispatch({
-                type: 'LOGIN',
-                payload: { email: user, password: password }
-            })
-            localStorage.setItem('isAuthenticated', 'true')
+    const tryLogin = async (user: string, password: string): Promise<boolean> => {
+        const loginData = { email: user, password: password }
+        const result = await dispatchRedux(LoginThunk(loginData))
+
+        if (LoginThunk.fulfilled.match(result)) {
+            const tokenPayload: string = result.payload.token
+            localStorage.setItem('token', tokenPayload)
+            localStorage.setItem('userEmail', user)
             return true
         }
         else return false
     }
 
     const logout = (): void => {
-        dispatch({ type: 'LOGOUT' })
-        localStorage.removeItem('isAuthenticated')
+        localStorage.removeItem('token')
+        localStorage.removeItem('userEmail')
     }
 
     const isAuthenticated = () => {
-        if (localStorage.getItem('isAuthenticated')) {
+        if (localStorage.getItem('token')) {
             return true
         }
         return false

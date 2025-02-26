@@ -27,10 +27,10 @@ import { UserUpdate } from './user/pages/userUpdate/userUpdate.tsx'
 
 
 createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
-        <LoginProvider>
-            <DarkModeProvider>
-                <Provider store={store}>
+    <Provider store={store}>
+        <BrowserRouter>
+            <LoginProvider>
+                <DarkModeProvider>
                     <Routes>
                         <Route path='' element={<SignIn />} />
                         <Route element={<Layout />}>
@@ -58,8 +58,8 @@ createRoot(document.getElementById('root')!).render(
                             </Route>
                         </Route>
                     </Routes>
-                </Provider>
-            </DarkModeProvider>
-        </LoginProvider>
-    </BrowserRouter >
+                </DarkModeProvider>
+            </LoginProvider>
+        </BrowserRouter >
+    </Provider>
 )

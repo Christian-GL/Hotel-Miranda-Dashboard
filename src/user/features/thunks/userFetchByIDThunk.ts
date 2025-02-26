@@ -2,7 +2,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { UserInterface } from '../../interfaces/userInterface.ts'
 import { UserStatus } from "../../data/userStatus.ts"
-import { apiUrl, apiEndPointUsers, apiToken } from '../../../common/globalParameters/routes.ts'
 
 
 const userDefaultIfError: UserInterface = {
@@ -20,8 +19,11 @@ const userDefaultIfError: UserInterface = {
 export const UserFetchByIDThunk = createAsyncThunk
     ("user/fetchById", async (userId: string) => {
 
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return userDefaultIfError
+
         try {
-            const request = await fetch(`${apiUrl}/${apiEndPointUsers}/${userId}`, {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_USERS}/${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

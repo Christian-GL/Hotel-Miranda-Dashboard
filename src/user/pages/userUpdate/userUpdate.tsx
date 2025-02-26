@@ -232,7 +232,7 @@ export const UserUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Status</LabelText>
-                        <Select name="status" value={userUpdated.status ? "true" : "false"} onChange={handleSelectChange}>
+                        <Select name="status" value={userUpdated.status} onChange={handleSelectChange}>
                             <Option value={UserStatus.active}>Active</Option>
                             <Option value={UserStatus.inactive}>Inactive</Option>
                         </Select>

@@ -1,7 +1,6 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { ContactInterface } from "../../interfaces/contactInterface.ts"
-import { apiUrl, apiEndPointContacts, apiToken } from "../../../common/globalParameters/routes.ts"
 
 
 const contactDefaultIfError: ContactInterface = {
@@ -17,6 +16,9 @@ const contactDefaultIfError: ContactInterface = {
 export const ContactCreateThunk = createAsyncThunk
     ("contact/create", async (newContactData: Partial<ContactInterface>) => {
 
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return contactDefaultIfError
+
         if (newContactData.publish_date === undefined) { console.error('contact.publish_date is undefined'); return contactDefaultIfError }
         if (newContactData.full_name === undefined) { console.error('contact.full_name is undefined'); return contactDefaultIfError }
         if (newContactData.email === undefined) { console.error('contact.email is undefined'); return contactDefaultIfError }
@@ -25,7 +27,7 @@ export const ContactCreateThunk = createAsyncThunk
         if (newContactData.archived === undefined) { console.error('contact.archived is undefined'); return contactDefaultIfError }
 
         try {
-            const request = await fetch(`${apiUrl}/${apiEndPointContacts}`, {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CONTACTS}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

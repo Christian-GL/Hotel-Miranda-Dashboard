@@ -1,7 +1,6 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { ContactInterface } from "../../interfaces/contactInterface.ts"
-import { apiUrl, apiEndPointContacts, apiToken } from "../../../common/globalParameters/routes.ts"
 
 
 const contactDefaultIfError: ContactInterface = {
@@ -17,8 +16,11 @@ const contactDefaultIfError: ContactInterface = {
 export const ContactFetchAllThunk = createAsyncThunk
     ("contact/fetchAll", async () => {
 
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return contactDefaultIfError
+
         try {
-            const request = await fetch(`${apiUrl}/${apiEndPointContacts}`, {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CONTACTS}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

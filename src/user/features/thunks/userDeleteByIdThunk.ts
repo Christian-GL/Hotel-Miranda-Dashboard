@@ -1,13 +1,15 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { apiUrl, apiEndPointUsers, apiToken } from '../../../common/globalParameters/routes.ts'
 
 
 export const UserDeleteByIdThunk = createAsyncThunk
     ("user/deleteById", async (userId: string) => {
 
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return '0'
+
         try {
-            const request = await fetch(`${apiUrl}/${apiEndPointUsers}/${userId}`, {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_USERS}/${userId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
