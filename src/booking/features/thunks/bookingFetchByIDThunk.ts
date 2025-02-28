@@ -1,60 +1,57 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-
-import bookingJSON from '../../data/bookingData.json'
 import { BookingInterface } from '../../interfaces/bookingInterface.ts'
+import { BookingStatus } from "../../data/bookingStatus.ts"
 
-
-type RequestResponse = {
-    ok: boolean
-    json: () => BookingInterface
-}
 
 const bookingDefaultIfError: BookingInterface = {
-    id: 0,
+    _id: '0',
     photo: '',
     full_name_guest: '',
     order_date: '',
-    order_time: '',
     check_in_date: '',
-    check_in_time: '',
     check_out_date: '',
-    check_out_time: '',
+    status: BookingStatus.checkOut,
     special_request: '',
-    room_id: 0,
-    room_type: '',
-    room_booking_status: '',
+    room_list: []
 }
 
 export const BookingFetchByIDThunk = createAsyncThunk
-    ("booking/fetchById", async (bookingId: number) => {
+    ("booking/fetchById", async (bookingId: string) => {
+
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return bookingDefaultIfError
 
         try {
-            const request: RequestResponse = await new Promise((resolve) => {
-                const booking = bookingJSON.find((booking) => booking.id === bookingId);
-                if (booking) {
-                    setTimeout(() => resolve({
-                        ok: true,
-                        json: () => booking
-                    }), 200)
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_BOOKINGS}/${bookingId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiToken}`
                 }
-                else {
-                    setTimeout(() => resolve({
-                        ok: false,
-                        json: () => bookingDefaultIfError
-                    }), 200)
-                }
-
             })
-
             if (request.ok) {
-                const bookingFinded = await request.json()
-                return bookingFinded
+                const json = await request.json()
+                let booking: BookingInterface = {
+                    _id: json._id,
+                    photo: json.photo,
+                    full_name_guest: json.full_name_guest,
+                    order_date: json.order_date,
+                    check_in_date: json.check_in_date,
+                    check_out_date: json.check_out_date,
+                    status: json.status,
+                    special_request: json.special_request,
+                    room_list: json.room_list
+                }
+                return booking
             }
-            else return bookingDefaultIfError
+            else {
+                console.error('Error: ', request.statusText)
+                return bookingDefaultIfError
+            }
         }
         catch (error) {
-            console.log(error)
+            console.error(error)
             return bookingDefaultIfError
         }
 

@@ -1,19 +1,14 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-
-import roomJSON from '../../data/roomData.json'
 import { RoomInterface } from "../../interfaces/roomInterface.ts"
+import { RoomType } from "../../data/roomType.ts"
 
-
-type RequestResponse = {
-    ok: boolean
-    json: () => RoomInterface
-}
 
 const roomDefaultIfError: RoomInterface = {
-    id: 0,
+    _id: '0',
     photos: [],
-    type: '',
+    number: '0',
+    type: RoomType.singleBed,
     amenities: [],
     price: 0,
     discount: 0,
@@ -21,34 +16,40 @@ const roomDefaultIfError: RoomInterface = {
 }
 
 export const RoomFetchByIDThunk = createAsyncThunk
-    ("room/fetchById", async (roomId: number) => {
+    ("room/fetchById", async (roomId: string) => {
+
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return roomDefaultIfError
 
         try {
-            const request: RequestResponse = await new Promise((resolve) => {
-                const room = roomJSON.find((room) => room.id === roomId);
-                if (room) {
-                    setTimeout(() => resolve({
-                        ok: true,
-                        json: () => room
-                    }), 200)
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}/${roomId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiToken}`
                 }
-                else {
-                    setTimeout(() => resolve({
-                        ok: false,
-                        json: () => roomDefaultIfError
-                    }), 200)
-                }
-
             })
-
             if (request.ok) {
-                const roomFinded = await request.json()
-                return roomFinded
+                const json = await request.json()
+                let room: RoomInterface = {
+                    _id: json._id,
+                    photos: json.photo,
+                    number: json.number,
+                    type: json.type,
+                    amenities: json.amenities,
+                    price: json.price,
+                    discount: json.discount,
+                    booking_list: json.booking_list
+                }
+                return room
             }
-            else return roomDefaultIfError
+            else {
+                console.error('Error: ', request.statusText)
+                return roomDefaultIfError
+            }
         }
         catch (error) {
-            console.log(error)
+            console.error(error)
             return roomDefaultIfError
         }
 

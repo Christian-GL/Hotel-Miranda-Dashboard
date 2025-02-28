@@ -50,7 +50,7 @@ export const BookingCreate = () => {
         special_request: '',
         room_id: 0,
         room_type: '',
-        room_booking_status: '',
+        status: '',
     })
     const [nextIdAvailable, setNextIdAvailable] = useState<number>(0)
 
@@ -240,7 +240,7 @@ export const BookingCreate = () => {
             checkRoomNumber.errorMessages.map(error => ToastifyError(error))
             return false
         }
-        const checkBookingStatus = validateBookingStatus(newBooking.room_booking_status)
+        const checkBookingStatus = validateBookingStatus(newBooking.status)
         if (!checkBookingStatus.test) {
             checkBookingStatus.errorMessages.map(error => ToastifyError(error))
             return false
@@ -303,7 +303,7 @@ export const BookingCreate = () => {
                         </Select>
 
                         <LabelText minWidth="10rem" margin="0 0 0 5rem">Booking Status</LabelText>
-                        <Select name="room_booking_status" onChange={handleSelectChange}>
+                        <Select name="status" onChange={handleSelectChange}>
                             <Option value="null" selected></Option>
                             {Object.values(BookingStatus).map((type, index) => (
                                 <option key={index} value={type}>

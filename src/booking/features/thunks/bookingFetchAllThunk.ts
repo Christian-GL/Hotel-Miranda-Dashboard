@@ -1,50 +1,60 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-
-import bookingJSON from '../../data/bookingData.json'
 import { BookingInterface } from '../../interfaces/bookingInterface.ts'
+import { BookingStatus } from "../../data/bookingStatus.ts"
 
-
-type RequestResponse = {
-    ok: boolean
-    json: () => BookingInterface[]
-}
 
 const bookingDefaultIfError: BookingInterface = {
-    id: 0,
+    _id: '0',
     photo: '',
     full_name_guest: '',
     order_date: '',
-    order_time: '',
     check_in_date: '',
-    check_in_time: '',
     check_out_date: '',
-    check_out_time: '',
+    status: BookingStatus.checkOut,
     special_request: '',
-    room_id: 0,
-    room_type: '',
-    room_booking_status: '',
+    room_list: []
 }
 
 export const BookingFetchAllThunk = createAsyncThunk
     ("booking/fetchAll", async () => {
 
-        try {
-            const request: RequestResponse = await new Promise((resolve) => {
-                setTimeout(() => resolve({
-                    ok: true,
-                    json: () => bookingJSON
-                }), 1500)
-            })
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return [bookingDefaultIfError]
 
+        try {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_BOOKINGS}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiToken}`
+                }
+            })
             if (request.ok) {
-                const allBookings = await request.json()
+                const json = await request.json()
+                let allBookings: BookingInterface[] = []
+                for (let i = 0; i < json.length; i++) {
+                    allBookings.push({
+                        _id: json[i]._id,
+                        photo: json[i].photo,
+                        full_name_guest: json[i].full_name_guest,
+                        order_date: json[i].order_date,
+                        check_in_date: json[i].check_in_date,
+                        check_out_date: json[i].check_out_date,
+                        status: json[i].status,
+                        special_request: json[i].special_request,
+                        room_list: json[i].room_list
+                    })
+                }
                 return allBookings
             }
-            else return [bookingDefaultIfError]
+            else {
+                console.error('Error: ', request.statusText)
+                return [bookingDefaultIfError]
+            }
         }
         catch (error) {
-            console.log(error)
+            console.error(error)
             return [bookingDefaultIfError]
         }
 

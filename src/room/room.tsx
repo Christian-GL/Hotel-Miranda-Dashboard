@@ -52,7 +52,6 @@ export const Room = () => {
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredRooms, setFilteredRooms] = useState<RoomInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
-    const [toastShown, setToastShown] = useState<boolean>(false)
     const [arrowStates, setArrowStates] = useState<RoomColumnsArrowStatesInterface>({
         roomNumber: ArrowType.down,
         price: ArrowType.right,
@@ -76,11 +75,11 @@ export const Room = () => {
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de bookings") }
+        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de room > bookings") }
     }, [bookingAllLoading, bookingAll])
 
     const navigateToRoomCreate = () => navigate('room-create')
-    const navigateToRoomUpdate = (id: number) => navigate(`room-update/${id}`)
+    const navigateToRoomUpdate = (id: string) => navigate(`room-update/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -95,20 +94,24 @@ export const Room = () => {
         switch (selectedButton) {
             case ButtonType.all:
                 filteredData = roomAll.filter(room =>
-                    room.id.toString().includes(inputText.toLowerCase())
+                    room._id.toString().includes(inputText.toLowerCase())
                 )
                 break
             case ButtonType.available:
                 filteredData = roomAll.filter(room =>
-                    room.id.toString().includes(inputText.toLowerCase()) &&
-                    bookingAll.filter((booking) => room.booking_list.includes(booking.id)).length === 0
-                )
+                    room._id.toString().includes(inputText.toLowerCase()) &&
+                    // !!! - ACTUALIZAR ESTO CUANDO SE TENGA EL ROOM_LIST - !!!
+                    // bookingAll.filter((booking) => room.booking_list.includes(booking._id)).length === 0
+                    bookingAll.filter((booking) => room.booking_list.length === 0
+                    ))
                 break
             case ButtonType.booked:
                 filteredData = roomAll.filter(room =>
-                    room.id.toString().includes(inputText.toLowerCase()) &&
-                    bookingAll.filter((booking) => room.booking_list.includes(booking.id)).length >= 1
-                )
+                    room._id.toString().includes(inputText.toLowerCase()) &&
+                    // !!! - ACTUALIZAR ESTO CUANDO SE TENGA EL ROOM_LIST - !!!
+                    // bookingAll.filter((booking) => room.booking_list.includes(booking._id)).length >= 1
+                    bookingAll.filter((booking) => room.booking_list.length >= 1
+                    ))
                 break
         }
         const sortedData = sortData(filteredData)
@@ -121,8 +124,8 @@ export const Room = () => {
         if (activeColumn) {
             if (activeColumn === columnsSortAvailable.roomNumber) {
                 sortedData.sort((a, b) => {
-                    let valueA: number = a.id
-                    let valueB: number = b.id
+                    let valueA: number = parseInt(a.number)
+                    let valueB: number = parseInt(b.number)
                     if (arrowStates[activeColumn] === ArrowType.up) {
                         return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
                     } else {
@@ -185,11 +188,12 @@ export const Room = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteRoomById = (id: number, index: number): void => {
-        const room = roomAll.find(room => room.id === id)
+    const deleteRoomById = (id: string, index: number): void => {
+        const room = roomAll.find(room => room._id === id)
         if (room) {
             room.booking_list.map(bookingId => {
-                dispatch(BookingDeleteByIdThunk(bookingId))
+                // !!! - ACTUALIZAR ESTO CUANDO SE TENGA EL ROOM_LIST - !!!
+                // dispatch(BookingDeleteByIdThunk(bookingId))
             })
         }
         dispatch(RoomDeleteByIdThunk(id))
@@ -246,8 +250,9 @@ export const Room = () => {
                             <ImgTableRoom src={`${roomData.photos[0]}`} />
                         </DivImgTable>,
 
-                        <PTable key={index + '-2'}>
-                            #<b>{roomData.id}</b>
+                        <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <div>#<b>{roomData._id}</b></div>
+                            <div>Nº {roomData.number}</div>
                         </PTable>,
 
                         <PTable key={index + '-3'}>
@@ -271,8 +276,9 @@ export const Room = () => {
 
                         <PTable key={index + '-7'}>
                             {
-                                bookingAll.filter((booking) => roomData.booking_list.includes(booking.id)).length === 0 ?
-                                    // roomData.booking_list.length === 0 ?
+                                // !!! - ACTUALIZAR ESTO CUANDO SE TENGA EL ROOM_LIST - !!!
+                                // bookingAll.filter((booking) => roomData.booking_list.includes(booking._id)).length === 0 ?
+                                bookingAll.filter((booking) => roomData.booking_list.length === 0) ?
                                     <PStatusRoomList status='Available'>Available</PStatusRoomList> :
                                     <PStatusRoomList status='Booking'>Booking</PStatusRoomList>
                             }
@@ -281,8 +287,8 @@ export const Room = () => {
                         <PTable key={index + '-8'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { navigateToRoomUpdate(roomData.id) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteRoomById(roomData.id, index) }}>Delete</ButtonOption>
+                                <ButtonOption onClick={() => { navigateToRoomUpdate(roomData._id) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { deleteRoomById(roomData._id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>
                     ]

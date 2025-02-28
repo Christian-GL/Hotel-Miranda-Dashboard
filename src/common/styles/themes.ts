@@ -45,6 +45,7 @@ export const themeLight = {
     iconEyeBackground: color.greenDark,
     textForm: color.blackSmooth,
     textLabelForm: color.blackSmooth,
+    textLabelStatusForm: color.greenSmoothX2,
 
     backgroundTable: color.white,
     nameTable: color.greenSmoothX2,
@@ -141,6 +142,7 @@ export const themeDark = {
     iconEyeBackground: color.greenSmoothX4,
     textForm: color.blackSmooth,
     textLabelForm: color.whiteSmooth,
+    textLabelStatusForm: color.greenSmoothX4,
 
     backgroundTable: color.graySmoothX2,
     nameTable: color.greenSmoothX4,

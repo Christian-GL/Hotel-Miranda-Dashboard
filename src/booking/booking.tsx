@@ -60,7 +60,6 @@ export const Bookings = () => {
     const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoViewNotes, setInfoViewNotes] = useState<PopupTextInterface>({ title: '', text: '' })
-    const [toastShown, setToastShown] = useState<boolean>(false)
     const [arrowStates, setArrowStates] = useState<BookingColumnsArrowStatesInterface>({
         guest: ArrowType.right,
         orderDate: ArrowType.right,
@@ -90,8 +89,8 @@ export const Bookings = () => {
     }, [roomAllLoading, roomAll])
 
     const navigateToBookingCreate = () => navigate('booking-create')
-    const navigateToBookingUpdate = (id: number) => navigate(`booking-update/${id}`)
-    const navigateToBookingDetail = (id: number) => navigate(`booking-details/${id}`)
+    const navigateToBookingUpdate = (id: string) => navigate(`booking-update/${id}`)
+    const navigateToBookingDetail = (id: string) => navigate(`booking-details/${id}`)
 
     const openPopup = (): void => setShowPopup(true)
 
@@ -114,19 +113,19 @@ export const Bookings = () => {
             case ButtonType.checkin:
                 filteredData = bookingAll.filter(booking =>
                     booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-                    booking.room_booking_status === BookingStatus.checkIn
+                    booking.status === BookingStatus.checkIn
                 )
                 break
             case ButtonType.inprogress:
                 filteredData = bookingAll.filter(booking =>
                     booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-                    booking.room_booking_status === BookingStatus.inProgress
+                    booking.status === BookingStatus.inProgress
                 )
                 break
             case ButtonType.checkout:
                 filteredData = bookingAll.filter(booking =>
                     booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-                    booking.room_booking_status === BookingStatus.checkOut
+                    booking.status === BookingStatus.checkOut
                 )
                 break
         }
@@ -151,8 +150,8 @@ export const Bookings = () => {
             }
             else if (activeColumn === columnsSortAvailable.orderDate) {
                 sortedData.sort((a, b) => {
-                    let valueA: Date = new Date(dateFormatToYYYYMMDD(a.order_date) + ' ' + hourFormatTo24H(a.order_time))
-                    let valueB: Date = new Date(dateFormatToYYYYMMDD(b.order_date) + ' ' + hourFormatTo24H(b.order_time))
+                    let valueA: Date = new Date(a.order_date)
+                    let valueB: Date = new Date(b.order_date)
                     if (arrowStates[activeColumn] === ArrowType.up) {
                         return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
                     } else {
@@ -162,8 +161,8 @@ export const Bookings = () => {
             }
             else if (activeColumn === columnsSortAvailable.checkIn) {
                 sortedData.sort((a, b) => {
-                    let valueA: Date = new Date(dateFormatToYYYYMMDD(a.check_in_date) + ' ' + hourFormatTo24H(a.check_in_time))
-                    let valueB: Date = new Date(dateFormatToYYYYMMDD(b.check_in_date) + ' ' + hourFormatTo24H(b.check_in_time))
+                    let valueA: Date = new Date(a.check_in_date)
+                    let valueB: Date = new Date(b.check_in_date)
                     if (arrowStates[activeColumn] === ArrowType.up) {
                         return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
                     } else {
@@ -173,8 +172,8 @@ export const Bookings = () => {
             }
             else if (activeColumn === columnsSortAvailable.checkOut) {
                 sortedData.sort((a, b) => {
-                    let valueA: Date = new Date(dateFormatToYYYYMMDD(a.check_out_date) + ' ' + hourFormatTo24H(a.check_out_time))
-                    let valueB: Date = new Date(dateFormatToYYYYMMDD(b.check_out_date) + ' ' + hourFormatTo24H(b.check_out_time))
+                    let valueA: Date = new Date(a.check_out_date)
+                    let valueB: Date = new Date(b.check_out_date)
                     if (arrowStates[activeColumn] === ArrowType.up) {
                         return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
                     } else {
@@ -184,8 +183,11 @@ export const Bookings = () => {
             }
             else if (activeColumn === columnsSortAvailable.roomNumber) {
                 sortedData.sort((a, b) => {
-                    let valueA: number = a.room_id
-                    let valueB: number = b.room_id
+                    // !!! - ACTUALIZAR ESTO CUANDO SE TENGA EL ROOM_LIST - !!!
+                    // let valueA: string = a.room_id
+                    // let valueB: string = b.room_id
+                    let valueA: string = a._id
+                    let valueB: string = b._id
                     if (arrowStates[activeColumn] === ArrowType.up) {
                         return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
                     } else {
@@ -246,8 +248,6 @@ export const Bookings = () => {
 
 
     return (
-        // bookingAllLoading === ApiStatus.pending || roomAllLoading === ApiStatus.pending ?
-        //     <ToastContainer /> :
         <bookingsStyles.SectionPageBookings>
             <bookingsStyles.DivCtnFuncionality>
                 <bookingsStyles.DivCtnTableDisplayFilter>
@@ -347,7 +347,7 @@ export const Bookings = () => {
                         <PTable key={index + '-9'}>
                             {
                                 (() => {
-                                    switch (bookingData.room_booking_status) {
+                                    switch (bookingData.status) {
                                         case BookingStatus.checkIn:
                                             return <PStatusBooking status={BookingStatus.checkIn}>Check In</PStatusBooking>
                                         case BookingStatus.checkOut:

@@ -69,11 +69,11 @@ export const RoomSlice = createSlice({
             .addCase(RoomUpdateThunk.fulfilled, (state, action: PayloadAction<RoomInterface>) => {
                 state.updateStatus = ApiStatus.fulfilled
                 const roomToUpdate = action.payload
-                const index = state.allData.findIndex(room => room.id === roomToUpdate.id)
+                const index = state.allData.findIndex(room => room._id === roomToUpdate._id)
                 if (index !== -1) {
                     state.allData[index] = roomToUpdate
                 }
-                if (state.idData && state.idData.id === roomToUpdate.id) {
+                if (state.idData && state.idData._id === roomToUpdate._id) {
                     state.idData = roomToUpdate
                 }
             })
@@ -85,10 +85,10 @@ export const RoomSlice = createSlice({
             .addCase(RoomDeleteByIdThunk.pending, (state) => {
                 state.deleteStatus = ApiStatus.pending
             })
-            .addCase(RoomDeleteByIdThunk.fulfilled, (state, action: PayloadAction<number>) => {
+            .addCase(RoomDeleteByIdThunk.fulfilled, (state, action: PayloadAction<string>) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const roomIdToDelete = action.payload
-                state.allData = state.allData.filter(room => room.id !== roomIdToDelete)
+                state.allData = state.allData.filter(room => room._id !== roomIdToDelete)
             })
             .addCase(RoomDeleteByIdThunk.rejected, (state) => {
                 state.error = true

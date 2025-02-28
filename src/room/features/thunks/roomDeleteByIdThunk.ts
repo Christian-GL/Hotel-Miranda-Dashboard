@@ -2,40 +2,30 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
-type RequestResponse = {
-    ok: boolean
-    json: () => number
-}
-
 export const RoomDeleteByIdThunk = createAsyncThunk
-    ("room/deleteById", async (roomIdToDelete: number) => {
+    ("room/deleteById", async (roomId: string) => {
+
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return '0'
 
         try {
-            const request: RequestResponse = await new Promise((resolve) => {
-                if (roomIdToDelete) {
-                    setTimeout(() => resolve({
-                        ok: true,
-                        json: () => roomIdToDelete
-                    }), 200)
-                }
-                else {
-                    setTimeout(() => resolve({
-                        ok: false,
-                        json: () => 0
-                    }), 200)
-                }
-
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}/${roomId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiToken}`
+                },
             })
-
             if (request.ok) {
-                const roomDataDeleted = await request.json()
-                return roomDataDeleted
+                return roomId
+            } else {
+                console.log("Error: ", request.statusText)
+                return '0'
             }
-            else return 0
         }
         catch (error) {
             console.log(error)
-            return 0
+            return '0'
         }
 
     })

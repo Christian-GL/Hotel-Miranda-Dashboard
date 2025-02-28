@@ -1,57 +1,48 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { BookingInterface } from "../../interfaces/bookingInterface"
+import { BookingStatus } from "../../data/bookingStatus"
 
-
-type RequestResponse = {
-    ok: boolean
-    json: () => BookingInterface
-}
 
 const bookingDefaultIfError: BookingInterface = {
-    id: 0,
+    _id: '0',
     photo: '',
     full_name_guest: '',
     order_date: '',
-    order_time: '',
     check_in_date: '',
-    check_in_time: '',
     check_out_date: '',
-    check_out_time: '',
+    status: BookingStatus.checkOut,
     special_request: '',
-    room_id: 0,
-    room_type: '',
-    room_booking_status: '',
+    room_list: []
 }
 
 export const BookingUpdateThunk = createAsyncThunk
-    ("booking/update", async (bookingData: BookingInterface) => {
+    ("booking/update", async ({ idBooking, updatedBookingData }
+        : { idBooking: string, updatedBookingData: BookingInterface }) => {
+
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return bookingDefaultIfError
 
         try {
-            const request: RequestResponse = await new Promise((resolve) => {
-                if (bookingData) {
-                    setTimeout(() => resolve({
-                        ok: true,
-                        json: () => bookingData
-                    }), 200)
-                }
-                else {
-                    setTimeout(() => resolve({
-                        ok: false,
-                        json: () => bookingDefaultIfError
-                    }), 200)
-                }
-
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_BOOKINGS}/${idBooking}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiToken}`
+                },
+                body: JSON.stringify(updatedBookingData)
             })
 
             if (request.ok) {
-                const bookingDataUpdated = await request.json()
-                return bookingDataUpdated
+                const bookingUpdated = await request.json()
+                return bookingUpdated
+            } else {
+                console.error("Error: ", request.statusText)
+                return bookingDefaultIfError
             }
-            else return bookingDefaultIfError
         }
         catch (error) {
-            console.log(error)
+            console.error(error)
             return bookingDefaultIfError
         }
 

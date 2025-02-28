@@ -162,7 +162,7 @@ export const LabelTextBookingStatus = styled.label`
     font-size: 1em;
     font-weight: 700;
     text-transform: uppercase;
-    color: ${props => props.theme.textLabelForm};
+    color: ${props => props.theme.textLabelStatusForm};
 `
 
 export const InputText = styled.input`

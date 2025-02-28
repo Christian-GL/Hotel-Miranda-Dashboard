@@ -52,7 +52,7 @@ export const Dashboard = () => {
                     <dashboardStyles.DivCtnInfo>
                         <dashboardStyles.NumberH4>
                             {bookingAll.filter(booking =>
-                                booking.room_booking_status === 'Check In'
+                                booking.status === 'Check In'
                             ).length}
                         </dashboardStyles.NumberH4>
                         <dashboardStyles.TextH5>Check in</dashboardStyles.TextH5>
@@ -63,7 +63,7 @@ export const Dashboard = () => {
                     <dashboardStyles.DivCtnInfo>
                         <dashboardStyles.NumberH4>
                             {bookingAll.filter(booking =>
-                                booking.room_booking_status === 'In Progress'
+                                booking.status === 'In Progress'
                             ).length}
                         </dashboardStyles.NumberH4>
                         <dashboardStyles.TextH5>In Progress</dashboardStyles.TextH5>
@@ -74,7 +74,7 @@ export const Dashboard = () => {
                     <dashboardStyles.DivCtnInfo>
                         <dashboardStyles.NumberH4>
                             {bookingAll.filter(booking =>
-                                booking.room_booking_status === 'Check Out'
+                                booking.status === 'Check Out'
                             ).length}
                         </dashboardStyles.NumberH4>
                         <dashboardStyles.TextH5>Check Out</dashboardStyles.TextH5>

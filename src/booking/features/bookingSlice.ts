@@ -74,11 +74,11 @@ export const BookingSlice = createSlice({
             .addCase(BookingUpdateThunk.fulfilled, (state, action: PayloadAction<BookingInterface>) => {
                 state.updateStatus = ApiStatus.fulfilled
                 const bookingToUpdate = action.payload
-                const index = state.allData.findIndex(booking => booking.id === bookingToUpdate.id)
+                const index = state.allData.findIndex(booking => booking._id === bookingToUpdate._id)
                 if (index !== -1) {
                     state.allData[index] = bookingToUpdate
                 }
-                if (state.idData && state.idData.id === bookingToUpdate.id) {
+                if (state.idData && state.idData._id === bookingToUpdate._id) {
                     state.idData = bookingToUpdate
                 }
             })
@@ -90,10 +90,10 @@ export const BookingSlice = createSlice({
             .addCase(BookingDeleteByIdThunk.pending, (state) => {
                 state.deleteStatus = ApiStatus.pending
             })
-            .addCase(BookingDeleteByIdThunk.fulfilled, (state, action: PayloadAction<number>) => {
+            .addCase(BookingDeleteByIdThunk.fulfilled, (state, action: PayloadAction<string>) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const bookingIdToDelete = action.payload
-                state.allData = state.allData.filter(booking => booking.id !== bookingIdToDelete)
+                state.allData = state.allData.filter(booking => booking._id !== bookingIdToDelete)
             })
             .addCase(BookingDeleteByIdThunk.rejected, (state) => {
                 state.error = true

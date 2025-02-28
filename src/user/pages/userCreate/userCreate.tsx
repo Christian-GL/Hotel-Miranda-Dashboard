@@ -10,14 +10,13 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { UserInterface } from "../../interfaces/userInterface.ts"
+import { UserInterfaceWithOutID } from "../../interfaces/userInterface.ts"
 import { UserStatus } from "../../data/userStatus.ts"
 import {
     validatePhoto, validateFullName, validateEmail, validateTextArea,
     validatePhoneNumber, validateDateRelativeToNow,
     validateCreatePassword
 } from '../../../common/utils/validators.ts'
-// import { hashPassword } from '../../../common/utils/hashPassword.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
@@ -34,7 +33,7 @@ export const UserCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const userAll = useSelector(getUserAllData)
     const userAllLoading = useSelector(getUserAllStatus)
-    const [newUser, setNewUser] = useState<Partial<UserInterface>>({
+    const [newUser, setNewUser] = useState<UserInterfaceWithOutID>({
         photo: '',
         full_name: '',
         email: '',
@@ -110,21 +109,13 @@ export const UserCreate = () => {
 
         if (!validateAllData()) { return }
 
-        if (newUser.password === undefined) { console.error('user.password is undefined'); return }
-        // const hashedPassword = await hashPassword(newUser.password)
+        if (newUser.password === undefined) {
+            ToastifyError('user.password is undefined')
+            return
+        }
         const newUserToDispatch = {
             ...newUser
-            // password: hashedPassword
         }
-
-        if (newUserToDispatch.photo === undefined) { console.error('user.photo is undefined'); return }
-        if (newUserToDispatch.full_name === undefined) { console.error('user.full_name is undefined'); return }
-        if (newUserToDispatch.email === undefined) { console.error('user.email is undefined'); return }
-        if (newUserToDispatch.password === undefined) { console.error('user.password is undefined'); return }
-        if (newUserToDispatch.start_date === undefined) { console.error('user.start_date is undefined'); return }
-        if (newUserToDispatch.description === undefined) { console.error('user.description is undefined'); return }
-        if (newUserToDispatch.phone_number === undefined) { console.error('user.phone_number is undefined'); return }
-        if (newUserToDispatch.status === undefined) { console.error('user.status is undefined'); return }
 
         dispatch(UserCreateThunk(newUserToDispatch))
             .then(() => {
@@ -138,15 +129,6 @@ export const UserCreate = () => {
     }
 
     const validateAllData = (): boolean => {
-        if (newUser.photo === undefined) { console.error('user.photo is undefined'); return false }
-        if (newUser.full_name === undefined) { console.error('user.full_name is undefined'); return false }
-        if (newUser.email === undefined) { console.error('user.email is undefined'); return false }
-        if (newUser.password === undefined) { console.error('user.password is undefined'); return false }
-        if (newUser.start_date === undefined) { console.error('user.start_date is undefined'); return false }
-        if (newUser.description === undefined) { console.error('user.description is undefined'); return false }
-        if (newUser.phone_number === undefined) { console.error('user.phone_number is undefined'); return false }
-        if (newUser.status === undefined) { console.error('user.status is undefined'); return false }
-
         // const errorsPhoto = validatePhoto(newUser.photo, 'Photo')
         // if (errorsPhoto.length > 0) { errorsPhoto.map(error => ToastifyError(error)); return false }
 

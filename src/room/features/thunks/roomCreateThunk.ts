@@ -1,17 +1,13 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { RoomInterface } from '../../interfaces/roomInterface.ts'
+import { RoomInterfaceWithOutID } from '../../interfaces/roomInterface.ts'
+import { RoomType } from '../../data/roomType.ts'
 
 
-type RequestResponse = {
-    ok: boolean
-    json: () => RoomInterface
-}
-
-const roomDefaultIfError: RoomInterface = {
-    id: 0,
+const roomDefaultIfError: RoomInterfaceWithOutID = {
     photos: [],
-    type: '',
+    number: '0',
+    type: RoomType.singleBed,
     amenities: [],
     price: 0,
     discount: 0,
@@ -19,33 +15,30 @@ const roomDefaultIfError: RoomInterface = {
 }
 
 export const RoomCreateThunk = createAsyncThunk
-    ("room/create", async (newRoomData: RoomInterface) => {
+    ("room/create", async (newRoomData: RoomInterfaceWithOutID) => {
+
+        const apiToken = localStorage.getItem('token')
+        if (!apiToken) return roomDefaultIfError
 
         try {
-            const request: RequestResponse = await new Promise((resolve) => {
-                if (newRoomData) {
-                    setTimeout(() => resolve({
-                        ok: true,
-                        json: () => newRoomData
-                    }), 200)
-                }
-                else {
-                    setTimeout(() => resolve({
-                        ok: false,
-                        json: () => roomDefaultIfError
-                    }), 200)
-                }
-
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiToken}`
+                },
+                body: JSON.stringify(newRoomData)
             })
-
             if (request.ok) {
-                const roomDataCreated = await request.json()
-                return roomDataCreated
+                const roomCreated = await request.json()
+                return roomCreated
+            } else {
+                console.error("Error: ", request.statusText)
+                return roomDefaultIfError
             }
-            else return roomDefaultIfError
         }
         catch (error) {
-            console.log(error)
+            console.error(error)
             return roomDefaultIfError
         }
 

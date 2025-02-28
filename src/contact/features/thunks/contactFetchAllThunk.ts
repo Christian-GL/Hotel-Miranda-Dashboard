@@ -17,7 +17,7 @@ export const ContactFetchAllThunk = createAsyncThunk
     ("contact/fetchAll", async () => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return contactDefaultIfError
+        if (!apiToken) return [contactDefaultIfError]
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CONTACTS}`, {

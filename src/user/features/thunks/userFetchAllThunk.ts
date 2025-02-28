@@ -20,7 +20,7 @@ export const UserFetchAllThunk = createAsyncThunk
     ("user/fetchAll", async () => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return userDefaultIfError
+        if (!apiToken) return [userDefaultIfError]
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_USERS}`, {

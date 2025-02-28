@@ -54,7 +54,7 @@ export const BookingUpdate = () => {
         special_request: '',
         room_id: 0,
         room_type: '',
-        room_booking_status: '',
+        status: '',
     })
 
     useEffect(() => {
@@ -76,7 +76,7 @@ export const BookingUpdate = () => {
                 special_request: bookingById.special_request || '',
                 room_id: bookingById.room_id || 0,
                 room_type: bookingById.room_type || '',
-                room_booking_status: bookingById.room_booking_status || ''
+                status: bookingById.status || ''
             })
         }
         else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error en la api de booking update > bookings") }
@@ -251,7 +251,7 @@ export const BookingUpdate = () => {
             checkRoomNumber.errorMessages.map(error => ToastifyError(error))
             return false
         }
-        const checkBookingStatus = validateBookingStatus(bookingUpdated.room_booking_status)
+        const checkBookingStatus = validateBookingStatus(bookingUpdated.status)
         if (!checkBookingStatus.test) {
             checkBookingStatus.errorMessages.map(error => ToastifyError(error))
             return false
@@ -313,7 +313,7 @@ export const BookingUpdate = () => {
                         </Select>
 
                         <LabelText minWidth="10rem" margin="0 0 0 5rem">Booking Status</LabelText>
-                        <Select name="room_booking_status" value={bookingUpdated.room_booking_status} onChange={handleSelectChange}>
+                        <Select name="status" value={bookingUpdated.status} onChange={handleSelectChange}>
                             {Object.values(BookingStatus).map((type, index) => (
                                 <option key={index} value={type}>
                                     {type}

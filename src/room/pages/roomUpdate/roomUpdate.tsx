@@ -14,14 +14,18 @@ import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { RoomInterface } from "../../interfaces/roomInterface.ts"
 import { RoomAmenities } from "../../data/roomAmenities.ts"
 import { RoomType } from "../../data/roomType.ts"
-import { validateRoomPhotoArray, validateRoomType, validateRoomPrice, validateRoomDiscount } from '../../../common/utils/formUtils.ts'
+import {
+    validatePhotos, validateRoomType, validateAmenities,
+    validateNumberBetween, validateBookingList, validateRoomNumber
+} from '../../../common/utils/validators.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form,
     ImgRoom, DivCtnEntry, LabelText, DivCtnEntryBookings, LabelBookings, LabelTextBookingStatus,
     InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
 } from "../../../common/styles/form.ts"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getRoomIdData, getRoomIdStatus } from "../../features/roomSlice.ts"
+import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "../../features/roomSlice.ts"
+import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk.ts"
 import { RoomFetchByIDThunk } from "../../features/thunks/roomFetchByIDThunk.ts"
 import { RoomUpdateThunk } from '../../features/thunks/roomUpdateThunk.ts'
 
@@ -32,17 +36,20 @@ import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFe
 export const RoomUpdate = () => {
 
     const { id } = useParams()
-    const idParams = parseInt(id!)
+    const idParams = id!
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const roomById = useSelector(getRoomIdData)
     const roomByIdLoading = useSelector(getRoomIdStatus)
+    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
     const [roomUpdated, setRoomUpdated] = useState<RoomInterface>({
-        id: 0,
+        _id: '0',
         photos: [],
-        type: '',
+        number: '0',
+        type: RoomType.singleBed,
         amenities: [],
         price: 0,
         discount: 0,
@@ -52,28 +59,34 @@ export const RoomUpdate = () => {
     useEffect(() => {
         if (roomByIdLoading === ApiStatus.idle) { dispatch(RoomFetchByIDThunk(idParams)) }
         else if (roomByIdLoading === ApiStatus.fulfilled) {
-            if (roomById?.id !== idParams) {
+            if (roomById._id !== idParams) {
                 dispatch(RoomFetchByIDThunk(idParams))
             }
             setRoomUpdated({
-                id: roomById.id || 0,
+                _id: roomById._id || '0',
                 photos: roomById.photos || [],
-                type: roomById.type || '',
+                number: roomById.number || '0',
+                type: roomById.type || RoomType.singleBed,
                 amenities: roomById.amenities || [],
                 price: roomById.price || 0,
                 discount: roomById.discount || 0,
                 booking_list: roomById.booking_list || []
             })
         }
-        else if (roomByIdLoading === ApiStatus.rejected) { alert("Error en la api de room update") }
+        else if (roomByIdLoading === ApiStatus.rejected) { alert("Error in API update rooms") }
     }, [roomByIdLoading, roomById, bookingAllLoading, bookingAll, id])
+    useEffect(() => {
+        if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
+        else if (roomAllLoading === ApiStatus.fulfilled) { }
+        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de rooms") }
+    }, [roomAllLoading, roomAll])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de room update > booking update") }
+        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error in API update rooms > booking update") }
     }, [bookingAllLoading, bookingAll])
 
-    const handlePhotoChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePhotosChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = e.target
         if (files && files[0]) {
             const photoUrl = URL.createObjectURL(files[0])
@@ -107,7 +120,14 @@ export const RoomUpdate = () => {
             [name]: selectedAmenities
         })
     }
-    const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        setRoomUpdated({
+            ...roomUpdated,
+            [name]: value
+        })
+    }
+    const handleNumberFloatChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setRoomUpdated({
             ...roomUpdated,
@@ -119,9 +139,9 @@ export const RoomUpdate = () => {
 
         if (!validateAllData()) { return }
 
-        dispatch(RoomUpdateThunk(roomUpdated))
+        dispatch(RoomUpdateThunk({ idRoom: roomUpdated._id, updatedRoomData: roomUpdated }))
             .then(() => {
-                ToastifySuccess(`Room #${roomUpdated.id} updated`, () => {
+                ToastifySuccess('Room updated', () => {
                     navigate('../')
                 })
             })
@@ -131,26 +151,26 @@ export const RoomUpdate = () => {
     }
 
     const validateAllData = (): boolean => {
-        // const checkPhotos = validateRoomPhotoArray(roomUpdated.photos)
-        // if (!checkPhotos.test) {
-        //     checkPhotos.errorMessages.map(error => ToastifyError(error))
-        //     return false
-        // }
-        const checkRoomType = validateRoomType(roomUpdated.type)
-        if (!checkRoomType.test) {
-            checkRoomType.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkRoomPrice = validateRoomPrice(roomUpdated.price)
-        if (!checkRoomPrice.test) {
-            checkRoomPrice.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkRoomDiscount = validateRoomDiscount(roomUpdated.discount)
-        if (!checkRoomDiscount.test) {
-            checkRoomDiscount.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
+        // const errorsPhotos = validatePhotos(roomUpdated.photos, 'Photos')
+        // if (errorsPhotos.length > 0) { errorsPhotos.map(error => ToastifyError(error)); return false }
+
+        const errorsRoomNumber = validateRoomNumber(roomUpdated.number, roomAll, 'Room number')
+        if (errorsRoomNumber.length > 0) { errorsRoomNumber.map(error => ToastifyError(error)); return false }
+
+        const errorsRoomType = validateRoomType(roomUpdated.type, 'Room type')
+        if (errorsRoomType.length > 0) { errorsRoomType.map(error => ToastifyError(error)); return false }
+
+        const errorsAmenities = validateAmenities(roomUpdated.amenities, 'Amenities')
+        if (errorsAmenities.length > 0) { errorsAmenities.map(error => ToastifyError(error)); return false }
+
+        const errorsPrice = validateNumberBetween(roomUpdated.price, 25, 100000, 'Price')
+        if (errorsPrice.length > 0) { errorsPrice.map(error => ToastifyError(error)); return false }
+
+        const errorsDiscount = validateNumberBetween(roomUpdated.discount, 0, 100, 'Discount')
+        if (errorsDiscount.length > 0) { errorsDiscount.map(error => ToastifyError(error)); return false }
+
+        const errorsBookingList = validateBookingList(roomUpdated.booking_list, 'Booking list')
+        if (errorsBookingList.length > 0) { errorsBookingList.map(error => ToastifyError(error)); return false }
 
         return true
     }
@@ -167,56 +187,40 @@ export const RoomUpdate = () => {
                         <IconUpdate />
                     </DivCtnIcons>
                 </DivIcon>
-                <TitleForm>Update Room #{roomUpdated.id}</TitleForm>
+                <TitleForm>Update Room #{roomUpdated._id}</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
                         <LabelText>Photo 1 (Main)</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(0, e)} />
+                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(0, e)} />
                         <ImgRoom src={roomUpdated.photos[0]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 2</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(1, e)} />
+                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(1, e)} />
                         <ImgRoom src={roomUpdated.photos[1]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 3</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(2, e)} />
+                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(2, e)} />
                         <ImgRoom src={roomUpdated.photos[2]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 4</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(3, e)} />
+                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(3, e)} />
                         <ImgRoom src={roomUpdated.photos[3]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 5</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotoChange(4, e)} />
+                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(4, e)} />
                         <ImgRoom src={roomUpdated.photos[4]} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Amenities</LabelText>
-                        <SelectAmenities name="amenities" value={roomUpdated.amenities} onChange={handleAmenitiesChange} multiple={true}>
-                            {Object.values(RoomAmenities).map((amenity, index) => (
-                                <option key={index} value={amenity}>
-                                    {amenity}
-                                </option>
-                            ))}
-                        </SelectAmenities>
-                    </DivCtnEntry>
+                        <LabelText>Number</LabelText>
+                        <InputText name="number" value={roomUpdated.number} onChange={handleStringChange} />
 
-                    <DivCtnEntry>
-                        <LabelText>Price</LabelText>
-                        <InputText name="price" value={roomUpdated.price} onChange={handleNumberChange} />
-
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</LabelText>
-                        <InputText name="discount" value={roomUpdated.discount} onChange={handleNumberChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
-                        <LabelText>Room Type</LabelText>
+                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Room Type</LabelText>
                         <Select name="type" value={roomUpdated.type} onChange={handleSelectChange}>
                             {Object.values(RoomType).map((type, index) => (
                                 <option key={index} value={type}>
@@ -227,21 +231,40 @@ export const RoomUpdate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
+                        <LabelText>Price</LabelText>
+                        <InputText name="price" value={roomUpdated.price} onChange={handleNumberFloatChange} />
+
+                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</LabelText>
+                        <InputText name="discount" value={roomUpdated.discount} onChange={handleNumberFloatChange} />
+                    </DivCtnEntry>
+
+                    <DivCtnEntry>
+                        <LabelText>Amenities</LabelText>
+                        <SelectAmenities name="amenities" value={roomUpdated.amenities} onChange={handleAmenitiesChange} multiple={true}>
+                            {Object.values(RoomAmenities).map((amenity, index) => (
+                                <Option key={index} value={amenity}>
+                                    {amenity}
+                                </Option>
+                            ))}
+                        </SelectAmenities>
+                    </DivCtnEntry>
+
+                    <DivCtnEntry>
                         <LabelText>Booking Status</LabelText>
                         <DivCtnEntryBookings>
                             {
-                                bookingAll.filter((booking) => roomUpdated.booking_list.includes(booking.id)).length === 0 ?
+                                bookingAll.filter((booking) => roomUpdated.booking_list.includes(booking._id)).length === 0 ?
                                     <LabelTextBookingStatus>Available</LabelTextBookingStatus> :
-                                    (bookingAll.filter(booking => roomUpdated.booking_list.includes(booking.id))
+                                    (bookingAll.filter(booking => roomUpdated.booking_list.includes(booking._id))
                                         .map((booking, index) => (
                                             <LabelBookings key={index}>
-                                                <b>Booking #{booking.id}
+                                                <b>Booking #{booking._id}
                                                     &nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                                                {booking.check_in_date} {booking.check_in_time}
+                                                {booking.check_in_date}
                                                 &nbsp;&nbsp;⭢&nbsp;&nbsp;
-                                                {booking.check_out_date} {booking.check_out_time}
+                                                {booking.check_out_date}
                                                 <b>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                                                {booking.room_booking_status}
+                                                {booking.status}
                                             </LabelBookings>
                                         )))
                             }
