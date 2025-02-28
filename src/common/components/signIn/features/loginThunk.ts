@@ -1,10 +1,10 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { AccountInterface } from '../interfaces/accountInterface.ts'
+import { UserInterface } from "../../../../user/interfaces/userInterface.ts"
 
 
 export const LoginThunk = createAsyncThunk
-    ("login", async (loginData: AccountInterface, { rejectWithValue }) => {
+    ("login", async (loginData: { userEmail: string, userPassword: string }, { rejectWithValue }) => {
 
 
         try {
@@ -16,8 +16,8 @@ export const LoginThunk = createAsyncThunk
                 body: JSON.stringify(loginData)
             })
             if (request.ok) {
-                const token = await request.json()
-                return token
+                const tokenAndUserID = await request.json()
+                return tokenAndUserID
             } else {
                 console.error("Error: ", request.statusText)
                 const errorData = await request.json()

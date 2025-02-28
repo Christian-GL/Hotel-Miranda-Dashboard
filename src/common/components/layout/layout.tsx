@@ -3,9 +3,8 @@ import React from "react"
 import { useEffect, useState, useContext } from "react"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 
-import HC from '../../../assets/img/HC.png'
 import * as layoutStyles from "./layoutStyles.ts"
 import * as headerStyles from "./headerStyles.ts"
 import * as sidebarStyles from "./sidebarMenuStyles.ts"
@@ -14,18 +13,22 @@ import { Theme } from "../../context/darkModeContext.tsx"
 import { themeLight, themeDark } from "../../styles/themes.ts"
 import { ToastContainer, toast } from 'react-toastify'
 import { ToastifyLoadingData } from "../toastify/loadingDataPopup/toastifyLoadingData.tsx"
+import { AppDispatch } from "../../redux/store.ts"
 import { useLoginOptionsContext } from "../signIn/features/loginProvider.tsx"
 import { getBookingAllStatus, getBookingIdStatus } from "../../../booking/features/bookingSlice.ts"
 import { getRoomAllStatus, getRoomIdStatus } from "../../../room/features/roomSlice.ts"
 import { getContactAllStatus, getContactIdStatus } from "../../../contact/features/contactSlice.ts"
-import { getUserAllStatus, getUserIdStatus } from "../../../user/features/userSlice.ts"
+import { getUserAllStatus, getUserIdStatus, getUserIdData } from "../../../user/features/userSlice.ts"
+import { UserFetchByIDThunk } from "../../../user/features/thunks/userFetchByIDThunk.ts"
 import { ApiStatus } from "../../enums/ApiStatus.ts"
 
 
 export const Layout = () => {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>()
     const location = useLocation()
+    const loggedUserID = JSON.parse(localStorage.getItem('loggedUserID') || '{}')
     const { theme, setTheme } = useContext(Theme)
     const selectedTheme = theme === 'light' ? themeLight : themeDark
     const { logout, isAuthenticated } = useLoginOptionsContext()
@@ -36,6 +39,7 @@ export const Layout = () => {
     const roomByIdLoading: ApiStatus = useSelector(getRoomIdStatus)
     const contactAllLoading: ApiStatus = useSelector(getContactAllStatus)
     const contactByIdLoading: ApiStatus = useSelector(getContactIdStatus)
+    const userById = useSelector(getUserIdData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const userByIdLoading: ApiStatus = useSelector(getUserIdStatus)
 
@@ -48,6 +52,15 @@ export const Layout = () => {
             setTheme('light') :
             setTheme(JSON.parse(savedTheme))
     }, [navigate, isAuthenticated, theme])
+    useEffect(() => {
+        if (userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(loggedUserID)) }
+        else if (userByIdLoading === ApiStatus.fulfilled) {
+            if (loggedUserID !== userById._id) {
+                dispatch(UserFetchByIDThunk(loggedUserID))
+            }
+        }
+        else if (userByIdLoading === ApiStatus.rejected) { alert("Error in API users > layout") }
+    }, [userByIdLoading, userById, loggedUserID])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.pending) { ToastifyLoadingData(1, 'Loading all booking data...') } else { toast.dismiss(1) }
         if (bookingByIdLoading === ApiStatus.pending) { ToastifyLoadingData(2, 'Loading booking by ID data...') } else { toast.dismiss(2) }
@@ -94,6 +107,7 @@ export const Layout = () => {
     const routeIsActive = (route: string) => {
         return location.pathname.startsWith(route)
     }
+    const navigateToUserUpdate = (id: string) => navigate(`users/user-update/${id}`)
 
 
     return !isAuthenticated ?
@@ -180,10 +194,10 @@ export const Layout = () => {
                     </div>
 
                     <sidebarStyles.DivCtnUser display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                        <sidebarStyles.ImgProfile src={HC} />
-                        <sidebarStyles.TitleH4>Henry Cavill</sidebarStyles.TitleH4>
-                        <sidebarStyles.TitleH5>HenryCavill@gmail.com</sidebarStyles.TitleH5>
-                        <sidebarStyles.ButtonEdit>Edit</sidebarStyles.ButtonEdit>
+                        <sidebarStyles.ImgProfile src={userById.photo} />
+                        <sidebarStyles.TitleH4>{userById.full_name}</sidebarStyles.TitleH4>
+                        <sidebarStyles.TitleH5>{userById.email}</sidebarStyles.TitleH5>
+                        <sidebarStyles.ButtonEdit onClick={() => { navigateToUserUpdate(userById._id) }}>Edit</sidebarStyles.ButtonEdit>
                     </sidebarStyles.DivCtnUser>
 
                     <sidebarStyles.DivCtnCredits display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >

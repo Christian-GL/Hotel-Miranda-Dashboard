@@ -23,14 +23,14 @@ export const LoginProvider = ({ children }: LoginProviderInterface) => {
 
     const dispatchRedux = useDispatch<AppDispatch>()
 
-    const tryLogin = async (user: string, password: string): Promise<boolean> => {
-        const loginData = { email: user, password: password }
-        const result = await dispatchRedux(LoginThunk(loginData))
+    const tryLogin = async (userEmail: string, userPassword: string): Promise<boolean> => {
+        const loginData = { userEmail: userEmail, userPassword: userPassword }
+        const tokenAndUserData = await dispatchRedux(LoginThunk(loginData))
 
-        if (LoginThunk.fulfilled.match(result)) {
-            const tokenPayload: string = result.payload.token
+        if (LoginThunk.fulfilled.match(tokenAndUserData)) {
+            const tokenPayload: string = tokenAndUserData.payload.token
             localStorage.setItem('token', tokenPayload)
-            localStorage.setItem('userEmail', user)
+            localStorage.setItem('loggedUserID', JSON.stringify(tokenAndUserData.payload.loggedUserID))
             return true
         }
         else return false
@@ -38,7 +38,7 @@ export const LoginProvider = ({ children }: LoginProviderInterface) => {
 
     const logout = (): void => {
         localStorage.removeItem('token')
-        localStorage.removeItem('userEmail')
+        localStorage.removeItem('loggedUserID')
     }
 
     const isAuthenticated = () => {

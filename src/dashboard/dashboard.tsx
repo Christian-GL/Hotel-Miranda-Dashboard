@@ -106,7 +106,7 @@ export const Dashboard = () => {
                         return <SwiperSlide key={index}>
                             <ArticleReview
                                 nameProfile={contact.full_name}
-                                timeSince={`${contact.publish_date} - ${contact.publish_time}`}
+                                timeSince={`${contact.publish_date}`}
                                 textReview={contact.comment}
                             />
                         </SwiperSlide>

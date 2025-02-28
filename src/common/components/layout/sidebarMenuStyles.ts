@@ -180,6 +180,8 @@ export const TitleH5 = styled.h5`
     margin: 1rem 0;
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
+    overflow-wrap: break-word;
+    white-space: normal;
     color: ${props => props.theme.textSidebar};
 `
 
