@@ -114,22 +114,10 @@ export const BookingCreate = () => {
 
         if (!validateAllData()) { return }
 
-        // const room = roomAll.find(room => room.id === newBooking.room_id)
-        // if (!room) {
-        //     ToastifyError(`ERROR - room #${newBooking.room_id} nor found`)
-        //     return
-        // }
-
         const newBookingToDispatch = {
             ...newBooking,
             order_date: new Date().toISOString()
         }
-        // const roomUpdatedToDispatch = {
-        //     ...room,
-        //     booking_list: [
-        //         ...room.booking_list
-        //     ]
-        // }
 
         dispatch(BookingCreateThunk(newBookingToDispatch))
             .then(() => {
@@ -140,16 +128,6 @@ export const BookingCreate = () => {
             .catch((error) => {
                 ToastifyError(error)
             })
-
-        // dispatch(RoomUpdateThunk(roomUpdatedToDispatch))
-        //     .then(() => {
-        //         ToastifySuccess(`Room #${roomUpdatedToDispatch.id} booking list updated to [${roomUpdatedToDispatch.booking_list}]`, () => {
-        //             navigate('../')
-        //         })
-        //     })
-        //     .catch((error) => {
-        //         ToastifyError(error)
-        //     })
     }
 
     const validateAllData = (): boolean => {

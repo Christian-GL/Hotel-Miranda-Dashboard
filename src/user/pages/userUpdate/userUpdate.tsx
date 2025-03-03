@@ -13,7 +13,7 @@ import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
 import { UserStatus } from "../../data/userStatus.ts"
-import { formatDateForInput } from "../../../common/utils/formUtils.ts"
+import { formatDateForInput } from "../../../common/utils/dateUtils.ts"
 import {
     validatePhoto, validateFullName, validateEmail, validateTextArea,
     validatePhoneNumber, validateDateRelativeToNow,

@@ -11,6 +11,7 @@ import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { ContactInterface } from './interfaces/contactInterface.ts'
 import { ContactColumnsArrowStatesInterface } from './interfaces/contactColumnsArrowStatesInterface.ts'
 import { ArrowType } from "../common/enums/ArrowType.ts"
+import { formatDateForPrint } from '../common/utils/dateUtils.ts'
 import { ArticleReview } from "../common/components/articleReview/articleReview.tsx"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
@@ -193,7 +194,7 @@ export const Contact = () => {
                             return <SwiperSlide key={index}>
                                 <ArticleReview
                                     nameProfile={contact.full_name}
-                                    timeSince={`${contact.publish_date}`}
+                                    timeSince={`${formatDateForPrint(contact.publish_date)}`}
                                     textReview={contact.comment}
                                 />
                             </SwiperSlide>
@@ -248,7 +249,7 @@ export const Contact = () => {
                         </PTable>,
 
                         <PTable key={index + '-2'} >
-                            {contactData.publish_date}
+                            {formatDateForPrint(contactData.publish_date)}
                         </PTable>,
 
                         <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center'>

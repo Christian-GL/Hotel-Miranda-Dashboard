@@ -7,19 +7,20 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import * as dashboardStyles from "./dashboardStyles.ts"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
+import { formatDateForPrint } from '../common/utils/dateUtils.ts'
 import { ArticleReview } from "../common/components/articleReview/articleReview.tsx"
 import { getBookingAllData, getBookingAllStatus } from '../booking/features/bookingSlice.ts'
 import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk.ts'
 import { getContactAllData, getContactAllStatus } from "../contact/features/contactSlice.ts"
 import { ContactFetchAllThunk } from "../contact/features/thunks/contactFetchAllThunk.ts"
-import { BookingInterface } from "../booking/interfaces/bookingInterface.ts"
+import { BookingInterfaceRoom } from "../booking/interfaces/bookingInterface.ts"
 import { ContactInterface } from "../contact/interfaces/contactInterface.ts"
 
 
 export const Dashboard = () => {
 
     const dispatch = useDispatch<AppDispatch>()
-    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterfaceRoom[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const contactAll: ContactInterface[] = useSelector(getContactAllData)
     const contactAllLoading: ApiStatus = useSelector(getContactAllStatus)
@@ -106,7 +107,7 @@ export const Dashboard = () => {
                         return <SwiperSlide key={index}>
                             <ArticleReview
                                 nameProfile={contact.full_name}
-                                timeSince={`${contact.publish_date}`}
+                                timeSince={`${formatDateForPrint(contact.publish_date)}`}
                                 textReview={contact.comment}
                             />
                         </SwiperSlide>

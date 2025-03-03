@@ -10,6 +10,7 @@ import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { UserStatus } from './data/userStatus.ts'
 import { UserInterface } from "./interfaces/userInterface.ts"
 import { UserColumnsArrowStatesInterface } from "./interfaces/userColumnsArrowStatesInterface.ts"
+import { formatDateForPrint } from '../common/utils/dateUtils.ts'
 import { ArrowType } from "../common/enums/ArrowType.ts"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
@@ -208,7 +209,7 @@ export const User = () => {
                         </PTable>,
 
                         <PTable key={index + '-3'}>
-                            {userData.start_date}
+                            {formatDateForPrint(userData.start_date)}
                         </PTable>,
 
                         <PTable key={index + '-4'}>

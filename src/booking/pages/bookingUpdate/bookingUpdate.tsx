@@ -13,7 +13,7 @@ import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { BookingInterface } from "../../interfaces/bookingInterface.ts"
 import { BookingStatus } from "../../data/bookingStatus.ts"
-import { formatDateForInput } from "../../../common/utils/formUtils.ts"
+import { formatDateForInput } from "../../../common/utils/dateUtils.ts"
 import {
     validatePhoto, validateFullName, validateCheckInCheckOut,
     validateDateIsOccupiedIfBookingExists, validateBookingStatus, validateTextArea
@@ -152,76 +152,6 @@ export const BookingUpdate = () => {
                 ToastifyError(error)
             })
     }
-    // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault()
-
-    //     if (!validateAllData()) { return }
-
-    //     const room = roomAll.find(room => room.id === previusRoomId)
-    //     if (!room) {
-    //         ToastifyError(`ERROR - room #${previusRoomId} nor found`)
-    //         return
-    //     }
-    //     const room2 = roomAll.find(room => room.id === bookingUpdated.room_id)
-    //     if (!room2) {
-    //         ToastifyError(`ERROR - booking #${bookingUpdated.room_id} nor found`)
-    //         return
-    //     }
-    //     // HACER ESTO EN LA API? EL DE bookingCreate TAMBIEN ??
-    //     // if (checkIsOccupied()) {
-    //     //     ToastifyError(`Room #${bookingUpdated.room_id} is occupied on dates:
-    //     //                 [${bookingUpdated.check_in_date} ${bookingUpdated.check_in_time}] ⭢ [${bookingUpdated.check_out_date} ${newBooking.check_out_time}]`)
-    //     //     return
-    //     // }
-
-    //     const roomUpdatedToDispatch = {
-    //         ...room
-    //     }
-    //     const roomUpdatedToDispatch2 = {
-    //         ...room2
-    //     }
-
-    //     dispatch(BookingUpdateThunk(bookingUpdated))
-    //         .then(() => {
-    //             ToastifySuccess(`Booking #${bookingUpdated.id} updated`, () => {
-    //                 navigate('../')
-    //             })
-    //         })
-    //         .catch((error) => {
-    //             ToastifyError(error)
-    //         })
-
-    //     if (previusRoomId !== bookingUpdated.room_id) {
-    //         const oldRoomUpdatedToDispatch = {
-    //             ...roomUpdatedToDispatch,
-    //             booking_list: roomUpdatedToDispatch.booking_list.filter(bookingId => bookingId !== previusRoomId)
-    //         }
-    //         console.log('--> ', bookingUpdated.room_id)
-    //         const newRoomUpdatedToDispatch = {
-    //             ...roomUpdatedToDispatch2,
-    //             booking_list: [...roomUpdatedToDispatch2.booking_list, bookingUpdated.room_id]
-    //         }
-
-    //         dispatch(RoomUpdateThunk(oldRoomUpdatedToDispatch))
-    //             .then(() => {
-    //                 ToastifySuccess(`Room #${previusRoomId} booking list updated to [${oldRoomUpdatedToDispatch.booking_list}]`, () => {
-    //                     navigate('../')
-    //                 })
-    //             })
-    //             .catch((error) => {
-    //                 ToastifyError(error)
-    //             })
-    //         dispatch(RoomUpdateThunk(newRoomUpdatedToDispatch))
-    //             .then(() => {
-    //                 ToastifySuccess(`Room #${bookingUpdated.room_id} booking list updated to [${newRoomUpdatedToDispatch.booking_list}]`, () => {
-    //                     navigate('../')
-    //                 })
-    //             })
-    //             .catch((error) => {
-    //                 ToastifyError(error)
-    //             })
-    //     }
-    // }
 
     const validateAllData = (): boolean => {
         // const errorsPhoto = validatePhoto(newBooking.photo, 'Photo')

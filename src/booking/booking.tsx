@@ -14,6 +14,7 @@ import { RoomInterfaceBookings } from "../room/interfaces/roomInterface.ts"
 import { ArrowType } from "../common/enums/ArrowType.ts"
 import { PopupText } from "../common/components/popupText/popupText.tsx"
 import { PopupTextInterface } from '../common/components/popupText/popupTextInterface.ts'
+import { formatDateForPrint } from '../common/utils/dateUtils.ts'
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
@@ -112,19 +113,19 @@ export const Bookings = () => {
             case ButtonType.checkin:
                 filteredData = bookingAll.filter(booking =>
                     booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-                    booking.status === BookingStatus.checkIn
+                    checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkIn
                 )
                 break
             case ButtonType.inprogress:
                 filteredData = bookingAll.filter(booking =>
                     booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-                    booking.status === BookingStatus.inProgress
+                    checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.inProgress
                 )
                 break
             case ButtonType.checkout:
                 filteredData = bookingAll.filter(booking =>
                     booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-                    booking.status === BookingStatus.checkOut
+                    checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkOut
                 )
                 break
         }
@@ -241,6 +242,16 @@ export const Bookings = () => {
         dispatch(BookingDeleteByIdThunk(id))
         displayMenuOptions(index)
     }
+    const checkBookingStatus = (checkInDate: string, checkOutDate: string): BookingStatus => {
+        const actualDate = new Date().toISOString()
+        if (actualDate < checkInDate) {
+            return BookingStatus.checkIn
+        }
+        else if (actualDate > checkInDate && actualDate < checkOutDate) {
+            return BookingStatus.inProgress
+        }
+        else return BookingStatus.checkOut
+    }
 
 
     return (
@@ -310,15 +321,15 @@ export const Bookings = () => {
                         </PTable>,
 
                         <PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center' >
-                            {bookingData.order_date}
+                            {formatDateForPrint(bookingData.order_date)}
                         </PTable>,
 
                         <PTable key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            {bookingData.check_in_date}
+                            {formatDateForPrint(bookingData.check_in_date)}
                         </PTable>,
 
                         <PTable key={index + '-6'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            {bookingData.check_out_date}
+                            {formatDateForPrint(bookingData.check_out_date)}
                         </PTable>,
 
                         <PTable key={index + '-7'}>
@@ -340,18 +351,17 @@ export const Bookings = () => {
                         <PTable key={index + '-9'}>
                             {
                                 (() => {
-                                    switch (bookingData.status) {
-                                        case BookingStatus.checkIn:
-                                            return <PStatusBooking status={BookingStatus.checkIn}>Check In</PStatusBooking>
-                                        case BookingStatus.checkOut:
-                                            return <PStatusBooking status={BookingStatus.checkOut}>Check Out</PStatusBooking>
-                                        case BookingStatus.inProgress:
-                                            return <PStatusBooking status={BookingStatus.inProgress}>In Progress</PStatusBooking>
-                                        default:
-                                            return <></>
+                                    const status = checkBookingStatus(bookingData.check_in_date, bookingData.check_out_date)
+                                    if (status === BookingStatus.checkIn) {
+                                        return <PStatusBooking status={BookingStatus.checkIn}>Check In</PStatusBooking>
                                     }
-                                }
-                                )()
+                                    else if (status < bookingData.check_out_date) {
+                                        return <PStatusBooking status={BookingStatus.inProgress}>In Progress</PStatusBooking>
+                                    }
+                                    else {
+                                        return <PStatusBooking status={BookingStatus.checkOut}>Check Out</PStatusBooking>
+                                    }
+                                })()
                             }
                         </PTable>,
 

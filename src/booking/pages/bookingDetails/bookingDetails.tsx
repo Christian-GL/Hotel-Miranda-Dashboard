@@ -6,20 +6,16 @@ import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
 import * as bookingDetailsStyles from "./bookingDetailsStyles.ts"
-import { BookingInterface } from "../../interfaces/bookingInterface.ts"
-import { RoomInterface } from "../../../room/interfaces/roomInterface.ts"
+import { BookingInterfaceRoom } from "../../interfaces/bookingInterface.ts"
 import { DivCtnOptions, ButtonOption } from "../../../common/styles/tableStyles.ts"
 import { AppDispatch } from "../../../common/redux/store.ts"
+import { formatDateForPrint } from "../../../common/utils/dateUtils.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { RoomAmenities } from "../../../room/data/roomAmenities.ts"
 import { applyDiscount } from '../../../common/utils/tableUtils.ts'
 import { getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice.ts"
-import { resetIdStatus } from "../../../booking/features/bookingSlice.ts"
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk.ts"
 import { BookingDeleteByIdThunk } from "../../features/thunks/bookingDeleteByIdThunk.ts"
-import { getRoomIdData, getRoomIdStatus } from '../../../room/features/roomSlice.ts'
-import { RoomFetchByIDThunk } from '../../../room/features/thunks/roomFetchByIDThunk.ts'
-import { RoomUpdateThunk } from "../../../room/features/thunks/roomUpdateThunk.ts"
 
 
 export const BookingDetails = () => {
@@ -27,32 +23,20 @@ export const BookingDetails = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { id } = useParams()
-    const idParams = parseInt(id!)
-    const bookingById: BookingInterface = useSelector(getBookingIdData)
+    const idParams = id!
+    const bookingById: BookingInterfaceRoom = useSelector(getBookingIdData)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
-    const roomById: RoomInterface = useSelector(getRoomIdData)
-    const roomByIdLoading: ApiStatus = useSelector(getRoomIdStatus)
     const [optionsDisplayed, setOptionsDisplayed] = useState<boolean>(false)
 
     useEffect(() => {
         if (bookingByIdLoading === ApiStatus.idle) { dispatch(BookingFetchByIDThunk(idParams)) }
         else if (bookingByIdLoading === ApiStatus.fulfilled) {
-            if (roomByIdLoading === ApiStatus.idle) { dispatch(RoomFetchByIDThunk(bookingById.room_id)) }
-            else if (roomByIdLoading === ApiStatus.fulfilled) {
-                if (bookingById?.id !== idParams) {
-                    dispatch(BookingFetchByIDThunk(idParams))
-                    if (bookingById?.room_id !== roomById.id) {
-                        dispatch(RoomFetchByIDThunk(bookingById.room_id))
-                    }
-                }
+            if (bookingById._id !== idParams) {
+                dispatch(BookingFetchByIDThunk(idParams))
             }
-            else if (roomByIdLoading === ApiStatus.rejected) { alert("Error en la api de booking details > rooms") }
         }
-        if (bookingById?.room_id !== roomById.id) {
-            dispatch(RoomFetchByIDThunk(bookingById.room_id))
-        }
-        else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error en la api de bookings details > booking") }
-    }, [bookingByIdLoading, bookingById, roomByIdLoading, roomById, id])
+        else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error in API bookings > booking details") }
+    }, [bookingByIdLoading, bookingById, id])
 
     const navigateBackToBookings = () => navigate('../')
 
@@ -60,18 +44,12 @@ export const BookingDetails = () => {
         setOptionsDisplayed(!optionsDisplayed)
     }
     const deleteThisBooking = (): void => {
-        const roomUpdated: RoomInterface = {
-            ...roomById,
-            booking_list: roomById.booking_list.filter(bookingId => bookingId !== bookingById.room_id)
-        }
-        dispatch(RoomUpdateThunk(roomUpdated))
-        dispatch(BookingDeleteByIdThunk(bookingById.id))
+        dispatch(BookingDeleteByIdThunk(bookingById._id))
         navigateBackToBookings()
     }
 
 
     return (
-
         <bookingDetailsStyles.SectionPageBookingDetails>
             <bookingDetailsStyles.DivSection padding='2em'>
                 <bookingDetailsStyles.DivCtnImgAndMainData>
@@ -79,7 +57,7 @@ export const BookingDetails = () => {
                     <bookingDetailsStyles.DivCtnMainData>
                         <bookingDetailsStyles.DivCtnNameId>
                             <bookingDetailsStyles.NameProfileH2>{bookingById.full_name_guest}</bookingDetailsStyles.NameProfileH2>
-                            <bookingDetailsStyles.SubTittleH4 isId={true}>ID Booking: #{bookingById.id}</bookingDetailsStyles.SubTittleH4>
+                            <bookingDetailsStyles.SubTittleH4 isId={true}>ID Booking: #{bookingById._id}</bookingDetailsStyles.SubTittleH4>
                         </bookingDetailsStyles.DivCtnNameId>
                         <bookingDetailsStyles.DivCtnContactMessage>
                             <bookingDetailsStyles.IconPhone />
@@ -106,7 +84,7 @@ export const BookingDetails = () => {
                             Check In
                         </bookingDetailsStyles.SubTittleH4>
                         <bookingDetailsStyles.SubTittleH4 paddingtop='1em'>
-                            {bookingById.check_in_date} | {bookingById.check_in_time}
+                            {formatDateForPrint(bookingById.check_in_date)}
                         </bookingDetailsStyles.SubTittleH4>
                     </bookingDetailsStyles.Div50PercentageSection>
                     <bookingDetailsStyles.Div50PercentageSection>
@@ -114,7 +92,7 @@ export const BookingDetails = () => {
                             Check Out
                         </bookingDetailsStyles.SubTittleH4>
                         <bookingDetailsStyles.SubTittleH4 paddingtop='1em'>
-                            {bookingById.check_out_date} | {bookingById.check_out_time}
+                            {formatDateForPrint(bookingById.check_out_date)}
                         </bookingDetailsStyles.SubTittleH4>
                     </bookingDetailsStyles.Div50PercentageSection>
                 </bookingDetailsStyles.DivCheckInOut>
@@ -125,9 +103,9 @@ export const BookingDetails = () => {
                             Room Info
                         </bookingDetailsStyles.SubTittleH4>
                         <bookingDetailsStyles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em'>
-                            Room Nº {bookingById.room_id}
+                            Room Nº {bookingById.room_data?.number}
                             <br />
-                            {bookingById.room_type}
+                            {bookingById.room_data?.type}
                         </bookingDetailsStyles.SubTittleH4>
                     </bookingDetailsStyles.Div50PercentageSection>
                     <bookingDetailsStyles.Div50PercentageSection>
@@ -135,9 +113,9 @@ export const BookingDetails = () => {
                             Price
                         </bookingDetailsStyles.SubTittleH4>
                         <bookingDetailsStyles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em'>
-                            <del>${roomById.price} /night</del>
+                            <del>${bookingById.room_data?.price} /night</del>
                             <br />
-                            ${applyDiscount(roomById.price, roomById.discount)} /night (-{roomById.discount}%)
+                            ${applyDiscount(bookingById.room_data?.price, bookingById.room_data?.discount)} /night (-{bookingById.room_data?.discount}%)
                         </bookingDetailsStyles.SubTittleH4>
                     </bookingDetailsStyles.Div50PercentageSection>
                 </bookingDetailsStyles.DivCtnInfo>
@@ -148,8 +126,8 @@ export const BookingDetails = () => {
 
                 <bookingDetailsStyles.DivCtnFacilities>
                     <bookingDetailsStyles.SubTittleH4 isId={true} fontsize='1em'>Facilities</bookingDetailsStyles.SubTittleH4>
-                    {Array.isArray(roomById.amenities) ? (
-                        roomById.amenities.map((amenity, index) => {
+                    {Array.isArray(bookingById.room_data?.amenities) ? (
+                        bookingById.room_data?.amenities.map((amenity, index) => {
                             switch (amenity) {
                                 case RoomAmenities.bedSpace3:
                                     return (
@@ -189,9 +167,8 @@ export const BookingDetails = () => {
             </bookingDetailsStyles.DivSection>
 
             <bookingDetailsStyles.DivSection>
-                <bookingDetailsStyles.ImgRoom src="http://dummyimage.com/816x989.png/cc0000/ffffff" />
+                <bookingDetailsStyles.ImgRoom src={bookingById.room_data?.photos[0]} />
             </bookingDetailsStyles.DivSection>
         </bookingDetailsStyles.SectionPageBookingDetails>
-
     )
 }
