@@ -1,6 +1,6 @@
 
 export interface LoginContextTypeInterface {
-    tryLogin: (userEmail: string, userPassword: string) => Promise<boolean>
+    tryLogin: (email: string, password: string) => Promise<boolean>
     logout: () => void
     isAuthenticated: () => boolean
 }

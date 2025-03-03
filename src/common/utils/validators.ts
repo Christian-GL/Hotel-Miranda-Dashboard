@@ -1,7 +1,9 @@
 
+import { BookingStatus } from "../../booking/data/bookingStatus.ts"
 import { RoomAmenities } from "../../room/data/roomAmenities.ts"
 import { RoomType } from "../../room/data/roomType.ts"
-import { RoomInterface } from "../../room/interfaces/roomInterface.ts"
+import { RoomInterfaceBookings } from "../../room/interfaces/roomInterface.ts"
+import { BookingInterface, BookingInterfaceRoom, BookingInterfaceNoId } from "../../booking/interfaces/bookingInterface.ts"
 
 
 export const validatePhotos = (photos: any[], fieldName: string = 'Photo'): string[] => {
@@ -101,6 +103,49 @@ export const validateDateRelativeToNow = (date: any, mustBeBeforeNow: boolean, f
         errorMessages.push(`${fieldName} can't be before now`)
     }
 
+    return errorMessages
+}
+
+export const validateCheckInCheckOut = (checkIn: Date, checkOut: Date): string[] => {
+    const errorMessages: string[] = []
+
+    validateDateRelativeToNow(checkIn, false, 'Check in date').map(
+        error => errorMessages.push(error)
+    )
+    validateDateRelativeToNow(checkOut, false, 'Check out date').map(
+        error => errorMessages.push(error)
+    )
+    if (checkIn >= checkOut) {
+        errorMessages.push('Check in date must be before Check out date')
+    }
+
+    return errorMessages
+}
+
+// FUSIONAR LAS DOS VALIDATEISOCCUPIED ?? (tema de IDS como?)
+export const validateDateIsOccupied = (booking: BookingInterfaceNoId, bookings: BookingInterfaceRoom[]): string[] => {
+    const errorMessages: string[] = []
+
+    for (let i = 0; i < bookings.length; i++) {
+        if (new Date(booking.check_in_date) < new Date(bookings[i].check_out_date) &&
+            new Date(booking.check_out_date) > new Date(bookings[i].check_in_date)) {
+            errorMessages.push(`This period is already occupied by booking #${bookings[i]._id}`)
+        }
+    }
+    return errorMessages
+}
+
+export const validateDateIsOccupiedIfBookingExists = (booking: BookingInterface, bookings: BookingInterfaceRoom[]): string[] => {
+    const errorMessages: string[] = []
+
+    for (let i = 0; i < bookings.length; i++) {
+        if (new Date(booking.check_in_date) < new Date(bookings[i].check_out_date) &&
+            new Date(booking.check_out_date) > new Date(bookings[i].check_in_date)) {
+            if (booking._id.toString() !== bookings[i]._id.toString()) {
+                errorMessages.push(`This period is already occupied by booking #${bookings[i]._id}`)
+            }
+        }
+    }
     return errorMessages
 }
 
@@ -215,6 +260,19 @@ export const validateAmenities = (amenities: any[], fieldName: string = 'Ameniti
     return errorMessages
 }
 
+export const validateBookingStatus = (type: any, fieldName: string = 'Booking Status'): string[] => {
+    const errorMessages: string[] = []
+
+    if (typeof type !== "string") {
+        errorMessages.push(`${fieldName} is not a String`)
+    }
+    if (!Object.values(BookingStatus).includes(type as BookingStatus)) {
+        errorMessages.push(`${fieldName} is not set`)
+    }
+
+    return errorMessages
+}
+
 export const validateBookingList = (bookingList: any[], fieldName: string = 'Booking list'): string[] => {
     const errorMessages: string[] = []
 
@@ -227,7 +285,7 @@ export const validateBookingList = (bookingList: any[], fieldName: string = 'Boo
     return errorMessages
 }
 
-export const validateRoomNumber = (number: any, allRooms: RoomInterface[], fieldName: string = 'Room number'): string[] => {
+const validateRoomNumber = (number: any, allRooms: RoomInterfaceBookings[], actualNumber?: string, fieldName: string = 'Room number'): string[] => {
     const errorMessages: string[] = []
     const regex = new RegExp(/^\d{3}$/)
 
@@ -238,13 +296,20 @@ export const validateRoomNumber = (number: any, allRooms: RoomInterface[], field
     if (typeof number !== "string") {
         errorMessages.push(`${fieldName} is not a string`)
     }
-    if (!regex.test(number)) {
+    const numStr = String(number)
+    if (!regex.test(numStr)) {
         errorMessages.push(`${fieldName} must have 3 numeric digits between 000 and 999`)
     }
-    if (allRooms.some(room => room.number === number)) {
-        errorMessages.push(`${fieldName} is already taken`)
+    if (allRooms.some(room => room.number === numStr && room.number !== actualNumber)) {
+        errorMessages.push('Number is already taken')
     }
 
-
     return errorMessages
+}
+
+export const validateNewRoomNumber = (number: string, allRooms: RoomInterfaceBookings[], fieldName: string = 'Room number'): string[] => {
+    return validateRoomNumber(number, allRooms, undefined, fieldName)
+}
+export const validateExistingRoomNumber = (number: string, actualNumber: string, allRooms: RoomInterfaceBookings[], fieldName: string = 'Room number'): string[] => {
+    return validateRoomNumber(number, allRooms, actualNumber, fieldName)
 }

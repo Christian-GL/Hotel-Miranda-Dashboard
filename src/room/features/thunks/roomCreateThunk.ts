@@ -1,10 +1,10 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { RoomInterfaceWithOutID } from '../../interfaces/roomInterface.ts'
+import { RoomInterfaceNoId } from '../../interfaces/roomInterface.ts'
 import { RoomType } from '../../data/roomType.ts'
 
 
-const roomDefaultIfError: RoomInterfaceWithOutID = {
+const roomDefaultIfError: RoomInterfaceNoId = {
     photos: [],
     number: '0',
     type: RoomType.singleBed,
@@ -15,7 +15,7 @@ const roomDefaultIfError: RoomInterfaceWithOutID = {
 }
 
 export const RoomCreateThunk = createAsyncThunk
-    ("room/create", async (newRoomData: RoomInterfaceWithOutID) => {
+    ("room/create", async (newRoomData: RoomInterfaceNoId) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return roomDefaultIfError

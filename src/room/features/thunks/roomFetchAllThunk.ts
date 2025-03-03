@@ -1,10 +1,10 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { RoomInterface } from "../../interfaces/roomInterface.ts"
+import { RoomInterfaceBookings } from "../../interfaces/roomInterface.ts"
 import { RoomType } from "../../data/roomType.ts"
 
 
-const roomDefaultIfError: RoomInterface = {
+const roomDefaultIfError: RoomInterfaceBookings = {
     _id: '0',
     photos: [],
     number: '0',
@@ -12,7 +12,7 @@ const roomDefaultIfError: RoomInterface = {
     amenities: [],
     price: 0,
     discount: 0,
-    booking_list: []
+    booking_data_list: []
 }
 
 export const RoomFetchAllThunk = createAsyncThunk
@@ -31,7 +31,7 @@ export const RoomFetchAllThunk = createAsyncThunk
             })
             if (request.ok) {
                 const json = await request.json()
-                let allRooms: RoomInterface[] = []
+                let allRooms: RoomInterfaceBookings[] = []
                 for (let i = 0; i < json.length; i++) {
                     allRooms.push({
                         _id: json[i]._id,
@@ -41,7 +41,7 @@ export const RoomFetchAllThunk = createAsyncThunk
                         amenities: json[i].amenities,
                         price: json[i].price,
                         discount: json[i].discount,
-                        booking_list: json[i].booking_list
+                        booking_data_list: json[i].booking_list
                     })
                 }
                 return allRooms

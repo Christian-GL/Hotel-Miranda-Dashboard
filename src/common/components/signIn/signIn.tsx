@@ -12,7 +12,7 @@ import { useLoginOptionsContext } from "./features/loginProvider.tsx"
 export const SignIn = () => {
 
     const navigate = useNavigate()
-    const [userSet, setUserSet] = useState<string>('Electa.Fadel@hotmail.com')
+    const [userSet, setUserSet] = useState<string>('Ashly.Rice92@gmail.com')
     const [passwordSet, setPasswordSet] = useState<string>('Abcd1234.')
     const { tryLogin } = useLoginOptionsContext()
 

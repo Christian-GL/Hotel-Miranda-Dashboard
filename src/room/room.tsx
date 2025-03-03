@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux"
 import * as roomStyles from "./roomStyles.ts"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
-import { RoomInterface } from "./interfaces/roomInterface.ts"
+import { RoomInterfaceBookings } from "./interfaces/roomInterface.ts"
 import { RoomColumnsArrowStatesInterface } from './interfaces/roomColumnsArrowStatesInterface.ts'
 import { ArrowType } from "../common/enums/ArrowType.ts"
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
@@ -26,7 +26,7 @@ import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.ts"
 import { getBookingAllData, getBookingAllStatus } from "../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../booking/features/thunks/bookingFetchAllThunk.js"
 import { BookingDeleteByIdThunk } from "../booking/features/thunks/bookingDeleteByIdThunk.js"
-import { BookingInterface } from "../booking/interfaces/bookingInterface.ts"
+import { BookingInterfaceRoom } from "../booking/interfaces/bookingInterface.ts"
 
 
 export const Room = () => {
@@ -44,13 +44,13 @@ export const Room = () => {
         offerPrice = 'offerPrice'
     }
     const nameColumnList: string[] = ['', 'Room number', 'Room type', 'Amenities', 'Price', 'Offer price', 'Booking status', '']
-    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAll: RoomInterfaceBookings[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
-    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterfaceRoom[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
-    const [filteredRooms, setFilteredRooms] = useState<RoomInterface[]>([])
+    const [filteredRooms, setFilteredRooms] = useState<RoomInterfaceBookings[]>([])
     const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
     const [arrowStates, setArrowStates] = useState<RoomColumnsArrowStatesInterface>({
         roomNumber: ArrowType.down,
@@ -65,7 +65,7 @@ export const Room = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination<RoomInterface>(filteredRooms, 10)
+    } = usePagination<RoomInterfaceBookings>(filteredRooms, 10)
 
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
@@ -90,7 +90,7 @@ export const Room = () => {
         displayRooms()
     }
     const displayRooms = (): void => {
-        let filteredData: RoomInterface[]
+        let filteredData: RoomInterfaceBookings[]
         switch (selectedButton) {
             case ButtonType.all:
                 filteredData = roomAll.filter(room =>
@@ -100,27 +100,23 @@ export const Room = () => {
             case ButtonType.available:
                 filteredData = roomAll.filter(room =>
                     room._id.toString().includes(inputText.toLowerCase()) &&
-                    // !!! - ACTUALIZAR ESTO CUANDO SE TENGA EL ROOM_LIST - !!!
-                    // bookingAll.filter((booking) => room.booking_list.includes(booking._id)).length === 0
-                    bookingAll.filter((booking) => room.booking_list.length === 0
-                    ))
+                    isAvailable(room)
+                )
                 break
             case ButtonType.booked:
                 filteredData = roomAll.filter(room =>
                     room._id.toString().includes(inputText.toLowerCase()) &&
-                    // !!! - ACTUALIZAR ESTO CUANDO SE TENGA EL ROOM_LIST - !!!
-                    // bookingAll.filter((booking) => room.booking_list.includes(booking._id)).length >= 1
-                    bookingAll.filter((booking) => room.booking_list.length >= 1
-                    ))
+                    !isAvailable(room)
+                )
                 break
         }
         const sortedData = sortData(filteredData)
         setFilteredRooms(sortedData)
         resetPage()
     }
-    const sortData = (filteredData: RoomInterface[]): RoomInterface[] => {
+    const sortData = (filteredData: RoomInterfaceBookings[]): RoomInterfaceBookings[] => {
         const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
-        let sortedData: RoomInterface[] = [...filteredData]
+        let sortedData: RoomInterfaceBookings[] = [...filteredData]
         if (activeColumn) {
             if (activeColumn === columnsSortAvailable.roomNumber) {
                 sortedData.sort((a, b) => {
@@ -189,16 +185,24 @@ export const Room = () => {
             setTableOptionsDisplayed(index)
     }
     const deleteRoomById = (id: string, index: number): void => {
-        const room = roomAll.find(room => room._id === id)
-        if (room) {
-            room.booking_list.map(bookingId => {
-                // !!! - ACTUALIZAR ESTO CUANDO SE TENGA EL ROOM_LIST - !!!
-                // dispatch(BookingDeleteByIdThunk(bookingId))
-            })
-        }
+        // const room = roomAll.find(room => room._id === id)
+        // if (room) {
+        //     room.booking_data_list.map(booking => {
+        //         dispatch(BookingDeleteByIdThunk(booking._id))
+        //     })
+        // }
         dispatch(RoomDeleteByIdThunk(id))
         displayMenuOptions(index)
         resetPage()
+    }
+    // HUMANIZAR ESTA FUNCION (Y QUIZAS HACERLA COMÚN)
+    const isAvailable = (room: RoomInterfaceBookings): boolean => {
+        return !Array.isArray(room.booking_data_list) || room.booking_data_list.length === 0 || !room.booking_data_list.some(booking => {
+            const actualDate = new Date()
+            const checkIn = new Date(booking.check_in_date)
+            const checkOut = new Date(booking.check_out_date)
+            return actualDate >= checkIn && actualDate <= checkOut
+        })
     }
 
 
@@ -276,9 +280,7 @@ export const Room = () => {
 
                         <PTable key={index + '-7'}>
                             {
-                                // !!! - ACTUALIZAR ESTO CUANDO SE TENGA EL ROOM_LIST - !!!
-                                // bookingAll.filter((booking) => roomData.booking_list.includes(booking._id)).length === 0 ?
-                                bookingAll.filter((booking) => roomData.booking_list.length === 0) ?
+                                isAvailable(roomData) ?
                                     <PStatusRoomList status='Available'>Available</PStatusRoomList> :
                                     <PStatusRoomList status='Booking'>Booking</PStatusRoomList>
                             }

@@ -10,12 +10,12 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { RoomInterface, RoomInterfaceWithOutID } from "../../interfaces/roomInterface.ts"
+import { RoomInterfaceNoId } from "../../interfaces/roomInterface.ts"
 import { RoomAmenities } from "../../data/roomAmenities.ts"
 import { RoomType } from "../../data/roomType.ts"
 import {
     validatePhotos, validateRoomType, validateAmenities,
-    validateNumberBetween, validateBookingList, validateRoomNumber
+    validateNumberBetween, validateBookingList, validateNewRoomNumber
 } from '../../../common/utils/validators.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconPlus, TitleForm, Form, ImgRoom, DivCtnEntry,
@@ -33,7 +33,7 @@ export const RoomCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
-    const [newRoom, setNewRoom] = useState<RoomInterfaceWithOutID>({
+    const [newRoom, setNewRoom] = useState<RoomInterfaceNoId>({
         photos: [],
         number: '0',
         type: RoomType.singleBed,
@@ -120,7 +120,7 @@ export const RoomCreate = () => {
         // const errorsPhotos = validatePhotos(newRoom.photos, 'Photos')
         // if (errorsPhotos.length > 0) { errorsPhotos.map(error => ToastifyError(error)); return false }
 
-        const errorsRoomNumber = validateRoomNumber(newRoom.number, roomAll, 'Room number')
+        const errorsRoomNumber = validateNewRoomNumber(newRoom.number, roomAll, 'Room number')
         if (errorsRoomNumber.length > 0) { errorsRoomNumber.map(error => ToastifyError(error)); return false }
 
         const errorsRoomType = validateRoomType(newRoom.type, 'Room type')

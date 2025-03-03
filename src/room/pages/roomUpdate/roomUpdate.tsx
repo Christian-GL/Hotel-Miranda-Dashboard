@@ -16,7 +16,7 @@ import { RoomAmenities } from "../../data/roomAmenities.ts"
 import { RoomType } from "../../data/roomType.ts"
 import {
     validatePhotos, validateRoomType, validateAmenities,
-    validateNumberBetween, validateBookingList, validateRoomNumber
+    validateNumberBetween, validateBookingList, validateExistingRoomNumber
 } from '../../../common/utils/validators.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form,
@@ -41,7 +41,7 @@ export const RoomUpdate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const roomById = useSelector(getRoomIdData)
     const roomByIdLoading = useSelector(getRoomIdStatus)
-    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAll = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
@@ -70,7 +70,7 @@ export const RoomUpdate = () => {
                 amenities: roomById.amenities || [],
                 price: roomById.price || 0,
                 discount: roomById.discount || 0,
-                booking_list: roomById.booking_list || []
+                booking_list: roomById.booking_data_list.map(booking => booking._id)
             })
         }
         else if (roomByIdLoading === ApiStatus.rejected) { alert("Error in API update rooms") }
@@ -78,7 +78,7 @@ export const RoomUpdate = () => {
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de rooms") }
+        else if (roomAllLoading === ApiStatus.rejected) { alert("Error in API update rooms") }
     }, [roomAllLoading, roomAll])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -154,7 +154,7 @@ export const RoomUpdate = () => {
         // const errorsPhotos = validatePhotos(roomUpdated.photos, 'Photos')
         // if (errorsPhotos.length > 0) { errorsPhotos.map(error => ToastifyError(error)); return false }
 
-        const errorsRoomNumber = validateRoomNumber(roomUpdated.number, roomAll, 'Room number')
+        const errorsRoomNumber = validateExistingRoomNumber(roomUpdated.number, roomUpdated.number, roomAll, 'Room number')
         if (errorsRoomNumber.length > 0) { errorsRoomNumber.map(error => ToastifyError(error)); return false }
 
         const errorsRoomType = validateRoomType(roomUpdated.type, 'Room type')
@@ -253,7 +253,8 @@ export const RoomUpdate = () => {
                         <LabelText>Booking Status</LabelText>
                         <DivCtnEntryBookings>
                             {
-                                bookingAll.filter((booking) => roomUpdated.booking_list.includes(booking._id)).length === 0 ?
+                                // FUNCIONA EL LISTADO DE BOOKING POR ROOM?
+                                bookingAll.filter(booking => roomUpdated.booking_list.toString().includes(booking._id)).length === 0 ?
                                     <LabelTextBookingStatus>Available</LabelTextBookingStatus> :
                                     (bookingAll.filter(booking => roomUpdated.booking_list.includes(booking._id))
                                         .map((booking, index) => (

@@ -23,8 +23,8 @@ export const LoginProvider = ({ children }: LoginProviderInterface) => {
 
     const dispatchRedux = useDispatch<AppDispatch>()
 
-    const tryLogin = async (userEmail: string, userPassword: string): Promise<boolean> => {
-        const loginData = { userEmail: userEmail, userPassword: userPassword }
+    const tryLogin = async (email: string, password: string): Promise<boolean> => {
+        const loginData = { email: email, password: password }
         const tokenAndUserData = await dispatchRedux(LoginThunk(loginData))
 
         if (LoginThunk.fulfilled.match(tokenAndUserData)) {

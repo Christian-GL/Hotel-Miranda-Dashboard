@@ -1,10 +1,10 @@
 
-import { BookingInterface } from './bookingInterface.ts'
+import { BookingInterfaceRoom } from './bookingInterface.ts'
 import { ApiStatus } from "../../common/enums/ApiStatus.ts"
 
 export interface BookingStateInterface {
-    allData: BookingInterface[]
-    idData: BookingInterface
+    allData: BookingInterfaceRoom[]
+    idData: BookingInterfaceRoom
     allStatus: ApiStatus
     idStatus: ApiStatus
     createStatus: ApiStatus

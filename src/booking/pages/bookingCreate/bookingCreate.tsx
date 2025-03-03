@@ -10,12 +10,12 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { BookingInterface } from "../../interfaces/bookingInterface.ts"
+import { BookingInterfaceNoId } from "../../interfaces/bookingInterface.ts"
 import { BookingStatus } from "../../data/bookingStatus.ts"
 import {
-    checkFirstIDAvailable, getActualDate, getActualTime, hourFormatTo12H, hourFormatTo24H, dateFormatToYYYYMMDD,
-    validatePhoto, validateName, validateDateAndTime, validateTextArea, validateRoomNumber, validateBookingStatus
-} from '../../../common/utils/formUtils.ts'
+    validatePhoto, validateFullName, validateCheckInCheckOut,
+    validateDateIsOccupied, validateBookingStatus, validateTextArea
+} from '../../../common/utils/validators.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, LabelTextNote, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
@@ -26,7 +26,6 @@ import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFe
 import { BookingCreateThunk } from "../../../booking/features/thunks/bookingCreateThunk.ts"
 import { getRoomAllData, getRoomAllStatus } from '../../../room/features/roomSlice.ts'
 import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk.ts'
-import { RoomUpdateThunk } from "../../../room/features/thunks/roomUpdateThunk.ts"
 
 
 export const BookingCreate = () => {
@@ -37,38 +36,26 @@ export const BookingCreate = () => {
     const bookingAllLoading = useSelector(getBookingAllStatus)
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
-    const [newBooking, setNewBooking] = useState<BookingInterface>({
-        id: 0,
+    const [newBooking, setNewBooking] = useState<BookingInterfaceNoId>({
         photo: '',
         full_name_guest: '',
         order_date: '',
-        order_time: '',
         check_in_date: '',
-        check_in_time: '',
         check_out_date: '',
-        check_out_time: '',
+        status: BookingStatus.checkIn,
         special_request: '',
-        room_id: 0,
-        room_type: '',
-        status: '',
+        room_id: '0'
     })
-    const [nextIdAvailable, setNextIdAvailable] = useState<number>(0)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
-        else if (bookingAllLoading === ApiStatus.fulfilled) {
-            if (bookingAll.length > 0) {
-                const id = checkFirstIDAvailable(bookingAll.map(item => item.id))
-                setNextIdAvailable(id)
-            }
-            else { setNextIdAvailable(1) }
-        }
-        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de booking create") }
+        else if (bookingAllLoading === ApiStatus.fulfilled) { }
+        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error in API create booking") }
     }, [bookingAllLoading, bookingAll])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de booking create > rooms") }
+        else if (roomAllLoading === ApiStatus.rejected) { alert("Error in API create booking > rooms") }
     }, [roomAllLoading, roomAll])
 
 
@@ -82,7 +69,14 @@ export const BookingCreate = () => {
             })
         }
     }
-    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleStringInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        setNewBooking({
+            ...newBooking,
+            [name]: value
+        })
+    }
+    const handleStringSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setNewBooking({
             ...newBooking,
@@ -91,19 +85,14 @@ export const BookingCreate = () => {
     }
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        const [year, month, day] = value.split("-")
-        const dateFormatted = `${day}/${month}/${year}`
+
+        if (!value) return
+        const date = new Date(value)
+        const dateISO = date.toISOString()
+
         setNewBooking({
             ...newBooking,
-            [name]: dateFormatted
-        })
-    }
-    const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        const timeFormatted = hourFormatTo12H(value)
-        setNewBooking({
-            ...newBooking,
-            [name]: timeFormatted
+            [name]: dateISO
         })
     }
     const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -111,13 +100,6 @@ export const BookingCreate = () => {
         setNewBooking({
             ...newBooking,
             [name]: value
-        })
-    }
-    const handleNumberChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setNewBooking({
-            ...newBooking,
-            [name]: parseInt(value)
         })
     }
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -132,119 +114,64 @@ export const BookingCreate = () => {
 
         if (!validateAllData()) { return }
 
-        const room = roomAll.find(room => room.id === newBooking.room_id)
-        if (!room) {
-            ToastifyError(`ERROR - room #${newBooking.room_id} nor found`)
-            return
-        }
-
-        if (checkIsOccupied()) {
-            ToastifyError(`Room #${newBooking.room_id} is occupied on dates:
-                [${newBooking.check_in_date} ${newBooking.check_in_time}] ⭢ [${newBooking.check_out_date} ${newBooking.check_out_time}]`)
-            return
-        }
+        // const room = roomAll.find(room => room.id === newBooking.room_id)
+        // if (!room) {
+        //     ToastifyError(`ERROR - room #${newBooking.room_id} nor found`)
+        //     return
+        // }
 
         const newBookingToDispatch = {
             ...newBooking,
-            id: nextIdAvailable,
-            order_date: getActualDate(),
-            order_time: getActualTime(),
-            room_type: room.type
+            order_date: new Date().toISOString()
         }
-        const roomUpdatedToDispatch = {
-            ...room,
-            booking_list: [
-                ...room.booking_list,
-                nextIdAvailable
-            ]
-        }
+        // const roomUpdatedToDispatch = {
+        //     ...room,
+        //     booking_list: [
+        //         ...room.booking_list
+        //     ]
+        // }
+
         dispatch(BookingCreateThunk(newBookingToDispatch))
             .then(() => {
-                ToastifySuccess(`Booking #${newBookingToDispatch.id} created`, () => {
+                ToastifySuccess('Booking Created', () => {
                     navigate('../')
                 })
             })
             .catch((error) => {
                 ToastifyError(error)
             })
-        dispatch(RoomUpdateThunk(roomUpdatedToDispatch))
-            .then(() => {
-                ToastifySuccess(`Room #${roomUpdatedToDispatch.id} booking list updated to [${roomUpdatedToDispatch.booking_list}]`, () => {
-                    navigate('../')
-                })
-            })
-            .catch((error) => {
-                ToastifyError(error)
-            })
-    }
 
-    const checkIsOccupied = () => { // NO DEBE ESTAR EN ESTE FICHERO. LO MISMO PARA EL BOOKINGUPDATE
-
-        const room = roomAll.find(room => room.id === nextIdAvailable)
-        if (!room) { return }
-
-        const bookings = bookingAll.filter(booking => room.booking_list.includes(booking.id))
-        if (!bookings) { return }
-
-        const bookingDataCheckIn = new Date(`${dateFormatToYYYYMMDD(newBooking.check_in_date)}T${hourFormatTo24H(newBooking.check_in_time)}:00`)
-        const bookingDataCheckOut = new Date(`${dateFormatToYYYYMMDD(newBooking.check_out_date)}T${hourFormatTo24H(newBooking.check_out_time)}:00`)
-        for (let booking of bookings) {
-            const bookingCheckIn = new Date(`${dateFormatToYYYYMMDD(booking.check_in_date)}T${hourFormatTo24H(booking.check_in_time)}:00`)
-            const bookingCheckOut = new Date(`${dateFormatToYYYYMMDD(booking.check_out_date)}T${hourFormatTo24H(booking.check_out_time)}:00`)
-
-            if ((bookingDataCheckIn < bookingCheckOut) && (bookingDataCheckOut > bookingCheckIn)) {
-                return true
-            }
-        }
-        return false
+        // dispatch(RoomUpdateThunk(roomUpdatedToDispatch))
+        //     .then(() => {
+        //         ToastifySuccess(`Room #${roomUpdatedToDispatch.id} booking list updated to [${roomUpdatedToDispatch.booking_list}]`, () => {
+        //             navigate('../')
+        //         })
+        //     })
+        //     .catch((error) => {
+        //         ToastifyError(error)
+        //     })
     }
 
     const validateAllData = (): boolean => {
-        // const checkPhoto = validatePhoto(newBooking.photo)
-        // if (!checkPhoto.test) {
-        //     checkPhoto.errorMessages.map(error => ToastifyError(error))
-        //     return false
-        // }
-        const checkGuestName = validateName(newBooking.full_name_guest)
-        if (!checkGuestName.test) {
-            checkGuestName.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkInDate = validateDateAndTime(newBooking.check_in_date)
-        if (!checkInDate.test) {
-            checkInDate.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkInTime = validateDateAndTime(newBooking.check_in_time)
-        if (!checkInTime.test) {
-            checkInTime.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkOutDate = validateDateAndTime(newBooking.check_out_date)
-        if (!checkOutDate.test) {
-            checkOutDate.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkOutTime = validateDateAndTime(newBooking.check_in_time)
-        if (!checkOutTime.test) {
-            checkOutTime.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkSpecialRequest = validateTextArea(newBooking.special_request)
-        if (!checkSpecialRequest.test) {
-            checkSpecialRequest.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkRoomNumber = validateRoomNumber(newBooking.room_id)
-        if (!checkRoomNumber.test) {
-            checkRoomNumber.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
-        const checkBookingStatus = validateBookingStatus(newBooking.status)
-        if (!checkBookingStatus.test) {
-            checkBookingStatus.errorMessages.map(error => ToastifyError(error))
-            return false
-        }
+        // const errorsPhoto = validatePhoto(newBooking.photo, 'Photo')
+        // if (errorsPhoto.length > 0) { errorsPhoto.map(error => ToastifyError(error)); return false }
+
+        const errorsFullName = validateFullName(newBooking.full_name_guest, 'Full name guest')
+        if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }
+
+        const errorsCheckInDate = validateCheckInCheckOut(new Date(newBooking.check_in_date), new Date(newBooking.check_out_date))
+        if (errorsCheckInDate.length > 0) { errorsCheckInDate.map(error => ToastifyError(error)); return false }
+
+        const errorsBookingStatus = validateBookingStatus(newBooking.status, 'Booking status')
+        if (errorsBookingStatus.length > 0) { errorsBookingStatus.map(error => ToastifyError(error)); return false }
+
+        const errorsSpecialRequest = validateTextArea(newBooking.special_request, 'Special request')
+        if (errorsSpecialRequest.length > 0) { errorsSpecialRequest.map(error => ToastifyError(error)); return false }
+
+        // VALIDAR ROOM_ID ??
+
+        const errorsDateIsOccupied = validateDateIsOccupied(newBooking, bookingAll)
+        if (errorsDateIsOccupied.length > 0) { errorsDateIsOccupied.map(error => ToastifyError(error)); return false }
 
         return true
     }
@@ -274,41 +201,45 @@ export const BookingCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Full name guest</LabelText>
-                        <InputText name="full_name_guest" onChange={handleStringChange} />
+                        <InputText name="full_name_guest" onChange={handleStringInputChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Check in date</LabelText>
-                        <InputDate name="check_in_date" type="date" onChange={handleDateChange} />
+                        <InputDate name="check_in_date" type="datetime-local" onChange={handleDateChange} />
 
-                        <LabelText minWidth="10rem" margin="0 0 0 5rem">Check in time</LabelText>
-                        <InputDate name="check_in_time" type="time" onChange={handleTimeChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
-                        <LabelText>Check out date</LabelText>
-                        <InputDate name="check_out_date" type="date" onChange={handleDateChange} />
-
-                        <LabelText minWidth="10rem" margin="0 0 0 5rem">Check out time</LabelText>
-                        <InputDate name="check_out_time" type="time" onChange={handleTimeChange} />
+                        <LabelText minWidth="10rem" margin="0 0 0 5rem">Check out date</LabelText>
+                        <InputDate name="check_out_date" type="datetime-local" onChange={handleDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Room number</LabelText>
-                        <Select name="room_id" onChange={handleNumberChange}>
+                        <Select name="room_id" onChange={handleStringSelectChange} disabled={!newBooking.check_in_date || !newBooking.check_out_date}>
                             <Option value="null" selected></Option>
-                            {roomAll.map((room, index) => (
-                                <Option key={index}>{room.id}</Option>
-                            ))}
+                            {(!newBooking.check_in_date || !newBooking.check_out_date) ? (
+                                <Option value="null" selected disabled>⚠️ Select Check-in date & Check-out date first</Option>
+                            ) : (
+                                <>
+                                    <Option value="null" selected></Option>
+                                    {roomAll
+                                        .filter(room => !validateDateIsOccupied(
+                                            newBooking,
+                                            bookingAll.filter(booking => booking.room_data._id === room._id)
+                                        ).length).map(room => (
+                                            <Option key={room._id} value={room._id.toString()}>{room.number}</Option>
+                                        ))
+                                    }
+                                </>
+                            )}
                         </Select>
 
                         <LabelText minWidth="10rem" margin="0 0 0 5rem">Booking Status</LabelText>
                         <Select name="status" onChange={handleSelectChange}>
                             <Option value="null" selected></Option>
                             {Object.values(BookingStatus).map((type, index) => (
-                                <option key={index} value={type}>
-                                    {type}
-                                </option>
+                                index === 0 ?
+                                    <Option key={index} value={type} selected>{type}</Option> :
+                                    <Option key={index} value={type}>{type}</Option>
                             ))}
                         </Select>
                     </DivCtnEntry>

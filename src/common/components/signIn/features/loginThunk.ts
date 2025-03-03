@@ -4,8 +4,7 @@ import { UserInterface } from "../../../../user/interfaces/userInterface.ts"
 
 
 export const LoginThunk = createAsyncThunk
-    ("login", async (loginData: { userEmail: string, userPassword: string }, { rejectWithValue }) => {
-
+    ("login", async (loginData: { email: string, password: string }, { rejectWithValue }) => {
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_LOGIN}`, {

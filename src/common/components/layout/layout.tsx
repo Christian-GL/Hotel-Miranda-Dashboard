@@ -28,11 +28,10 @@ export const Layout = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const location = useLocation()
-    const loggedUserID = JSON.parse(localStorage.getItem('loggedUserID') || '{}')
     const { theme, setTheme } = useContext(Theme)
     const selectedTheme = theme === 'light' ? themeLight : themeDark
     const { logout, isAuthenticated } = useLoginOptionsContext()
-    const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(true)
+    const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
@@ -42,6 +41,7 @@ export const Layout = () => {
     const userById = useSelector(getUserIdData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const userByIdLoading: ApiStatus = useSelector(getUserIdStatus)
+    const loggedUserID = JSON.parse(localStorage.getItem('loggedUserID') || '{}')
 
     useEffect(() => {
         if (!isAuthenticated()) {
@@ -55,7 +55,7 @@ export const Layout = () => {
     useEffect(() => {
         if (userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(loggedUserID)) }
         else if (userByIdLoading === ApiStatus.fulfilled) {
-            if (loggedUserID !== userById._id) {
+            if (loggedUserID !== userById._id && !routeIsActive('/users')) {
                 dispatch(UserFetchByIDThunk(loggedUserID))
             }
         }

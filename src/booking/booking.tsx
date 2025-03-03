@@ -8,11 +8,10 @@ import * as bookingsStyles from './bookingStyles.ts'
 import { BookingStatus } from './data/bookingStatus.ts'
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
-import { BookingInterface } from "./interfaces/bookingInterface.ts"
+import { BookingInterfaceRoom } from "./interfaces/bookingInterface.ts"
 import { BookingColumnsArrowStatesInterface } from './interfaces/bookingrColumnsArrowStatesInterface.ts'
-import { RoomInterface } from "../room/interfaces/roomInterface.ts"
+import { RoomInterfaceBookings } from "../room/interfaces/roomInterface.ts"
 import { ArrowType } from "../common/enums/ArrowType.ts"
-import { dateFormatToYYYYMMDD, hourFormatTo24H } from "../common/utils/formUtils.ts"
 import { PopupText } from "../common/components/popupText/popupText.tsx"
 import { PopupTextInterface } from '../common/components/popupText/popupTextInterface.ts'
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
@@ -50,13 +49,13 @@ export const Bookings = () => {
         roomNumber = 'roomNumber'
     }
     const nameColumnList: string[] = ['', 'Guest', 'Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
-    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterfaceRoom[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
-    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAll: RoomInterfaceBookings[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
-    const [filteredBookings, setFilteredBookings] = useState<BookingInterface[]>([])
+    const [filteredBookings, setFilteredBookings] = useState<BookingInterfaceRoom[]>([])
     const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoViewNotes, setInfoViewNotes] = useState<PopupTextInterface>({ title: '', text: '' })
@@ -75,7 +74,7 @@ export const Bookings = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination<BookingInterface>(filteredBookings, 10)
+    } = usePagination<BookingInterfaceRoom>(filteredBookings, 10)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -103,7 +102,7 @@ export const Bookings = () => {
         displayBookings()
     }
     const displayBookings = (): void => {
-        let filteredData: BookingInterface[]
+        let filteredData: BookingInterfaceRoom[]
         switch (selectedButton) {
             case ButtonType.all:
                 filteredData = bookingAll.filter(booking =>
@@ -133,9 +132,9 @@ export const Bookings = () => {
         setFilteredBookings(sortedData)
         resetPage()
     }
-    const sortData = (filteredData: BookingInterface[]): BookingInterface[] => {
+    const sortData = (filteredData: BookingInterfaceRoom[]): BookingInterfaceRoom[] => {
         const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
-        let sortedData: BookingInterface[] = [...filteredData]
+        let sortedData: BookingInterfaceRoom[] = [...filteredData]
         if (activeColumn) {
             if (activeColumn === columnsSortAvailable.guest) {
                 sortedData.sort((a, b) => {
@@ -183,11 +182,8 @@ export const Bookings = () => {
             }
             else if (activeColumn === columnsSortAvailable.roomNumber) {
                 sortedData.sort((a, b) => {
-                    // !!! - ACTUALIZAR ESTO CUANDO SE TENGA EL ROOM_LIST - !!!
-                    // let valueA: string = a.room_id
-                    // let valueB: string = b.room_id
-                    let valueA: string = a._id
-                    let valueB: string = b._id
+                    let valueA: number = parseInt(a.room_data.number)
+                    let valueB: number = parseInt(b.room_data.number)
                     if (arrowStates[activeColumn] === ArrowType.up) {
                         return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
                     } else {
@@ -229,19 +225,19 @@ export const Bookings = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteBookingById = (id: number, index: number): void => {
-        const booking: BookingInterface | undefined = bookingAll.find(booking => booking.id === id)
-        if (!booking) { return }
+    const deleteBookingById = (id: string, index: number): void => {
+        // const booking: BookingInterfaceRoom | undefined = bookingAll.find(booking => booking.id === id)
+        // if (!booking) { return }
 
-        const room: RoomInterface | undefined = roomAll.find(room => room.id === booking.room_id)
-        if (!room) { return }
+        // const room: RoomInterfaceBookings | undefined = roomAll.find(room => room === booking.room_id)
+        // if (!room) { return }
 
-        const roomUpdated: RoomInterface = {
-            ...room,
-            booking_list: room.booking_list.filter(bookingId => bookingId !== booking.room_id)
-        }
+        // const roomUpdated: RoomInterfaceBookings = {
+        //     ...room,
+        //     booking_list: room.booking_list.filter(bookingId => bookingId !== booking.room_id)
+        // }
 
-        dispatch(RoomUpdateThunk(roomUpdated))
+        // dispatch(RoomUpdateThunk(roomUpdated))
         dispatch(BookingDeleteByIdThunk(id))
         displayMenuOptions(index)
     }
@@ -306,32 +302,29 @@ export const Bookings = () => {
                             <DivNameTable>
                                 <b>{bookingData.full_name_guest}</b>
                             </DivNameTable>
-                            <div>#<b>{bookingData.id}</b></div>
+                            <div>#<b>{bookingData._id}</b></div>
                         </PTable>,
 
                         <PTable key={index + '-3'}>
-                            <ButtonView onClick={() => navigateToBookingDetail(bookingData.id)}>View Details</ButtonView>
+                            <ButtonView onClick={() => navigateToBookingDetail(bookingData._id)}>View Details</ButtonView>
                         </PTable>,
 
                         <PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center' >
-                            <div>{bookingData.order_date}</div>
-                            <div>{bookingData.order_time}</div>
+                            {bookingData.order_date}
                         </PTable>,
 
                         <PTable key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div>{bookingData.check_in_date}</div>
-                            <div>{bookingData.check_in_time}</div>
+                            {bookingData.check_in_date}
                         </PTable>,
 
                         <PTable key={index + '-6'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div>{bookingData.check_out_date}</div>
-                            <div>{bookingData.check_out_time}</div>
+                            {bookingData.check_out_date}
                         </PTable>,
 
                         <PTable key={index + '-7'}>
                             <ButtonView onClick={() => {
                                 setInfoViewNotes({
-                                    title: `Special request #${bookingData.id} by ${bookingData.full_name_guest}`,
+                                    title: `Special request #${bookingData._id} by ${bookingData.full_name_guest}`,
                                     text: bookingData.special_request
                                 })
                                 openPopup()
@@ -340,8 +333,8 @@ export const Bookings = () => {
                         </PTable>,
 
                         <PTable key={index + '-8'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div>Nº {bookingData.room_id}</div>
-                            <div>{bookingData.room_type}</div>
+                            <div>Nº {bookingData.room_data.number}</div>
+                            <div>{bookingData.room_data.type}</div>
                         </PTable>,
 
                         <PTable key={index + '-9'}>
@@ -365,8 +358,8 @@ export const Bookings = () => {
                         <PTable key={index + '-9'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { navigateToBookingUpdate(bookingData.id) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteBookingById(bookingData.id, index) }}>Delete</ButtonOption>
+                                <ButtonOption onClick={() => { navigateToBookingUpdate(bookingData._id) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { deleteBookingById(bookingData._id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>
                     ]
