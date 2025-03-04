@@ -40,7 +40,7 @@ export const RoomCreate = () => {
         amenities: [],
         price: 0,
         discount: 0,
-        booking_list: []
+        booking_id_list: []
     })
 
     useEffect(() => {
@@ -135,7 +135,7 @@ export const RoomCreate = () => {
         const errorsDiscount = validateNumberBetween(newRoom.discount, 0, 100, 'Discount')
         if (errorsDiscount.length > 0) { errorsDiscount.map(error => ToastifyError(error)); return false }
 
-        const errorsBookingList = validateBookingList(newRoom.booking_list, 'Booking list')
+        const errorsBookingList = validateBookingList(newRoom.booking_id_list, 'Booking list')
         if (errorsBookingList.length > 0) { errorsBookingList.map(error => ToastifyError(error)); return false }
 
         return true

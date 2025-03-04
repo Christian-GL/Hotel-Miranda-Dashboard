@@ -260,18 +260,18 @@ export const validateAmenities = (amenities: any[], fieldName: string = 'Ameniti
     return errorMessages
 }
 
-export const validateBookingStatus = (type: any, fieldName: string = 'Booking Status'): string[] => {
-    const errorMessages: string[] = []
+// export const validateBookingStatus = (type: any, fieldName: string = 'Booking Status'): string[] => {
+//     const errorMessages: string[] = []
 
-    if (typeof type !== "string") {
-        errorMessages.push(`${fieldName} is not a String`)
-    }
-    if (!Object.values(BookingStatus).includes(type as BookingStatus)) {
-        errorMessages.push(`${fieldName} is not set`)
-    }
+//     if (typeof type !== "string") {
+//         errorMessages.push(`${fieldName} is not a String`)
+//     }
+//     if (!Object.values(BookingStatus).includes(type as BookingStatus)) {
+//         errorMessages.push(`${fieldName} is not set`)
+//     }
 
-    return errorMessages
-}
+//     return errorMessages
+// }
 
 export const validateBookingList = (bookingList: any[], fieldName: string = 'Booking list'): string[] => {
     const errorMessages: string[] = []

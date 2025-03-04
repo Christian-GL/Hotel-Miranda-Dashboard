@@ -165,6 +165,14 @@ export const LabelTextBookingStatus = styled.label`
     color: ${props => props.theme.textLabelStatusForm};
 `
 
+export const LabelTextInfoBooking = styled.label`
+    margin-right: 1rem;
+    font-family: ${globalConstStyles.fontPoppins};
+    font-size: 1em;
+    font-weight: 700;
+    color: ${props => props.theme.textLabelForm};
+`
+
 export const InputText = styled.input`
     padding: 1em;
     text-align: left;

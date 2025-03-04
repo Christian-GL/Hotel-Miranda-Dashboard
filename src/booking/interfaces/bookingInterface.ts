@@ -1,6 +1,5 @@
 
 import { RoomInterface } from '../../room/interfaces/roomInterface.ts'
-import { BookingStatus } from '../data/bookingStatus.ts'
 
 
 export interface BookingInterfaceNoId {
@@ -9,7 +8,6 @@ export interface BookingInterfaceNoId {
     order_date: string
     check_in_date: string
     check_out_date: string
-    status: BookingStatus
     special_request: string
     room_id: string
 }
@@ -24,7 +22,6 @@ export interface BookingInterfaceBookingsDataNoId {
     order_date: string
     check_in_date: string
     check_out_date: string
-    status: BookingStatus
     special_request: string
     room_data: RoomInterface
 }

@@ -41,7 +41,7 @@ export const RoomFetchAllThunk = createAsyncThunk
                         amenities: json[i].amenities,
                         price: json[i].price,
                         discount: json[i].discount,
-                        booking_data_list: json[i].booking_list
+                        booking_data_list: json[i].booking_id_list
                     })
                 }
                 return allRooms

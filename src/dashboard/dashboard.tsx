@@ -8,6 +8,7 @@ import * as dashboardStyles from "./dashboardStyles.ts"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { formatDateForPrint } from '../common/utils/dateUtils.ts'
+import { checkBookingStatus } from '../common/utils/checkBookingStatus.ts'
 import { ArticleReview } from "../common/components/articleReview/articleReview.tsx"
 import { getBookingAllData, getBookingAllStatus } from '../booking/features/bookingSlice.ts'
 import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk.ts'
@@ -53,7 +54,7 @@ export const Dashboard = () => {
                     <dashboardStyles.DivCtnInfo>
                         <dashboardStyles.NumberH4>
                             {bookingAll.filter(booking =>
-                                booking.status === 'Check In'
+                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === 'Check In'
                             ).length}
                         </dashboardStyles.NumberH4>
                         <dashboardStyles.TextH5>Check in</dashboardStyles.TextH5>
@@ -64,7 +65,7 @@ export const Dashboard = () => {
                     <dashboardStyles.DivCtnInfo>
                         <dashboardStyles.NumberH4>
                             {bookingAll.filter(booking =>
-                                booking.status === 'In Progress'
+                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === 'In Progress'
                             ).length}
                         </dashboardStyles.NumberH4>
                         <dashboardStyles.TextH5>In Progress</dashboardStyles.TextH5>
@@ -75,7 +76,7 @@ export const Dashboard = () => {
                     <dashboardStyles.DivCtnInfo>
                         <dashboardStyles.NumberH4>
                             {bookingAll.filter(booking =>
-                                booking.status === 'Check Out'
+                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === 'Check Out'
                             ).length}
                         </dashboardStyles.NumberH4>
                         <dashboardStyles.TextH5>Check Out</dashboardStyles.TextH5>

@@ -21,8 +21,9 @@ import {
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form,
     ImgRoom, DivCtnEntry, LabelText, DivCtnEntryBookings, LabelBookings, LabelTextBookingStatus,
-    InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
+    LabelTextInfoBooking, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
 } from "../../../common/styles/form.ts"
+import { formatDateForPrint } from '../../../common/utils/dateUtils.ts'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
 import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "../../features/roomSlice.ts"
 import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk.ts"
@@ -53,7 +54,7 @@ export const RoomUpdate = () => {
         amenities: [],
         price: 0,
         discount: 0,
-        booking_list: []
+        booking_id_list: []
     })
 
     useEffect(() => {
@@ -70,7 +71,7 @@ export const RoomUpdate = () => {
                 amenities: roomById.amenities || [],
                 price: roomById.price || 0,
                 discount: roomById.discount || 0,
-                booking_list: roomById.booking_data_list.map(booking => booking._id)
+                booking_id_list: roomById.booking_data_list.map(booking => booking._id)
             })
         }
         else if (roomByIdLoading === ApiStatus.rejected) { alert("Error in API update rooms") }
@@ -169,7 +170,7 @@ export const RoomUpdate = () => {
         const errorsDiscount = validateNumberBetween(roomUpdated.discount, 0, 100, 'Discount')
         if (errorsDiscount.length > 0) { errorsDiscount.map(error => ToastifyError(error)); return false }
 
-        const errorsBookingList = validateBookingList(roomUpdated.booking_list, 'Booking list')
+        const errorsBookingList = validateBookingList(roomUpdated.booking_id_list, 'Booking list')
         if (errorsBookingList.length > 0) { errorsBookingList.map(error => ToastifyError(error)); return false }
 
         return true
@@ -254,18 +255,16 @@ export const RoomUpdate = () => {
                         <DivCtnEntryBookings>
                             {
                                 // FUNCIONA EL LISTADO DE BOOKING POR ROOM?
-                                bookingAll.filter(booking => roomUpdated.booking_list.toString().includes(booking._id)).length === 0 ?
+                                bookingAll.filter(booking => roomUpdated.booking_id_list.toString().includes(booking._id)).length === 0 ?
                                     <LabelTextBookingStatus>Available</LabelTextBookingStatus> :
-                                    (bookingAll.filter(booking => roomUpdated.booking_list.includes(booking._id))
+                                    (bookingAll.filter(booking => roomUpdated.booking_id_list.includes(booking._id))
                                         .map((booking, index) => (
                                             <LabelBookings key={index}>
-                                                <b>Booking #{booking._id}
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                                                {booking.check_in_date}
-                                                &nbsp;&nbsp;⭢&nbsp;&nbsp;
-                                                {booking.check_out_date}
-                                                <b>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                                                {booking.status}
+                                                <LabelTextInfoBooking><b>#{booking._id}</b></LabelTextInfoBooking>
+                                                <LabelTextInfoBooking>-</LabelTextInfoBooking>
+                                                <LabelTextInfoBooking>{formatDateForPrint(booking.check_in_date)}</LabelTextInfoBooking>
+                                                <LabelTextInfoBooking>➞</LabelTextInfoBooking>
+                                                <LabelTextInfoBooking>{formatDateForPrint(booking.check_out_date)}</LabelTextInfoBooking>
                                             </LabelBookings>
                                         )))
                             }

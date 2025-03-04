@@ -22,7 +22,7 @@ const bookingDefaultIfError: BookingInterfaceRoom = {
         amenities: [],
         price: 0,
         discount: 0,
-        booking_list: []
+        booking_id_list: []
     }
 }
 

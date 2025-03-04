@@ -12,11 +12,10 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { BookingInterface } from "../../interfaces/bookingInterface.ts"
-import { BookingStatus } from "../../data/bookingStatus.ts"
 import { formatDateForInput } from "../../../common/utils/dateUtils.ts"
 import {
     validatePhoto, validateFullName, validateCheckInCheckOut,
-    validateDateIsOccupiedIfBookingExists, validateBookingStatus, validateTextArea
+    validateDateIsOccupiedIfBookingExists, validateTextArea
 } from '../../../common/utils/validators.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
@@ -51,7 +50,6 @@ export const BookingUpdate = () => {
         order_date: '',
         check_in_date: '',
         check_out_date: '',
-        status: BookingStatus.checkIn,
         special_request: '',
         room_id: '0'
     })
@@ -69,7 +67,6 @@ export const BookingUpdate = () => {
                 order_date: bookingById.order_date || '',
                 check_in_date: bookingById.check_in_date || '',
                 check_out_date: bookingById.check_out_date || '',
-                status: bookingById.status,
                 special_request: bookingById.special_request || '',
                 room_id: bookingById.room_data._id
             })
@@ -163,9 +160,6 @@ export const BookingUpdate = () => {
         const errorsCheckInDate = validateCheckInCheckOut(new Date(bookingUpdated.check_in_date), new Date(bookingUpdated.check_out_date))
         if (errorsCheckInDate.length > 0) { errorsCheckInDate.map(error => ToastifyError(error)); return false }
 
-        const errorsBookingStatus = validateBookingStatus(bookingUpdated.status, 'Booking status')
-        if (errorsBookingStatus.length > 0) { errorsBookingStatus.map(error => ToastifyError(error)); return false }
-
         const errorsSpecialRequest = validateTextArea(bookingUpdated.special_request, 'Special request')
         if (errorsSpecialRequest.length > 0) { errorsSpecialRequest.map(error => ToastifyError(error)); return false }
 
@@ -220,19 +214,7 @@ export const BookingUpdate = () => {
                             onChange={(e) => setBookingUpdated({ ...bookingUpdated, room_id: e.target.value })}
                         >
                             {roomAll.map((room) => (
-                                <option key={room._id} value={room._id}>
-                                    {room.number}
-                                </option>
-                            ))}
-                        </Select>
-
-                        <LabelText minWidth="10rem" margin="0 0 0 5rem">Booking Status</LabelText>
-                        <Select name="status" onChange={handleSelectChange}>
-                            <Option value="null" selected></Option>
-                            {Object.values(BookingStatus).map((type, index) => (
-                                index === 0 ?
-                                    <Option key={index} value={type} selected>{type}</Option> :
-                                    <Option key={index} value={type}>{type}</Option>
+                                <Option key={room._id} value={room._id}>{room.number} </Option>
                             ))}
                         </Select>
                     </DivCtnEntry>

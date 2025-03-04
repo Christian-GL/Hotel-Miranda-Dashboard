@@ -12,7 +12,7 @@ const roomDefaultIfError: RoomInterface = {
     amenities: [],
     price: 0,
     discount: 0,
-    booking_list: []
+    booking_id_list: []
 }
 
 export const RoomUpdateThunk = createAsyncThunk

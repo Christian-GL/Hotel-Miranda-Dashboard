@@ -4,7 +4,8 @@ import { useState } from "react"
 
 import * as articleReviewStyles from "./articleReviewStyles.ts"
 import { ArticleReviewInterface } from "./articleReviewInterface.ts"
-import PedroSanchez from '../../../assets/img/PedroSanchez.png'
+// import PedroSanchez from '../../../assets/img/PedroSanchez.png'
+import { IconHotel } from '../layout/sidebarMenuStyles.ts'
 import { PopupText } from "../popupText/popupText.tsx"
 
 
@@ -28,7 +29,8 @@ export const ArticleReview: React.FC<ArticleReviewInterface> = ({ nameProfile, t
             <articleReviewStyles.DivCtnDetails>
 
                 <articleReviewStyles.DivCtnReviewDetails>
-                    <articleReviewStyles.ImgProfile src={PedroSanchez} />
+                    {/* <articleReviewStyles.ImgProfile src={PedroSanchez} /> */}
+                    <IconHotel />
                     <articleReviewStyles.DivCtnInfoDetails>
                         <articleReviewStyles.TitleNameProfile>{nameProfile}</articleReviewStyles.TitleNameProfile>
                         <articleReviewStyles.TextH5>{timeSince}</articleReviewStyles.TextH5>

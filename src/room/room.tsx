@@ -255,8 +255,8 @@ export const Room = () => {
                         </DivImgTable>,
 
                         <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div>#<b>{roomData._id}</b></div>
                             <div>Nº {roomData.number}</div>
+                            <div>#<b>{roomData._id}</b></div>
                         </PTable>,
 
                         <PTable key={index + '-3'}>

@@ -15,6 +15,7 @@ import { ArrowType } from "../common/enums/ArrowType.ts"
 import { PopupText } from "../common/components/popupText/popupText.tsx"
 import { PopupTextInterface } from '../common/components/popupText/popupTextInterface.ts'
 import { formatDateForPrint } from '../common/utils/dateUtils.ts'
+import { checkBookingStatus } from '../common/utils/checkBookingStatus.ts'
 import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
 import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
 import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
@@ -29,7 +30,8 @@ import { BookingFetchAllThunk } from "./features/thunks/bookingFetchAllThunk.ts"
 import { BookingDeleteByIdThunk } from "./features/thunks/bookingDeleteByIdThunk.ts"
 import { getRoomAllData, getRoomAllStatus } from "../room/features/roomSlice.ts"
 import { RoomFetchAllThunk } from "../room/features/thunks/roomFetchAllThunk.ts"
-import { RoomUpdateThunk } from "../room/features/thunks/roomUpdateThunk.ts"
+
+
 
 
 export const Bookings = () => {
@@ -235,22 +237,12 @@ export const Bookings = () => {
 
         // const roomUpdated: RoomInterfaceBookings = {
         //     ...room,
-        //     booking_list: room.booking_list.filter(bookingId => bookingId !== booking.room_id)
+        //     booking_id_list: room.booking_id_list.filter(bookingId => bookingId !== booking.room_id)
         // }
 
         // dispatch(RoomUpdateThunk(roomUpdated))
         dispatch(BookingDeleteByIdThunk(id))
         displayMenuOptions(index)
-    }
-    const checkBookingStatus = (checkInDate: string, checkOutDate: string): BookingStatus => {
-        const actualDate = new Date().toISOString()
-        if (actualDate < checkInDate) {
-            return BookingStatus.checkIn
-        }
-        else if (actualDate > checkInDate && actualDate < checkOutDate) {
-            return BookingStatus.inProgress
-        }
-        else return BookingStatus.checkOut
     }
 
 
@@ -355,7 +347,7 @@ export const Bookings = () => {
                                     if (status === BookingStatus.checkIn) {
                                         return <PStatusBooking status={BookingStatus.checkIn}>Check In</PStatusBooking>
                                     }
-                                    else if (status < bookingData.check_out_date) {
+                                    else if (status === BookingStatus.inProgress) {
                                         return <PStatusBooking status={BookingStatus.inProgress}>In Progress</PStatusBooking>
                                     }
                                     else {

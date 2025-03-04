@@ -14,7 +14,7 @@ import { BookingInterfaceNoId } from "../../interfaces/bookingInterface.ts"
 import { BookingStatus } from "../../data/bookingStatus.ts"
 import {
     validatePhoto, validateFullName, validateCheckInCheckOut,
-    validateDateIsOccupied, validateBookingStatus, validateTextArea
+    validateDateIsOccupied, validateTextArea
 } from '../../../common/utils/validators.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
@@ -42,7 +42,6 @@ export const BookingCreate = () => {
         order_date: '',
         check_in_date: '',
         check_out_date: '',
-        status: BookingStatus.checkIn,
         special_request: '',
         room_id: '0'
     })
@@ -140,9 +139,6 @@ export const BookingCreate = () => {
         const errorsCheckInDate = validateCheckInCheckOut(new Date(newBooking.check_in_date), new Date(newBooking.check_out_date))
         if (errorsCheckInDate.length > 0) { errorsCheckInDate.map(error => ToastifyError(error)); return false }
 
-        const errorsBookingStatus = validateBookingStatus(newBooking.status, 'Booking status')
-        if (errorsBookingStatus.length > 0) { errorsBookingStatus.map(error => ToastifyError(error)); return false }
-
         const errorsSpecialRequest = validateTextArea(newBooking.special_request, 'Special request')
         if (errorsSpecialRequest.length > 0) { errorsSpecialRequest.map(error => ToastifyError(error)); return false }
 
@@ -209,16 +205,6 @@ export const BookingCreate = () => {
                                     }
                                 </>
                             )}
-                        </Select>
-
-                        <LabelText minWidth="10rem" margin="0 0 0 5rem">Booking Status</LabelText>
-                        <Select name="status" onChange={handleSelectChange}>
-                            <Option value="null" selected></Option>
-                            {Object.values(BookingStatus).map((type, index) => (
-                                index === 0 ?
-                                    <Option key={index} value={type} selected>{type}</Option> :
-                                    <Option key={index} value={type}>{type}</Option>
-                            ))}
                         </Select>
                     </DivCtnEntry>
 
