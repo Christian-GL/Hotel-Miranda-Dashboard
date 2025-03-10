@@ -10,7 +10,7 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { UserInterfaceWithOutID } from "../../interfaces/userInterface.ts"
+import { UserInterfaceNoId } from "../../interfaces/userInterface.ts"
 import { UserStatus } from "../../data/userStatus.ts"
 import {
     validatePhoto, validateFullName, validateEmail, validateTextArea,
@@ -33,7 +33,7 @@ export const UserCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const userAll = useSelector(getUserAllData)
     const userAllLoading = useSelector(getUserAllStatus)
-    const [newUser, setNewUser] = useState<UserInterfaceWithOutID>({
+    const [newUser, setNewUser] = useState<UserInterfaceNoId>({
         photo: '',
         full_name: '',
         email: '',

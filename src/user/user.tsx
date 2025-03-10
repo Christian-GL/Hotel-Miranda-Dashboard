@@ -67,7 +67,7 @@ export const User = () => {
     }, [userAllLoading, userAll, inputText, selectedButton, arrowStates])
 
     const navigateToUserCreate = () => navigate('user-create')
-    const navigateToUserUpdate = (id: string) => navigate(`user-update/${id}`)
+    const navigateToUserUpdate = (id: number) => navigate(`user-update/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -158,7 +158,7 @@ export const User = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteUserById = (id: string, index: number): void => {
+    const deleteUserById = (id: number, index: number): void => {
         dispatch(UserDeleteByIdThunk(id))
         displayMenuOptions(index)
         resetPage()

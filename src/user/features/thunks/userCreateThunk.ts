@@ -1,11 +1,10 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { UserInterface } from '../../interfaces/userInterface.ts'
+import { UserInterfaceNoId } from '../../interfaces/userInterface.ts'
 import { UserStatus } from "../../data/userStatus.ts"
 
 
-const userDefaultIfError: UserInterface = {
-    _id: '',
+const userDefaultIfError: UserInterfaceNoId = {
     photo: '',
     full_name: '',
     email: '',
@@ -18,19 +17,10 @@ const userDefaultIfError: UserInterface = {
 
 
 export const UserCreateThunk = createAsyncThunk
-    ("user/create", async (newUserData: Partial<UserInterface>) => {
+    ("user/create", async (newUserData: UserInterfaceNoId) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return userDefaultIfError
-
-        if (newUserData.photo === undefined) { console.error('user.photo is undefined'); return userDefaultIfError }
-        if (newUserData.full_name === undefined) { console.error('user.full_name is undefined'); return userDefaultIfError }
-        if (newUserData.email === undefined) { console.error('user.email is undefined'); return userDefaultIfError }
-        if (newUserData.password === undefined) { console.error('user.password is undefined'); return userDefaultIfError }
-        if (newUserData.start_date === undefined) { console.error('user.start_date is undefined'); return userDefaultIfError }
-        if (newUserData.description === undefined) { console.error('user.description is undefined'); return userDefaultIfError }
-        if (newUserData.phone_number === undefined) { console.error('user.phone_number is undefined'); return userDefaultIfError }
-        if (newUserData.status === undefined) { console.error('user.status is undefined'); return userDefaultIfError }
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_USERS}`, {

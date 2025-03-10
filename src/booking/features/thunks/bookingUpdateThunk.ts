@@ -1,25 +1,22 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { BookingInterface } from "../../interfaces/bookingInterface"
-import { BookingStatus } from "../../data/bookingStatus"
-import { RoomType } from "../../../room/data/roomType.ts"
 
 
 const bookingDefaultIfError: BookingInterface = {
-    _id: '0',
+    _id: 0,
     photo: '',
     full_name_guest: '',
     order_date: '',
     check_in_date: '',
     check_out_date: '',
-    status: BookingStatus.checkOut,
     special_request: '',
-    room_id: '0'
+    room_id: 0
 }
 
 export const BookingUpdateThunk = createAsyncThunk
     ("booking/update", async ({ idBooking, updatedBookingData }
-        : { idBooking: string, updatedBookingData: BookingInterface }) => {
+        : { idBooking: number, updatedBookingData: BookingInterface }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return bookingDefaultIfError

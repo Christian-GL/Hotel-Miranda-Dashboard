@@ -5,7 +5,7 @@ import { RoomType } from "../../data/roomType.ts"
 
 
 const roomDefaultIfError: RoomInterface = {
-    _id: '0',
+    _id: 0,
     photos: [],
     number: '0',
     type: RoomType.singleBed,
@@ -17,7 +17,7 @@ const roomDefaultIfError: RoomInterface = {
 
 export const RoomUpdateThunk = createAsyncThunk
     ("room/update", async ({ idRoom, updatedRoomData }
-        : { idRoom: string, updatedRoomData: RoomInterface }) => {
+        : { idRoom: number, updatedRoomData: RoomInterface }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return roomDefaultIfError

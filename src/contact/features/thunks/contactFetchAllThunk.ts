@@ -1,16 +1,17 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { ContactInterface } from "../../interfaces/contactInterface.ts"
+import { ContactArchived } from "../../enums/contactArchived.ts"
 
 
 const contactDefaultIfError: ContactInterface = {
-    _id: '',
+    _id: 0,
     publish_date: '',
     full_name: '',
     email: '',
     phone_number: '',
     comment: '',
-    archived: false
+    archived: ContactArchived.notArchived
 }
 
 export const ContactFetchAllThunk = createAsyncThunk

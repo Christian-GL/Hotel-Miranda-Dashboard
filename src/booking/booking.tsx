@@ -32,8 +32,6 @@ import { getRoomAllData, getRoomAllStatus } from "../room/features/roomSlice.ts"
 import { RoomFetchAllThunk } from "../room/features/thunks/roomFetchAllThunk.ts"
 
 
-
-
 export const Bookings = () => {
 
     const navigate = useNavigate()
@@ -91,10 +89,8 @@ export const Bookings = () => {
     }, [roomAllLoading, roomAll])
 
     const navigateToBookingCreate = () => navigate('booking-create')
-    const navigateToBookingUpdate = (id: string) => navigate(`booking-update/${id}`)
-    const navigateToBookingDetail = (id: string) => navigate(`booking-details/${id}`)
-
-    const openPopup = (): void => setShowPopup(true)
+    const navigateToBookingUpdate = (id: number) => navigate(`booking-update/${id}`)
+    const navigateToBookingDetail = (id: number) => navigate(`booking-details/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -228,7 +224,7 @@ export const Bookings = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteBookingById = (id: string, index: number): void => {
+    const deleteBookingById = (id: number, index: number): void => {
         // const booking: BookingInterfaceRoom | undefined = bookingAll.find(booking => booking.id === id)
         // if (!booking) { return }
 
@@ -330,7 +326,7 @@ export const Bookings = () => {
                                     title: `Special request #${bookingData._id} by ${bookingData.full_name_guest}`,
                                     text: bookingData.special_request
                                 })
-                                openPopup()
+                                setShowPopup(true)
                             }
                             }>View Notes</ButtonView>
                         </PTable>,

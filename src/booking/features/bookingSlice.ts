@@ -90,7 +90,7 @@ export const BookingSlice = createSlice({
             .addCase(BookingDeleteByIdThunk.pending, (state) => {
                 state.deleteStatus = ApiStatus.pending
             })
-            .addCase(BookingDeleteByIdThunk.fulfilled, (state, action: PayloadAction<string>) => {
+            .addCase(BookingDeleteByIdThunk.fulfilled, (state, action: PayloadAction<number>) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const bookingIdToDelete = action.payload
                 state.allData = state.allData.filter(booking => booking._id !== bookingIdToDelete)

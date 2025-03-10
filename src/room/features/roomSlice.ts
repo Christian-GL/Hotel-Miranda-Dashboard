@@ -85,7 +85,7 @@ export const RoomSlice = createSlice({
             .addCase(RoomDeleteByIdThunk.pending, (state) => {
                 state.deleteStatus = ApiStatus.pending
             })
-            .addCase(RoomDeleteByIdThunk.fulfilled, (state, action: PayloadAction<string>) => {
+            .addCase(RoomDeleteByIdThunk.fulfilled, (state, action: PayloadAction<number>) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const roomIdToDelete = action.payload
                 state.allData = state.allData.filter(room => room._id !== roomIdToDelete)

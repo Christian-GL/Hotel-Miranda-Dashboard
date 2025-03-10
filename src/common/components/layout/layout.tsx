@@ -31,7 +31,7 @@ export const Layout = () => {
     const { theme, setTheme } = useContext(Theme)
     const selectedTheme = theme === 'light' ? themeLight : themeDark
     const { logout, isAuthenticated } = useLoginOptionsContext()
-    const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false)
+    const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(true)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
@@ -107,7 +107,7 @@ export const Layout = () => {
     const routeIsActive = (route: string) => {
         return location.pathname.startsWith(route)
     }
-    const navigateToUserUpdate = (id: string) => navigate(`users/user-update/${id}`)
+    const navigateToUserUpdate = (id: number) => navigate(`users/user-update/${id}`)
 
 
     return !isAuthenticated ?

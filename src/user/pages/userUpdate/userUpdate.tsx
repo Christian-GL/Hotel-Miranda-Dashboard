@@ -33,13 +33,13 @@ import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk.ts"
 export const UserUpdate = () => {
 
     const { id } = useParams()
-    const idParams = id!
+    const idParams = parseInt(id!)
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const userById = useSelector(getUserIdData)
     const userByIdLoading = useSelector(getUserIdStatus)
     const [userUpdated, setUserUpdated] = useState<UserInterface>({
-        _id: '0',
+        _id: 0,
         photo: '',
         full_name: '',
         email: '',

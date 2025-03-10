@@ -10,7 +10,7 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { ContactInterfaceWithOutID } from "../../interfaces/contactInterface.ts"
+import { ContactInterfaceNoId } from "../../interfaces/contactInterface.ts"
 import { validateFullName, validateEmail, validateTextArea, validatePhoneNumber } from '../../../common/utils/validators.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconPlus, TitleForm, Form, DivCtnEntry,
@@ -20,6 +20,7 @@ import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCrea
 import { getContactAllData, getContactAllStatus } from "../../../contact/features/contactSlice.ts"
 import { ContactFetchAllThunk } from "../../../contact/features/thunks/contactFetchAllThunk.ts"
 import { ContactCreateThunk } from "../../../contact/features/thunks/contactCreateThunk.ts"
+import { ContactArchived } from "../../enums/contactArchived.ts"
 
 
 export const ContactCreate = () => {
@@ -28,13 +29,13 @@ export const ContactCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const contactAll = useSelector(getContactAllData)
     const contactAllLoading = useSelector(getContactAllStatus)
-    const [newContact, setNewContact] = useState<ContactInterfaceWithOutID>({
+    const [newContact, setNewContact] = useState<ContactInterfaceNoId>({
         publish_date: '',
         full_name: '',
         email: '',
         phone_number: '',
         comment: '',
-        archived: false
+        archived: ContactArchived.notArchived
     })
 
     useEffect(() => {

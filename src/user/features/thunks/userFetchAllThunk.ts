@@ -5,7 +5,7 @@ import { UserStatus } from "../../data/userStatus.ts"
 
 
 const userDefaultIfError: UserInterface = {
-    _id: '',
+    _id: 0,
     photo: '',
     full_name: '',
     email: '',

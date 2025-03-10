@@ -1,21 +1,19 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { BookingInterfaceRoom } from '../../interfaces/bookingInterface.ts'
-import { BookingStatus } from "../../data/bookingStatus.ts"
 import { RoomType } from "../../../room/data/roomType.ts"
 
 
 const bookingDefaultIfError: BookingInterfaceRoom = {
-    _id: '0',
+    _id: 0,
     photo: '',
     full_name_guest: '',
     order_date: '',
     check_in_date: '',
     check_out_date: '',
-    status: BookingStatus.checkOut,
     special_request: '',
     room_data: {
-        _id: '0',
+        _id: 0,
         photos: [],
         number: '0',
         type: RoomType.singleBed,
@@ -27,7 +25,7 @@ const bookingDefaultIfError: BookingInterfaceRoom = {
 }
 
 export const BookingFetchByIDThunk = createAsyncThunk
-    ("booking/fetchById", async (bookingId: string) => {
+    ("booking/fetchById", async (bookingId: number) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return bookingDefaultIfError
@@ -49,7 +47,6 @@ export const BookingFetchByIDThunk = createAsyncThunk
                     order_date: json.order_date,
                     check_in_date: json.check_in_date,
                     check_out_date: json.check_out_date,
-                    status: json.status,
                     special_request: json.special_request,
                     room_data: json.room_data
                 }

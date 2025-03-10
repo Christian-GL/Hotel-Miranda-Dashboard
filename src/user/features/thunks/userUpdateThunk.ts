@@ -5,7 +5,7 @@ import { UserStatus } from "../../data/userStatus.ts"
 
 
 const userDefaultIfError: UserInterface = {
-    _id: '',
+    _id: 0,
     photo: '',
     full_name: '',
     email: '',
@@ -18,7 +18,7 @@ const userDefaultIfError: UserInterface = {
 
 export const UserUpdateThunk = createAsyncThunk
     ("user/update", async ({ idUser, updatedUserData }
-        : { idUser: string, updatedUserData: UserInterface }) => {
+        : { idUser: number, updatedUserData: UserInterface }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return userDefaultIfError

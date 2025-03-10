@@ -1,7 +1,6 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { BookingInterfaceNoId } from '../../interfaces/bookingInterface.ts'
-import { BookingStatus } from "../../data/bookingStatus.ts"
 
 
 const bookingDefaultIfError: BookingInterfaceNoId = {
@@ -10,9 +9,8 @@ const bookingDefaultIfError: BookingInterfaceNoId = {
     order_date: '',
     check_in_date: '',
     check_out_date: '',
-    status: BookingStatus.checkOut,
     special_request: '',
-    room_id: ''
+    room_id: 0
 }
 
 export const BookingCreateThunk = createAsyncThunk

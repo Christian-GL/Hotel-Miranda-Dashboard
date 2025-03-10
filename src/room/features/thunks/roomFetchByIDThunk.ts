@@ -5,7 +5,7 @@ import { RoomType } from "../../data/roomType.ts"
 
 
 const roomDefaultIfError: RoomInterfaceBookings = {
-    _id: '0',
+    _id: 0,
     photos: [],
     number: '0',
     type: RoomType.singleBed,
@@ -16,7 +16,7 @@ const roomDefaultIfError: RoomInterfaceBookings = {
 }
 
 export const RoomFetchByIDThunk = createAsyncThunk
-    ("room/fetchById", async (roomId: string) => {
+    ("room/fetchById", async (roomId: number) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return roomDefaultIfError

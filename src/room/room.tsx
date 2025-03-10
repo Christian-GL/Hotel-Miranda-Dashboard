@@ -79,7 +79,7 @@ export const Room = () => {
     }, [bookingAllLoading, bookingAll])
 
     const navigateToRoomCreate = () => navigate('room-create')
-    const navigateToRoomUpdate = (id: string) => navigate(`room-update/${id}`)
+    const navigateToRoomUpdate = (id: number) => navigate(`room-update/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -184,7 +184,7 @@ export const Room = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteRoomById = (id: string, index: number): void => {
+    const deleteRoomById = (id: number, index: number): void => {
         // const room = roomAll.find(room => room._id === id)
         // if (room) {
         //     room.booking_data_list.map(booking => {

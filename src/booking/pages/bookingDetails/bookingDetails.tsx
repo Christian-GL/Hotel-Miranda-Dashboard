@@ -23,7 +23,7 @@ export const BookingDetails = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { id } = useParams()
-    const idParams = id!
+    const idParams = parseInt(id!)
     const bookingById: BookingInterfaceRoom = useSelector(getBookingIdData)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
     const [optionsDisplayed, setOptionsDisplayed] = useState<boolean>(false)

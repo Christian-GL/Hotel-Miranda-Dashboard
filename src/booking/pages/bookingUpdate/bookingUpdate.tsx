@@ -34,7 +34,7 @@ import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThu
 export const BookingUpdate = () => {
 
     const { id } = useParams()
-    const idParams = id!
+    const idParams = parseInt(id!)
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const bookingById = useSelector(getBookingIdData)
@@ -44,14 +44,14 @@ export const BookingUpdate = () => {
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
     const [bookingUpdated, setBookingUpdated] = useState<BookingInterface>({
-        _id: '',
+        _id: 0,
         photo: '',
         full_name_guest: '',
         order_date: '',
         check_in_date: '',
         check_out_date: '',
         special_request: '',
-        room_id: '0'
+        room_id: 0
     })
 
     useEffect(() => {
@@ -61,14 +61,14 @@ export const BookingUpdate = () => {
                 dispatch(BookingFetchByIDThunk(idParams))
             }
             setBookingUpdated({
-                _id: bookingById._id,
+                _id: bookingById._id || 0,
                 photo: bookingById.photo || '',
                 full_name_guest: bookingById.full_name_guest || '',
                 order_date: bookingById.order_date || '',
                 check_in_date: bookingById.check_in_date || '',
                 check_out_date: bookingById.check_out_date || '',
                 special_request: bookingById.special_request || '',
-                room_id: bookingById.room_data._id
+                room_id: bookingById.room_data._id || 0
             })
         }
         else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error en la api de booking update > bookings") }
@@ -210,8 +210,8 @@ export const BookingUpdate = () => {
                     <DivCtnEntry>
                         <LabelText>Room number</LabelText>
                         <Select
-                            value={bookingUpdated.room_id || bookingById.room_data._id}
-                            onChange={(e) => setBookingUpdated({ ...bookingUpdated, room_id: e.target.value })}
+                            value={bookingUpdated.room_id || (bookingById.room_data ? bookingById.room_data._id : '')}
+                            onChange={(e) => setBookingUpdated({ ...bookingUpdated, room_id: parseInt(e.target.value) })}
                         >
                             {roomAll.map((room) => (
                                 <Option key={room._id} value={room._id}>{room.number} </Option>

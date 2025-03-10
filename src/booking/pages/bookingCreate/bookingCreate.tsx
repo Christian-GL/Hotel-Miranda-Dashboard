@@ -43,7 +43,7 @@ export const BookingCreate = () => {
         check_in_date: '',
         check_out_date: '',
         special_request: '',
-        room_id: '0'
+        room_id: 0
     })
 
     useEffect(() => {

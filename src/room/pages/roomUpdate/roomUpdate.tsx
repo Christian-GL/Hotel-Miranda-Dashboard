@@ -37,7 +37,7 @@ import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFe
 export const RoomUpdate = () => {
 
     const { id } = useParams()
-    const idParams = id!
+    const idParams = parseInt(id!)
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const roomById = useSelector(getRoomIdData)
@@ -47,7 +47,7 @@ export const RoomUpdate = () => {
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
     const [roomUpdated, setRoomUpdated] = useState<RoomInterface>({
-        _id: '0',
+        _id: 0,
         photos: [],
         number: '0',
         type: RoomType.singleBed,
@@ -64,14 +64,14 @@ export const RoomUpdate = () => {
                 dispatch(RoomFetchByIDThunk(idParams))
             }
             setRoomUpdated({
-                _id: roomById._id || '0',
+                _id: roomById._id || 0,
                 photos: roomById.photos || [],
                 number: roomById.number || '0',
                 type: roomById.type || RoomType.singleBed,
                 amenities: roomById.amenities || [],
                 price: roomById.price || 0,
                 discount: roomById.discount || 0,
-                booking_id_list: roomById.booking_data_list.map(booking => booking._id)
+                booking_id_list: roomById.booking_data_list ? roomById.booking_data_list.map(booking => Number(booking._id)) : []
             })
         }
         else if (roomByIdLoading === ApiStatus.rejected) { alert("Error in API update rooms") }
@@ -255,7 +255,7 @@ export const RoomUpdate = () => {
                         <DivCtnEntryBookings>
                             {
                                 // FUNCIONA EL LISTADO DE BOOKING POR ROOM?
-                                bookingAll.filter(booking => roomUpdated.booking_id_list.toString().includes(booking._id)).length === 0 ?
+                                bookingAll.filter(booking => roomUpdated.booking_id_list.includes(booking._id)).length === 0 ?
                                     <LabelTextBookingStatus>Available</LabelTextBookingStatus> :
                                     (bookingAll.filter(booking => roomUpdated.booking_id_list.includes(booking._id))
                                         .map((booking, index) => (

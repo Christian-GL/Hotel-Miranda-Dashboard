@@ -1,7 +1,7 @@
 
 import { UserStatus } from "../data/userStatus"
 
-export interface UserInterfaceWithOutID {
+export interface UserInterfaceNoId {
     photo: string
     full_name: string
     email: string
@@ -12,6 +12,6 @@ export interface UserInterfaceWithOutID {
     password: string
 }
 
-export interface UserInterface extends UserInterfaceWithOutID {
-    _id: string
+export interface UserInterface extends UserInterfaceNoId {
+    _id: number
 }

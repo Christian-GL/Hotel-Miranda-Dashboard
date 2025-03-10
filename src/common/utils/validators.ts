@@ -277,8 +277,8 @@ export const validateBookingList = (bookingList: any[], fieldName: string = 'Boo
     const errorMessages: string[] = []
 
     bookingList.forEach((bookingId) => {
-        if (typeof bookingId !== "string") {
-            errorMessages.push(`${fieldName} is not a String`)
+        if (typeof bookingId !== "number") {
+            errorMessages.push(`${fieldName} is not a Number`)
         }
     })
 
