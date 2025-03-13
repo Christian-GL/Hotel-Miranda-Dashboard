@@ -11,7 +11,6 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { BookingInterfaceNoId } from "../../interfaces/bookingInterface.ts"
-import { BookingStatus } from "../../enums/bookingStatus.ts"
 import {
     validatePhoto, validateFullName, validateCheckInCheckOut,
     validateDateIsOccupied, validateTextArea
@@ -45,6 +44,7 @@ export const BookingCreate = () => {
         special_request: '',
         room_id: 0
     })
+    const roomsAvailable = roomAll.filter(room => !validateDateIsOccupied(newBooking, bookingAll.filter(booking => booking.room_data._id === room._id)).length)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -75,11 +75,11 @@ export const BookingCreate = () => {
             [name]: value
         })
     }
-    const handleStringSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleNumberSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setNewBooking({
             ...newBooking,
-            [name]: value
+            [name]: parseInt(value)
         })
     }
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -183,41 +183,25 @@ export const BookingCreate = () => {
                         <LabelText>Room number</LabelText>
                         <Select
                             name="room_id"
-                            onChange={handleStringSelectChange}
-                            disabled={
-                                !newBooking.check_in_date ||
-                                !newBooking.check_out_date ||
-                                roomAll.filter(room => !validateDateIsOccupied(
-                                    newBooking,
-                                    bookingAll.filter(booking => booking.room_data._id === room._id)
-                                ).length).length === 0
-                            }
+                            onChange={handleNumberSelectChange}
+                            disabled={!newBooking.check_in_date || !newBooking.check_out_date || roomsAvailable.length === 0}
                         >
-                            {!newBooking.check_in_date || !newBooking.check_out_date ? (
-                                <Option value="null" selected disabled>⚠️ Select Check-in date & Check-out date first</Option>
-                            ) : (
-                                <>
-                                    {roomAll.filter(room => !validateDateIsOccupied(
-                                        newBooking,
-                                        bookingAll.filter(booking => booking.room_data._id === room._id)
-                                    ).length).length === 0 ? (
-                                        <Option value="null" selected disabled>❌ No rooms available for the selected dates</Option>
-                                    ) : (
-                                        <>
+                            {!newBooking.check_in_date || !newBooking.check_out_date ?
+                                (<Option value="null" selected disabled>⚠️ Select Check-in date & Check-out date first</Option>)
+                                :
+                                (<>
+                                    {roomsAvailable.length === 0 ?
+                                        (<Option value="null" selected disabled>❌ No rooms available for the selected dates</Option>)
+                                        :
+                                        (<>
                                             <Option value="null" selected></Option>
-                                            {roomAll
-                                                .filter(room => !validateDateIsOccupied(
-                                                    newBooking,
-                                                    bookingAll.filter(booking => booking.room_data._id === room._id)
-                                                ).length)
-                                                .map(room => (
-                                                    <Option key={room._id} value={room._id.toString()}>{room.number}</Option>
-                                                ))
+                                            {roomsAvailable.map(room => (
+                                                <Option key={room._id} value={room._id.toString()}>{room.number}</Option>
+                                            ))
                                             }
-                                        </>
-                                    )}
-                                </>
-                            )}
+                                        </>)
+                                    }
+                                </>)}
                         </Select>
                     </DivCtnEntry>
 

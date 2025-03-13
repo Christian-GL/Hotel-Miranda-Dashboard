@@ -15,7 +15,7 @@ import { BookingInterface } from "../../interfaces/bookingInterface.ts"
 import { formatDateForInput } from "../../../common/utils/dateUtils.ts"
 import {
     validatePhoto, validateFullName, validateCheckInCheckOut,
-    validateDateIsOccupiedIfBookingExists, validateTextArea
+    validateDateIsOccupiedIfBookingExists, validateTextArea, validateDateIsOccupied
 } from '../../../common/utils/validators.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
@@ -53,6 +53,13 @@ export const BookingUpdate = () => {
         special_request: '',
         room_id: 0
     })
+    const roomsAvailable = roomAll.filter(room => !validateDateIsOccupied(bookingUpdated, bookingAll.filter(booking => booking.room_data._id === room._id)).length)
+    const currentRoom = bookingUpdated.room_id ?
+        roomAll.find(room => Number(room._id) === Number(bookingUpdated.room_id)) :
+        null
+    const effectiveRooms = currentRoom && !roomsAvailable.some(room => Number(room._id) === Number(currentRoom._id)) ?
+        [currentRoom, ...roomsAvailable] :
+        roomsAvailable
 
     useEffect(() => {
         if (bookingByIdLoading === ApiStatus.idle) { dispatch(BookingFetchByIDThunk(idParams)) }
@@ -99,6 +106,13 @@ export const BookingUpdate = () => {
         setBookingUpdated({
             ...bookingUpdated,
             [name]: value
+        })
+    }
+    const handleNumberSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target
+        setBookingUpdated({
+            ...bookingUpdated,
+            [name]: parseInt(value)
         })
     }
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -196,12 +210,36 @@ export const BookingUpdate = () => {
                     <DivCtnEntry>
                         <LabelText>Room number</LabelText>
                         <Select
+                            name="room_id"
                             value={bookingUpdated.room_id || (bookingById.room_data ? bookingById.room_data._id : '')}
-                            onChange={(e) => setBookingUpdated({ ...bookingUpdated, room_id: parseInt(e.target.value) })}
+                            onChange={handleNumberSelectChange}
+                            disabled={
+                                !bookingUpdated.check_in_date ||
+                                !bookingUpdated.check_out_date ||
+                                effectiveRooms.length === 0
+                            }
                         >
-                            {roomAll.map((room) => (
-                                <Option key={room._id} value={room._id}>{room.number} </Option>
-                            ))}
+                            {!bookingUpdated.check_in_date || !bookingUpdated.check_out_date ?
+                                (<Option value="null" selected disabled>
+                                    ⚠️ Select Check-in date & Check-out date first
+                                </Option>)
+                                :
+                                (<>
+                                    {effectiveRooms.length === 0 ?
+                                        (<Option value="null" selected disabled>
+                                            ❌ No rooms available for the selected dates
+                                        </Option>)
+                                        :
+                                        (<>
+                                            <Option value="null" selected></Option>
+                                            {effectiveRooms.map(room => (
+                                                <Option key={room._id} value={room._id.toString()}>
+                                                    {room.number}
+                                                </Option>
+                                            ))}
+                                        </>)
+                                    }
+                                </>)}
                         </Select>
                     </DivCtnEntry>
 
@@ -215,6 +253,6 @@ export const BookingUpdate = () => {
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>
-        </bookingUpdateStyles.SectionPageBookingUpdate>
+        </bookingUpdateStyles.SectionPageBookingUpdate >
     </>)
 }
