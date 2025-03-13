@@ -11,7 +11,7 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { BookingInterfaceNoId } from "../../interfaces/bookingInterface.ts"
-import { BookingStatus } from "../../data/bookingStatus.ts"
+import { BookingStatus } from "../../enums/bookingStatus.ts"
 import {
     validatePhoto, validateFullName, validateCheckInCheckOut,
     validateDateIsOccupied, validateTextArea
@@ -101,13 +101,6 @@ export const BookingCreate = () => {
             [name]: value
         })
     }
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setNewBooking({
-            ...newBooking,
-            [name]: value
-        })
-    }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -188,21 +181,41 @@ export const BookingCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Room number</LabelText>
-                        <Select name="room_id" onChange={handleStringSelectChange} disabled={!newBooking.check_in_date || !newBooking.check_out_date}>
-                            <Option value="null" selected></Option>
-                            {(!newBooking.check_in_date || !newBooking.check_out_date) ? (
+                        <Select
+                            name="room_id"
+                            onChange={handleStringSelectChange}
+                            disabled={
+                                !newBooking.check_in_date ||
+                                !newBooking.check_out_date ||
+                                roomAll.filter(room => !validateDateIsOccupied(
+                                    newBooking,
+                                    bookingAll.filter(booking => booking.room_data._id === room._id)
+                                ).length).length === 0
+                            }
+                        >
+                            {!newBooking.check_in_date || !newBooking.check_out_date ? (
                                 <Option value="null" selected disabled>⚠️ Select Check-in date & Check-out date first</Option>
                             ) : (
                                 <>
-                                    <Option value="null" selected></Option>
-                                    {roomAll
-                                        .filter(room => !validateDateIsOccupied(
-                                            newBooking,
-                                            bookingAll.filter(booking => booking.room_data._id === room._id)
-                                        ).length).map(room => (
-                                            <Option key={room._id} value={room._id.toString()}>{room.number}</Option>
-                                        ))
-                                    }
+                                    {roomAll.filter(room => !validateDateIsOccupied(
+                                        newBooking,
+                                        bookingAll.filter(booking => booking.room_data._id === room._id)
+                                    ).length).length === 0 ? (
+                                        <Option value="null" selected disabled>❌ No rooms available for the selected dates</Option>
+                                    ) : (
+                                        <>
+                                            <Option value="null" selected></Option>
+                                            {roomAll
+                                                .filter(room => !validateDateIsOccupied(
+                                                    newBooking,
+                                                    bookingAll.filter(booking => booking.room_data._id === room._id)
+                                                ).length)
+                                                .map(room => (
+                                                    <Option key={room._id} value={room._id.toString()}>{room.number}</Option>
+                                                ))
+                                            }
+                                        </>
+                                    )}
                                 </>
                             )}
                         </Select>

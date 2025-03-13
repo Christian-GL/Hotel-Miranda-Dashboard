@@ -4,47 +4,40 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as userStyles from "./userStyles.ts"
-import { AppDispatch } from '../common/redux/store.ts'
-import { ApiStatus } from "../common/enums/ApiStatus.ts"
-import { UserStatus } from './data/userStatus.ts'
-import { UserInterface } from "./interfaces/userInterface.ts"
-import { UserColumnsArrowStatesInterface } from "./interfaces/userColumnsArrowStatesInterface.ts"
-import { formatDateForPrint } from '../common/utils/dateUtils.ts'
-import { ArrowType } from "../common/enums/ArrowType.ts"
-import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
-import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
-import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
+import * as userMainStyles from "./userMainStyles.ts"
+import { UserButtonType } from "../../enums/userButtonType.ts"
+import { UserColumnSort } from '../../enums/userColumnSort.ts'
+import { AppDispatch } from '../../../common/redux/store.ts'
+import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
+import { UserStatus } from "./../../enums/userStatus.ts"
+import { UserInterface } from "./../../interfaces/userInterface.ts"
+import { UserColumnsArrowStatesInterface } from "./../../interfaces/userColumnsArrowStatesInterface.ts"
+import { formatDateForPrint } from '../../../common/utils/dateUtils.ts'
+import { ArrowType } from "../../../common/enums/ArrowType.ts"
+import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
+import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm.tsx"
+import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate.tsx"
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
     PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption
-} from "../common/styles/tableStyles.ts"
-import { usePagination } from "../common/hooks/usePagination.ts"
-import * as paginationStyles from '../common/styles/pagination.ts'
-import { getUserAllData, getUserAllStatus } from "./features/userSlice.ts"
-import { UserFetchAllThunk } from "./features/thunks/userFetchAllThunk.ts"
-import { UserDeleteByIdThunk } from "./features/thunks/userDeleteByIdThunk.ts"
+} from "../../../common/styles/tableStyles.ts"
+import { usePagination } from "../../../common/hooks/usePagination.ts"
+import * as paginationStyles from '../../../common/styles/pagination.ts'
+import { getUserAllData, getUserAllStatus } from "./../../features/userSlice.ts"
+import { UserFetchAllThunk } from "./../../features/thunks/userFetchAllThunk.ts"
+import { UserDeleteByIdThunk } from "./../../features/thunks/userDeleteByIdThunk.ts"
 
 
-export const User = () => {
+export const UserMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    enum ButtonType {
-        all = "all",
-        active = "active",
-        inactive = "inactive"
-    }
-    enum columnsSortAvailable {
-        name = 'name',
-        startDate = 'startDate'
-    }
     const nameColumnList: string[] = ['', 'Name', 'Start date', 'Job description', 'Contact', 'Status', '']
     const userAll: UserInterface[] = useSelector(getUserAllData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
-    const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
+    const [selectedButton, setSelectedButton] = useState<UserButtonType>(UserButtonType.all)
     const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([])
     const [arrowStates, setArrowStates] = useState<UserColumnsArrowStatesInterface>({
         name: ArrowType.right,
@@ -63,7 +56,7 @@ export const User = () => {
     useEffect(() => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
         else if (userAllLoading === ApiStatus.fulfilled) { displayEmployee() }
-        else if (userAllLoading === ApiStatus.rejected) { alert("Error en la api de users") }
+        else if (userAllLoading === ApiStatus.rejected) { alert("Error in API userMain") }
     }, [userAllLoading, userAll, inputText, selectedButton, arrowStates])
 
     const navigateToUserCreate = () => navigate('user-create')
@@ -73,24 +66,24 @@ export const User = () => {
         setInputText(e.target.value)
         resetPage()
     }
-    const handleTableFilter = (type: ButtonType): void => {
+    const handleTableFilter = (type: UserButtonType): void => {
         setSelectedButton(type)
         displayEmployee()
     }
     const displayEmployee = (): void => {
         let filteredData: UserInterface[]
         switch (selectedButton) {
-            case ButtonType.all:
+            case UserButtonType.all:
                 filteredData = userAll.filter(user =>
                     user.full_name.toLowerCase().includes(inputText.toLowerCase())
                 )
                 break
-            case ButtonType.active:
+            case UserButtonType.active:
                 filteredData = userAll.filter(user =>
                     user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status === UserStatus.active
                 )
                 break
-            case ButtonType.inactive:
+            case UserButtonType.inactive:
                 filteredData = userAll.filter(user =>
                     user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status === UserStatus.inactive
                 )
@@ -104,7 +97,7 @@ export const User = () => {
         const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
         let sortedData: UserInterface[] = [...filteredData]
         if (activeColumn) {
-            if (activeColumn === columnsSortAvailable.name) {
+            if (activeColumn === UserColumnSort.name) {
                 sortedData.sort((a, b) => {
                     let valueA: string = a.full_name.toLowerCase()
                     let valueB: string = b.full_name.toLowerCase()
@@ -115,7 +108,7 @@ export const User = () => {
                     }
                 })
             }
-            else if (activeColumn === columnsSortAvailable.startDate) {
+            else if (activeColumn === UserColumnSort.startDate) {
                 sortedData.sort((a, b) => {
                     let valueA: Date = new Date(a.start_date)
                     let valueB: Date = new Date(b.start_date)
@@ -129,7 +122,7 @@ export const User = () => {
         }
         return sortedData
     }
-    const handleColumnClick = (nameColumn: columnsSortAvailable): void => {
+    const handleColumnClick = (nameColumn: UserColumnSort): void => {
         setArrowStates(prevState => {
             const newState: UserColumnsArrowStatesInterface = { ...prevState }
 
@@ -147,7 +140,7 @@ export const User = () => {
         })
         handleTableFilter(selectedButton)
     }
-    const getArrowIcon = (nameColumn: columnsSortAvailable): JSX.Element => {
+    const getArrowIcon = (nameColumn: UserColumnSort): JSX.Element => {
         const state = arrowStates[nameColumn]
         if (state === ArrowType.up) { return <TriangleUp /> }
         else if (state === ArrowType.down) { return <TriangleDown /> }
@@ -166,31 +159,31 @@ export const User = () => {
 
 
     return (<>
-        <userStyles.SectionPageUser>
+        <userMainStyles.SectionPageUser>
 
-            <userStyles.DivCtnFuncionality>
-                <userStyles.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='All Employee' onClick={() => handleTableFilter(ButtonType.all)} isSelected={selectedButton === ButtonType.all} />
-                    <TableDisplayIndicator text='Active Employee' onClick={() => handleTableFilter(ButtonType.active)} isSelected={selectedButton === ButtonType.active} />
-                    <TableDisplayIndicator text='Inactive Employee' onClick={() => handleTableFilter(ButtonType.inactive)} isSelected={selectedButton === ButtonType.inactive} />
-                </userStyles.DivCtnTableDisplayFilter>
+            <userMainStyles.DivCtnFuncionality>
+                <userMainStyles.DivCtnTableDisplayFilter>
+                    <TableDisplaySelector text='All Employee' onClick={() => handleTableFilter(UserButtonType.all)} isSelected={selectedButton === UserButtonType.all} />
+                    <TableDisplaySelector text='Active Employee' onClick={() => handleTableFilter(UserButtonType.active)} isSelected={selectedButton === UserButtonType.active} />
+                    <TableDisplaySelector text='Inactive Employee' onClick={() => handleTableFilter(UserButtonType.inactive)} isSelected={selectedButton === UserButtonType.inactive} />
+                </userMainStyles.DivCtnTableDisplayFilter>
 
-                <userStyles.DivCtnSearch>
+                <userMainStyles.DivCtnSearch>
                     <TableSearchTerm onchange={handleInputTerm} placeholder='Search employee by name' />
-                </userStyles.DivCtnSearch>
+                </userMainStyles.DivCtnSearch>
 
-                <userStyles.DivCtnButton>
+                <userMainStyles.DivCtnButton>
                     <ButtonCreate onClick={navigateToUserCreate} children='+ New Employee' />
-                </userStyles.DivCtnButton>
-            </userStyles.DivCtnFuncionality>
+                </userMainStyles.DivCtnButton>
+            </userMainStyles.DivCtnFuncionality>
 
 
             <Table rowlistlength={filteredUsers.length + 1} columnlistlength={nameColumnList.length}>
                 {nameColumnList.map((nameColumn, index) =>
                     index === 1 || index === 2 ?
-                        <THTable key={index} onClick={() => handleColumnClick(index === 1 ? columnsSortAvailable.name : columnsSortAvailable.startDate)} cursorPointer='yes'>
+                        <THTable key={index} onClick={() => handleColumnClick(index === 1 ? UserColumnSort.name : UserColumnSort.startDate)} cursorPointer='yes'>
                             {nameColumn}
-                            {index === 1 ? getArrowIcon(columnsSortAvailable.name) : getArrowIcon(columnsSortAvailable.startDate)}
+                            {index === 1 ? getArrowIcon(UserColumnSort.name) : getArrowIcon(UserColumnSort.startDate)}
                         </THTable> :
                         <THTable key={index}>{nameColumn}</THTable>
                 )}
@@ -263,6 +256,6 @@ export const User = () => {
                 </paginationStyles.ButtonSwitchPage>
             </paginationStyles.DivCtnPagination>
 
-        </userStyles.SectionPageUser >
+        </userMainStyles.SectionPageUser >
     </>)
 }

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 
 import * as signInStyles from "./signInStyles.ts"
 import { ToastContainer } from 'react-toastify'
-import { ToastifyError } from "../toastify/errorPopup/toastifyError.tsx"
+import { ToastifyError } from '../common/components/toastify/errorPopup/toastifyError.tsx'
 import { useLoginOptionsContext } from "./features/loginProvider.tsx"
 
 

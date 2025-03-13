@@ -8,7 +8,7 @@ import { GoTriangleRight } from "react-icons/go"
 import { GoTriangleDown } from "react-icons/go"
 
 import * as globalConstStyles from './globalConstStyles.ts'
-import { BookingStatus } from '../../booking/data/bookingStatus.ts'
+import { BookingStatus } from '../../booking/enums/bookingStatus.ts'
 
 
 export const Table = styled.table<{ rowlistlength: number, columnlistlength: number }>`

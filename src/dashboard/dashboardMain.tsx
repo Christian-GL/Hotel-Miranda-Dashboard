@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import * as dashboardStyles from "./dashboardStyles.ts"
+import * as dashboardMainStyles from "./dashboardMainStyles.ts"
 import { AppDispatch } from '../common/redux/store.ts'
 import { ApiStatus } from "../common/enums/ApiStatus.ts"
 import { formatDateForPrint } from '../common/utils/dateUtils.ts'
@@ -18,7 +18,7 @@ import { BookingInterfaceRoom } from "../booking/interfaces/bookingInterface.ts"
 import { ContactInterface } from "../contact/interfaces/contactInterface.ts"
 
 
-export const Dashboard = () => {
+export const DashboardMain = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const bookingAll: BookingInterfaceRoom[] = useSelector(getBookingAllData)
@@ -39,53 +39,53 @@ export const Dashboard = () => {
 
 
     return (
-        < dashboardStyles.SectionPageDashboard >
+        < dashboardMainStyles.SectionPageDashboard >
 
-            <dashboardStyles.SectionKPIs>
-                <dashboardStyles.ArticleKPI>
-                    <dashboardStyles.IconBooking />
-                    <dashboardStyles.DivCtnInfo>
-                        <dashboardStyles.NumberH4>{bookingAll.length}</dashboardStyles.NumberH4>
-                        <dashboardStyles.TextH5>New Bookings</dashboardStyles.TextH5>
-                    </dashboardStyles.DivCtnInfo>
-                </dashboardStyles.ArticleKPI>
-                <dashboardStyles.ArticleKPI>
-                    <dashboardStyles.IconLogIn />
-                    <dashboardStyles.DivCtnInfo>
-                        <dashboardStyles.NumberH4>
+            <dashboardMainStyles.SectionKPIs>
+                <dashboardMainStyles.ArticleKPI>
+                    <dashboardMainStyles.IconBooking />
+                    <dashboardMainStyles.DivCtnInfo>
+                        <dashboardMainStyles.NumberH4>{bookingAll.length}</dashboardMainStyles.NumberH4>
+                        <dashboardMainStyles.TextH5>New Bookings</dashboardMainStyles.TextH5>
+                    </dashboardMainStyles.DivCtnInfo>
+                </dashboardMainStyles.ArticleKPI>
+                <dashboardMainStyles.ArticleKPI>
+                    <dashboardMainStyles.IconLogIn />
+                    <dashboardMainStyles.DivCtnInfo>
+                        <dashboardMainStyles.NumberH4>
                             {bookingAll.filter(booking =>
                                 checkBookingStatus(booking.check_in_date, booking.check_out_date) === 'Check In'
                             ).length}
-                        </dashboardStyles.NumberH4>
-                        <dashboardStyles.TextH5>Check in</dashboardStyles.TextH5>
-                    </dashboardStyles.DivCtnInfo>
-                </dashboardStyles.ArticleKPI>
-                <dashboardStyles.ArticleKPI>
-                    <dashboardStyles.IconCalendar />
-                    <dashboardStyles.DivCtnInfo>
-                        <dashboardStyles.NumberH4>
+                        </dashboardMainStyles.NumberH4>
+                        <dashboardMainStyles.TextH5>Check in</dashboardMainStyles.TextH5>
+                    </dashboardMainStyles.DivCtnInfo>
+                </dashboardMainStyles.ArticleKPI>
+                <dashboardMainStyles.ArticleKPI>
+                    <dashboardMainStyles.IconCalendar />
+                    <dashboardMainStyles.DivCtnInfo>
+                        <dashboardMainStyles.NumberH4>
                             {bookingAll.filter(booking =>
                                 checkBookingStatus(booking.check_in_date, booking.check_out_date) === 'In Progress'
                             ).length}
-                        </dashboardStyles.NumberH4>
-                        <dashboardStyles.TextH5>In Progress</dashboardStyles.TextH5>
-                    </dashboardStyles.DivCtnInfo>
-                </dashboardStyles.ArticleKPI>
-                <dashboardStyles.ArticleKPI>
-                    <dashboardStyles.IconLogOut />
-                    <dashboardStyles.DivCtnInfo>
-                        <dashboardStyles.NumberH4>
+                        </dashboardMainStyles.NumberH4>
+                        <dashboardMainStyles.TextH5>In Progress</dashboardMainStyles.TextH5>
+                    </dashboardMainStyles.DivCtnInfo>
+                </dashboardMainStyles.ArticleKPI>
+                <dashboardMainStyles.ArticleKPI>
+                    <dashboardMainStyles.IconLogOut />
+                    <dashboardMainStyles.DivCtnInfo>
+                        <dashboardMainStyles.NumberH4>
                             {bookingAll.filter(booking =>
                                 checkBookingStatus(booking.check_in_date, booking.check_out_date) === 'Check Out'
                             ).length}
-                        </dashboardStyles.NumberH4>
-                        <dashboardStyles.TextH5>Check Out</dashboardStyles.TextH5>
-                    </dashboardStyles.DivCtnInfo>
-                </dashboardStyles.ArticleKPI>
-            </dashboardStyles.SectionKPIs>
+                        </dashboardMainStyles.NumberH4>
+                        <dashboardMainStyles.TextH5>Check Out</dashboardMainStyles.TextH5>
+                    </dashboardMainStyles.DivCtnInfo>
+                </dashboardMainStyles.ArticleKPI>
+            </dashboardMainStyles.SectionKPIs>
 
-            <dashboardStyles.SectionReviews>
-                <dashboardStyles.TitleSectionReviewsH5>Latest Review by Customers</dashboardStyles.TitleSectionReviewsH5>
+            <dashboardMainStyles.SectionReviews>
+                <dashboardMainStyles.TitleSectionReviewsH5>Latest Review by Customers</dashboardMainStyles.TitleSectionReviewsH5>
                 {/* <dashboardJS.SwiperCustom
                         spaceBetween={0}
                         slidesPerView={3}
@@ -115,9 +115,9 @@ export const Dashboard = () => {
                     })}
                 </Swiper>
                 {/* </dashboardJS.SwiperCustom> */}
-            </dashboardStyles.SectionReviews>
+            </dashboardMainStyles.SectionReviews>
 
-        </dashboardStyles.SectionPageDashboard >
+        </dashboardMainStyles.SectionPageDashboard >
     )
 
 }

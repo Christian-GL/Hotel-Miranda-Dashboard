@@ -4,45 +4,36 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as roomStyles from "./roomStyles.ts"
-import { AppDispatch } from '../common/redux/store.ts'
-import { ApiStatus } from "../common/enums/ApiStatus.ts"
-import { RoomInterfaceBookings } from "./interfaces/roomInterface.ts"
-import { RoomColumnsArrowStatesInterface } from './interfaces/roomColumnsArrowStatesInterface.ts'
-import { ArrowType } from "../common/enums/ArrowType.ts"
-import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
-import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
-import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
-import { applyDiscount } from "../common/utils/tableUtils.ts"
-import { usePagination } from "../common/hooks/usePagination.ts"
-import * as paginationJS from '../common/styles/pagination.ts'
+import * as roomMainStyles from "./roomMainStyles.ts"
+import { RoomButtonType } from "../../enums/roomButtonType.ts"
+import { RoomColumnSort } from '../../enums/roomColumnSort.ts'
+import { AppDispatch } from '../../../common/redux/store.ts'
+import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
+import { RoomInterfaceBookings } from "./../../interfaces/roomInterface.ts"
+import { RoomColumnsArrowStatesInterface } from './../../interfaces/roomColumnsArrowStatesInterface.ts'
+import { ArrowType } from "../../../common/enums/ArrowType.ts"
+import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
+import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm.tsx"
+import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate.tsx"
+import { applyDiscount } from "../../../common/utils/tableUtils.ts"
+import { usePagination } from "../../../common/hooks/usePagination.ts"
+import * as paginationJS from '../../../common/styles/pagination.ts'
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable,
     ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption
-} from "../common/styles/tableStyles.ts"
-import { getRoomAllData, getRoomAllStatus } from "./features/roomSlice.ts"
-import { RoomFetchAllThunk } from "./features/thunks/roomFetchAllThunk.ts"
-import { RoomDeleteByIdThunk } from "./features/thunks/roomDeleteByIdThunk.ts"
-import { getBookingAllData, getBookingAllStatus } from "../booking/features/bookingSlice.js"
-import { BookingFetchAllThunk } from "../booking/features/thunks/bookingFetchAllThunk.js"
-import { BookingDeleteByIdThunk } from "../booking/features/thunks/bookingDeleteByIdThunk.js"
-import { BookingInterfaceRoom } from "../booking/interfaces/bookingInterface.ts"
+} from "../../../common/styles/tableStyles.ts"
+import { getRoomAllData, getRoomAllStatus } from "./../../features/roomSlice.ts"
+import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk.ts"
+import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk.ts"
+import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice.js"
+import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.js"
+import { BookingInterfaceRoom } from "../../../booking/interfaces/bookingInterface.ts"
 
 
-export const Room = () => {
+export const RoomMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    enum ButtonType {
-        all = "all",
-        available = "available",
-        booked = "booked"
-    }
-    enum columnsSortAvailable {
-        roomNumber = 'roomNumber',
-        price = 'price',
-        offerPrice = 'offerPrice'
-    }
     const nameColumnList: string[] = ['', 'Room number', 'Room type', 'Amenities', 'Price', 'Offer price', 'Booking status', '']
     const roomAll: RoomInterfaceBookings[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
@@ -51,7 +42,7 @@ export const Room = () => {
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredRooms, setFilteredRooms] = useState<RoomInterfaceBookings[]>([])
-    const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
+    const [selectedButton, setSelectedButton] = useState<RoomButtonType>(RoomButtonType.all)
     const [arrowStates, setArrowStates] = useState<RoomColumnsArrowStatesInterface>({
         roomNumber: ArrowType.down,
         price: ArrowType.right,
@@ -85,27 +76,27 @@ export const Room = () => {
         setInputText(e.target.value)
         resetPage()
     }
-    const handleTableFilter = (type: ButtonType): void => {
+    const handleTableFilter = (type: RoomButtonType): void => {
         setSelectedButton(type)
         displayRooms()
     }
     const displayRooms = (): void => {
         let filteredData: RoomInterfaceBookings[]
         switch (selectedButton) {
-            case ButtonType.all:
+            case RoomButtonType.all:
                 filteredData = roomAll.filter(room =>
-                    room._id.toString().includes(inputText.toLowerCase())
+                    room.number.toString().includes(inputText.toLowerCase())
                 )
                 break
-            case ButtonType.available:
+            case RoomButtonType.available:
                 filteredData = roomAll.filter(room =>
-                    room._id.toString().includes(inputText.toLowerCase()) &&
+                    room.number.toString().includes(inputText.toLowerCase()) &&
                     isAvailable(room)
                 )
                 break
-            case ButtonType.booked:
+            case RoomButtonType.booked:
                 filteredData = roomAll.filter(room =>
-                    room._id.toString().includes(inputText.toLowerCase()) &&
+                    room.number.toString().includes(inputText.toLowerCase()) &&
                     !isAvailable(room)
                 )
                 break
@@ -118,7 +109,7 @@ export const Room = () => {
         const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
         let sortedData: RoomInterfaceBookings[] = [...filteredData]
         if (activeColumn) {
-            if (activeColumn === columnsSortAvailable.roomNumber) {
+            if (activeColumn === RoomColumnSort.roomNumber) {
                 sortedData.sort((a, b) => {
                     let valueA: number = parseInt(a.number)
                     let valueB: number = parseInt(b.number)
@@ -129,7 +120,7 @@ export const Room = () => {
                     }
                 })
             }
-            else if (activeColumn === columnsSortAvailable.price) {
+            else if (activeColumn === RoomColumnSort.price) {
                 sortedData.sort((a, b) => {
                     let valueA: number = a.price
                     let valueB: number = b.price
@@ -140,7 +131,7 @@ export const Room = () => {
                     }
                 })
             }
-            else if (activeColumn === columnsSortAvailable.offerPrice) {
+            else if (activeColumn === RoomColumnSort.offerPrice) {
                 sortedData.sort((a, b) => {
                     let valueA: number = applyDiscount(a.price, a.discount)
                     let valueB: number = applyDiscount(b.price, b.discount)
@@ -154,7 +145,7 @@ export const Room = () => {
         }
         return sortedData
     }
-    const handleColumnClick = (nameColumn: columnsSortAvailable): void => {
+    const handleColumnClick = (nameColumn: RoomColumnSort): void => {
         setArrowStates(prevState => {
             const newState: RoomColumnsArrowStatesInterface = { ...prevState }
 
@@ -173,7 +164,7 @@ export const Room = () => {
 
         handleTableFilter(selectedButton)
     }
-    const getArrowIcon = (nameColumn: columnsSortAvailable): JSX.Element => {
+    const getArrowIcon = (nameColumn: RoomColumnSort): JSX.Element => {
         const state = arrowStates[nameColumn]
         if (state === ArrowType.up) { return <TriangleUp /> }
         else if (state === ArrowType.down) { return <TriangleDown /> }
@@ -195,43 +186,44 @@ export const Room = () => {
         displayMenuOptions(index)
         resetPage()
     }
-    // HUMANIZAR ESTA FUNCION (Y QUIZAS HACERLA COMÚN)
     const isAvailable = (room: RoomInterfaceBookings): boolean => {
-        return !Array.isArray(room.booking_data_list) || room.booking_data_list.length === 0 || !room.booking_data_list.some(booking => {
-            const actualDate = new Date()
-            const checkIn = new Date(booking.check_in_date)
-            const checkOut = new Date(booking.check_out_date)
-            return actualDate >= checkIn && actualDate <= checkOut
-        })
+        return !Array.isArray(room.booking_data_list) ||
+            room.booking_data_list.length === 0 ||
+            !room.booking_data_list.some(booking => {
+                const actualDate = new Date()
+                const checkIn = new Date(booking.check_in_date)
+                const checkOut = new Date(booking.check_out_date)
+                return actualDate >= checkIn && actualDate <= checkOut
+            })
     }
 
 
     return (
-        <roomStyles.SectionPageRoom>
-            <roomStyles.DivCtnFuncionality>
-                <roomStyles.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='All Rooms' onClick={() => handleTableFilter(ButtonType.all)} isSelected={selectedButton === ButtonType.all} />
-                    <TableDisplayIndicator text='Available Rooms' onClick={() => handleTableFilter(ButtonType.available)} isSelected={selectedButton === ButtonType.available} />
-                    <TableDisplayIndicator text='Booked Rooms' onClick={() => handleTableFilter(ButtonType.booked)} isSelected={selectedButton === ButtonType.booked} />
-                </roomStyles.DivCtnTableDisplayFilter>
+        <roomMainStyles.SectionPageRoom>
+            <roomMainStyles.DivCtnFuncionality>
+                <roomMainStyles.DivCtnTableDisplayFilter>
+                    <TableDisplaySelector text='All Rooms' onClick={() => handleTableFilter(RoomButtonType.all)} isSelected={selectedButton === RoomButtonType.all} />
+                    <TableDisplaySelector text='Available Rooms' onClick={() => handleTableFilter(RoomButtonType.available)} isSelected={selectedButton === RoomButtonType.available} />
+                    <TableDisplaySelector text='Booked Rooms' onClick={() => handleTableFilter(RoomButtonType.booked)} isSelected={selectedButton === RoomButtonType.booked} />
+                </roomMainStyles.DivCtnTableDisplayFilter>
 
-                <roomStyles.DivCtnSearch>
+                <roomMainStyles.DivCtnSearch>
                     <TableSearchTerm onchange={handleInputTerm} placeholder='Search by room number' />
-                </roomStyles.DivCtnSearch>
+                </roomMainStyles.DivCtnSearch>
 
-                <roomStyles.DivCtnButton>
+                <roomMainStyles.DivCtnButton>
                     <ButtonCreate onClick={navigateToRoomCreate} children='+ New Room' />
-                </roomStyles.DivCtnButton>
-            </roomStyles.DivCtnFuncionality>
+                </roomMainStyles.DivCtnButton>
+            </roomMainStyles.DivCtnFuncionality>
 
             <Table rowlistlength={filteredRooms.length + 1} columnlistlength={nameColumnList.length} >
                 {nameColumnList.map((nameColumn, index) =>
                     index === 1 || index === 4 || index === 5 ?
                         <THTable key={index} cursorPointer='yes' onClick={() => {
                             switch (index) {
-                                case 1: handleColumnClick(columnsSortAvailable.roomNumber); break
-                                case 4: handleColumnClick(columnsSortAvailable.price); break
-                                case 5: handleColumnClick(columnsSortAvailable.offerPrice); break
+                                case 1: handleColumnClick(RoomColumnSort.roomNumber); break
+                                case 4: handleColumnClick(RoomColumnSort.price); break
+                                case 5: handleColumnClick(RoomColumnSort.offerPrice); break
                                 default: ; break
                             }
                         }}
@@ -239,9 +231,9 @@ export const Room = () => {
                             {nameColumn}
                             {(() => {
                                 switch (index) {
-                                    case 1: return getArrowIcon(columnsSortAvailable.roomNumber)
-                                    case 4: return getArrowIcon(columnsSortAvailable.price)
-                                    case 5: return getArrowIcon(columnsSortAvailable.offerPrice)
+                                    case 1: return getArrowIcon(RoomColumnSort.roomNumber)
+                                    case 4: return getArrowIcon(RoomColumnSort.price)
+                                    case 5: return getArrowIcon(RoomColumnSort.offerPrice)
                                     default: return null
                                 }
                             })()}
@@ -316,6 +308,6 @@ export const Room = () => {
                 </paginationJS.ButtonSwitchPage>
             </paginationJS.DivCtnPagination>
 
-        </roomStyles.SectionPageRoom>
+        </roomMainStyles.SectionPageRoom>
     )
 }

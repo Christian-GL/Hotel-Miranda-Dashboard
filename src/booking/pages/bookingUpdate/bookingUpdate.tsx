@@ -101,13 +101,6 @@ export const BookingUpdate = () => {
             [name]: value
         })
     }
-    const handleStringSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setBookingUpdated({
-            ...bookingUpdated,
-            [name]: value
-        })
-    }
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
 
@@ -121,13 +114,6 @@ export const BookingUpdate = () => {
         })
     }
     const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        setBookingUpdated({
-            ...bookingUpdated,
-            [name]: value
-        })
-    }
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target
         setBookingUpdated({
             ...bookingUpdated,

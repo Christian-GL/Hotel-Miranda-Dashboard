@@ -11,7 +11,7 @@ import { DivCtnOptions, ButtonOption } from "../../../common/styles/tableStyles.
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { formatDateForPrint } from "../../../common/utils/dateUtils.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { RoomAmenities } from "../../../room/data/roomAmenities.ts"
+import { RoomAmenities } from "../../../room/enums/roomAmenities.ts"
 import { applyDiscount } from '../../../common/utils/tableUtils.ts'
 import { getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice.ts"
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk.ts"

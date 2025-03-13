@@ -11,7 +11,7 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { UserInterfaceNoId } from "../../interfaces/userInterface.ts"
-import { UserStatus } from "../../data/userStatus.ts"
+import { UserStatus } from "../../enums/userStatus.ts"
 import {
     validatePhoto, validateFullName, validateEmail, validateTextArea,
     validatePhoneNumber, validateDateRelativeToNow,

@@ -12,8 +12,8 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
 import { RoomInterface } from "../../interfaces/roomInterface.ts"
-import { RoomAmenities } from "../../data/roomAmenities.ts"
-import { RoomType } from "../../data/roomType.ts"
+import { RoomAmenities } from "../../enums/roomAmenities.ts"
+import { RoomType } from "../../enums/roomType.ts"
 import {
     validatePhotos, validateRoomType, validateAmenities,
     validateNumberBetween, validateBookingList, validateExistingRoomNumber

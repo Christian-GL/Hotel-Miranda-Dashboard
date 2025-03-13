@@ -1,5 +1,5 @@
 
-import { BookingStatus } from "../../booking/data/bookingStatus"
+import { BookingStatus } from "../../booking/enums/bookingStatus"
 
 
 export const checkBookingStatus = (checkInDate: string, checkOutDate: string): BookingStatus => {

@@ -1,5 +1,5 @@
 
-import { UserStatus } from "../data/userStatus"
+import { UserStatus } from "../enums/userStatus"
 
 export interface UserInterfaceNoId {
     photo: string

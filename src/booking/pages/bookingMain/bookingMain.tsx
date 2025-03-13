@@ -4,51 +4,40 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as bookingsStyles from './bookingStyles.ts'
-import { BookingStatus } from './data/bookingStatus.ts'
-import { AppDispatch } from '../common/redux/store.ts'
-import { ApiStatus } from "../common/enums/ApiStatus.ts"
-import { BookingInterfaceRoom } from "./interfaces/bookingInterface.ts"
-import { BookingColumnsArrowStatesInterface } from './interfaces/bookingrColumnsArrowStatesInterface.ts'
-import { RoomInterfaceBookings } from "../room/interfaces/roomInterface.ts"
-import { ArrowType } from "../common/enums/ArrowType.ts"
-import { PopupText } from "../common/components/popupText/popupText.tsx"
-import { PopupTextInterface } from '../common/components/popupText/popupTextInterface.ts'
-import { formatDateForPrint } from '../common/utils/dateUtils.ts'
-import { checkBookingStatus } from '../common/utils/checkBookingStatus.ts'
-import { TableDisplayIndicator } from "../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
-import { TableSearchTerm } from "../common/components/tableSearchTerm/tableSearchTerm.tsx"
-import { ButtonCreate } from "../common/components/buttonCreate/buttonCreate.tsx"
+import * as bookingMainStyles from './bookingMainStyles.ts'
+import { BookingButtonType } from "../../enums/bookingButtonType.ts"
+import { BookingColumnSort } from "../../enums/bookingColumnSort.ts"
+import { BookingStatus } from './../../enums/bookingStatus.ts'
+import { AppDispatch } from '../../../common/redux/store.ts'
+import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
+import { BookingInterfaceRoom } from "./../../interfaces/bookingInterface.ts"
+import { BookingColumnsArrowStatesInterface } from './../../interfaces/bookingrColumnsArrowStatesInterface.ts'
+import { RoomInterfaceBookings } from "../../../room/interfaces/roomInterface.ts"
+import { ArrowType } from "../../../common/enums/ArrowType.ts"
+import { PopupText } from "../../../common/components/popupText/popupText.tsx"
+import { PopupTextInterface } from '../../../common/components/popupText/popupTextInterface.ts'
+import { formatDateForPrint } from '../../../common/utils/dateUtils.ts'
+import { checkBookingStatus } from '../../../common/utils/checkBookingStatus.ts'
+import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
+import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm.tsx"
+import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate.tsx"
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
     IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption
-} from "../common/styles/tableStyles.ts"
-import { usePagination } from "../common/hooks/usePagination.ts"
-import * as paginationJS from '../common/styles/pagination.ts'
-import { getBookingAllData, getBookingAllStatus } from "./features/bookingSlice.ts"
-import { BookingFetchAllThunk } from "./features/thunks/bookingFetchAllThunk.ts"
-import { BookingDeleteByIdThunk } from "./features/thunks/bookingDeleteByIdThunk.ts"
-import { getRoomAllData, getRoomAllStatus } from "../room/features/roomSlice.ts"
-import { RoomFetchAllThunk } from "../room/features/thunks/roomFetchAllThunk.ts"
+} from "../../../common/styles/tableStyles.ts"
+import { usePagination } from "../../../common/hooks/usePagination.ts"
+import * as paginationJS from '../../../common/styles/pagination.ts'
+import { getBookingAllData, getBookingAllStatus } from "./../../features/bookingSlice.ts"
+import { BookingFetchAllThunk } from "./../../features/thunks/bookingFetchAllThunk.ts"
+import { BookingDeleteByIdThunk } from "./../../features/thunks/bookingDeleteByIdThunk.ts"
+import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice.ts"
+import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk.ts"
 
 
-export const Bookings = () => {
+export const BookingMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    enum ButtonType {
-        all = "all",
-        checkin = "active",
-        inprogress = "inprogress",
-        checkout = "checkout"
-    }
-    enum columnsSortAvailable {
-        guest = 'guest',
-        orderDate = 'orderDate',
-        checkIn = 'checkIn',
-        checkOut = 'checkOut',
-        roomNumber = 'roomNumber'
-    }
     const nameColumnList: string[] = ['', 'Guest', 'Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
     const bookingAll: BookingInterfaceRoom[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
@@ -57,7 +46,7 @@ export const Bookings = () => {
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredBookings, setFilteredBookings] = useState<BookingInterfaceRoom[]>([])
-    const [selectedButton, setSelectedButton] = useState<ButtonType>(ButtonType.all)
+    const [selectedButton, setSelectedButton] = useState<BookingButtonType>(BookingButtonType.all)
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoViewNotes, setInfoViewNotes] = useState<PopupTextInterface>({ title: '', text: '' })
     const [arrowStates, setArrowStates] = useState<BookingColumnsArrowStatesInterface>({
@@ -96,31 +85,31 @@ export const Bookings = () => {
         setInputText(e.target.value)
         resetPage()
     }
-    const handleTableFilter = (type: ButtonType): void => {
+    const handleTableFilter = (type: BookingButtonType): void => {
         setSelectedButton(type)
         displayBookings()
     }
     const displayBookings = (): void => {
         let filteredData: BookingInterfaceRoom[]
         switch (selectedButton) {
-            case ButtonType.all:
+            case BookingButtonType.all:
                 filteredData = bookingAll.filter(booking =>
                     booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase())
                 )
                 break
-            case ButtonType.checkin:
+            case BookingButtonType.checkin:
                 filteredData = bookingAll.filter(booking =>
                     booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
                     checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkIn
                 )
                 break
-            case ButtonType.inprogress:
+            case BookingButtonType.inprogress:
                 filteredData = bookingAll.filter(booking =>
                     booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
                     checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.inProgress
                 )
                 break
-            case ButtonType.checkout:
+            case BookingButtonType.checkout:
                 filteredData = bookingAll.filter(booking =>
                     booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
                     checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkOut
@@ -135,7 +124,7 @@ export const Bookings = () => {
         const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
         let sortedData: BookingInterfaceRoom[] = [...filteredData]
         if (activeColumn) {
-            if (activeColumn === columnsSortAvailable.guest) {
+            if (activeColumn === BookingColumnSort.guest) {
                 sortedData.sort((a, b) => {
                     let valueA: string = a.full_name_guest.toLowerCase()
                     let valueB: string = b.full_name_guest.toLowerCase()
@@ -146,7 +135,7 @@ export const Bookings = () => {
                     }
                 })
             }
-            else if (activeColumn === columnsSortAvailable.orderDate) {
+            else if (activeColumn === BookingColumnSort.orderDate) {
                 sortedData.sort((a, b) => {
                     let valueA: Date = new Date(a.order_date)
                     let valueB: Date = new Date(b.order_date)
@@ -157,7 +146,7 @@ export const Bookings = () => {
                     }
                 })
             }
-            else if (activeColumn === columnsSortAvailable.checkIn) {
+            else if (activeColumn === BookingColumnSort.checkIn) {
                 sortedData.sort((a, b) => {
                     let valueA: Date = new Date(a.check_in_date)
                     let valueB: Date = new Date(b.check_in_date)
@@ -168,7 +157,7 @@ export const Bookings = () => {
                     }
                 })
             }
-            else if (activeColumn === columnsSortAvailable.checkOut) {
+            else if (activeColumn === BookingColumnSort.checkOut) {
                 sortedData.sort((a, b) => {
                     let valueA: Date = new Date(a.check_out_date)
                     let valueB: Date = new Date(b.check_out_date)
@@ -179,7 +168,7 @@ export const Bookings = () => {
                     }
                 })
             }
-            else if (activeColumn === columnsSortAvailable.roomNumber) {
+            else if (activeColumn === BookingColumnSort.roomNumber) {
                 sortedData.sort((a, b) => {
                     let valueA: number = parseInt(a.room_data.number)
                     let valueB: number = parseInt(b.room_data.number)
@@ -194,7 +183,7 @@ export const Bookings = () => {
         }
         return sortedData
     }
-    const handleColumnClick = (nameColumn: columnsSortAvailable): void => {
+    const handleColumnClick = (nameColumn: BookingColumnSort): void => {
         setArrowStates(prevState => {
             const newState = { ...prevState }
 
@@ -213,7 +202,7 @@ export const Bookings = () => {
 
         handleTableFilter(selectedButton)
     }
-    const getArrowIcon = (nameColumn: columnsSortAvailable): JSX.Element => {
+    const getArrowIcon = (nameColumn: BookingColumnSort): JSX.Element => {
         const state = arrowStates[nameColumn]
         if (state === ArrowType.up) { return <TriangleUp /> }
         else if (state === ArrowType.down) { return <TriangleDown /> }
@@ -243,23 +232,23 @@ export const Bookings = () => {
 
 
     return (
-        <bookingsStyles.SectionPageBookings>
-            <bookingsStyles.DivCtnFuncionality>
-                <bookingsStyles.DivCtnTableDisplayFilter>
-                    <TableDisplayIndicator text='All Bookings' onClick={() => handleTableFilter(ButtonType.all)} isSelected={selectedButton === ButtonType.all} />
-                    <TableDisplayIndicator text='Check In' onClick={() => handleTableFilter(ButtonType.checkin)} isSelected={selectedButton === ButtonType.checkin} />
-                    <TableDisplayIndicator text='In Progress' onClick={() => handleTableFilter(ButtonType.inprogress)} isSelected={selectedButton === ButtonType.inprogress} />
-                    <TableDisplayIndicator text='Check Out' onClick={() => handleTableFilter(ButtonType.checkout)} isSelected={selectedButton === ButtonType.checkout} />
-                </bookingsStyles.DivCtnTableDisplayFilter>
+        <bookingMainStyles.SectionPageBookings>
+            <bookingMainStyles.DivCtnFuncionality>
+                <bookingMainStyles.DivCtnTableDisplayFilter>
+                    <TableDisplaySelector text='All Bookings' onClick={() => handleTableFilter(BookingButtonType.all)} isSelected={selectedButton === BookingButtonType.all} />
+                    <TableDisplaySelector text='Check In' onClick={() => handleTableFilter(BookingButtonType.checkin)} isSelected={selectedButton === BookingButtonType.checkin} />
+                    <TableDisplaySelector text='In Progress' onClick={() => handleTableFilter(BookingButtonType.inprogress)} isSelected={selectedButton === BookingButtonType.inprogress} />
+                    <TableDisplaySelector text='Check Out' onClick={() => handleTableFilter(BookingButtonType.checkout)} isSelected={selectedButton === BookingButtonType.checkout} />
+                </bookingMainStyles.DivCtnTableDisplayFilter>
 
-                <bookingsStyles.DivCtnSearch>
+                <bookingMainStyles.DivCtnSearch>
                     <TableSearchTerm onchange={handleInputTerm} placeholder='Search booking by client name' />
-                </bookingsStyles.DivCtnSearch>
+                </bookingMainStyles.DivCtnSearch>
 
-                <bookingsStyles.DivCtnButton>
+                <bookingMainStyles.DivCtnButton>
                     <ButtonCreate onClick={navigateToBookingCreate} children='+ New Booking' />
-                </bookingsStyles.DivCtnButton>
-            </bookingsStyles.DivCtnFuncionality>
+                </bookingMainStyles.DivCtnButton>
+            </bookingMainStyles.DivCtnFuncionality>
 
             {showPopup && <PopupText isSlider={false} title={infoViewNotes.title} text={infoViewNotes.text} onClose={() => setShowPopup(false)} />}
 
@@ -268,11 +257,11 @@ export const Bookings = () => {
                     index === 1 || index === 3 || index === 4 || index === 5 || index === 7 ?
                         <THTable key={index} cursorPointer='yes' onClick={() => {
                             switch (index) {
-                                case 1: handleColumnClick(columnsSortAvailable.guest); break
-                                case 3: handleColumnClick(columnsSortAvailable.orderDate); break
-                                case 4: handleColumnClick(columnsSortAvailable.checkIn); break
-                                case 5: handleColumnClick(columnsSortAvailable.checkOut); break
-                                case 7: handleColumnClick(columnsSortAvailable.roomNumber); break
+                                case 1: handleColumnClick(BookingColumnSort.guest); break
+                                case 3: handleColumnClick(BookingColumnSort.orderDate); break
+                                case 4: handleColumnClick(BookingColumnSort.checkIn); break
+                                case 5: handleColumnClick(BookingColumnSort.checkOut); break
+                                case 7: handleColumnClick(BookingColumnSort.roomNumber); break
                                 default: ; break
                             }
                         }}
@@ -280,11 +269,11 @@ export const Bookings = () => {
                             {nameColumn}
                             {(() => {
                                 switch (index) {
-                                    case 1: return getArrowIcon(columnsSortAvailable.guest)
-                                    case 3: return getArrowIcon(columnsSortAvailable.orderDate)
-                                    case 4: return getArrowIcon(columnsSortAvailable.checkIn)
-                                    case 5: return getArrowIcon(columnsSortAvailable.checkOut)
-                                    case 7: return getArrowIcon(columnsSortAvailable.roomNumber)
+                                    case 1: return getArrowIcon(BookingColumnSort.guest)
+                                    case 3: return getArrowIcon(BookingColumnSort.orderDate)
+                                    case 4: return getArrowIcon(BookingColumnSort.checkIn)
+                                    case 5: return getArrowIcon(BookingColumnSort.checkOut)
+                                    case 7: return getArrowIcon(BookingColumnSort.roomNumber)
                                     default: return null
                                 }
                             })()}
@@ -383,7 +372,7 @@ export const Bookings = () => {
                 </paginationJS.ButtonSwitchPage>
             </paginationJS.DivCtnPagination>
 
-        </bookingsStyles.SectionPageBookings>
+        </bookingMainStyles.SectionPageBookings>
 
     )
 }

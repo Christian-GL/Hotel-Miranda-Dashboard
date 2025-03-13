@@ -1,8 +1,6 @@
 
 import { styled } from 'styled-components'
 
-import { HiMiniMagnifyingGlass } from "react-icons/hi2"
-
 
 export const SectionPageRoom = styled.section`
     padding: 2em;

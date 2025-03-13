@@ -1,6 +1,6 @@
 
-import { RoomType } from "../data/roomType.ts"
-import { RoomAmenities } from '../data/roomAmenities.ts'
+import { RoomType } from "../enums/roomType.ts"
+import { RoomAmenities } from '../enums/roomAmenities.ts'
 import { BookingInterface } from "../../booking/interfaces/bookingInterface.ts"
 
 

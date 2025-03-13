@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 import * as globalConstStyles from '../../styles/globalConstStyles.ts'
 
 
-export const DisplayIndicator = styled.button<{ isSelected: boolean }>`
+export const DisplaySelector = styled.button<{ isSelected: boolean }>`
     flex: 1 1 0;
     padding: 1em;
     text-align: center;

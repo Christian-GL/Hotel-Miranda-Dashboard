@@ -1,7 +1,7 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { UserInterfaceNoId } from '../../interfaces/userInterface.ts'
-import { UserStatus } from "../../data/userStatus.ts"
+import { UserStatus } from "../../enums/userStatus.ts"
 
 
 const userDefaultIfError: UserInterfaceNoId = {

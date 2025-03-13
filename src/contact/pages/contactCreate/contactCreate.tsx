@@ -20,7 +20,7 @@ import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCrea
 import { getContactAllData, getContactAllStatus } from "../../../contact/features/contactSlice.ts"
 import { ContactFetchAllThunk } from "../../../contact/features/thunks/contactFetchAllThunk.ts"
 import { ContactCreateThunk } from "../../../contact/features/thunks/contactCreateThunk.ts"
-import { ContactArchived } from "../../enums/contactArchived.ts"
+import { ContactArchivedType } from "../../enums/ContactArchivedType.ts"
 
 
 export const ContactCreate = () => {
@@ -35,7 +35,7 @@ export const ContactCreate = () => {
         email: '',
         phone_number: '',
         comment: '',
-        archived: ContactArchived.notArchived
+        archived: ContactArchivedType.notArchived
     })
 
     useEffect(() => {
