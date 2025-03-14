@@ -15,7 +15,7 @@ import { RoomAmenities } from "../../enums/roomAmenities.ts"
 import { RoomType } from "../../enums/roomType.ts"
 import {
     validatePhotos, validateRoomType, validateAmenities,
-    validateNumberBetween, validateBookingList, validateNewRoomNumber
+    validateNumberBetween, validateNewRoomNumber
 } from '../../../common/utils/validators.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconPlus, TitleForm, Form, ImgRoom, DivCtnEntry,
@@ -39,8 +39,7 @@ export const RoomCreate = () => {
         type: RoomType.singleBed,
         amenities: [],
         price: 0,
-        discount: 0,
-        booking_id_list: []
+        discount: 0
     })
 
     useEffect(() => {
@@ -134,9 +133,6 @@ export const RoomCreate = () => {
 
         const errorsDiscount = validateNumberBetween(newRoom.discount, 0, 100, 'Discount')
         if (errorsDiscount.length > 0) { errorsDiscount.map(error => ToastifyError(error)); return false }
-
-        const errorsBookingList = validateBookingList(newRoom.booking_id_list, 'Booking list')
-        if (errorsBookingList.length > 0) { errorsBookingList.map(error => ToastifyError(error)); return false }
 
         return true
     }

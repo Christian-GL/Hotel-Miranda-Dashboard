@@ -10,8 +10,7 @@ const roomDefaultIfError: RoomInterfaceNoId = {
     type: RoomType.singleBed,
     amenities: [],
     price: 0,
-    discount: 0,
-    booking_id_list: []
+    discount: 0
 }
 
 export const RoomCreateThunk = createAsyncThunk

@@ -11,12 +11,12 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { RoomInterface } from "../../interfaces/roomInterface.ts"
+import { RoomInterface, RoomInterfaceBookings } from "../../interfaces/roomInterface.ts"
 import { RoomAmenities } from "../../enums/roomAmenities.ts"
 import { RoomType } from "../../enums/roomType.ts"
 import {
     validatePhotos, validateRoomType, validateAmenities,
-    validateNumberBetween, validateBookingList, validateExistingRoomNumber
+    validateNumberBetween, validateExistingRoomNumber
 } from '../../../common/utils/validators.ts'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form,
@@ -53,8 +53,7 @@ export const RoomUpdate = () => {
         type: RoomType.singleBed,
         amenities: [],
         price: 0,
-        discount: 0,
-        booking_id_list: []
+        discount: 0
     })
 
     useEffect(() => {
@@ -70,8 +69,7 @@ export const RoomUpdate = () => {
                 type: roomById.type || RoomType.singleBed,
                 amenities: roomById.amenities || [],
                 price: roomById.price || 0,
-                discount: roomById.discount || 0,
-                booking_id_list: roomById.booking_data_list ? roomById.booking_data_list.map(booking => Number(booking._id)) : []
+                discount: roomById.discount || 0
             })
         }
         else if (roomByIdLoading === ApiStatus.rejected) { alert("Error in API update rooms") }
@@ -170,9 +168,6 @@ export const RoomUpdate = () => {
         const errorsDiscount = validateNumberBetween(roomUpdated.discount, 0, 100, 'Discount')
         if (errorsDiscount.length > 0) { errorsDiscount.map(error => ToastifyError(error)); return false }
 
-        const errorsBookingList = validateBookingList(roomUpdated.booking_id_list, 'Booking list')
-        if (errorsBookingList.length > 0) { errorsBookingList.map(error => ToastifyError(error)); return false }
-
         return true
     }
 
@@ -254,11 +249,10 @@ export const RoomUpdate = () => {
                         <LabelText>Booking Status</LabelText>
                         <DivCtnEntryBookings>
                             {
-                                // FUNCIONA EL LISTADO DE BOOKING POR ROOM?
-                                bookingAll.filter(booking => roomUpdated.booking_id_list.includes(booking._id)).length === 0 ?
-                                    <LabelTextBookingStatus>Available</LabelTextBookingStatus> :
-                                    (bookingAll.filter(booking => roomUpdated.booking_id_list.includes(booking._id))
-                                        .map((booking, index) => (
+                                roomById?.booking_data_list ? (
+                                    roomById.booking_data_list.length === 0 ?
+                                        <LabelTextBookingStatus>Available</LabelTextBookingStatus> :
+                                        roomById.booking_data_list.map((booking, index) => (
                                             <LabelBookings key={index}>
                                                 <LabelTextInfoBooking><b>#{booking._id}</b></LabelTextInfoBooking>
                                                 <LabelTextInfoBooking>-</LabelTextInfoBooking>
@@ -266,7 +260,8 @@ export const RoomUpdate = () => {
                                                 <LabelTextInfoBooking>➞</LabelTextInfoBooking>
                                                 <LabelTextInfoBooking>{formatDateForPrint(booking.check_out_date)}</LabelTextInfoBooking>
                                             </LabelBookings>
-                                        )))
+                                        ))
+                                ) : ""
                             }
                         </DivCtnEntryBookings>
                     </DivCtnEntry>

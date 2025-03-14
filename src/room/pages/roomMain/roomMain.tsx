@@ -25,9 +25,10 @@ import {
 import { getRoomAllData, getRoomAllStatus } from "./../../features/roomSlice.ts"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk.ts"
 import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk.ts"
-import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice.js"
+import { getBookingAllData, getBookingAllStatus, deleteBooking } from "../../../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.js"
 import { BookingInterfaceRoom } from "../../../booking/interfaces/bookingInterface.ts"
+import { BookingDeleteByIdThunk } from "../../../booking/features/thunks/bookingDeleteByIdThunk.ts"
 
 
 export const RoomMain = () => {
@@ -176,13 +177,15 @@ export const RoomMain = () => {
             setTableOptionsDisplayed(index)
     }
     const deleteRoomById = (id: number, index: number): void => {
-        // const room = roomAll.find(room => room._id === id)
-        // if (room) {
-        //     room.booking_data_list.map(booking => {
-        //         dispatch(BookingDeleteByIdThunk(booking._id))
-        //     })
-        // }
         dispatch(RoomDeleteByIdThunk(id))
+            .then((response) => {
+                const { roomId, bookingsToDelete } = response.payload
+                if (roomId !== 0) {
+                    bookingsToDelete.forEach(bookingId => {
+                        dispatch(deleteBooking(bookingId))
+                    })
+                }
+            })
         displayMenuOptions(index)
         resetPage()
     }

@@ -25,9 +25,10 @@ export const BookingSlice = createSlice({
         error: false
     } as BookingStateInterface,
     reducers: {
-        resetIdStatus: (state) => {
-            state.idStatus = ApiStatus.idle
-        }
+        deleteBooking: (state, action: PayloadAction<number>) => {
+            const idToDelete = action.payload
+            state.allData = state.allData.filter(booking => booking._id !== idToDelete)
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -102,7 +103,7 @@ export const BookingSlice = createSlice({
     }
 })
 
-export const { resetIdStatus } = BookingSlice.actions
+export const { deleteBooking } = BookingSlice.actions
 
 export const getBookingAllData = (state: RootState): BookingInterfaceRoom[] => state.bookingSlice.allData
 export const getBookingIdData = (state: RootState): BookingInterfaceRoom => state.bookingSlice.idData
