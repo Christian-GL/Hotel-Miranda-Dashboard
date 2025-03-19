@@ -135,9 +135,10 @@ export const BookingCreate = () => {
         const errorsSpecialRequest = validateTextArea(newBooking.special_request, 'Special request')
         if (errorsSpecialRequest.length > 0) { errorsSpecialRequest.map(error => ToastifyError(error)); return false }
 
-        // VALIDAR ROOM_ID ??
+        const roomOfBooking = roomAll.find(room => room._id === newBooking.room_id)
+        const bookingsOfRoom = bookingAll.filter(booking => booking.room_data.number === roomOfBooking?.number)
 
-        const errorsDateIsOccupied = validateDateIsOccupied(newBooking, bookingAll)
+        const errorsDateIsOccupied = validateDateIsOccupied(newBooking, bookingsOfRoom)
         if (errorsDateIsOccupied.length > 0) { errorsDateIsOccupied.map(error => ToastifyError(error)); return false }
 
         return true
