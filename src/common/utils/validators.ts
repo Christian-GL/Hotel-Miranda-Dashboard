@@ -121,7 +121,6 @@ export const validateCheckInCheckOut = (checkIn: Date, checkOut: Date): string[]
     return errorMessages
 }
 
-// FUSIONAR LAS DOS VALIDATEISOCCUPIED ?? (tema de IDS como?)
 export const validateDateIsOccupied = (booking: BookingInterfaceNoId, bookings: BookingInterfaceRoom[]): string[] => {
     const errorMessages: string[] = []
 
@@ -138,14 +137,12 @@ export const validateDateIsOccupiedIfBookingExists = (booking: BookingInterface,
     const errorMessages: string[] = []
 
     for (let i = 0; i < bookings.length; i++) {
-        // if (booking.room_id === bookings[i].room_data._id) {
         if (new Date(booking.check_in_date) < new Date(bookings[i].check_out_date) &&
             new Date(booking.check_out_date) > new Date(bookings[i].check_in_date)) {
             if (booking._id.toString() !== bookings[i]._id.toString()) {
                 errorMessages.push(`This period is already occupied by booking #${bookings[i]._id}`)
             }
         }
-        // }
     }
     return errorMessages
 }
