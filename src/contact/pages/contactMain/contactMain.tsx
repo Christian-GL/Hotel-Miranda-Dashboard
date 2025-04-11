@@ -63,7 +63,7 @@ export const ContactMain = () => {
     }, [contactAllLoading, contactAll, inputText, displayedNotArchived, arrowStates])
 
     const navigateToContactCreate = () => navigate('contact-create')
-    const navigateToContactUpdate = (id: number) => navigate(`contact-update/${id}`)
+    const navigateToContactUpdate = (id: string) => navigate(`contact-update/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -91,8 +91,8 @@ export const ContactMain = () => {
 
             if (activeColumn === ContactColumnSort.orderId) {
                 sortedData.sort((a, b) => {
-                    let valueA: number = a._id
-                    let valueB: number = b._id
+                    let valueA: string = a._id
+                    let valueB: string = b._id
                     if (arrowStates[activeColumn] === ArrowType.up) {
                         return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
                     } else {
@@ -151,14 +151,14 @@ export const ContactMain = () => {
         else if (state === ArrowType.down) { return <TriangleDown /> }
         else { return <TriangleRight /> }
     }
-    const publish = (id: number) => {
+    const publish = (id: string) => {
         const updatedContact = contactAll.find(contact => contact._id === id)
         if (updatedContact !== undefined) {
             const contactUpdated = { ...updatedContact, archived: ContactArchivedType.notArchived }
             dispatch(ContactUpdateThunk({ idContact: id, updatedContactData: contactUpdated }))
         }
     }
-    const archive = (id: number) => {
+    const archive = (id: string) => {
         const updatedContact = contactAll.find(contact => contact._id === id)
         if (updatedContact !== undefined) {
             const contactUpdated = { ...updatedContact, archived: ContactArchivedType.archived }
@@ -170,7 +170,7 @@ export const ContactMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteContactById = (id: number, index: number): void => {
+    const deleteContactById = (id: string, index: number): void => {
         dispatch(ContactDeleteByIdThunk(id))
         displayMenuOptions(index)
         resetPage()

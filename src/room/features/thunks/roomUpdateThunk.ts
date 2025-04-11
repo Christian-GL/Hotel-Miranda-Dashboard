@@ -5,18 +5,19 @@ import { RoomType } from "../../enums/roomType.ts"
 
 
 const roomDefaultIfError: RoomInterface = {
-    _id: 0,
+    _id: "0",
     photos: [],
     number: '0',
     type: RoomType.singleBed,
     amenities: [],
     price: 0,
-    discount: 0
+    discount: 0,
+    booking_id_list: []
 }
 
 export const RoomUpdateThunk = createAsyncThunk
     ("room/update", async ({ idRoom, updatedRoomData }
-        : { idRoom: number, updatedRoomData: RoomInterface }) => {
+        : { idRoom: string, updatedRoomData: RoomInterface }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return roomDefaultIfError

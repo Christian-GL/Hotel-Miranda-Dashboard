@@ -5,7 +5,7 @@ import { UserStatus } from "../../enums/userStatus.ts"
 
 
 const userDefaultIfError: UserInterface = {
-    _id: 0,
+    _id: "0",
     photo: '',
     full_name: '',
     email: '',
@@ -17,7 +17,7 @@ const userDefaultIfError: UserInterface = {
 }
 
 export const UserFetchByIDThunk = createAsyncThunk
-    ("user/fetchById", async (userId: number) => {
+    ("user/fetchById", async (userId: string) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return userDefaultIfError

@@ -5,7 +5,7 @@ import { RoomType } from "../../enums/roomType.ts"
 
 
 const roomDefaultIfError: RoomInterfaceBookings = {
-    _id: 0,
+    _id: "0",
     photos: [],
     number: '0',
     type: RoomType.singleBed,

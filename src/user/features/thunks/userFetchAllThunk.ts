@@ -5,7 +5,7 @@ import { UserStatus } from "../../enums/userStatus.ts"
 
 
 const userDefaultIfError: UserInterface = {
-    _id: 0,
+    _id: "0",
     photo: '',
     full_name: '',
     email: '',

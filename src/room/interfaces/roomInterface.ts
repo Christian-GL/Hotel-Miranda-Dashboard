@@ -11,9 +11,10 @@ export interface RoomInterfaceNoId {
     amenities: RoomAmenities[]
     price: number
     discount: number
+    booking_id_list: string[]
 }
 export interface RoomInterface extends RoomInterfaceNoId {
-    _id: number
+    _id: string
 }
 
 export interface RoomInterfaceBookingsDataNoId {
@@ -26,5 +27,5 @@ export interface RoomInterfaceBookingsDataNoId {
     booking_data_list: BookingInterface[]
 }
 export interface RoomInterfaceBookings extends RoomInterfaceBookingsDataNoId {
-    _id: number
+    _id: string
 }

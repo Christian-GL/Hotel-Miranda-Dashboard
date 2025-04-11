@@ -1,11 +1,11 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { ContactInterface } from "../../interfaces/contactInterface.ts"
-import { ContactArchivedType } from "../../enums/ContactArchivedType.ts"
+import { ContactArchivedType } from "../../enums/contactArchivedType.ts"
 
 
 const contactDefaultIfError: ContactInterface = {
-    _id: 0,
+    _id: "0",
     publish_date: '',
     full_name: '',
     email: '',
@@ -16,7 +16,7 @@ const contactDefaultIfError: ContactInterface = {
 
 export const ContactUpdateThunk = createAsyncThunk
     ("contact/update", async ({ idContact, updatedContactData }
-        : { idContact: number, updatedContactData: ContactInterface }) => {
+        : { idContact: string, updatedContactData: ContactInterface }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return contactDefaultIfError

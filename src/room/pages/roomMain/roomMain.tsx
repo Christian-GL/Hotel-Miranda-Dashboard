@@ -71,7 +71,7 @@ export const RoomMain = () => {
     }, [bookingAllLoading, bookingAll])
 
     const navigateToRoomCreate = () => navigate('room-create')
-    const navigateToRoomUpdate = (id: number) => navigate(`room-update/${id}`)
+    const navigateToRoomUpdate = (id: string) => navigate(`room-update/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -176,7 +176,7 @@ export const RoomMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteRoomById = (id: number, index: number): void => {
+    const deleteRoomById = (id: string, index: number): void => {
         dispatch(RoomDeleteByIdThunk(id))
             .then((response) => {
                 const { roomId, bookingsToDelete } = response.payload

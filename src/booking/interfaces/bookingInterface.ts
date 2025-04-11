@@ -9,11 +9,11 @@ export interface BookingInterfaceNoId {
     check_in_date: string
     check_out_date: string
     special_request: string
-    room_id: number
+    room_id: string
 }
 
 export interface BookingInterface extends BookingInterfaceNoId {
-    _id: number
+    _id: string
 }
 
 export interface BookingInterfaceBookingsDataNoId {
@@ -27,5 +27,5 @@ export interface BookingInterfaceBookingsDataNoId {
 }
 
 export interface BookingInterfaceRoom extends BookingInterfaceBookingsDataNoId {
-    _id: number
+    _id: string
 }

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
-import * as userUpdateStyles from "./userUpdate.ts"
+import * as userUpdateStyles from "./userUpdateStyles.ts"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
@@ -33,13 +33,13 @@ import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk.ts"
 export const UserUpdate = () => {
 
     const { id } = useParams()
-    const idParams = parseInt(id!)
+    const idParams = id!
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const userById = useSelector(getUserIdData)
     const userByIdLoading = useSelector(getUserIdStatus)
     const [userUpdated, setUserUpdated] = useState<UserInterface>({
-        _id: 0,
+        _id: "0",
         photo: '',
         full_name: '',
         email: '',

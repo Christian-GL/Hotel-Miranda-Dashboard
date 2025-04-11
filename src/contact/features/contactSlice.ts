@@ -85,7 +85,7 @@ export const ContactSlice = createSlice({
             .addCase(ContactDeleteByIdThunk.pending, (state) => {
                 state.deleteStatus = ApiStatus.pending
             })
-            .addCase(ContactDeleteByIdThunk.fulfilled, (state, action: PayloadAction<number>) => {
+            .addCase(ContactDeleteByIdThunk.fulfilled, (state, action: PayloadAction<string>) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const contactIdToDelete = action.payload
                 state.allData = state.allData.filter(contact => contact._id !== contactIdToDelete)

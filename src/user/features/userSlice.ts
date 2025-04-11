@@ -86,7 +86,7 @@ export const UserSlice = createSlice({
             .addCase(UserDeleteByIdThunk.pending, (state) => {
                 state.deleteStatus = ApiStatus.pending
             })
-            .addCase(UserDeleteByIdThunk.fulfilled, (state, action: PayloadAction<number>) => {
+            .addCase(UserDeleteByIdThunk.fulfilled, (state, action: PayloadAction<string>) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const userIdToDelete = action.payload
                 state.allData = state.allData.filter(user => user._id !== userIdToDelete)

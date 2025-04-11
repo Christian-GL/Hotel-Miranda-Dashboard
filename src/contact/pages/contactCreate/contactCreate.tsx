@@ -20,7 +20,7 @@ import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCrea
 import { getContactAllData, getContactAllStatus } from "../../../contact/features/contactSlice.ts"
 import { ContactFetchAllThunk } from "../../../contact/features/thunks/contactFetchAllThunk.ts"
 import { ContactCreateThunk } from "../../../contact/features/thunks/contactCreateThunk.ts"
-import { ContactArchivedType } from "../../enums/ContactArchivedType.ts"
+import { ContactArchivedType } from "../../enums/contactArchivedType.ts"
 
 
 export const ContactCreate = () => {

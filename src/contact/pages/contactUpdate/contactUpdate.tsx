@@ -21,19 +21,19 @@ import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCrea
 import { getContactIdData, getContactIdStatus } from "../../../contact/features/contactSlice.ts"
 import { ContactFetchByIDThunk } from "../../../contact/features/thunks/contactFetchByIDThunk.ts"
 import { ContactUpdateThunk } from '../../../contact/features/thunks/contactUpdateThunk.ts'
-import { ContactArchivedType } from "../../enums/ContactArchivedType.ts"
+import { ContactArchivedType } from "../../enums/contactArchivedType.ts"
 
 
 export const ContactUpdate = () => {
 
     const { id } = useParams()
-    const idParams = parseInt(id!)
+    const idParams = id!
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const contactById = useSelector(getContactIdData)
     const contactByIdLoading = useSelector(getContactIdStatus)
     const [contactUpdated, setContactUpdated] = useState<ContactInterface>({
-        _id: 0,
+        _id: "0",
         publish_date: '',
         full_name: '',
         email: '',

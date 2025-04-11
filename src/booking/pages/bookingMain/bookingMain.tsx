@@ -78,8 +78,8 @@ export const BookingMain = () => {
     }, [roomAllLoading, roomAll])
 
     const navigateToBookingCreate = () => navigate('booking-create')
-    const navigateToBookingUpdate = (id: number) => navigate(`booking-update/${id}`)
-    const navigateToBookingDetail = (id: number) => navigate(`booking-details/${id}`)
+    const navigateToBookingUpdate = (id: string) => navigate(`booking-update/${id}`)
+    const navigateToBookingDetail = (id: string) => navigate(`booking-details/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -213,7 +213,7 @@ export const BookingMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteBookingById = (id: number, index: number): void => {
+    const deleteBookingById = (id: string, index: number): void => {
         // const booking: BookingInterfaceRoom | undefined = bookingAll.find(booking => booking.id === id)
         // if (!booking) { return }
 

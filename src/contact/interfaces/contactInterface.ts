@@ -1,5 +1,5 @@
 
-import { ContactArchived } from '../enums/contactArchived.ts'
+import { ContactArchivedType } from '../enums/contactArchivedType.ts'
 
 
 export interface ContactInterfaceNoId {
@@ -8,9 +8,9 @@ export interface ContactInterfaceNoId {
     email: string
     phone_number: string
     comment: string
-    archived: ContactArchived
+    archived: ContactArchivedType
 }
 
 export interface ContactInterface extends ContactInterfaceNoId {
-    _id: number
+    _id: string
 }

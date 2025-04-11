@@ -3,10 +3,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
 export const RoomDeleteByIdThunk = createAsyncThunk
-    ("room/deleteById", async (roomId: number) => {
+    ("room/deleteById", async (roomId: string) => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return { roomId: 0, bookingsToDelete: [] }
+        if (!apiToken) return { roomId: "0", bookingsToDelete: [] }
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}/${roomId}`, {
@@ -21,12 +21,12 @@ export const RoomDeleteByIdThunk = createAsyncThunk
                 return responseData
             } else {
                 console.log("Error: ", request.statusText)
-                return { roomId: 0, bookingsToDelete: [] }
+                return { roomId: "0", bookingsToDelete: [] }
             }
         }
         catch (error) {
             console.log(error)
-            return { roomId: 0, bookingsToDelete: [] }
+            return { roomId: "0", bookingsToDelete: [] }
         }
 
     })

@@ -13,5 +13,5 @@ export interface UserInterfaceNoId {
 }
 
 export interface UserInterface extends UserInterfaceNoId {
-    _id: number
+    _id: string
 }

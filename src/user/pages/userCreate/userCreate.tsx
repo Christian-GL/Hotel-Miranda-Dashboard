@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
-import * as userCreateStyles from "./userCreate.ts"
+import * as userCreateStyles from "./userCreateStyles.ts"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"

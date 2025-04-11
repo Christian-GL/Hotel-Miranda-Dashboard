@@ -25,7 +25,7 @@ export const BookingSlice = createSlice({
         error: false
     } as BookingStateInterface,
     reducers: {
-        deleteBooking: (state, action: PayloadAction<number>) => {
+        deleteBooking: (state, action: PayloadAction<string>) => {
             const idToDelete = action.payload
             state.allData = state.allData.filter(booking => booking._id !== idToDelete)
         },
@@ -91,7 +91,7 @@ export const BookingSlice = createSlice({
             .addCase(BookingDeleteByIdThunk.pending, (state) => {
                 state.deleteStatus = ApiStatus.pending
             })
-            .addCase(BookingDeleteByIdThunk.fulfilled, (state, action: PayloadAction<number>) => {
+            .addCase(BookingDeleteByIdThunk.fulfilled, (state, action: PayloadAction<string>) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const bookingIdToDelete = action.payload
                 state.allData = state.allData.filter(booking => booking._id !== bookingIdToDelete)

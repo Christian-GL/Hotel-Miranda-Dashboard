@@ -4,19 +4,19 @@ import { BookingInterface } from "../../interfaces/bookingInterface"
 
 
 const bookingDefaultIfError: BookingInterface = {
-    _id: 0,
+    _id: "0",
     photo: '',
     full_name_guest: '',
     order_date: '',
     check_in_date: '',
     check_out_date: '',
     special_request: '',
-    room_id: 0
+    room_id: "0"
 }
 
 export const BookingUpdateThunk = createAsyncThunk
     ("booking/update", async ({ idBooking, updatedBookingData }
-        : { idBooking: number, updatedBookingData: BookingInterface }) => {
+        : { idBooking: string, updatedBookingData: BookingInterface }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return bookingDefaultIfError
