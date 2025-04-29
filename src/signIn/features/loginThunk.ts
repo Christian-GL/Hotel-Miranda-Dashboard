@@ -1,6 +1,6 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { UserInterface } from "../../../../user/interfaces/userInterface.ts"
+import { UserInterface } from "../../user/interfaces/userInterface.ts"
 
 
 export const LoginThunk = createAsyncThunk
