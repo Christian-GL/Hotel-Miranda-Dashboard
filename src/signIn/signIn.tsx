@@ -35,7 +35,7 @@ export const SignIn = () => {
             <signInStyles.Form onSubmit={handleSubmit}>
                 <signInStyles.LabelText>Email
                     <signInStyles.InputText
-                        placeholder="megatron@decepticon.com"
+                        placeholder="email@gmail.com"
                         onChange={(e) => setUserSet(e.currentTarget.value)}
                         data-cy="email-input"
                     />
