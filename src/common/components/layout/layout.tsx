@@ -107,7 +107,7 @@ export const Layout = () => {
     const routeIsActive = (route: string) => {
         return location.pathname.startsWith(route)
     }
-    const navigateToUserUpdate = (id: number) => navigate(`users/user-update/${id}`)
+    const navigateToUserUpdate = (id: string) => navigate(`users/user-update/${id}`)
 
 
     return !isAuthenticated ?

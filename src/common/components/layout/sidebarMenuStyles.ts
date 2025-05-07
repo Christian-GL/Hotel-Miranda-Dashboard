@@ -46,6 +46,7 @@ export const DivCtnTitle = styled.div<{ display?: string }>`
     display: ${props => props.display === 'collapsed' ? 'none' : 'inline-block'};
     vertical-align: middle;
     margin-left: 1rem;
+    transition: ${globalConstStyles.transitionSidebarMenu};
 `
 
 export const TitleH1 = styled.h1`
