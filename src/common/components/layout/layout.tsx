@@ -123,8 +123,8 @@ export const Layout = () => {
                         <headerStyles.TitleH2 >{formatRouteTitle(location.pathname)}</headerStyles.TitleH2>
                     </div>
                     <div>
-                        <headerStyles.IconMail />
-                        <headerStyles.IconBell />
+                        {/* <headerStyles.IconMail />
+                        <headerStyles.IconBell /> */}
                         {
                             theme === 'light' ?
                                 <headerStyles.Sun onClick={switchDarkTheme} /> :
