@@ -170,6 +170,8 @@ export const RoomUpdate = () => {
         const errorsDiscount = validateNumberBetween(roomUpdated.discount, 0, 100, 'Discount')
         if (errorsDiscount.length > 0) { errorsDiscount.map(error => ToastifyError(error)); return false }
 
+        // VALIDAR booking_id_list
+
         return true
     }
 

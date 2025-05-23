@@ -39,7 +39,8 @@ export const RoomCreate = () => {
         type: RoomType.singleBed,
         amenities: [],
         price: 0,
-        discount: 0
+        discount: 0,
+        booking_id_list: []
     })
 
     useEffect(() => {
@@ -133,6 +134,8 @@ export const RoomCreate = () => {
 
         const errorsDiscount = validateNumberBetween(newRoom.discount, 0, 100, 'Discount')
         if (errorsDiscount.length > 0) { errorsDiscount.map(error => ToastifyError(error)); return false }
+
+        // VALIDAR "booking_id_list"
 
         return true
     }
