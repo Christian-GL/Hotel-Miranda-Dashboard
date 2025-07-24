@@ -7,15 +7,15 @@ import { BookingInterface, BookingInterfaceRoom, BookingInterfaceNoId } from "..
 
 export const validatePhotos = (photos: any[], fieldName: string = 'Photo'): string[] => {
     const errorMessages: string[] = []
-    const regex = /\.(png|jpe?g)$/i
+    // const regex = /\.(png|jpe?g)$/i
 
     photos.forEach((photo, index) => {
         if (typeof photo !== "string") {
             errorMessages.push(`${fieldName} ${index} url is not a String`)
         }
-        if (!regex.test(photo)) {
-            errorMessages.push(`${fieldName} ${index} is not .png .jpg .jpeg file`)
-        }
+        // if (!regex.test(photo)) {
+        //     errorMessages.push(`${fieldName} ${index} is not .png .jpg .jpeg file`)
+        // }
     })
 
     if (photos[0] === undefined) {
@@ -30,7 +30,7 @@ export const validatePhotos = (photos: any[], fieldName: string = 'Photo'): stri
 
 export const validatePhoto = (photo: any, fieldName: string = 'Photo'): string[] => {
     const errorMessages: string[] = []
-    const regex = /\.(png|jpe?g)$/i
+    // const regex = /\.(png|jpe?g)$/i
 
     if (photo === null || photo === undefined) {
         errorMessages.push(`${fieldName} is required`)
@@ -38,9 +38,9 @@ export const validatePhoto = (photo: any, fieldName: string = 'Photo'): string[]
     if (typeof photo !== "string") {
         errorMessages.push(`${fieldName} url is not a String`)
     }
-    if (!regex.test(photo)) {
-        errorMessages.push(`${fieldName} is not .png .jpg .jpeg file`)
-    }
+    // if (!regex.test(photo)) {
+    //     errorMessages.push(`${fieldName} is not .png .jpg .jpeg file`)
+    // }
 
     return errorMessages
 }
