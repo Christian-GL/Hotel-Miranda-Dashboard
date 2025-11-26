@@ -12,9 +12,8 @@ import { useLoginOptionsContext } from "./features/loginProvider.tsx"
 export const SignIn = () => {
 
     const navigate = useNavigate()
-    // Email y contrasenya tienen un valor por defecto temporal para logear rapidamente en testeos
-    const [email, setEmail] = useState<string>('Ashly.Rice92@gmail.com')
-    const [password, setPassword] = useState<string>('Abcd1234.')
+    const [email, setEmail] = useState<string>('AdminDefault@gmail.com')            // Valor por defecto para logeo rápido en testeos
+    const [password, setPassword] = useState<string>('Abcd1234.')                   // Valor por defecto para logeo rápido en testeos
     const { tryLogin } = useLoginOptionsContext()
 
     const handleSubmit = async (e: React.FormEvent) => {
