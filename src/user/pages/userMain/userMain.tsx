@@ -9,7 +9,6 @@ import { UserButtonType } from "../../enums/userButtonType.ts"
 import { UserColumnSort } from '../../enums/userColumnSort.ts'
 import { AppDispatch } from '../../../common/redux/store.ts'
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { UserStatus } from "./../../enums/userStatus.ts"
 import { UserInterface } from "./../../interfaces/userInterface.ts"
 import { UserColumnsArrowStatesInterface } from "./../../interfaces/userColumnsArrowStatesInterface.ts"
 import { formatDateForPrint } from '../../../common/utils/dateUtils.ts'
@@ -32,7 +31,7 @@ export const UserMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const nameColumnList: string[] = ['', 'Name', 'Start date', 'Job description', 'Contact', 'Status', '']
+    const nameColumnList: string[] = ['', 'Photo', 'Name', 'Email', 'Phone number', 'Start date', 'End date', 'Job position', 'Role', '']
     const userAll: UserInterface[] = useSelector(getUserAllData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState<string>('')
@@ -71,6 +70,7 @@ export const UserMain = () => {
         displayEmployee()
     }
     const displayEmployee = (): void => {
+        // !!! FUNCIÓN OPTIMIZABLE:
         let filteredData: UserInterface[]
         switch (selectedButton) {
             case UserButtonType.all:
@@ -80,14 +80,15 @@ export const UserMain = () => {
                 break
             case UserButtonType.active:
                 filteredData = userAll.filter(user =>
-                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status === UserStatus.active
+                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.start_date < new Date() && user.end_date > new Date()
                 )
                 break
             case UserButtonType.inactive:
                 filteredData = userAll.filter(user =>
-                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.status === UserStatus.inactive
+                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && (user.start_date > new Date() || user.end_date < new Date())
                 )
                 break
+            // !!! AÑADIR OPION PARA VER TAMBIEN ARCHIVADOS:
         }
         const sortedData = sortData(filteredData)
         setFilteredUsers(sortedData)
