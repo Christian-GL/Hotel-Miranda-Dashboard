@@ -31,7 +31,7 @@ export const UserMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const nameColumnList: string[] = ['', 'Photo', 'Name', 'Email', 'Phone number', 'Start date', 'End date', 'Job position', 'Role', '']
+    const nameColumnList: string[] = ['', 'Personal data', 'Phone number', 'Start date', 'End date', 'Job position', 'Role', 'Status', '']
     const userAll: UserInterface[] = useSelector(getUserAllData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState<string>('')
@@ -95,7 +95,8 @@ export const UserMain = () => {
         resetPage()
     }
     const sortData = (filteredData: UserInterface[]): UserInterface[] => {
-        const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
+        // !!! OPTIMIZAR LA SIGUIENTE LINEA:
+        const activeColumn = (Object.keys(arrowStates) as (keyof UserColumnsArrowStatesInterface)[]).find(key => arrowStates[key] !== ArrowType.right)
         let sortedData: UserInterface[] = [...filteredData]
         if (activeColumn) {
             if (activeColumn === UserColumnSort.name) {
@@ -131,9 +132,11 @@ export const UserMain = () => {
             else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
             else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
 
-            Object.keys(newState).map(key => {
-                if (key !== nameColumn) {
-                    newState[key] = ArrowType.right
+            Object.keys(newState as UserColumnsArrowStatesInterface).forEach((key) => {
+                const typedKey = key as keyof UserColumnsArrowStatesInterface
+
+                if (typedKey !== nameColumn) {
+                    newState[typedKey] = ArrowType.right
                 }
             })
 
@@ -203,20 +206,28 @@ export const UserMain = () => {
                         </PTable>,
 
                         <PTable key={index + '-3'}>
-                            {formatDateForPrint(userData.start_date)}
-                        </PTable>,
-
-                        <PTable key={index + '-4'}>
-                            {userData.description}
-                        </PTable>,
-
-                        <PTable key={index + '-5'} flexdirection='row'>
                             <IconPhone />
                             {userData.phone_number}
                         </PTable>,
 
+                        <PTable key={index + '-4'}>
+                            {formatDateForPrint(userData.start_date)}
+                        </PTable>,
+
+                        <PTable key={index + '-5'}>
+                            {formatDateForPrint(userData.end_date)}
+                        </PTable>,
+
                         <PTable key={index + '-6'}>
-                            {userData.status === UserStatus.active ?
+                            {userData.job_position}
+                        </PTable>,
+
+                        <PTable key={index + '-7'}>
+                            {userData.role}
+                        </PTable>,
+
+                        <PTable key={index + '-9'}>
+                            {userData.start_date < new Date() && userData.end_date > new Date() ?
                                 <PStatusAvailableUsers status={true}>
                                     Active
                                 </PStatusAvailableUsers> :
@@ -227,7 +238,7 @@ export const UserMain = () => {
                             }
                         </PTable>,
 
-                        <PTable key={index + '-7'}>
+                        <PTable key={index + '-10'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                 <ButtonOption onClick={() => { navigateToUserUpdate(userData._id) }}>Update</ButtonOption>
