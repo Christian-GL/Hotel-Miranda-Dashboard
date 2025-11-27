@@ -1,7 +1,9 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { UserInterface } from '../../interfaces/userInterface.ts'
-import { UserStatus } from "../../enums/userStatus.ts"
+import { JobPosition } from "../../enums/jobPosition.ts"
+import { Role } from "../../enums/role.ts"
+import { OptionYesNo } from "../../../common/enums/optionYesNo.ts"
 
 
 const userDefaultIfError: UserInterface = {
@@ -9,11 +11,13 @@ const userDefaultIfError: UserInterface = {
     photo: '',
     full_name: '',
     email: '',
-    password: '',
-    start_date: '',
-    description: '',
     phone_number: '',
-    status: UserStatus.inactive
+    start_date: new Date(),
+    end_date: new Date(),
+    job_position: JobPosition.receptionist,
+    role: Role.user,
+    password: '1234',
+    isArchived: OptionYesNo.yes
 }
 
 export const UserFetchAllThunk = createAsyncThunk
@@ -39,11 +43,13 @@ export const UserFetchAllThunk = createAsyncThunk
                         photo: json[i].photo,
                         full_name: json[i].full_name,
                         email: json[i].email,
-                        password: json[i].password,
-                        start_date: json[i].start_date,
-                        description: json[i].description,
                         phone_number: json[i].phone_number,
-                        status: json[i].status
+                        start_date: json[i].start_date,
+                        end_date: json[i].end_date,
+                        job_position: json[i].job_position,
+                        role: json[i].role,
+                        password: json[i].password,
+                        isArchived: json[i].isArchived
                     })
                 }
                 return allUsers

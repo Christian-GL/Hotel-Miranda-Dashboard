@@ -1,7 +1,9 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { UserInterface } from '../../interfaces/userInterface.ts'
-import { UserStatus } from "../../enums/userStatus.ts"
+import { JobPosition } from "../../enums/jobPosition.ts"
+import { Role } from "../../enums/role.ts"
+import { OptionYesNo } from "../../../common/enums/optionYesNo.ts"
 
 
 const userDefaultIfError: UserInterface = {
@@ -9,11 +11,13 @@ const userDefaultIfError: UserInterface = {
     photo: '',
     full_name: '',
     email: '',
-    password: '',
-    start_date: '',
-    description: '',
     phone_number: '',
-    status: UserStatus.inactive
+    start_date: new Date(),
+    end_date: new Date(),
+    job_position: JobPosition.receptionist,
+    role: Role.user,
+    password: '1234',
+    isArchived: OptionYesNo.yes
 }
 
 export const UserUpdateThunk = createAsyncThunk
