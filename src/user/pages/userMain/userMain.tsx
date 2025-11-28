@@ -80,12 +80,12 @@ export const UserMain = () => {
                 break
             case UserButtonType.active:
                 filteredData = userAll.filter(user =>
-                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && user.start_date < new Date() && user.end_date > new Date()
+                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && new Date(user.start_date) < new Date() && new Date(user.end_date) > new Date()
                 )
                 break
             case UserButtonType.inactive:
                 filteredData = userAll.filter(user =>
-                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && (user.start_date > new Date() || user.end_date < new Date())
+                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && (new Date(user.start_date) > new Date() || new Date(user.end_date) < new Date())
                 )
                 break
             // !!! AÑADIR OPION PARA VER TAMBIEN ARCHIVADOS:
@@ -227,7 +227,7 @@ export const UserMain = () => {
                         </PTable>,
 
                         <PTable key={index + '-9'}>
-                            {userData.start_date < new Date() && userData.end_date > new Date() ?
+                            {new Date(userData.start_date) < new Date() && new Date(userData.end_date) > new Date() ?
                                 <PStatusAvailableUsers status={true}>
                                     Active
                                 </PStatusAvailableUsers> :
