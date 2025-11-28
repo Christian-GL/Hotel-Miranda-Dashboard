@@ -1,4 +1,5 @@
 
+// !!! ACTUALIZAR EVENTUALMENTE:
 export const formatDateForInput = (isoString: string): string => {
     if (!isoString) return ""
 
@@ -9,20 +10,15 @@ export const formatDateForInput = (isoString: string): string => {
     return localISOTime
 }
 
-// OLD VERSION:
-// export const formatDateForPrint = (isoDate: string): string => {
-//     const date = new Date(isoDate)
+export const formatDateForPrint = (isoDate: Date | string): string => {
+    const date = new Date(isoDate)
 
-//     const day = String(date.getDate()).padStart(2, '0')
-//     const month = String(date.getMonth() + 1).padStart(2, '0')
-//     const year = date.getFullYear()
-//     const hours = String(date.getHours()).padStart(2, '0')
-//     const minutes = String(date.getMinutes()).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0') // Mes empieza en 0
+    const year = date.getFullYear()
 
-//     return `${day}/${month}/${year} ${hours}:${minutes}`
-// }
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
 
-// TEMPORAL:
-export const formatDateForPrint = (isoDate: any): any => {
-    return isoDate
+    return `${day}/${month}/${year} - ${hours}:${minutes}`
 }
