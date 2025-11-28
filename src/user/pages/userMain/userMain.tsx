@@ -228,11 +228,11 @@ export const UserMain = () => {
 
                         <PTable key={index + '-9'}>
                             {new Date(userData.start_date) < new Date() && new Date(userData.end_date) > new Date() ?
-                                <PStatusAvailableUsers status={true}>
+                                <PStatusAvailableUsers active={true}>
                                     Active
-                                </PStatusAvailableUsers> :
-
-                                <PStatusAvailableUsers status={false}>
+                                </PStatusAvailableUsers>
+                                :
+                                <PStatusAvailableUsers active={false}>
                                     Inactive
                                 </PStatusAvailableUsers>
                             }

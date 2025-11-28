@@ -118,13 +118,13 @@ export const PStatusRoomList = styled.p<{ status: string }>`
     background-color: ${props => props.status === 'Available' ? props.theme.availableTable : props.theme.notAvailableTable};
 `
 
-export const PStatusAvailableUsers = styled.p<{ status: boolean }>`
+export const PStatusAvailableUsers = styled.p<{ active: boolean }>`
     position: relative;
     padding: 1em;
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 700;
     text-transform: uppercase;
-    color: ${props => props.status === true ? props.theme.availableTable : props.theme.notAvailableTable};
+    color: ${props => props.active === true ? props.theme.availableTable : props.theme.notAvailableTable};
     background-color: transparent;
 `
 

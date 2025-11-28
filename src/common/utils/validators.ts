@@ -1,4 +1,6 @@
 
+// !!! VERSIÓN VIEJA DE VALIDADORES. UTILIZAR LA NUEVA "commonValidators.ts" ELIMINAR ESTE FICHERO AL ARREGLARSE LOS IMPORTS
+
 import { RoomAmenities } from "../../room/enums/roomAmenities.ts"
 import { RoomType } from "../../room/enums/roomType.ts"
 import { RoomInterfaceBookings } from "../../room/interfaces/roomInterface.ts"
