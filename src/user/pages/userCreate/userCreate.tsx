@@ -120,31 +120,6 @@ export const UserCreate = () => {
             })
     }
 
-    // const validateAllData = (): boolean => {
-    //     // const errorsPhoto = validatePhoto(newUser.photo, 'Photo')
-    //     // if (errorsPhoto.length > 0) { errorsPhoto.map(error => ToastifyError(error)); return false }
-
-    //     const errorsFullName = validateFullName(newUser.full_name, 'Full Name')
-    //     if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }
-
-    //     const errorsEmail = validateEmail(newUser.email, 'Email')
-    //     if (errorsEmail.length > 0) { errorsEmail.map(error => ToastifyError(error)); return false }
-
-    //     const errorsStartDate = validateDateRelativeToNow(new Date(newUser.start_date), false, 'Start Date')
-    //     if (errorsStartDate.length > 0) { errorsStartDate.map(error => ToastifyError(error)); return false }
-
-    //     const errorsTextArea = validateTextArea(newUser.description, 'Description')
-    //     if (errorsTextArea.length > 0) { errorsTextArea.map(error => ToastifyError(error)); return false }
-
-    //     const errorsPhoneNumber = validatePhoneNumber(newUser.phone_number, 'Phone Number')
-    //     if (errorsPhoneNumber.length > 0) { errorsPhoneNumber.map(error => ToastifyError(error)); return false }
-
-    //     const errorsPassword = validateCreatePassword(newUser.password, 'Password')
-    //     if (errorsPassword.length > 0) { errorsPassword.map(error => ToastifyError(error)); return false }
-
-    //     return true
-    // }
-
     const validateAllData = (): string[] => {
         const allErrorMessages: string[] = []
 
@@ -160,7 +135,7 @@ export const UserCreate = () => {
         validatePhoneNumber(newUser.phone_number, 'Phone number').map(
             error => allErrorMessages.push(error)
         )
-        validateDateRelativeToAnother(newUser.start_date, true, newUser.end_date, 'Start date').map(
+        validateDateRelativeToAnother(new Date(newUser.start_date), true, new Date(newUser.end_date), 'Dates').map(
             error => allErrorMessages.push(error)
         )
         validateTextArea(newUser.job_position, 'Job position').map(
@@ -233,8 +208,6 @@ export const UserCreate = () => {
                         <InputDate name="end_date" type="datetime-local" onChange={handleDateChange} />
                     </DivCtnEntry>
 
-                    {/* // ROLE */}
-
                     <DivCtnEntry>
                         <LabelText>Password</LabelText>
                         {passwordVisible ?
@@ -250,17 +223,9 @@ export const UserCreate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Job Description</LabelText>
+                        <LabelText>Job Position</LabelText>
                         <TextAreaJobDescription name="job_position" onChange={handleTextAreaChange}></TextAreaJobDescription>
                     </DivCtnEntry>
-
-                    {/* <DivCtnEntry>
-                        <LabelText>Status</LabelText>
-                        <Select name="status" onChange={handleSelectChange}>
-                            <Option value={UserStatus.active}>Active</Option>
-                            <Option value={UserStatus.inactive} selected>Inactive</Option>
-                        </Select>
-                    </DivCtnEntry> */}
 
                     <DivButtonCreateUser>
                         <ButtonCreate type="submit" children='+ Create User' fontSize='1.25em'></ButtonCreate>

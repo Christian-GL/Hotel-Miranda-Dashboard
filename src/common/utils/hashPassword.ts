@@ -2,6 +2,7 @@
 import * as bcrypt from 'bcryptjs'
 
 
+// !!! NECESARIAS FUNCIONES PARA HASHEAR Y COMPROBAR EN EL DASHBOARD SI REALMENTE SE HASHEA EN LA API?
 export const hashPassword = async (password: string): Promise<string> => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10)

@@ -11,14 +11,17 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
 import { AppDispatch } from "../../../common/redux/store.ts"
 import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
+import { JobPosition } from "../../enums/jobPosition.ts"
+import { Role } from "../../enums/role.ts"
+import { OptionYesNo } from "../../../common/enums/optionYesNo.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
+import userDefault from '../../../assets/img/userDefault.png'
+import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter.ts"
 import { formatDateForInput } from "../../../common/utils/dateUtils.ts"
 import {
-    validatePhoto, validateFullName, validateEmail, validateTextArea,
-    validatePhoneNumber, validateDateRelativeToNow,
-    validateCreatePassword
-} from '../../../common/utils/validators.ts'
-import { comparePasswords } from '../../../common/utils/hashPassword.ts'
+    validatePhoto, validateFullName, validateEmail, validatePhoneNumber, validateDateRelativeToAnother,
+    validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
+} from '../../../common/utils/commonValidator.ts'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
@@ -39,14 +42,16 @@ export const UserUpdate = () => {
     const userByIdLoading = useSelector(getUserIdStatus)
     const [userUpdated, setUserUpdated] = useState<UserInterface>({
         _id: "0",
-        photo: '',
+        photo: null,
         full_name: '',
         email: '',
-        password: '',
-        start_date: '',
-        description: '',
         phone_number: '',
-        status: UserStatus.inactive
+        start_date: new Date(),
+        end_date: new Date(),
+        job_position: JobPosition.receptionist,
+        role: Role.user,
+        password: '',
+        isArchived: OptionYesNo.yes
     })
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
     const [oldPassword, setOldPassword] = useState<String>('')
@@ -62,11 +67,13 @@ export const UserUpdate = () => {
                 photo: userById.photo || '',
                 full_name: userById.full_name || '',
                 email: userById.email || '',
-                password: userById.password || '',
-                start_date: userById.start_date || '',
-                description: userById.description || '',
                 phone_number: userById.phone_number || '',
-                status: userById.status || UserStatus.inactive
+                start_date: userById.start_date || new Date(),
+                end_date: userById.end_date || new Date(),
+                job_position: userById.job_position || JobPosition.receptionist,
+                role: userById.role || Role.user,
+                password: userById.password || '',
+                isArchived: userById.isArchived || OptionYesNo.yes
             })
             setOldPassword(userById.password)
         }
@@ -98,11 +105,10 @@ export const UserUpdate = () => {
 
         if (!value) return
         const date = new Date(value)
-        const dateISO = date.toISOString()
 
         setUserUpdated({
             ...userUpdated,
-            [name]: dateISO
+            [name]: date
         })
     }
     const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -122,12 +128,10 @@ export const UserUpdate = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!validateAllData()) { return }
-
-        // if (oldPassword === userUpdated.password) {
-        //     const errorsPassword = validateCreatePassword(userUpdated.password, 'Password')
-        //     if (errorsPassword.length > 0) { errorsPassword.map(error => ToastifyError(error)); return false }
-        // }
+        if (validateAllData().length > 0) {
+            validateAllData().forEach(error => ToastifyError(error))
+            return
+        }
 
         dispatch(UserUpdateThunk({ idUser: userUpdated._id, updatedUserData: userUpdated }))
             .then(() => {
@@ -136,46 +140,53 @@ export const UserUpdate = () => {
                 })
             })
             .catch((error) => {
-                alert(error)
+                ToastifyError(error)
             })
     }
 
-    const validateAllData = (): boolean => {
+    const validateAllData = (): string[] => {
+        const allErrorMessages: string[] = []
 
-        // const errorsPhoto = validatePhoto(userUpdated.photo, 'Photo')
-        // if (errorsPhoto.length > 0) { errorsPhoto.map(error => ToastifyError(error)); return false }
-
-        const errorsFullName = validateFullName(userUpdated.full_name, 'Full Name')
-        if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }
-
-        const errorsEmail = validateEmail(userUpdated.email, 'Email')
-        if (errorsEmail.length > 0) { errorsEmail.map(error => ToastifyError(error)); return false }
-
-        const errorsStartDate = validateDateRelativeToNow(new Date(userUpdated.start_date), false, 'Start Date')
-        if (errorsStartDate.length > 0) { errorsStartDate.map(error => ToastifyError(error)); return false }
-
-        const errorsTextArea = validateTextArea(userUpdated.description, 'Description')
-        if (errorsTextArea.length > 0) { errorsTextArea.map(error => ToastifyError(error)); return false }
-
-        const errorsPhoneNumber = validatePhoneNumber(userUpdated.phone_number, 'Phone Number')
-        if (errorsPhoneNumber.length > 0) { errorsPhoneNumber.map(error => ToastifyError(error)); return false }
-
-        // HACER FUNCION QUE PERMITA CAMBIAR UNA CONTRASEÑA SI SE CONOCE lA ANTERIOR?...
-        // ...O SI SE ES "ADMIN" SE PUEDE SIEMPRE ?
-        // await comparePasswords(blablabla)
+        validatePhoto(userUpdated.photo, 'Photo').map(
+            error => allErrorMessages.push(error)
+        )
+        validateFullName(userUpdated.full_name, 'Full name').map(
+            error => allErrorMessages.push(error)
+        )
+        validateEmail(userUpdated.email, 'Email').map(
+            error => allErrorMessages.push(error)
+        )
+        validatePhoneNumber(userUpdated.phone_number, 'Phone number').map(
+            error => allErrorMessages.push(error)
+        )
+        validateDateRelativeToAnother(new Date(userUpdated.start_date), true, new Date(userUpdated.end_date), 'Dates').map(
+            error => allErrorMessages.push(error)
+        )
+        validateTextArea(userUpdated.job_position, 'Job position').map(
+            error => allErrorMessages.push(error)
+        )
+        validateRole(userUpdated.role, 'Role').map(
+            error => allErrorMessages.push(error)
+        )
+        validateOptionYesNo(userUpdated.isArchived, 'User isArchived').map(
+            error => allErrorMessages.push(error)
+        )
+        // !!! EXTRA: HACER FUNCION QUE PERMITA CAMBIAR UNA CONTRASEÑA SI SE CONOCE lA ANTERIOR O SI SE ES "ADMIN" SE PUEDE SIEMPRE ???
         if (oldPassword !== userUpdated.password) {
-            const errorsPassword = validateCreatePassword(userUpdated.password, 'Password')
-            if (errorsPassword.length > 0) { errorsPassword.map(error => ToastifyError(error)); return false }
+            validateNewPassword(userUpdated.password).map(
+                error => allErrorMessages.push(error)
+            )
         }
 
-
-        return true
+        return allErrorMessages
     }
 
     return (<>
         <ToastContainer />
 
         <GlobalDateTimeStyles />
+
+        {console.log(userUpdated)}
 
         <userUpdateStyles.SectionPageUserUpdate>
             <DivCtnForm>
@@ -191,7 +202,11 @@ export const UserUpdate = () => {
                     <DivCtnEntry>
                         <LabelText>Photo</LabelText>
                         <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
-                        <ImgUser src={userUpdated.photo} />
+                        <ImgUser src={
+                            userUpdated.photo ?
+                                userUpdated.photo :
+                                userDefault
+                        } />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
@@ -206,8 +221,19 @@ export const UserUpdate = () => {
                         <LabelText>Contact</LabelText>
                         <InputText name="phone_number" value={userUpdated.phone_number} onChange={handleStringChange} />
 
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Start Date</LabelText>
+                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Role</LabelText>
+                        <Select name="role" value={userUpdated.role} onChange={handleSelectChange}>
+                            <Option value={Role.admin}>{capitalizeFirstLetter(Role.admin)}</Option>
+                            <Option value={Role.user}>{capitalizeFirstLetter(Role.user)}</Option>
+                        </Select>
+                    </DivCtnEntry>
+
+                    <DivCtnEntry>
+                        <LabelText>Start Date</LabelText>
                         <InputDate name="start_date" type="datetime-local" value={formatDateForInput(userUpdated.start_date)} onChange={handleDateChange} />
+
+                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">End Date</LabelText>
+                        <InputDate name="end_date" type="datetime-local" value={formatDateForInput(userUpdated.end_date)} onChange={handleDateChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
@@ -225,15 +251,15 @@ export const UserUpdate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Job Description</LabelText>
-                        <TextAreaJobDescription name="description" value={userUpdated.description} onChange={handleTextAreaChange}></TextAreaJobDescription>
+                        <LabelText>Job Position</LabelText>
+                        <TextAreaJobDescription name="job_position" value={userUpdated.job_position} onChange={handleTextAreaChange}></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Status</LabelText>
-                        <Select name="status" value={userUpdated.status} onChange={handleSelectChange}>
-                            <Option value={UserStatus.active}>Active</Option>
-                            <Option value={UserStatus.inactive}>Inactive</Option>
+                        <LabelText>Archived</LabelText>
+                        <Select name="isArchived" value={userUpdated.isArchived} onChange={handleSelectChange}>
+                            <Option value={OptionYesNo.no}>No</Option>
+                            <Option value={OptionYesNo.yes}>Yes</Option>
                         </Select>
                     </DivCtnEntry>
 
