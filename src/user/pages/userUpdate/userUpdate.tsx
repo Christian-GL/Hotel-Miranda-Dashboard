@@ -17,6 +17,7 @@ import { OptionYesNo } from "../../../common/enums/optionYesNo.ts"
 import { UserInterface } from "../../interfaces/userInterface.ts"
 import userDefault from '../../../assets/img/userDefault.png'
 import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter.ts"
+import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { formatDateForInput } from "../../../common/utils/dateUtils.ts"
 import {
     validatePhoto, validateFullName, validateEmail, validatePhoneNumber, validateDateRelativeToAnother,
@@ -53,6 +54,12 @@ export const UserUpdate = () => {
         password: '',
         isArchived: OptionYesNo.yes
     })
+    const { handleStringChange,
+        handleDateChange,
+        handlePhotoChange,
+        handleTextAreaChange,
+        handleSelectChange
+    } = createFormHandlers(setUserUpdated)
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
     const [oldPassword, setOldPassword] = useState<String>('')
 
@@ -79,70 +86,6 @@ export const UserUpdate = () => {
         }
         else if (userByIdLoading === ApiStatus.rejected) { alert("Error in API update users") }
     }, [userByIdLoading, userById, id])
-
-    const switchPasswordVisibility = () => {
-        setPasswordVisible(!passwordVisible)
-    }
-    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, files } = e.target
-        if (files && files[0]) {
-            const photoUrl = URL.createObjectURL(files[0])
-            setUserUpdated({
-                ...userUpdated,
-                [name]: photoUrl
-            })
-        }
-    }
-    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setUserUpdated({
-            ...userUpdated,
-            [name]: value
-        })
-    }
-    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-
-        if (!value) return
-        const date = new Date(value)
-
-        setUserUpdated({
-            ...userUpdated,
-            [name]: date
-        })
-    }
-    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        setUserUpdated({
-            ...userUpdated,
-            [name]: value
-        })
-    }
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setUserUpdated({
-            ...userUpdated,
-            [name]: value
-        })
-    }
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        if (validateAllData().length > 0) {
-            validateAllData().forEach(error => ToastifyError(error))
-            return
-        }
-
-        dispatch(UserUpdateThunk({ idUser: userUpdated._id, updatedUserData: userUpdated }))
-            .then(() => {
-                ToastifySuccess('User updated', () => {
-                    navigate('../')
-                })
-            })
-            .catch((error) => {
-                ToastifyError(error)
-            })
-    }
 
     const validateAllData = (): string[] => {
         const allErrorMessages: string[] = []
@@ -179,6 +122,24 @@ export const UserUpdate = () => {
         }
 
         return allErrorMessages
+    }
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        if (validateAllData().length > 0) {
+            validateAllData().forEach(error => ToastifyError(error))
+            return
+        }
+
+        dispatch(UserUpdateThunk({ idUser: userUpdated._id, updatedUserData: userUpdated }))
+            .then(() => {
+                ToastifySuccess('User updated', () => {
+                    navigate('../')
+                })
+            })
+            .catch((error) => {
+                ToastifyError(error)
+            })
     }
 
     return (<>
@@ -244,8 +205,8 @@ export const UserUpdate = () => {
                         }
                         <DivButtonHidePassword>
                             {passwordVisible ?
-                                <EyeClose onClick={switchPasswordVisibility} /> :
-                                <EyeOpen onClick={switchPasswordVisibility} />
+                                <EyeClose onClick={() => setPasswordVisible(!passwordVisible)} /> :
+                                <EyeOpen onClick={() => setPasswordVisible(!passwordVisible)} />
                             }
                         </DivButtonHidePassword>
                     </DivCtnEntry>

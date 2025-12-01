@@ -16,6 +16,7 @@ import { OptionYesNo } from "../../../common/enums/optionYesNo.ts"
 import { UserInterfaceNoId } from "../../interfaces/userInterface.ts"
 import userDefault from '../../../assets/img/userDefault.png'
 import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter.ts"
+import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
     validatePhoto, validateFullName, validateEmail, validatePhoneNumber, validateDateRelativeToAnother,
     validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
@@ -48,6 +49,12 @@ export const UserCreate = () => {
         password: '',
         isArchived: OptionYesNo.yes
     })
+    const { handleStringChange,
+        handleDateChange,
+        handlePhotoChange,
+        handleTextAreaChange,
+        handleSelectChange
+    } = createFormHandlers(setNewUser)
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
 
     useEffect(() => {
@@ -56,71 +63,8 @@ export const UserCreate = () => {
         else if (userAllLoading === ApiStatus.rejected) { alert("Error in API create of User") }
     }, [userAllLoading, userAll])
 
-    const switchPasswordVisibility = () => {
-        setPasswordVisible(!passwordVisible)
-    }
-    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, files } = e.target
-        if (files && files[0]) {
-            const photoUrl = URL.createObjectURL(files[0])
-            setNewUser({
-                ...newUser,
-                [name]: photoUrl
-            })
-        }
-    }
-    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setNewUser({
-            ...newUser,
-            [name]: value
-        })
-    }
-    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-
-        if (!value) return
-        const date = new Date(value)
-
-        setNewUser({
-            ...newUser,
-            [name]: date
-        })
-    }
-    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        setNewUser({
-            ...newUser,
-            [name]: value
-        })
-    }
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setNewUser({
-            ...newUser,
-            [name]: value
-        })
-    }
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        if (validateAllData().length > 0) {
-            validateAllData().forEach(error => ToastifyError(error))
-            return
-        }
-
-        dispatch(UserCreateThunk(newUser))
-            .then(() => {
-                ToastifySuccess('User created', () => {
-                    navigate('../')
-                })
-            })
-            .catch((error) => {
-                ToastifyError(error)
-            })
-    }
-
     const validateAllData = (): string[] => {
+        // !!! CREAR FUNCIÓN COMÚN PARA VALIDAR USUARIOS NUEVOS Y USUARIOS ACTUALIZADOS SIMILAR A COMO ES EN LA API
         const allErrorMessages: string[] = []
 
         validatePhoto(newUser.photo, 'Photo').map(
@@ -152,6 +96,24 @@ export const UserCreate = () => {
         )
 
         return allErrorMessages
+    }
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        if (validateAllData().length > 0) {
+            validateAllData().forEach(error => ToastifyError(error))
+            return
+        }
+
+        dispatch(UserCreateThunk(newUser))
+            .then(() => {
+                ToastifySuccess('User created', () => {
+                    navigate('../')
+                })
+            })
+            .catch((error) => {
+                ToastifyError(error)
+            })
     }
 
 
@@ -216,8 +178,8 @@ export const UserCreate = () => {
                         }
                         <DivButtonHidePassword>
                             {passwordVisible ?
-                                <EyeClose onClick={switchPasswordVisibility} /> :
-                                <EyeOpen onClick={switchPasswordVisibility} />
+                                <EyeClose onClick={() => setPasswordVisible(!passwordVisible)} /> :
+                                <EyeOpen onClick={() => setPasswordVisible(!passwordVisible)} />
                             }
                         </DivButtonHidePassword>
                     </DivCtnEntry>
