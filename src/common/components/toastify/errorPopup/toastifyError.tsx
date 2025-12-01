@@ -3,7 +3,7 @@ import React from 'react'
 import { toast } from 'react-toastify'
 import { Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import * as toastifyErrorStyles from './toastifyErrorStyles.ts'
+import * as toastifyErrorStyles from './toastifyErrorStyles'
 
 
 export const ToastifyError = (message: string) => {

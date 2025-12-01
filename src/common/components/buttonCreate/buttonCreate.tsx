@@ -1,8 +1,8 @@
 
 import React from 'react'
 
-import { ButtonCreateStyle } from './buttonCreateStyles.ts'
-import { ButtonCreateInterface } from './buttonCreateInterface.ts'
+import { ButtonCreateStyle } from './buttonCreateStyles'
+import { ButtonCreateInterface } from './buttonCreateInterface'
 
 
 export const ButtonCreate: React.FC<ButtonCreateInterface> = ({ onClick, children, padding, fontSize }) => {

@@ -1,7 +1,7 @@
 
 import React from "react"
 import { createContext, useState } from "react"
-import { DarkModeInterface } from "./darkModeInterface.ts"
+import { DarkModeInterface } from "./darkModeInterface"
 
 
 export const Theme = createContext<DarkModeInterface>({

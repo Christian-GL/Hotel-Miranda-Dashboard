@@ -1,7 +1,7 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { BookingInterfaceRoom } from '../../interfaces/bookingInterface.ts'
-import { RoomType } from "../../../room/enums/roomType.ts"
+import { BookingInterfaceRoom } from '../../interfaces/bookingInterface'
+import { RoomType } from "../../../room/enums/roomType"
 
 
 const bookingDefaultIfError: BookingInterfaceRoom = {

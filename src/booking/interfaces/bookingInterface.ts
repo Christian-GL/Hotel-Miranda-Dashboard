@@ -1,5 +1,5 @@
 
-import { RoomInterface } from '../../room/interfaces/roomInterface.ts'
+import { RoomInterface } from '../../room/interfaces/roomInterface'
 
 
 export interface BookingInterfaceNoId {

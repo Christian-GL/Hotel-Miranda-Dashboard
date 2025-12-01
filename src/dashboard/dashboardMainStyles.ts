@@ -6,7 +6,7 @@ import { FaRegCalendarCheck } from "react-icons/fa"
 import { IoLogInOutline } from "react-icons/io5"
 import { IoLogOutOutline } from "react-icons/io5"
 
-import * as globalConstStyles from '../common/styles/globalConstStyles.ts'
+import * as globalConstStyles from '../common/styles/globalConstStyles'
 
 
 export const SectionPageDashboard = styled.section`

@@ -5,30 +5,30 @@ import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
-import * as bookingUpdateStyles from "./bookingUpdateStyles.ts"
+import * as bookingUpdateStyles from "./bookingUpdateStyles"
 import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
-import { AppDispatch } from "../../../common/redux/store.ts"
-import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { BookingInterface } from "../../interfaces/bookingInterface.ts"
-import { formatDateForInput } from "../../../common/utils/dateUtils.ts"
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
+import { AppDispatch } from "../../../common/redux/store"
+import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { BookingInterface } from "../../interfaces/bookingInterface"
+import { formatDateForInput } from "../../../common/utils/dateUtils"
 import {
     validatePhoto, validateFullName, validateCheckInCheckOut,
     validateDateIsOccupiedIfBookingExists, validateTextArea, validateDateIsOccupied
-} from '../../../common/utils/validators.ts'
+} from '../../../common/utils/validators'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
-} from "../../../common/styles/form.ts"
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice.ts"
-import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk.ts"
-import { BookingUpdateThunk } from "../../../booking/features/thunks/bookingUpdateThunk.ts"
-import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice.ts"
-import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.ts"
-import { getRoomAllData, getRoomAllStatus } from '../../../room/features/roomSlice.ts'
-import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk.ts'
+} from "../../../common/styles/form"
+import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
+import { getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice"
+import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
+import { BookingUpdateThunk } from "../../../booking/features/thunks/bookingUpdateThunk"
+import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
+import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
+import { getRoomAllData, getRoomAllStatus } from '../../../room/features/roomSlice'
+import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk'
 
 
 export const BookingUpdate = () => {

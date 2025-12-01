@@ -1,7 +1,7 @@
 
 import React from 'react'
 
-import * as popupTextStyles from "./popupTextStyles.ts"
+import * as popupTextStyles from "./popupTextStyles"
 
 
 export const PopupText = ({ isSlider, title, text, onClose }) => {

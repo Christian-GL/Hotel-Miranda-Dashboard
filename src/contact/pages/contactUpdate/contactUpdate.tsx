@@ -5,23 +5,23 @@ import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
-import * as contactCreateJS from "./contactUpdateStyles.ts"
+import * as contactCreateJS from "./contactUpdateStyles"
 import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
-import { AppDispatch } from "../../../common/redux/store.ts"
-import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { ContactInterface } from "../../interfaces/contactInterface.ts"
-import { validateFullName, validateEmail, validateTextArea, validatePhoneNumber } from '../../../common/utils/validators.ts'
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
+import { AppDispatch } from "../../../common/redux/store"
+import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { ContactInterface } from "../../interfaces/contactInterface"
+import { validateFullName, validateEmail, validateTextArea, validatePhoneNumber } from '../../../common/utils/validators'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconUpdate, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
-} from "../../../common/styles/form.ts"
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getContactIdData, getContactIdStatus } from "../../../contact/features/contactSlice.ts"
-import { ContactFetchByIDThunk } from "../../../contact/features/thunks/contactFetchByIDThunk.ts"
-import { ContactUpdateThunk } from '../../../contact/features/thunks/contactUpdateThunk.ts'
-import { ContactArchivedType } from "../../enums/contactArchivedType.ts"
+} from "../../../common/styles/form"
+import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
+import { getContactIdData, getContactIdStatus } from "../../../contact/features/contactSlice"
+import { ContactFetchByIDThunk } from "../../../contact/features/thunks/contactFetchByIDThunk"
+import { ContactUpdateThunk } from '../../../contact/features/thunks/contactUpdateThunk'
+import { ContactArchivedType } from "../../enums/contactArchivedType"
 
 
 export const ContactUpdate = () => {

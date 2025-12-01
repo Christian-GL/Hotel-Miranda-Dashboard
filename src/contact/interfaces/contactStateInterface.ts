@@ -1,6 +1,6 @@
 
-import { ContactInterface } from "./contactInterface.ts"
-import { ApiStatus } from "../../common/enums/ApiStatus.ts"
+import { ContactInterface } from "./contactInterface"
+import { ApiStatus } from "../../common/enums/ApiStatus"
 
 export interface ContactStateInterface {
     allData: ContactInterface[]

@@ -1,15 +1,15 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { ApiStatus } from '../../common/enums/ApiStatus.ts'
-import { BookingStateInterface } from '../interfaces/bookingStateInterface.ts'
-import { BookingInterfaceRoom } from '../interfaces/bookingInterface.ts'
-import { RootState } from '../../common/redux/store.ts'
-import { BookingFetchAllThunk } from './thunks/bookingFetchAllThunk.ts'
-import { BookingFetchByIDThunk } from './thunks/bookingFetchByIDThunk.ts'
-import { BookingCreateThunk } from './thunks/bookingCreateThunk.ts'
-import { BookingUpdateThunk } from './thunks/bookingUpdateThunk.ts'
-import { BookingDeleteByIdThunk } from './thunks/bookingDeleteByIdThunk.ts'
+import { ApiStatus } from '../../common/enums/ApiStatus'
+import { BookingStateInterface } from '../interfaces/bookingStateInterface'
+import { BookingInterfaceRoom } from '../interfaces/bookingInterface'
+import { RootState } from '../../common/redux/store'
+import { BookingFetchAllThunk } from './thunks/bookingFetchAllThunk'
+import { BookingFetchByIDThunk } from './thunks/bookingFetchByIDThunk'
+import { BookingCreateThunk } from './thunks/bookingCreateThunk'
+import { BookingUpdateThunk } from './thunks/bookingUpdateThunk'
+import { BookingDeleteByIdThunk } from './thunks/bookingDeleteByIdThunk'
 
 
 export const BookingSlice = createSlice({

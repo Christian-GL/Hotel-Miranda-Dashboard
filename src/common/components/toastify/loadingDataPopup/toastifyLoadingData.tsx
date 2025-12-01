@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { ToastTransitionProps } from 'react-toastify';
 import { Zoom } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import * as toastifyLoadingDataStyles from './toastifyLoadingDataStyles.ts'
+import * as toastifyLoadingDataStyles from './toastifyLoadingDataStyles'
 
 
 const NoTransition = ({ children }: ToastTransitionProps) => {

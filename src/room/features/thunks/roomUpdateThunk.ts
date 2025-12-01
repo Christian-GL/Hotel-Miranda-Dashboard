@@ -1,7 +1,7 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { RoomInterface } from "../../interfaces/roomInterface.ts"
-import { RoomType } from "../../enums/roomType.ts"
+import { RoomInterface } from "../../interfaces/roomInterface"
+import { RoomType } from "../../enums/roomType"
 
 
 const roomDefaultIfError: RoomInterface = {

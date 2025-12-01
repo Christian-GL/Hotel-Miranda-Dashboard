@@ -1,6 +1,6 @@
 
-import { UserInterface } from "./userInterface.ts"
-import { ApiStatus } from "../../common/enums/ApiStatus.ts"
+import { UserInterface } from "./userInterface"
+import { ApiStatus } from "../../common/enums/ApiStatus"
 
 export interface UserStateInterface {
     allData: UserInterface[]

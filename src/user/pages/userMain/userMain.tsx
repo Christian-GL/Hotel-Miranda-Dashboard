@@ -4,27 +4,27 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as userMainStyles from "./userMainStyles.ts"
-import { UserButtonType } from "../../enums/userButtonType.ts"
-import { UserColumnSort } from '../../enums/userColumnSort.ts'
-import { AppDispatch } from '../../../common/redux/store.ts'
-import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { UserInterface } from "./../../interfaces/userInterface.ts"
-import { UserColumnsArrowStatesInterface } from "./../../interfaces/userColumnsArrowStatesInterface.ts"
-import { formatDateForPrint } from '../../../common/utils/dateUtils.ts'
-import { ArrowType } from "../../../common/enums/ArrowType.ts"
-import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
-import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm.tsx"
-import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate.tsx"
+import * as userMainStyles from "./userMainStyles"
+import { UserButtonType } from "../../enums/userButtonType"
+import { UserColumnSort } from '../../enums/userColumnSort'
+import { AppDispatch } from '../../../common/redux/store'
+import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { UserInterface } from "./../../interfaces/userInterface"
+import { UserColumnsArrowStatesInterface } from "./../../interfaces/userColumnsArrowStatesInterface"
+import { formatDateForPrint } from '../../../common/utils/dateUtils'
+import { ArrowType } from "../../../common/enums/ArrowType"
+import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
+import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
+import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
     PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption
-} from "../../../common/styles/tableStyles.ts"
-import { usePagination } from "../../../common/hooks/usePagination.ts"
-import * as paginationStyles from '../../../common/styles/pagination.ts'
-import { getUserAllData, getUserAllStatus } from "./../../features/userSlice.ts"
-import { UserFetchAllThunk } from "./../../features/thunks/userFetchAllThunk.ts"
-import { UserDeleteByIdThunk } from "./../../features/thunks/userDeleteByIdThunk.ts"
+} from "../../../common/styles/tableStyles"
+import { usePagination } from "../../../common/hooks/usePagination"
+import * as paginationStyles from '../../../common/styles/pagination'
+import { getUserAllData, getUserAllStatus } from "./../../features/userSlice"
+import { UserFetchAllThunk } from "./../../features/thunks/userFetchAllThunk"
+import { UserDeleteByIdThunk } from "./../../features/thunks/userDeleteByIdThunk"
 
 
 export const UserMain = () => {

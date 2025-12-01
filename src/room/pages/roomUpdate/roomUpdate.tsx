@@ -5,33 +5,33 @@ import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
-import * as roomUpdateStyles from "./roomUpdateStyles.ts"
+import * as roomUpdateStyles from "./roomUpdateStyles"
 import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
-import { AppDispatch } from "../../../common/redux/store.ts"
-import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { RoomInterface, RoomInterfaceBookings } from "../../interfaces/roomInterface.ts"
-import { RoomAmenities } from "../../enums/roomAmenities.ts"
-import { RoomType } from "../../enums/roomType.ts"
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
+import { AppDispatch } from "../../../common/redux/store"
+import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { RoomInterface, RoomInterfaceBookings } from "../../interfaces/roomInterface"
+import { RoomAmenities } from "../../enums/roomAmenities"
+import { RoomType } from "../../enums/roomType"
 import {
     validatePhotos, validateRoomType, validateAmenities,
     validateNumberBetween, validateExistingRoomNumber
-} from '../../../common/utils/validators.ts'
+} from '../../../common/utils/validators'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form,
     ImgRoom, DivCtnEntry, LabelText, DivCtnEntryBookings, LabelBookings, LabelTextBookingStatus,
     LabelTextInfoBooking, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
-} from "../../../common/styles/form.ts"
-import { formatDateForPrint } from '../../../common/utils/dateUtils.ts'
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "../../features/roomSlice.ts"
-import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk.ts"
-import { RoomFetchByIDThunk } from "../../features/thunks/roomFetchByIDThunk.ts"
-import { RoomUpdateThunk } from '../../features/thunks/roomUpdateThunk.ts'
+} from "../../../common/styles/form"
+import { formatDateForPrint } from '../../../common/utils/dateUtils'
+import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
+import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "../../features/roomSlice"
+import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
+import { RoomFetchByIDThunk } from "../../features/thunks/roomFetchByIDThunk"
+import { RoomUpdateThunk } from '../../features/thunks/roomUpdateThunk'
 
-import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice.ts"
-import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.ts"
+import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
+import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 
 
 export const RoomUpdate = () => {

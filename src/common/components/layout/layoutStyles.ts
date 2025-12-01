@@ -1,7 +1,7 @@
 
 import { styled } from 'styled-components'
 
-import * as globalConstStyles from '../../styles/globalConstStyles.ts'
+import * as globalConstStyles from '../../styles/globalConstStyles'
 
 
 export const Main = styled.main<{ display?: string }>`

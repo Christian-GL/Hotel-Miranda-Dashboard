@@ -1,5 +1,5 @@
 
-import * as color from './colors.ts'
+import * as color from './colors'
 
 
 export const themeLight = {

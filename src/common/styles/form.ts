@@ -11,7 +11,7 @@ import { MdContacts } from "react-icons/md"
 import { IoEye } from "react-icons/io5"
 import { IoMdEyeOff } from "react-icons/io"
 
-import * as globalConstStyles from './globalConstStyles.ts'
+import * as globalConstStyles from './globalConstStyles'
 
 
 export const DivCtnForm = styled.div`

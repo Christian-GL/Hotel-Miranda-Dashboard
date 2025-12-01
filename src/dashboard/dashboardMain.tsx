@@ -4,18 +4,18 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import * as dashboardMainStyles from "./dashboardMainStyles.ts"
-import { AppDispatch } from '../common/redux/store.ts'
-import { ApiStatus } from "../common/enums/ApiStatus.ts"
-import { formatDateForPrint } from '../common/utils/dateUtils.ts'
-import { checkBookingStatus } from '../common/utils/checkBookingStatus.ts'
-import { ArticleReview } from "../common/components/articleReview/articleReview.tsx"
-import { getBookingAllData, getBookingAllStatus } from '../booking/features/bookingSlice.ts'
-import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk.ts'
-import { getContactAllData, getContactAllStatus } from "../contact/features/contactSlice.ts"
-import { ContactFetchAllThunk } from "../contact/features/thunks/contactFetchAllThunk.ts"
-import { BookingInterfaceRoom } from "../booking/interfaces/bookingInterface.ts"
-import { ContactInterface } from "../contact/interfaces/contactInterface.ts"
+import * as dashboardMainStyles from "./dashboardMainStyles"
+import { AppDispatch } from '../common/redux/store'
+import { ApiStatus } from "../common/enums/ApiStatus"
+import { formatDateForPrint } from '../common/utils/dateUtils'
+import { checkBookingStatus } from '../common/utils/checkBookingStatus'
+import { ArticleReview } from "../common/components/articleReview/articleReview"
+import { getBookingAllData, getBookingAllStatus } from '../booking/features/bookingSlice'
+import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk'
+import { getContactAllData, getContactAllStatus } from "../contact/features/contactSlice"
+import { ContactFetchAllThunk } from "../contact/features/thunks/contactFetchAllThunk"
+import { BookingInterfaceRoom } from "../booking/interfaces/bookingInterface"
+import { ContactInterface } from "../contact/interfaces/contactInterface"
 
 
 export const DashboardMain = () => {

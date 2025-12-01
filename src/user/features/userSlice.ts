@@ -1,15 +1,15 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { ApiStatus } from '../../common/enums/ApiStatus.ts'
-import { UserStateInterface } from '../interfaces/userStateInterface.ts'
-import { UserInterface } from '../interfaces/userInterface.ts'
-import { RootState } from '../../common/redux/store.ts'
-import { UserFetchAllThunk } from './thunks/userFetchAllThunk.ts'
-import { UserFetchByIDThunk } from './thunks/userFetchByIDThunk.ts'
-import { UserCreateThunk } from './thunks/userCreateThunk.ts'
-import { UserUpdateThunk } from './thunks/userUpdateThunk.ts'
-import { UserDeleteByIdThunk } from './thunks/userDeleteByIdThunk.ts'
+import { ApiStatus } from '../../common/enums/ApiStatus'
+import { UserStateInterface } from '../interfaces/userStateInterface'
+import { UserInterface } from '../interfaces/userInterface'
+import { RootState } from '../../common/redux/store'
+import { UserFetchAllThunk } from './thunks/userFetchAllThunk'
+import { UserFetchByIDThunk } from './thunks/userFetchByIDThunk'
+import { UserCreateThunk } from './thunks/userCreateThunk'
+import { UserUpdateThunk } from './thunks/userUpdateThunk'
+import { UserDeleteByIdThunk } from './thunks/userDeleteByIdThunk'
 
 
 export const UserSlice = createSlice({

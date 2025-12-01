@@ -1,7 +1,7 @@
 
-import { RoomType } from "../enums/roomType.ts"
-import { RoomAmenities } from '../enums/roomAmenities.ts'
-import { BookingInterface } from "../../booking/interfaces/bookingInterface.ts"
+import { RoomType } from "../enums/roomType"
+import { RoomAmenities } from '../enums/roomAmenities'
+import { BookingInterface } from "../../booking/interfaces/bookingInterface"
 
 
 export interface RoomInterfaceNoId {

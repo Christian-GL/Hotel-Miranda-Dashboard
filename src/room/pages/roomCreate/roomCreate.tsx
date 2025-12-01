@@ -4,27 +4,27 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
-import * as roomCreateStyles from "./roomCreateStyles.ts"
+import * as roomCreateStyles from "./roomCreateStyles"
 import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
-import { AppDispatch } from "../../../common/redux/store.ts"
-import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { RoomInterfaceNoId } from "../../interfaces/roomInterface.ts"
-import { RoomAmenities } from "../../enums/roomAmenities.ts"
-import { RoomType } from "../../enums/roomType.ts"
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
+import { AppDispatch } from "../../../common/redux/store"
+import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { RoomInterfaceNoId } from "../../interfaces/roomInterface"
+import { RoomAmenities } from "../../enums/roomAmenities"
+import { RoomType } from "../../enums/roomType"
 import {
     validatePhotos, validateRoomType, validateAmenities,
     validateNumberBetween, validateNewRoomNumber
-} from '../../../common/utils/validators.ts'
+} from '../../../common/utils/validators'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconPlus, TitleForm, Form, ImgRoom, DivCtnEntry,
     LabelText, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
-} from "../../../common/styles/form.ts"
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getRoomAllData, getRoomAllStatus } from "../../features/roomSlice.ts"
-import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk.ts"
-import { RoomCreateThunk } from "../../features/thunks/roomCreateThunk.ts"
+} from "../../../common/styles/form"
+import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
+import { getRoomAllData, getRoomAllStatus } from "../../features/roomSlice"
+import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
+import { RoomCreateThunk } from "../../features/thunks/roomCreateThunk"
 
 
 export const RoomCreate = () => {

@@ -4,34 +4,34 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as bookingMainStyles from './bookingMainStyles.ts'
-import { BookingButtonType } from "../../enums/bookingButtonType.ts"
-import { BookingColumnSort } from "../../enums/bookingColumnSort.ts"
-import { BookingStatus } from './../../enums/bookingStatus.ts'
-import { AppDispatch } from '../../../common/redux/store.ts'
-import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { BookingInterfaceRoom } from "./../../interfaces/bookingInterface.ts"
-import { BookingColumnsArrowStatesInterface } from './../../interfaces/bookingrColumnsArrowStatesInterface.ts'
-import { RoomInterfaceBookings } from "../../../room/interfaces/roomInterface.ts"
-import { ArrowType } from "../../../common/enums/ArrowType.ts"
-import { PopupText } from "../../../common/components/popupText/popupText.tsx"
-import { PopupTextInterface } from '../../../common/components/popupText/popupTextInterface.ts'
-import { formatDateForPrint } from '../../../common/utils/dateUtils.ts'
-import { checkBookingStatus } from '../../../common/utils/checkBookingStatus.ts'
-import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
-import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm.tsx"
-import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate.tsx"
+import * as bookingMainStyles from './bookingMainStyles'
+import { BookingButtonType } from "../../enums/bookingButtonType"
+import { BookingColumnSort } from "../../enums/bookingColumnSort"
+import { BookingStatus } from './../../enums/bookingStatus'
+import { AppDispatch } from '../../../common/redux/store'
+import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { BookingInterfaceRoom } from "./../../interfaces/bookingInterface"
+import { BookingColumnsArrowStatesInterface } from './../../interfaces/bookingrColumnsArrowStatesInterface'
+import { RoomInterfaceBookings } from "../../../room/interfaces/roomInterface"
+import { ArrowType } from "../../../common/enums/ArrowType"
+import { PopupText } from "../../../common/components/popupText/popupText"
+import { PopupTextInterface } from '../../../common/components/popupText/popupTextInterface'
+import { formatDateForPrint } from '../../../common/utils/dateUtils'
+import { checkBookingStatus } from '../../../common/utils/checkBookingStatus'
+import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
+import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
+import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
     IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption
-} from "../../../common/styles/tableStyles.ts"
-import { usePagination } from "../../../common/hooks/usePagination.ts"
-import * as paginationJS from '../../../common/styles/pagination.ts'
-import { getBookingAllData, getBookingAllStatus } from "./../../features/bookingSlice.ts"
-import { BookingFetchAllThunk } from "./../../features/thunks/bookingFetchAllThunk.ts"
-import { BookingDeleteByIdThunk } from "./../../features/thunks/bookingDeleteByIdThunk.ts"
-import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice.ts"
-import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk.ts"
+} from "../../../common/styles/tableStyles"
+import { usePagination } from "../../../common/hooks/usePagination"
+import * as paginationJS from '../../../common/styles/pagination'
+import { getBookingAllData, getBookingAllStatus } from "./../../features/bookingSlice"
+import { BookingFetchAllThunk } from "./../../features/thunks/bookingFetchAllThunk"
+import { BookingDeleteByIdThunk } from "./../../features/thunks/bookingDeleteByIdThunk"
+import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
+import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
 
 
 export const BookingMain = () => {

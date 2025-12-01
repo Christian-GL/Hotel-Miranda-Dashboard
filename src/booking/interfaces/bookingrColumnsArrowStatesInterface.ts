@@ -1,5 +1,5 @@
 
-import { ArrowType } from "../../common/enums/ArrowType.ts"
+import { ArrowType } from "../../common/enums/ArrowType"
 
 export interface BookingColumnsArrowStatesInterface {
     guest: ArrowType

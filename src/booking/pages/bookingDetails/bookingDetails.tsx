@@ -5,17 +5,17 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
-import * as bookingDetailsStyles from "./bookingDetailsStyles.ts"
-import { BookingInterfaceRoom } from "../../interfaces/bookingInterface.ts"
-import { DivCtnOptions, ButtonOption } from "../../../common/styles/tableStyles.ts"
-import { AppDispatch } from "../../../common/redux/store.ts"
-import { formatDateForPrint } from "../../../common/utils/dateUtils.ts"
-import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { RoomAmenities } from "../../../room/enums/roomAmenities.ts"
-import { applyDiscount } from '../../../common/utils/tableUtils.ts'
-import { getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice.ts"
-import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk.ts"
-import { BookingDeleteByIdThunk } from "../../features/thunks/bookingDeleteByIdThunk.ts"
+import * as bookingDetailsStyles from "./bookingDetailsStyles"
+import { BookingInterfaceRoom } from "../../interfaces/bookingInterface"
+import { DivCtnOptions, ButtonOption } from "../../../common/styles/tableStyles"
+import { AppDispatch } from "../../../common/redux/store"
+import { formatDateForPrint } from "../../../common/utils/dateUtils"
+import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { RoomAmenities } from "../../../room/enums/roomAmenities"
+import { applyDiscount } from '../../../common/utils/tableUtils'
+import { getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice"
+import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
+import { BookingDeleteByIdThunk } from "../../features/thunks/bookingDeleteByIdThunk"
 
 
 export const BookingDetails = () => {

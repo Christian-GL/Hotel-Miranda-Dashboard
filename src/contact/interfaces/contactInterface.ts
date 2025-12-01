@@ -1,5 +1,5 @@
 
-import { ContactArchivedType } from '../enums/contactArchivedType.ts'
+import { ContactArchivedType } from '../enums/contactArchivedType'
 
 
 export interface ContactInterfaceNoId {

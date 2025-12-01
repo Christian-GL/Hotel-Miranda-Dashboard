@@ -3,10 +3,10 @@ import React from "react"
 import { useContext, createContext } from "react"
 import { useDispatch } from "react-redux"
 
-import { AppDispatch } from "../../common/redux/store.ts"
-import { LoginContextTypeInterface } from '../interfaces/loginContextTypeInterface.ts'
-import { LoginProviderInterface } from '../interfaces/loginProviderInterface.ts'
-import { LoginThunk } from "./loginThunk.ts"
+import { AppDispatch } from "../../common/redux/store"
+import { LoginContextTypeInterface } from '../interfaces/loginContextTypeInterface'
+import { LoginProviderInterface } from '../interfaces/loginProviderInterface'
+import { LoginThunk } from "./loginThunk"
 
 
 const loginOptionsContext = createContext<LoginContextTypeInterface | undefined>(undefined)

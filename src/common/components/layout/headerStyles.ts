@@ -9,7 +9,7 @@ import { FaMoon } from "react-icons/fa"
 import { FiSun } from "react-icons/fi"
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md"
 
-import * as globalConstStyles from '../../styles/globalConstStyles.ts'
+import * as globalConstStyles from '../../styles/globalConstStyles'
 
 
 export const Header = styled.header<{ display?: string }>`

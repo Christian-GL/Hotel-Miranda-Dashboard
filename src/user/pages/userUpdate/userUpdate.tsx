@@ -5,32 +5,32 @@ import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
-import * as userUpdateStyles from "./userUpdateStyles.ts"
+import * as userUpdateStyles from "./userUpdateStyles"
 import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
-import { AppDispatch } from "../../../common/redux/store.ts"
-import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { JobPosition } from "../../enums/jobPosition.ts"
-import { Role } from "../../enums/role.ts"
-import { OptionYesNo } from "../../../common/enums/optionYesNo.ts"
-import { UserInterface } from "../../interfaces/userInterface.ts"
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
+import { AppDispatch } from "../../../common/redux/store"
+import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { JobPosition } from "../../enums/jobPosition"
+import { Role } from "../../enums/role"
+import { OptionYesNo } from "../../../common/enums/optionYesNo"
+import { UserInterface } from "../../interfaces/userInterface"
 import userDefault from '../../../assets/img/userDefault.png'
-import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter.ts"
+import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
-import { formatDateForInput } from "../../../common/utils/dateUtils.ts"
+import { formatDateForInput } from "../../../common/utils/dateUtils"
 import {
     validatePhoto, validateFullName, validateEmail, validatePhoneNumber, validateDateRelativeToAnother,
     validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
-} from '../../../common/utils/commonValidator.ts'
+} from '../../../common/utils/commonValidator'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
-} from "../../../common/styles/form.ts"
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getUserIdData, getUserIdStatus } from "../../features/userSlice.ts"
-import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk.ts"
-import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk.ts"
+} from "../../../common/styles/form"
+import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
+import { getUserIdData, getUserIdStatus } from "../../features/userSlice"
+import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk"
+import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk"
 
 
 export const UserUpdate = () => {

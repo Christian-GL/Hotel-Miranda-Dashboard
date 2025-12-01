@@ -1,10 +1,10 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { ApiStatus } from '../../common/enums/ApiStatus.ts'
-import { ContactStateInterface } from '../interfaces/contactStateInterface.ts'
-import { ContactInterface } from '../interfaces/contactInterface.ts'
-import { RootState } from '../../common/redux/store.ts'
+import { ApiStatus } from '../../common/enums/ApiStatus'
+import { ContactStateInterface } from '../interfaces/contactStateInterface'
+import { ContactInterface } from '../interfaces/contactInterface'
+import { RootState } from '../../common/redux/store'
 import { ContactFetchAllThunk } from './thunks/contactFetchAllThunk'
 import { ContactFetchByIDThunk } from './thunks/contactFetchByIDThunk'
 import { ContactCreateThunk } from './thunks/contactCreateThunk'

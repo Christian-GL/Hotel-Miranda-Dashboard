@@ -4,31 +4,31 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as roomMainStyles from "./roomMainStyles.ts"
-import { RoomButtonType } from "../../enums/roomButtonType.ts"
-import { RoomColumnSort } from '../../enums/roomColumnSort.ts'
-import { AppDispatch } from '../../../common/redux/store.ts'
-import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { RoomInterfaceBookings } from "./../../interfaces/roomInterface.ts"
-import { RoomColumnsArrowStatesInterface } from './../../interfaces/roomColumnsArrowStatesInterface.ts'
-import { ArrowType } from "../../../common/enums/ArrowType.ts"
-import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
-import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm.tsx"
-import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate.tsx"
-import { applyDiscount } from "../../../common/utils/tableUtils.ts"
-import { usePagination } from "../../../common/hooks/usePagination.ts"
-import * as paginationJS from '../../../common/styles/pagination.ts'
+import * as roomMainStyles from "./roomMainStyles"
+import { RoomButtonType } from "../../enums/roomButtonType"
+import { RoomColumnSort } from '../../enums/roomColumnSort'
+import { AppDispatch } from '../../../common/redux/store'
+import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { RoomInterfaceBookings } from "./../../interfaces/roomInterface"
+import { RoomColumnsArrowStatesInterface } from './../../interfaces/roomColumnsArrowStatesInterface'
+import { ArrowType } from "../../../common/enums/ArrowType"
+import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
+import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
+import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
+import { applyDiscount } from "../../../common/utils/tableUtils"
+import { usePagination } from "../../../common/hooks/usePagination"
+import * as paginationJS from '../../../common/styles/pagination'
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable,
     ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption
-} from "../../../common/styles/tableStyles.ts"
-import { getRoomAllData, getRoomAllStatus } from "./../../features/roomSlice.ts"
-import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk.ts"
-import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk.ts"
+} from "../../../common/styles/tableStyles"
+import { getRoomAllData, getRoomAllStatus } from "./../../features/roomSlice"
+import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
+import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk"
 import { getBookingAllData, getBookingAllStatus, deleteBooking } from "../../../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.js"
-import { BookingInterfaceRoom } from "../../../booking/interfaces/bookingInterface.ts"
-import { BookingDeleteByIdThunk } from "../../../booking/features/thunks/bookingDeleteByIdThunk.ts"
+import { BookingInterfaceRoom } from "../../../booking/interfaces/bookingInterface"
+import { BookingDeleteByIdThunk } from "../../../booking/features/thunks/bookingDeleteByIdThunk"
 
 
 export const RoomMain = () => {

@@ -1,6 +1,6 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { BookingInterfaceNoId } from '../../interfaces/bookingInterface.ts'
+import { BookingInterfaceNoId } from '../../interfaces/bookingInterface'
 
 
 const bookingDefaultIfError: BookingInterfaceNoId = {

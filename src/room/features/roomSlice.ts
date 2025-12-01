@@ -1,15 +1,15 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { ApiStatus } from '../../common/enums/ApiStatus.ts'
-import { RoomStateInterface } from '../interfaces/roomStateInterface.ts'
-import { RoomInterfaceBookings } from '../interfaces/roomInterface.ts'
-import { RootState } from '../../common/redux/store.ts'
-import { RoomFetchAllThunk } from './thunks/roomFetchAllThunk.ts'
-import { RoomFetchByIDThunk } from './thunks/roomFetchByIDThunk.ts'
-import { RoomCreateThunk } from './thunks/roomCreateThunk.ts'
-import { RoomUpdateThunk } from './thunks/roomUpdateThunk.ts'
-import { RoomDeleteByIdThunk } from './thunks/roomDeleteByIdThunk.ts'
+import { ApiStatus } from '../../common/enums/ApiStatus'
+import { RoomStateInterface } from '../interfaces/roomStateInterface'
+import { RoomInterfaceBookings } from '../interfaces/roomInterface'
+import { RootState } from '../../common/redux/store'
+import { RoomFetchAllThunk } from './thunks/roomFetchAllThunk'
+import { RoomFetchByIDThunk } from './thunks/roomFetchByIDThunk'
+import { RoomCreateThunk } from './thunks/roomCreateThunk'
+import { RoomUpdateThunk } from './thunks/roomUpdateThunk'
+import { RoomDeleteByIdThunk } from './thunks/roomDeleteByIdThunk'
 
 
 export const RoomSlice = createSlice({

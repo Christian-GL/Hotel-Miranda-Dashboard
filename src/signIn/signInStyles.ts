@@ -4,8 +4,8 @@ import { styled } from 'styled-components'
 import { RiHotelFill } from "react-icons/ri"
 
 import backgroundLogin from '../../src/assets/img/backgroundLogin.png'
-import { white, graySmoothX3, red, blackSmooth } from '../common/styles/colors.ts'
-import * as globalConstStyles from '../common/styles/globalConstStyles.ts'
+import { white, graySmoothX3, red, blackSmooth } from '../common/styles/colors'
+import * as globalConstStyles from '../common/styles/globalConstStyles'
 
 
 export const SectionPageSignIn = styled.section`

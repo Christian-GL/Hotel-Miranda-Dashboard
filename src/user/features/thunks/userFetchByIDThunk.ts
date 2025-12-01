@@ -1,9 +1,9 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { UserInterface } from '../../interfaces/userInterface.ts'
-import { JobPosition } from "../../enums/jobPosition.ts"
-import { Role } from "../../enums/role.ts"
-import { OptionYesNo } from "../../../common/enums/optionYesNo.ts"
+import { UserInterface } from '../../interfaces/userInterface'
+import { JobPosition } from "../../enums/jobPosition"
+import { Role } from "../../enums/role"
+import { OptionYesNo } from "../../../common/enums/optionYesNo"
 
 
 const userDefaultIfError: UserInterface = {

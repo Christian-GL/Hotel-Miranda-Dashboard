@@ -1,8 +1,8 @@
 
 import React from 'react'
 
-import { DisplaySelector } from './tableDisplaySelectorStyles.ts'
-import { TableDisplaySelectorInterface } from './tableDisplaySelectorInterface.ts'
+import { DisplaySelector } from './tableDisplaySelectorStyles'
+import { TableDisplaySelectorInterface } from './tableDisplaySelectorInterface'
 
 
 export const TableDisplaySelector: React.FC<TableDisplaySelectorInterface> = ({ text, onClick, isSelected }) => {

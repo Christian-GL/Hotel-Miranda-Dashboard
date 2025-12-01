@@ -3,10 +3,10 @@ import React from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import * as signInStyles from "./signInStyles.ts"
+import * as signInStyles from "./signInStyles"
 import { ToastContainer } from 'react-toastify'
-import { ToastifyError } from '../common/components/toastify/errorPopup/toastifyError.tsx'
-import { useLoginOptionsContext } from "./features/loginProvider.tsx"
+import { ToastifyError } from '../common/components/toastify/errorPopup/toastifyError'
+import { useLoginOptionsContext } from "./features/loginProvider"
 
 
 export const SignIn = () => {

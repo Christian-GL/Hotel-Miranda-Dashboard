@@ -8,7 +8,7 @@ import { MdOutlineBedroomParent } from "react-icons/md";
 import { MdContacts } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 
-import * as globalConstStyles from '../../styles/globalConstStyles.ts'
+import * as globalConstStyles from '../../styles/globalConstStyles'
 
 
 export const AsideSideNavigationBar = styled.aside<{ display?: string }>`

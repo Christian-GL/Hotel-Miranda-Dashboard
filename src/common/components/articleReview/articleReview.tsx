@@ -2,11 +2,11 @@
 import React from 'react'
 import { useState } from "react"
 
-import * as articleReviewStyles from "./articleReviewStyles.ts"
-import { ArticleReviewInterface } from "./articleReviewInterface.ts"
+import * as articleReviewStyles from "./articleReviewStyles"
+import { ArticleReviewInterface } from "./articleReviewInterface"
 // import PedroSanchez from '../../../assets/img/PedroSanchez.png'
-import { IconHotel } from '../layout/sidebarMenuStyles.ts'
-import { PopupText } from "../popupText/popupText.tsx"
+import { IconHotel } from '../layout/sidebarMenuStyles'
+import { PopupText } from "../popupText/popupText"
 
 
 export const ArticleReview: React.FC<ArticleReviewInterface> = ({ nameProfile, textReview, timeSince }) => {

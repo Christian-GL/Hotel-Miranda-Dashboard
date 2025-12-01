@@ -4,27 +4,27 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
-import * as bookingCreateStyles from "./bookingCreateStyles.ts"
+import * as bookingCreateStyles from "./bookingCreateStyles"
 import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess.tsx"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError.tsx"
-import { AppDispatch } from "../../../common/redux/store.ts"
-import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { BookingInterfaceNoId } from "../../interfaces/bookingInterface.ts"
+import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
+import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
+import { AppDispatch } from "../../../common/redux/store"
+import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { BookingInterfaceNoId } from "../../interfaces/bookingInterface"
 import {
     validatePhoto, validateFullName, validateCheckInCheckOut,
     validateDateIsOccupied, validateTextArea
-} from '../../../common/utils/validators.ts'
+} from '../../../common/utils/validators'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, LabelTextNote, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
-} from "../../../common/styles/form.ts"
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate.tsx'
-import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice.ts"
-import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.ts"
-import { BookingCreateThunk } from "../../../booking/features/thunks/bookingCreateThunk.ts"
-import { getRoomAllData, getRoomAllStatus } from '../../../room/features/roomSlice.ts'
-import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk.ts'
+} from "../../../common/styles/form"
+import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
+import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
+import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
+import { BookingCreateThunk } from "../../../booking/features/thunks/bookingCreateThunk"
+import { getRoomAllData, getRoomAllStatus } from '../../../room/features/roomSlice'
+import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk'
 
 
 export const BookingCreate = () => {

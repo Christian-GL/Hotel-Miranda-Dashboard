@@ -5,29 +5,29 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import * as contactMainStyles from "./contactMainStyles.ts"
-import { ContactArchivedType } from "../../enums/contactArchivedType.ts"
-import { ContactColumnSort } from '../../enums/contactColumnSort.ts'
-import { AppDispatch } from '../../../common/redux/store.ts'
-import { ApiStatus } from "../../../common/enums/ApiStatus.ts"
-import { ContactInterface } from './../../interfaces/contactInterface.ts'
-import { ContactColumnsArrowStatesInterface } from './../../interfaces/contactColumnsArrowStatesInterface.ts'
-import { ArrowType } from "../../../common/enums/ArrowType.ts"
-import { formatDateForPrint } from '../../../common/utils/dateUtils.ts'
-import { ArticleReview } from "../../../common/components/articleReview/articleReview.tsx"
-import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector.tsx"
-import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm.tsx"
-import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate.tsx"
+import * as contactMainStyles from "./contactMainStyles"
+import { ContactArchivedType } from "../../enums/contactArchivedType"
+import { ContactColumnSort } from '../../enums/contactColumnSort'
+import { AppDispatch } from '../../../common/redux/store'
+import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { ContactInterface } from './../../interfaces/contactInterface'
+import { ContactColumnsArrowStatesInterface } from './../../interfaces/contactColumnsArrowStatesInterface'
+import { ArrowType } from "../../../common/enums/ArrowType"
+import { formatDateForPrint } from '../../../common/utils/dateUtils'
+import { ArticleReview } from "../../../common/components/articleReview/articleReview"
+import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
+import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
+import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, TriangleUp, DivNameTable, TriangleRight, TriangleDown, PTable,
     IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption
-} from "../../../common/styles/tableStyles.ts"
-import { usePagination } from "../../../common/hooks/usePagination.ts"
-import * as paginationJS from '../../../common/styles/pagination.ts'
-import { getContactAllData, getContactAllStatus } from "./../../features/contactSlice.ts"
-import { ContactFetchAllThunk } from "./../../features/thunks/contactFetchAllThunk.ts"
-import { ContactUpdateThunk } from "./../../features/thunks/contactUpdateThunk.ts"
-import { ContactDeleteByIdThunk } from "./../../features/thunks/contactDeleteByIdThunk.ts"
+} from "../../../common/styles/tableStyles"
+import { usePagination } from "../../../common/hooks/usePagination"
+import * as paginationJS from '../../../common/styles/pagination'
+import { getContactAllData, getContactAllStatus } from "./../../features/contactSlice"
+import { ContactFetchAllThunk } from "./../../features/thunks/contactFetchAllThunk"
+import { ContactUpdateThunk } from "./../../features/thunks/contactUpdateThunk"
+import { ContactDeleteByIdThunk } from "./../../features/thunks/contactDeleteByIdThunk"
 
 
 export const ContactMain = () => {

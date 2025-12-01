@@ -5,22 +5,22 @@ import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as layoutStyles from "./layoutStyles.ts"
-import * as headerStyles from "./headerStyles.ts"
-import * as sidebarStyles from "./sidebarMenuStyles.ts"
+import * as layoutStyles from "./layoutStyles"
+import * as headerStyles from "./headerStyles"
+import * as sidebarStyles from "./sidebarMenuStyles"
 import { ThemeProvider } from 'styled-components'
-import { Theme } from "../../context/darkModeContext.tsx"
-import { themeLight, themeDark } from "../../styles/themes.ts"
+import { Theme } from "../../context/darkModeContext"
+import { themeLight, themeDark } from "../../styles/themes"
 import { ToastContainer, toast } from 'react-toastify'
-import { ToastifyLoadingData } from "../toastify/loadingDataPopup/toastifyLoadingData.tsx"
-import { AppDispatch } from "../../redux/store.ts"
-import { useLoginOptionsContext } from '../../../signIn/features/loginProvider.tsx'
-import { getBookingAllStatus, getBookingIdStatus } from "../../../booking/features/bookingSlice.ts"
-import { getRoomAllStatus, getRoomIdStatus } from "../../../room/features/roomSlice.ts"
-import { getContactAllStatus, getContactIdStatus } from "../../../contact/features/contactSlice.ts"
-import { getUserAllStatus, getUserIdStatus, getUserIdData } from "../../../user/features/userSlice.ts"
-import { UserFetchByIDThunk } from "../../../user/features/thunks/userFetchByIDThunk.ts"
-import { ApiStatus } from "../../enums/ApiStatus.ts"
+import { ToastifyLoadingData } from "../toastify/loadingDataPopup/toastifyLoadingData"
+import { AppDispatch } from "../../redux/store"
+import { useLoginOptionsContext } from '../../../signIn/features/loginProvider'
+import { getBookingAllStatus, getBookingIdStatus } from "../../../booking/features/bookingSlice"
+import { getRoomAllStatus, getRoomIdStatus } from "../../../room/features/roomSlice"
+import { getContactAllStatus, getContactIdStatus } from "../../../contact/features/contactSlice"
+import { getUserAllStatus, getUserIdStatus, getUserIdData } from "../../../user/features/userSlice"
+import { UserFetchByIDThunk } from "../../../user/features/thunks/userFetchByIDThunk"
+import { ApiStatus } from "../../enums/ApiStatus"
 
 
 export const Layout = () => {

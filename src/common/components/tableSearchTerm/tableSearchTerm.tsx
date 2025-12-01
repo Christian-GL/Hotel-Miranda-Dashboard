@@ -1,8 +1,8 @@
 
 import React from 'react'
 
-import { InputSearch, IconMagnifyingGlass } from './tableSearchTermStyles.ts'
-import { TableSearchTermInterface } from './tableSearchTermInterface.ts'
+import { InputSearch, IconMagnifyingGlass } from './tableSearchTermStyles'
+import { TableSearchTermInterface } from './tableSearchTermInterface'
 
 
 export const TableSearchTerm: React.FC<TableSearchTermInterface> = (props) => {

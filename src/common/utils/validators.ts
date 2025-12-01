@@ -1,10 +1,10 @@
 
-// !!! VERSIÓN VIEJA DE VALIDADORES. UTILIZAR LA NUEVA "commonValidators.ts" ELIMINAR ESTE FICHERO AL ARREGLARSE LOS IMPORTS
+// !!! VERSIÓN VIEJA DE VALIDADORES. UTILIZAR LA NUEVA "commonValidators" ELIMINAR ESTE FICHERO AL ARREGLARSE LOS IMPORTS
 
-import { RoomAmenities } from "../../room/enums/roomAmenities.ts"
-import { RoomType } from "../../room/enums/roomType.ts"
-import { RoomInterfaceBookings } from "../../room/interfaces/roomInterface.ts"
-import { BookingInterface, BookingInterfaceRoom, BookingInterfaceNoId } from "../../booking/interfaces/bookingInterface.ts"
+import { RoomAmenities } from "../../room/enums/roomAmenities"
+import { RoomType } from "../../room/enums/roomType"
+import { RoomInterfaceBookings } from "../../room/interfaces/roomInterface"
+import { BookingInterface, BookingInterfaceRoom, BookingInterfaceNoId } from "../../booking/interfaces/bookingInterface"
 
 
 export const validatePhotos = (photos: any[], fieldName: string = 'Photo'): string[] => {

@@ -8,7 +8,7 @@ import { FaWifi } from "react-icons/fa";
 import { IoBedSharp } from "react-icons/io5";
 import { GoShieldCheck } from "react-icons/go";
 
-import * as globalConstStyles from '../../../common/styles/globalConstStyles.ts'
+import * as globalConstStyles from '../../../common/styles/globalConstStyles'
 
 
 export const SectionPageBookingDetails = styled.section`

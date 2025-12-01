@@ -3,7 +3,7 @@ import React from 'react'
 import { toast } from 'react-toastify'
 import { Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import * as toastifySuccessStyles from './toastifySuccessStyles.ts'
+import * as toastifySuccessStyles from './toastifySuccessStyles'
 
 
 export const ToastifySuccess = (message: string, onClose: () => void) => {
