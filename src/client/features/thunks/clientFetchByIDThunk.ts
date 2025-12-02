@@ -6,12 +6,11 @@ import { OptionYesNo } from "common/enums/optionYesNo"
 
 const clientDefaultIfError: ClientInterface = {
     _id: "0",
-    publish_date: '',
     full_name: '',
     email: '',
     phone_number: '',
-    comment: '',
-    isArchived: OptionYesNo.no
+    isArchived: OptionYesNo.no,
+    booking_id_list: []
 }
 
 export const ClientFetchByIDThunk = createAsyncThunk
@@ -32,12 +31,11 @@ export const ClientFetchByIDThunk = createAsyncThunk
                 const json = await request.json()
                 let client: ClientInterface = {
                     _id: json._id,
-                    publish_date: json.publish_date,
                     full_name: json.full_name,
                     email: json.email,
                     phone_number: json.phone_number,
-                    comment: json.comment,
-                    isArchived: json.archived
+                    isArchived: json.archived,
+                    booking_id_list: json.booking_id_list
                 }
                 return client
             }

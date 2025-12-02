@@ -5,12 +5,11 @@ import { OptionYesNo } from "common/enums/optionYesNo"
 
 
 const clientDefaultIfError: ClientInterfaceNoId = {
-    publish_date: '',
     full_name: '',
     email: '',
     phone_number: '',
-    comment: '',
-    isArchived: OptionYesNo.no
+    isArchived: OptionYesNo.no,
+    booking_id_list: []
 }
 
 export const ClientCreateThunk = createAsyncThunk

@@ -6,12 +6,11 @@ import { OptionYesNo } from "common/enums/optionYesNo"
 
 const clientDefaultIfError: ClientInterface = {
     _id: "0",
-    publish_date: '',
     full_name: '',
     email: '',
     phone_number: '',
-    comment: '',
-    isArchived: OptionYesNo.no
+    isArchived: OptionYesNo.no,
+    booking_id_list: []
 }
 
 export const ClientFetchAllThunk = createAsyncThunk
@@ -34,12 +33,11 @@ export const ClientFetchAllThunk = createAsyncThunk
                 for (let i = 0; i < json.length; i++) {
                     allClients.push({
                         _id: json[i]._id,
-                        publish_date: json[i].publish_date,
                         full_name: json[i].full_name,
                         email: json[i].email,
                         phone_number: json[i].phone_number,
-                        comment: json[i].comment,
-                        isArchived: json[i].archived
+                        isArchived: json[i].archived,
+                        booking_id_list: json[i].booking_id_list
                     })
                 }
                 return allClients

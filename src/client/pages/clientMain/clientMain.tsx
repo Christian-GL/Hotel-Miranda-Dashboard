@@ -34,7 +34,7 @@ export const ClientMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const nameColumnList: string[] = ['Order ID', 'Publish date', 'Customer', 'Comment', 'Action', '']
+    const nameColumnList: string[] = ['Customer Info', 'Phone number', 'Booking list', '']
     const clientAll: ClientInterface[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const [inputText, setInputText] = useState<string>('')
@@ -180,6 +180,7 @@ export const ClientMain = () => {
     }
 
     return (
+        console.log(filteredClients),
         <clientMainStyles.SectionPageClient>
             <clientMainStyles.SectionReviews>
                 <clientMainStyles.DivCtnReviews>
@@ -245,34 +246,38 @@ export const ClientMain = () => {
                 )}
                 {currentPageItems.map((clientData, index) => {
                     return [
-                        <PTable key={index + '-1'}>
-                            #<b>{clientData._id}</b>
-                        </PTable>,
-
-                        <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                        <PTable key={index + '-1'} flexdirection='column' alignitems='left' justifycontent='center'>
                             <DivNameTable>
                                 <b>{clientData.full_name}</b>
                             </DivNameTable>
                             <div>{clientData.email}</div>
-                            <div style={{ display: 'flex', alignItems: 'bottom' }}>
-                                <IconPhone width='1.3rem' />
-                                <div>{clientData.phone_number}</div>
-                            </div>
+                            <div>#<b>{clientData._id}</b></div>
                         </PTable>,
 
-                        <PTable key={index + '-3'} >
-                            {clientData.booking_id_list}
+                        <PTable key={index + '-2'} >
+                            <IconPhone />
+                            {clientData.phone_number}
                         </PTable>,
 
-                        <PTable key={index + '-4'}>
+                        // !!! Que muestre los numeros de habitación por cada reserva:
+                        <PTable>
                             {
-                                clientData.isArchived === OptionYesNo.yes ?
-                                    <ButtonPublishArchive onClick={() => publish(clientData._id)} archived={false}>Publish</ButtonPublishArchive> :
-                                    <ButtonPublishArchive onClick={() => archive(clientData._id)} archived={true}>Archive</ButtonPublishArchive>
+                                clientData.booking_id_list.length > 0 ?
+                                    clientData.booking_id_list :
+                                    <p>No bookings yet</p>
                             }
                         </PTable>,
 
-                        <PTable key={index + '-5'}>
+                        // !!! REUTILIZAR AL ACABAR DE ACTUALIZAR EL DASHBOARD:
+                        // <PTable key={index + '-3'}>
+                        //     {
+                        //         clientData.isArchived === OptionYesNo.yes ?
+                        //             <ButtonPublishArchive onClick={() => publish(clientData._id)} archived={false}>Publish</ButtonPublishArchive> :
+                        //             <ButtonPublishArchive onClick={() => archive(clientData._id)} archived={true}>Archive</ButtonPublishArchive>
+                        //     }
+                        // </PTable>,
+
+                        <PTable key={index + '-4'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                 <ButtonOption onClick={() => { navigateToClientUpdate(clientData._id) }}>Update</ButtonOption>
