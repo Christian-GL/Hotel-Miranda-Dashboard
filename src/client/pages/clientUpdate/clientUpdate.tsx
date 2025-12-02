@@ -5,73 +5,73 @@ import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
-import * as contactCreateJS from "./contactUpdateStyles"
+import * as clientCreateJS from "./clientUpdateStyles"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { ContactInterface } from "../../interfaces/contactInterface"
+import { ClientInterface } from "../../interfaces/clientInterface"
 import { validateFullName, validateEmail, validateTextArea, validatePhoneNumber } from '../../../common/utils/validators'
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconContact, IconUpdate, TitleForm, Form, DivCtnEntry,
+    DivCtnForm, DivIcon, DivCtnIcons, IconClient, IconUpdate, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getContactIdData, getContactIdStatus } from "../../../contact/features/contactSlice"
-import { ContactFetchByIDThunk } from "../../../contact/features/thunks/contactFetchByIDThunk"
-import { ContactUpdateThunk } from '../../../contact/features/thunks/contactUpdateThunk'
-import { ContactArchivedType } from "../../enums/contactArchivedType"
+import { getClientIdData, getClientIdStatus } from "../../../client/features/clientSlice"
+import { ClientFetchByIDThunk } from "../../../client/features/thunks/clientFetchByIDThunk"
+import { ClientUpdateThunk } from '../../../client/features/thunks/clientUpdateThunk'
+import { ClientArchivedType } from "../../enums/clientArchivedType"
 
 
-export const ContactUpdate = () => {
+export const ClientUpdate = () => {
 
     const { id } = useParams()
     const idParams = id!
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const contactById = useSelector(getContactIdData)
-    const contactByIdLoading = useSelector(getContactIdStatus)
-    const [contactUpdated, setContactUpdated] = useState<ContactInterface>({
+    const clientById = useSelector(getClientIdData)
+    const clientByIdLoading = useSelector(getClientIdStatus)
+    const [clientUpdated, setClientUpdated] = useState<ClientInterface>({
         _id: "0",
         publish_date: '',
         full_name: '',
         email: '',
         phone_number: '',
         comment: '',
-        archived: ContactArchivedType.notArchived
+        archived: ClientArchivedType.notArchived
     })
 
     useEffect(() => {
-        if (contactByIdLoading === ApiStatus.idle) { dispatch(ContactFetchByIDThunk(idParams)) }
-        else if (contactByIdLoading === ApiStatus.fulfilled) {
-            if (contactById._id !== idParams) {
-                dispatch(ContactFetchByIDThunk(idParams))
+        if (clientByIdLoading === ApiStatus.idle) { dispatch(ClientFetchByIDThunk(idParams)) }
+        else if (clientByIdLoading === ApiStatus.fulfilled) {
+            if (clientById._id !== idParams) {
+                dispatch(ClientFetchByIDThunk(idParams))
             }
-            setContactUpdated({
-                _id: contactById._id,
-                publish_date: contactById.publish_date || '',
-                full_name: contactById.full_name || '',
-                email: contactById.email || '',
-                phone_number: contactById.phone_number || '',
-                comment: contactById.comment || '',
-                archived: contactById.archived
+            setClientUpdated({
+                _id: clientById._id,
+                publish_date: clientById.publish_date || '',
+                full_name: clientById.full_name || '',
+                email: clientById.email || '',
+                phone_number: clientById.phone_number || '',
+                comment: clientById.comment || '',
+                archived: clientById.archived
             })
         }
-        else if (contactByIdLoading === ApiStatus.rejected) { alert("Error in API update contact") }
-    }, [contactByIdLoading, contactById, id])
+        else if (clientByIdLoading === ApiStatus.rejected) { alert("Error in API update client") }
+    }, [clientByIdLoading, clientById, id])
 
     const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        setContactUpdated({
-            ...contactUpdated,
+        setClientUpdated({
+            ...clientUpdated,
             [name]: value
         })
     }
     const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
-        setContactUpdated({
-            ...contactUpdated,
+        setClientUpdated({
+            ...clientUpdated,
             [name]: value
         })
     }
@@ -80,9 +80,9 @@ export const ContactUpdate = () => {
 
         if (!validateAllData()) { return }
 
-        dispatch(ContactUpdateThunk({ idContact: contactUpdated._id, updatedContactData: contactUpdated }))
+        dispatch(ClientUpdateThunk({ idClient: clientUpdated._id, updatedClientData: clientUpdated }))
             .then(() => {
-                ToastifySuccess('Contact updated', () => {
+                ToastifySuccess('Client updated', () => {
                     navigate('../')
                 })
             })
@@ -93,16 +93,16 @@ export const ContactUpdate = () => {
 
     const validateAllData = (): boolean => {
 
-        const errorsFullName = validateFullName(contactUpdated.full_name, 'Full Name')
+        const errorsFullName = validateFullName(clientUpdated.full_name, 'Full Name')
         if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }
 
-        const errorsEmail = validateEmail(contactUpdated.email, 'Email')
+        const errorsEmail = validateEmail(clientUpdated.email, 'Email')
         if (errorsEmail.length > 0) { errorsEmail.map(error => ToastifyError(error)); return false }
 
-        const errorsPhoneNumber = validatePhoneNumber(contactUpdated.phone_number, 'Phone Number')
+        const errorsPhoneNumber = validatePhoneNumber(clientUpdated.phone_number, 'Phone Number')
         if (errorsPhoneNumber.length > 0) { errorsPhoneNumber.map(error => ToastifyError(error)); return false }
 
-        const errorsTextArea = validateTextArea(contactUpdated.comment, 'Comment')
+        const errorsTextArea = validateTextArea(clientUpdated.comment, 'Comment')
         if (errorsTextArea.length > 0) { errorsTextArea.map(error => ToastifyError(error)); return false }
 
         return true
@@ -112,42 +112,42 @@ export const ContactUpdate = () => {
     return (<>
         <ToastContainer />
 
-        <contactCreateJS.SectionPageContactUpdate>
+        <clientCreateJS.SectionPageClientUpdate>
             <DivCtnForm>
                 <DivIcon>
                     <DivCtnIcons>
-                        <IconContact />
+                        <IconClient />
                         <IconUpdate />
                     </DivCtnIcons>
                 </DivIcon>
-                <TitleForm>Update Contact #{contactUpdated._id}</TitleForm>
+                <TitleForm>Update Client #{clientUpdated._id}</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
                         <LabelText>Full Name</LabelText>
-                        <InputText name="full_name" value={contactUpdated.full_name} onChange={handleStringChange} />
+                        <InputText name="full_name" value={clientUpdated.full_name} onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Email</LabelText>
-                        <InputText name="email" value={contactUpdated.email} onChange={handleStringChange} />
+                        <InputText name="email" value={clientUpdated.email} onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Phone Number</LabelText>
-                        <InputText name="phone_number" value={contactUpdated.phone_number} onChange={handleStringChange} />
+                        <InputText name="phone_number" value={clientUpdated.phone_number} onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivCtnEntry>
                         <LabelText>Comment</LabelText>
-                        <TextAreaJobDescription name="comment" value={contactUpdated.comment} onChange={handleTextAreaChange} ></TextAreaJobDescription>
+                        <TextAreaJobDescription name="comment" value={clientUpdated.comment} onChange={handleTextAreaChange} ></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
-                        <ButtonCreate type="submit" children='⮂ Update Contact' fontSize='1.25em'></ButtonCreate>
+                        <ButtonCreate type="submit" children='⮂ Update Client' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
             </DivCtnForm>
-        </contactCreateJS.SectionPageContactUpdate>
+        </clientCreateJS.SectionPageClientUpdate>
     </>)
 }

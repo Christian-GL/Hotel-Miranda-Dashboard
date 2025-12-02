@@ -2,7 +2,7 @@
 import { styled } from 'styled-components'
 
 
-export const SectionPageContactUpdate = styled.section`
+export const SectionPageClientCreate = styled.section`
     padding: 2em;
     height: 100%;
     overflow-y: auto;

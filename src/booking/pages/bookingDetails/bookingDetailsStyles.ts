@@ -81,7 +81,7 @@ export const SubTittleH4 = styled.h4<{ isId?: boolean, paddingtop?: string, font
     color: ${props => props.isId ? props.theme.idBookingDetails : props.theme.textBookingDetails};
 `
 
-export const DivCtnContactMessage = styled.div`
+export const DivCtnClientMessage = styled.div`
     margin-top: 1.25rem;
 `
 

@@ -1,27 +1,27 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { ContactInterface } from "../../interfaces/contactInterface"
-import { ContactArchivedType } from "../../enums/contactArchivedType"
+import { ClientInterface } from "../../interfaces/clientInterface"
+import { ClientArchivedType } from "../../enums/clientArchivedType"
 
 
-const contactDefaultIfError: ContactInterface = {
+const clientDefaultIfError: ClientInterface = {
     _id: "0",
     publish_date: '',
     full_name: '',
     email: '',
     phone_number: '',
     comment: '',
-    archived: ContactArchivedType.notArchived
+    archived: ClientArchivedType.notArchived
 }
 
-export const ContactFetchByIDThunk = createAsyncThunk
-    ("contact/fetchById", async (contactId: string) => {
+export const ClientFetchByIDThunk = createAsyncThunk
+    ("client/fetchById", async (clientId: string) => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return contactDefaultIfError
+        if (!apiToken) return clientDefaultIfError
 
         try {
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CONTACTS}/${contactId}`, {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CLIENTS}/${clientId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -30,7 +30,7 @@ export const ContactFetchByIDThunk = createAsyncThunk
             })
             if (request.ok) {
                 const json = await request.json()
-                let contact: ContactInterface = {
+                let client: ClientInterface = {
                     _id: json._id,
                     publish_date: json.publish_date,
                     full_name: json.full_name,
@@ -39,16 +39,16 @@ export const ContactFetchByIDThunk = createAsyncThunk
                     comment: json.comment,
                     archived: json.archived
                 }
-                return contact
+                return client
             }
             else {
                 console.log('Error: ', request.statusText)
-                return contactDefaultIfError
+                return clientDefaultIfError
             }
         }
         catch (error) {
             console.log(error)
-            return contactDefaultIfError
+            return clientDefaultIfError
         }
 
     })

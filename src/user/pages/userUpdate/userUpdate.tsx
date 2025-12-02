@@ -179,7 +179,7 @@ export const UserUpdate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Contact</LabelText>
+                        <LabelText>Client</LabelText>
                         <InputText name="phone_number" value={userUpdated.phone_number} onChange={handleStringChange} />
 
                         <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Role</LabelText>

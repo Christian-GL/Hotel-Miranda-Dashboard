@@ -17,9 +17,9 @@ import { BookingDetails } from './booking/pages/bookingDetails/bookingDetails'
 import { RoomMain } from './room/pages/roomMain/roomMain'
 import { RoomCreate } from './room/pages/roomCreate/roomCreate'
 import { RoomUpdate } from './room/pages/roomUpdate/roomUpdate'
-import { ContactMain } from './contact/pages/contactMain/contactMain'
-import { ContactCreate } from './contact/pages/contactCreate/contactCreate'
-import { ContactUpdate } from './contact/pages/contactUpdate/contactUpdate'
+import { ClientMain } from './client/pages/clientMain/clientMain'
+import { ClientCreate } from './client/pages/clientCreate/clientCreate'
+import { ClientUpdate } from './client/pages/clientMain/clientUpdate'
 import { UserMain } from './user/pages/userMain/userMain'
 import { UserCreate } from './user/pages/userCreate/userCreate'
 import { UserUpdate } from './user/pages/userUpdate/userUpdate'
@@ -45,10 +45,10 @@ createRoot(document.getElementById('root')!).render(
                                 <Route path="room-create" element={<RoomCreate />} />
                                 <Route path="room-update/:id" element={<RoomUpdate />} />
                             </Route>
-                            <Route path="/contacts" element={<Outlet />}>
-                                <Route path="" element={<ContactMain />} />
-                                <Route path="contact-create" element={<ContactCreate />} />
-                                <Route path="contact-update/:id" element={<ContactUpdate />} />
+                            <Route path="/clients" element={<Outlet />}>
+                                <Route path="" element={<ClientMain />} />
+                                <Route path="client-create" element={<ClientCreate />} />
+                                <Route path="client-update/:id" element={<ClientUpdate />} />
                             </Route>
                             <Route path="/users" element={<Outlet />}>
                                 <Route path="" element={<UserMain />} />

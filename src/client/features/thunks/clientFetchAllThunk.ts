@@ -1,27 +1,27 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { ContactInterface } from "../../interfaces/contactInterface"
-import { ContactArchivedType } from "../../enums/contactArchivedType"
+import { ClientInterface } from "../../interfaces/clientInterface"
+import { ClientArchivedType } from "../../enums/clientArchivedType"
 
 
-const contactDefaultIfError: ContactInterface = {
+const clientDefaultIfError: ClientInterface = {
     _id: "0",
     publish_date: '',
     full_name: '',
     email: '',
     phone_number: '',
     comment: '',
-    archived: ContactArchivedType.notArchived
+    archived: ClientArchivedType.notArchived
 }
 
-export const ContactFetchAllThunk = createAsyncThunk
-    ("contact/fetchAll", async () => {
+export const ClientFetchAllThunk = createAsyncThunk
+    ("client/fetchAll", async () => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return [contactDefaultIfError]
+        if (!apiToken) return [clientDefaultIfError]
 
         try {
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CONTACTS}`, {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CLIENTS}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -30,9 +30,9 @@ export const ContactFetchAllThunk = createAsyncThunk
             })
             if (request.ok) {
                 const json = await request.json()
-                let allContacts: ContactInterface[] = []
+                let allClients: ClientInterface[] = []
                 for (let i = 0; i < json.length; i++) {
-                    allContacts.push({
+                    allClients.push({
                         _id: json[i]._id,
                         publish_date: json[i].publish_date,
                         full_name: json[i].full_name,
@@ -42,16 +42,16 @@ export const ContactFetchAllThunk = createAsyncThunk
                         archived: json[i].archived
                     })
                 }
-                return allContacts
+                return allClients
             }
             else {
                 console.error('Error: ', request.statusText)
-                return [contactDefaultIfError]
+                return [clientDefaultIfError]
             }
         }
         catch (error) {
             console.error(error)
-            return [contactDefaultIfError]
+            return [clientDefaultIfError]
         }
 
     })

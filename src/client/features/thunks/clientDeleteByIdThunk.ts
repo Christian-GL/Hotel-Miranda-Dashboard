@@ -2,14 +2,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
-export const ContactDeleteByIdThunk = createAsyncThunk
-    ("contact/deleteById", async (contactId: string) => {
+export const ClientDeleteByIdThunk = createAsyncThunk
+    ("client/deleteById", async (clientId: string) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) return "0"
 
         try {
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CONTACTS}/${contactId}`, {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CLIENTS}/${clientId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -17,7 +17,7 @@ export const ContactDeleteByIdThunk = createAsyncThunk
                 },
             })
             if (request.ok) {
-                return contactId
+                return clientId
             } else {
                 console.log("Error: ", request.statusText)
                 return "0"

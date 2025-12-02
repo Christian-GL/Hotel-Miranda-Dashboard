@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import * as contactMainStyles from "./contactMainStyles"
-import { ContactArchivedType } from "../../enums/contactArchivedType"
-import { ContactColumnSort } from '../../enums/contactColumnSort'
+import * as clientMainStyles from "./clientMainStyles"
+import { ClientArchivedType } from "../../enums/clientArchivedType"
+import { ClientColumnSort } from '../../enums/clientColumnSort'
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { ContactInterface } from './../../interfaces/contactInterface'
-import { ContactColumnsArrowStatesInterface } from './../../interfaces/contactColumnsArrowStatesInterface'
+import { ClientInterface } from '../../interfaces/clientInterface'
+import { ClientColumnsArrowStatesInterface } from '../../interfaces/clientColumnsArrowStatesInterface'
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { ArticleReview } from "../../../common/components/articleReview/articleReview"
@@ -24,24 +24,24 @@ import {
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import * as paginationJS from '../../../common/styles/pagination'
-import { getContactAllData, getContactAllStatus } from "./../../features/contactSlice"
-import { ContactFetchAllThunk } from "./../../features/thunks/contactFetchAllThunk"
-import { ContactUpdateThunk } from "./../../features/thunks/contactUpdateThunk"
-import { ContactDeleteByIdThunk } from "./../../features/thunks/contactDeleteByIdThunk"
+import { getClientAllData, getClientAllStatus } from "../../features/clientSlice"
+import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
+import { ClientUpdateThunk } from "../../features/thunks/clientUpdateThunk"
+import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
 
 
-export const ContactMain = () => {
+export const ClientMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const nameColumnList: string[] = ['Order ID', 'Publish date', 'Customer', 'Comment', 'Action', '']
-    const contactAll: ContactInterface[] = useSelector(getContactAllData)
-    const contactAllLoading: ApiStatus = useSelector(getContactAllStatus)
+    const clientAll: ClientInterface[] = useSelector(getClientAllData)
+    const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
-    const [filteredContacts, setFilteredContacts] = useState<ContactInterface[]>([])
-    const [displayedNotArchived, setDisplayedNotArchived] = useState<ContactArchivedType>(ContactArchivedType.archived)
-    const [arrowStates, setArrowStates] = useState<ContactColumnsArrowStatesInterface>({
+    const [filteredClients, setFilteredClients] = useState<ClientInterface[]>([])
+    const [displayedNotArchived, setDisplayedNotArchived] = useState<ClientArchivedType>(ClientArchivedType.archived)
+    const [arrowStates, setArrowStates] = useState<ClientColumnsArrowStatesInterface>({
         orderId: ArrowType.right,
         date: ArrowType.down,
         customer: ArrowType.right
@@ -54,42 +54,42 @@ export const ContactMain = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination<ContactInterface>(filteredContacts, 10)
+    } = usePagination<ClientInterface>(filteredClients, 10)
 
     useEffect(() => {
-        if (contactAllLoading === ApiStatus.idle) { dispatch(ContactFetchAllThunk()) }
-        else if (contactAllLoading === ApiStatus.fulfilled) { displayContacts(displayedNotArchived) }
-        else if (contactAllLoading === ApiStatus.rejected) { alert("Error en la api de contacts") }
-    }, [contactAllLoading, contactAll, inputText, displayedNotArchived, arrowStates])
+        if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
+        else if (clientAllLoading === ApiStatus.fulfilled) { displayClients(displayedNotArchived) }
+        else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de clients") }
+    }, [clientAllLoading, clientAll, inputText, displayedNotArchived, arrowStates])
 
-    const navigateToContactCreate = () => navigate('contact-create')
-    const navigateToContactUpdate = (id: string) => navigate(`contact-update/${id}`)
+    const navigateToClientCreate = () => navigate('client-create')
+    const navigateToClientUpdate = (id: string) => navigate(`client-update/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
         resetPage()
     }
-    const handleTableFilter = (archived: ContactArchivedType): void => {
+    const handleTableFilter = (archived: ClientArchivedType): void => {
         setDisplayedNotArchived(archived)
-        displayContacts(displayedNotArchived)
+        displayClients(displayedNotArchived)
     }
-    const displayContacts = (isDisplayedNotArchived: ContactArchivedType): void => {
-        const selectArchiveType = contactAll.filter(contact =>
-            contact.archived !== isDisplayedNotArchived
+    const displayClients = (isDisplayedNotArchived: ClientArchivedType): void => {
+        const selectArchiveType = clientAll.filter(client =>
+            client.archived !== isDisplayedNotArchived
         )
-        const filteredData = selectArchiveType.filter(contact =>
-            contact.full_name.toLowerCase().includes(inputText.toLowerCase())
+        const filteredData = selectArchiveType.filter(client =>
+            client.full_name.toLowerCase().includes(inputText.toLowerCase())
         )
         const sortedData = sortData(filteredData)
-        setFilteredContacts(sortedData)
+        setFilteredClients(sortedData)
         resetPage()
     }
-    const sortData = (filteredData: ContactInterface[]): ContactInterface[] => {
+    const sortData = (filteredData: ClientInterface[]): ClientInterface[] => {
         const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
-        let sortedData: ContactInterface[] = [...filteredData]
+        let sortedData: ClientInterface[] = [...filteredData]
         if (activeColumn) {
 
-            if (activeColumn === ContactColumnSort.orderId) {
+            if (activeColumn === ClientColumnSort.orderId) {
                 sortedData.sort((a, b) => {
                     let valueA: string = a._id
                     let valueB: string = b._id
@@ -100,7 +100,7 @@ export const ContactMain = () => {
                     }
                 })
             }
-            else if (activeColumn === ContactColumnSort.date) {
+            else if (activeColumn === ClientColumnSort.date) {
                 sortedData.sort((a, b) => {
                     let valueA: Date = new Date(a.publish_date)
                     let valueB: Date = new Date(b.publish_date)
@@ -111,7 +111,7 @@ export const ContactMain = () => {
                     }
                 })
             }
-            else if (activeColumn === ContactColumnSort.customer) {
+            else if (activeColumn === ClientColumnSort.customer) {
                 sortedData.sort((a, b) => {
                     let valueA: string = a.full_name.toLowerCase()
                     let valueB: string = b.full_name.toLowerCase()
@@ -126,7 +126,7 @@ export const ContactMain = () => {
         }
         return sortedData
     }
-    const handleColumnClick = (nameColumn: ContactColumnSort): void => {
+    const handleColumnClick = (nameColumn: ClientColumnSort): void => {
         setArrowStates(prevState => {
             const newState = { ...prevState }
 
@@ -145,24 +145,24 @@ export const ContactMain = () => {
 
         handleTableFilter(displayedNotArchived)
     }
-    const getArrowIcon = (nameColumn: ContactColumnSort): JSX.Element => {
+    const getArrowIcon = (nameColumn: ClientColumnSort): JSX.Element => {
         const state = arrowStates[nameColumn]
         if (state === ArrowType.up) { return <TriangleUp /> }
         else if (state === ArrowType.down) { return <TriangleDown /> }
         else { return <TriangleRight /> }
     }
     const publish = (id: string) => {
-        const updatedContact = contactAll.find(contact => contact._id === id)
-        if (updatedContact !== undefined) {
-            const contactUpdated = { ...updatedContact, archived: ContactArchivedType.notArchived }
-            dispatch(ContactUpdateThunk({ idContact: id, updatedContactData: contactUpdated }))
+        const updatedClient = clientAll.find(client => client._id === id)
+        if (updatedClient !== undefined) {
+            const clientUpdated = { ...updatedClient, archived: ClientArchivedType.notArchived }
+            dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: clientUpdated }))
         }
     }
     const archive = (id: string) => {
-        const updatedContact = contactAll.find(contact => contact._id === id)
-        if (updatedContact !== undefined) {
-            const contactUpdated = { ...updatedContact, archived: ContactArchivedType.archived }
-            dispatch(ContactUpdateThunk({ idContact: id, updatedContactData: contactUpdated }))
+        const updatedClient = clientAll.find(client => client._id === id)
+        if (updatedClient !== undefined) {
+            const clientUpdated = { ...updatedClient, archived: ClientArchivedType.archived }
+            dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: clientUpdated }))
         }
     }
     const displayMenuOptions = (index: number): void => {
@@ -170,59 +170,59 @@ export const ContactMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const deleteContactById = (id: string, index: number): void => {
-        dispatch(ContactDeleteByIdThunk(id))
+    const deleteClientById = (id: string, index: number): void => {
+        dispatch(ClientDeleteByIdThunk(id))
         displayMenuOptions(index)
         resetPage()
     }
 
     return (
-        <contactMainStyles.SectionPageContact>
-            <contactMainStyles.SectionReviews>
-                <contactMainStyles.DivCtnReviews>
+        <clientMainStyles.SectionPageClient>
+            <clientMainStyles.SectionReviews>
+                <clientMainStyles.DivCtnReviews>
                     <Swiper
                         spaceBetween={0}
-                        slidesPerView={filteredContacts.length === 1 ? 1 : filteredContacts.length === 2 ? 2 : 3}
+                        slidesPerView={filteredClients.length === 1 ? 1 : filteredClients.length === 2 ? 2 : 3}
                         navigation={false}
                         pagination={{ clickable: true }}
                         loop={true}
                     >
-                        {currentPageItems.map((contact: ContactInterface, index: number) => {
+                        {currentPageItems.map((client: ClientInterface, index: number) => {
                             return <SwiperSlide key={index}>
                                 <ArticleReview
-                                    nameProfile={contact.full_name}
-                                    timeSince={`${formatDateForPrint(contact.publish_date)}`}
-                                    textReview={contact.comment}
+                                    nameProfile={client.full_name}
+                                    timeSince={`${formatDateForPrint(client.publish_date)}`}
+                                    textReview={client.comment}
                                 />
                             </SwiperSlide>
                         })}
                     </Swiper>
-                </contactMainStyles.DivCtnReviews>
-            </contactMainStyles.SectionReviews>
+                </clientMainStyles.DivCtnReviews>
+            </clientMainStyles.SectionReviews>
 
-            <contactMainStyles.DivCtnFuncionality>
-                <contactMainStyles.DivCtnTableDisplayFilter>
-                    <TableDisplaySelector text='Contacts' onClick={() => handleTableFilter(ContactArchivedType.archived)} isSelected={displayedNotArchived === ContactArchivedType.archived} />
-                    <TableDisplaySelector text='Archived' onClick={() => handleTableFilter(ContactArchivedType.notArchived)} isSelected={displayedNotArchived === ContactArchivedType.notArchived} />
-                </contactMainStyles.DivCtnTableDisplayFilter>
+            <clientMainStyles.DivCtnFuncionality>
+                <clientMainStyles.DivCtnTableDisplayFilter>
+                    <TableDisplaySelector text='Clients' onClick={() => handleTableFilter(ClientArchivedType.archived)} isSelected={displayedNotArchived === ClientArchivedType.archived} />
+                    <TableDisplaySelector text='Archived' onClick={() => handleTableFilter(ClientArchivedType.notArchived)} isSelected={displayedNotArchived === ClientArchivedType.notArchived} />
+                </clientMainStyles.DivCtnTableDisplayFilter>
 
-                <contactMainStyles.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search by contact name' />
-                </contactMainStyles.DivCtnSearch>
+                <clientMainStyles.DivCtnSearch>
+                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search by client name' />
+                </clientMainStyles.DivCtnSearch>
 
-                <contactMainStyles.DivCtnButton>
-                    <ButtonCreate onClick={navigateToContactCreate} children='+ New Contact' />
-                </contactMainStyles.DivCtnButton>
-            </contactMainStyles.DivCtnFuncionality>
+                <clientMainStyles.DivCtnButton>
+                    <ButtonCreate onClick={navigateToClientCreate} children='+ New Client' />
+                </clientMainStyles.DivCtnButton>
+            </clientMainStyles.DivCtnFuncionality>
 
-            <Table rowlistlength={filteredContacts.length + 1} columnlistlength={nameColumnList.length} >
+            <Table rowlistlength={filteredClients.length + 1} columnlistlength={nameColumnList.length} >
                 {nameColumnList.map((nameColumn, index) =>
                     index <= 2 ?
                         <THTable key={index} cursorPointer='yes' onClick={() => {
                             switch (index) {
-                                case 0: handleColumnClick(ContactColumnSort.orderId); break
-                                case 1: handleColumnClick(ContactColumnSort.date); break
-                                case 2: handleColumnClick(ContactColumnSort.customer); break
+                                case 0: handleColumnClick(ClientColumnSort.orderId); break
+                                case 1: handleColumnClick(ClientColumnSort.date); break
+                                case 2: handleColumnClick(ClientColumnSort.customer); break
                                 default: ; break
                             }
                         }}
@@ -230,53 +230,53 @@ export const ContactMain = () => {
                             {nameColumn}
                             {(() => {
                                 switch (index) {
-                                    case 0: return getArrowIcon(ContactColumnSort.orderId)
-                                    case 1: return getArrowIcon(ContactColumnSort.date)
-                                    case 2: return getArrowIcon(ContactColumnSort.customer)
+                                    case 0: return getArrowIcon(ClientColumnSort.orderId)
+                                    case 1: return getArrowIcon(ClientColumnSort.date)
+                                    case 2: return getArrowIcon(ClientColumnSort.customer)
                                     default: return null
                                 }
                             })()}
                         </THTable> :
                         <THTable key={index}>{nameColumn}</THTable>
                 )}
-                {currentPageItems.map((contactData, index) => {
+                {currentPageItems.map((clientData, index) => {
                     return [
                         <PTable key={index + '-1'}>
-                            #<b>{contactData._id}</b>
+                            #<b>{clientData._id}</b>
                         </PTable>,
 
                         <PTable key={index + '-2'} >
-                            {formatDateForPrint(contactData.publish_date)}
+                            {formatDateForPrint(clientData.publish_date)}
                         </PTable>,
 
                         <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center'>
                             <DivNameTable>
-                                <b>{contactData.full_name}</b>
+                                <b>{clientData.full_name}</b>
                             </DivNameTable>
-                            <div>{contactData.email}</div>
+                            <div>{clientData.email}</div>
                             <div style={{ display: 'flex', alignItems: 'bottom' }}>
                                 <IconPhone width='1.3rem' />
-                                <div>{contactData.phone_number}</div>
+                                <div>{clientData.phone_number}</div>
                             </div>
                         </PTable>,
 
                         <PTable key={index + '-4'} >
-                            {contactData.comment}
+                            {clientData.comment}
                         </PTable>,
 
                         <PTable key={index + '-5'}>
                             {
-                                contactData.archived === ContactArchivedType.archived ?
-                                    <ButtonPublishArchive onClick={() => publish(contactData._id)} archived={false}>Publish</ButtonPublishArchive> :
-                                    <ButtonPublishArchive onClick={() => archive(contactData._id)} archived={true}>Archive</ButtonPublishArchive>
+                                clientData.archived === ClientArchivedType.archived ?
+                                    <ButtonPublishArchive onClick={() => publish(clientData._id)} archived={false}>Publish</ButtonPublishArchive> :
+                                    <ButtonPublishArchive onClick={() => archive(clientData._id)} archived={true}>Archive</ButtonPublishArchive>
                             }
                         </PTable>,
 
                         <PTable key={index + '-8'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { navigateToContactUpdate(contactData._id) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteContactById(contactData._id, index) }}>Delete</ButtonOption>
+                                <ButtonOption onClick={() => { navigateToClientUpdate(clientData._id) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { deleteClientById(clientData._id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>
                     ]
@@ -301,6 +301,6 @@ export const ContactMain = () => {
                 </paginationJS.ButtonSwitchPage>
             </paginationJS.DivCtnPagination>
 
-        </contactMainStyles.SectionPageContact >
+        </clientMainStyles.SectionPageClient >
     )
 }

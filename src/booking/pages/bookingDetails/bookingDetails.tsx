@@ -59,13 +59,13 @@ export const BookingDetails = () => {
                             <bookingDetailsStyles.NameProfileH2>{bookingById.full_name_guest}</bookingDetailsStyles.NameProfileH2>
                             <bookingDetailsStyles.SubTittleH4 isId={true}>ID Booking: #{bookingById._id}</bookingDetailsStyles.SubTittleH4>
                         </bookingDetailsStyles.DivCtnNameId>
-                        <bookingDetailsStyles.DivCtnContactMessage>
+                        <bookingDetailsStyles.DivCtnClientMessage>
                             <bookingDetailsStyles.IconPhone />
                             <bookingDetailsStyles.ButtonSendMessage>
                                 <bookingDetailsStyles.IconChat />
                                 Send Message
                             </bookingDetailsStyles.ButtonSendMessage>
-                        </bookingDetailsStyles.DivCtnContactMessage>
+                        </bookingDetailsStyles.DivCtnClientMessage>
                     </bookingDetailsStyles.DivCtnMainData>
 
 

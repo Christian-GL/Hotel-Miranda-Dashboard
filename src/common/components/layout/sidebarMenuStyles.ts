@@ -5,7 +5,7 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import { RiHotelFill } from "react-icons/ri";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdOutlineBedroomParent } from "react-icons/md";
-import { MdContacts } from "react-icons/md";
+import { MdClients } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 
 import * as globalConstStyles from '../../styles/globalConstStyles'
@@ -94,7 +94,7 @@ export const IconRooms = styled(MdOutlineBedroomParent)`
     color: ${props => props.theme.iconSidebar};
 `
 
-export const IconContact = styled(MdContacts)`
+export const IconClient = styled(MdClients)`
     display: inline-block;
     vertical-align: middle;
     padding: 0.5em;
@@ -132,7 +132,7 @@ export const DivCtnNavOption = styled.div<{ display?: string, routeIsActive: boo
     cursor: pointer;
 
     &:hover {
-        ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconContact}, ${IconUsers} {
+        ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconClient}, ${IconUsers} {
             color: ${props => (props.routeIsActive ? props.theme.textHoverActiveSidebar2 : props.theme.textHoverSidebar)};
         }
         ${PNavOptionText} {
@@ -141,7 +141,7 @@ export const DivCtnNavOption = styled.div<{ display?: string, routeIsActive: boo
         }
     }
 
-    ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconContact}, ${IconUsers} {
+    ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconClient}, ${IconUsers} {
         color: ${props => (props.routeIsActive ? props.theme.textHoverActiveSidebar2 : props.theme.iconSidebar)};
         background-color: ${props => (props.routeIsActive ? props.theme.textHoverSidebar : props.theme.textHoverActiveSidebar)};
     }

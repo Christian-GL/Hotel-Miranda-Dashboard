@@ -17,7 +17,7 @@ import { AppDispatch } from "../../redux/store"
 import { useLoginOptionsContext } from '../../../signIn/features/loginProvider'
 import { getBookingAllStatus, getBookingIdStatus } from "../../../booking/features/bookingSlice"
 import { getRoomAllStatus, getRoomIdStatus } from "../../../room/features/roomSlice"
-import { getContactAllStatus, getContactIdStatus } from "../../../contact/features/contactSlice"
+import { getClientAllStatus, getClientIdStatus } from "../../../client/features/clientSlice"
 import { getUserAllStatus, getUserIdStatus, getUserIdData } from "../../../user/features/userSlice"
 import { UserFetchByIDThunk } from "../../../user/features/thunks/userFetchByIDThunk"
 import { ApiStatus } from "../../enums/ApiStatus"
@@ -36,8 +36,8 @@ export const Layout = () => {
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const roomByIdLoading: ApiStatus = useSelector(getRoomIdStatus)
-    const contactAllLoading: ApiStatus = useSelector(getContactAllStatus)
-    const contactByIdLoading: ApiStatus = useSelector(getContactIdStatus)
+    const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
+    const clientByIdLoading: ApiStatus = useSelector(getClientIdStatus)
     const userById = useSelector(getUserIdData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const userByIdLoading: ApiStatus = useSelector(getUserIdStatus)
@@ -66,12 +66,12 @@ export const Layout = () => {
         if (bookingByIdLoading === ApiStatus.pending) { ToastifyLoadingData(2, 'Loading booking by ID data...') } else { toast.dismiss(2) }
         if (roomAllLoading === ApiStatus.pending) { ToastifyLoadingData(3, 'Loading all room data...') } else { toast.dismiss(3) }
         if (roomByIdLoading === ApiStatus.pending) { ToastifyLoadingData(4, 'Loading room by ID data...') } else { toast.dismiss(4) }
-        if (contactAllLoading === ApiStatus.pending) { ToastifyLoadingData(5, 'Loading all contact data...') } else { toast.dismiss(5) }
-        if (contactByIdLoading === ApiStatus.pending) { ToastifyLoadingData(6, 'Loading contact by ID data...') } else { toast.dismiss(6) }
+        if (clientAllLoading === ApiStatus.pending) { ToastifyLoadingData(5, 'Loading all client data...') } else { toast.dismiss(5) }
+        if (clientByIdLoading === ApiStatus.pending) { ToastifyLoadingData(6, 'Loading client by ID data...') } else { toast.dismiss(6) }
         if (userAllLoading === ApiStatus.pending) { ToastifyLoadingData(7, 'loading all user data...') } else { toast.dismiss(7) }
         if (userByIdLoading === ApiStatus.pending) { ToastifyLoadingData(8, 'loading user by ID data...') } else { toast.dismiss(8) }
     }, [bookingAllLoading, bookingByIdLoading, roomAllLoading, roomByIdLoading,
-        contactAllLoading, contactByIdLoading, userAllLoading, userByIdLoading])
+        clientAllLoading, clientByIdLoading, userAllLoading, userByIdLoading])
 
     const switchDarkTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light'
@@ -174,12 +174,12 @@ export const Layout = () => {
                             </sidebarStyles.PNavOptionText>
                         </sidebarStyles.DivCtnNavOption>
                         <sidebarStyles.DivCtnNavOption
-                            onClick={() => navigate('/contacts')}
-                            routeIsActive={routeIsActive('/contacts')}
+                            onClick={() => navigate('/clients')}
+                            routeIsActive={routeIsActive('/clients')}
                             display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
-                            <sidebarStyles.IconContact />
+                            <sidebarStyles.IconClient />
                             <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                                Contact
+                                Client
                             </sidebarStyles.PNavOptionText>
                         </sidebarStyles.DivCtnNavOption>
                         <sidebarStyles.DivCtnNavOption
@@ -210,7 +210,7 @@ export const Layout = () => {
                     {
                         bookingAllLoading === ApiStatus.pending || bookingByIdLoading === ApiStatus.pending ||
                             roomAllLoading === ApiStatus.pending || roomByIdLoading === ApiStatus.pending ||
-                            contactAllLoading === ApiStatus.pending || contactByIdLoading === ApiStatus.pending ||
+                            clientAllLoading === ApiStatus.pending || clientByIdLoading === ApiStatus.pending ||
                             userAllLoading === ApiStatus.pending || userByIdLoading === ApiStatus.pending ?
                             <ToastContainer /> :
                             <Outlet />

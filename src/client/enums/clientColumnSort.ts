@@ -1,5 +1,5 @@
 
-export enum ContactColumnSort {
+export enum ClientColumnSort {
     orderId = 'orderId',
     date = 'date',
     customer = 'customer'

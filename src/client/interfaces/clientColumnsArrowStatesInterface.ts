@@ -1,7 +1,7 @@
 
 import { ArrowType } from "../../common/enums/ArrowType"
 
-export interface ContactColumnsArrowStatesInterface {
+export interface ClientColumnsArrowStatesInterface {
     orderId: ArrowType
     date: ArrowType
     customer: ArrowType

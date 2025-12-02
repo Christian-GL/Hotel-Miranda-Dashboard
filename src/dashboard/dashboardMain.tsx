@@ -12,10 +12,10 @@ import { checkBookingStatus } from '../common/utils/checkBookingStatus'
 import { ArticleReview } from "../common/components/articleReview/articleReview"
 import { getBookingAllData, getBookingAllStatus } from '../booking/features/bookingSlice'
 import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk'
-import { getContactAllData, getContactAllStatus } from "../contact/features/contactSlice"
-import { ContactFetchAllThunk } from "../contact/features/thunks/contactFetchAllThunk"
+import { getClientAllData, getClientAllStatus } from "../client/features/clientSlice"
+import { ClientFetchAllThunk } from "../client/features/thunks/clientFetchAllThunk"
 import { BookingInterfaceRoom } from "../booking/interfaces/bookingInterface"
-import { ContactInterface } from "../contact/interfaces/contactInterface"
+import { ClientInterface } from "../client/interfaces/clientInterface"
 
 
 export const DashboardMain = () => {
@@ -23,8 +23,8 @@ export const DashboardMain = () => {
     const dispatch = useDispatch<AppDispatch>()
     const bookingAll: BookingInterfaceRoom[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
-    const contactAll: ContactInterface[] = useSelector(getContactAllData)
-    const contactAllLoading: ApiStatus = useSelector(getContactAllStatus)
+    const clientAll: ClientInterface[] = useSelector(getClientAllData)
+    const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -32,10 +32,10 @@ export const DashboardMain = () => {
         else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de dashboard > bookings") }
     }, [bookingAllLoading, bookingAll])
     useEffect(() => {
-        if (contactAllLoading === ApiStatus.idle) { dispatch(ContactFetchAllThunk()) }
-        else if (contactAllLoading === ApiStatus.fulfilled) { }
-        else if (contactAllLoading === ApiStatus.rejected) { alert("Error en la api de dashboard > contacts") }
-    }, [contactAllLoading, contactAll])
+        if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
+        else if (clientAllLoading === ApiStatus.fulfilled) { }
+        else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de dashboard > clients") }
+    }, [clientAllLoading, clientAll])
 
 
     return (
@@ -99,17 +99,17 @@ export const DashboardMain = () => {
                     > */}
                 <Swiper
                     spaceBetween={0}
-                    slidesPerView={contactAll.length === 1 ? 1 : contactAll.length === 2 ? 2 : 3}
+                    slidesPerView={clientAll.length === 1 ? 1 : clientAll.length === 2 ? 2 : 3}
                     navigation={false}
                     pagination={{ clickable: true }}
                     loop={true}
                 >
-                    {contactAll.map((contact, index) => {
+                    {clientAll.map((client, index) => {
                         return <SwiperSlide key={index}>
                             <ArticleReview
-                                nameProfile={contact.full_name}
-                                timeSince={`${formatDateForPrint(contact.publish_date)}`}
-                                textReview={contact.comment}
+                                nameProfile={client.full_name}
+                                timeSince={`${formatDateForPrint(client.publish_date)}`}
+                                textReview={client.comment}
                             />
                         </SwiperSlide>
                     })}
