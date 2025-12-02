@@ -21,7 +21,7 @@ import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCrea
 import { getClientIdData, getClientIdStatus } from "../../../client/features/clientSlice"
 import { ClientFetchByIDThunk } from "../../../client/features/thunks/clientFetchByIDThunk"
 import { ClientUpdateThunk } from '../../../client/features/thunks/clientUpdateThunk'
-import { ClientArchivedType } from "../../enums/clientArchivedType"
+import { OptionYesNo } from "common/enums/optionYesNo"
 
 
 export const ClientUpdate = () => {
@@ -39,7 +39,7 @@ export const ClientUpdate = () => {
         email: '',
         phone_number: '',
         comment: '',
-        archived: ClientArchivedType.notArchived
+        isArchived: OptionYesNo.no
     })
 
     useEffect(() => {
@@ -55,7 +55,7 @@ export const ClientUpdate = () => {
                 email: clientById.email || '',
                 phone_number: clientById.phone_number || '',
                 comment: clientById.comment || '',
-                archived: clientById.archived
+                isArchived: clientById.isArchived
             })
         }
         else if (clientByIdLoading === ApiStatus.rejected) { alert("Error in API update client") }

@@ -1,17 +1,16 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { ClientInterface } from "../../interfaces/clientInterface"
-import { ClientArchivedType } from "../../enums/clientArchivedType"
+import { OptionYesNo } from "common/enums/optionYesNo"
 
 
 const clientDefaultIfError: ClientInterface = {
     _id: "0",
-    publish_date: '',
     full_name: '',
     email: '',
     phone_number: '',
-    comment: '',
-    archived: ClientArchivedType.notArchived
+    isArchived: OptionYesNo.no,
+    booking_id_list: []
 }
 
 export const ClientUpdateThunk = createAsyncThunk

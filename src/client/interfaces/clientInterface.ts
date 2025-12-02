@@ -1,14 +1,13 @@
 
-import { ClientArchivedType } from '../enums/clientArchivedType'
+import { OptionYesNo } from 'common/enums/optionYesNo'
 
 
 export interface ClientInterfaceNoId {
-    publish_date: string
     full_name: string
     email: string
     phone_number: string
-    comment: string
-    archived: ClientArchivedType
+    isArchived: OptionYesNo
+    booking_id_list: string[]
 }
 
 export interface ClientInterface extends ClientInterfaceNoId {

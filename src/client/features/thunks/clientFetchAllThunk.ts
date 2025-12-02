@@ -1,7 +1,7 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { ClientInterface } from "../../interfaces/clientInterface"
-import { ClientArchivedType } from "../../enums/clientArchivedType"
+import { OptionYesNo } from "common/enums/optionYesNo"
 
 
 const clientDefaultIfError: ClientInterface = {
@@ -11,7 +11,7 @@ const clientDefaultIfError: ClientInterface = {
     email: '',
     phone_number: '',
     comment: '',
-    archived: ClientArchivedType.notArchived
+    isArchived: OptionYesNo.no
 }
 
 export const ClientFetchAllThunk = createAsyncThunk
@@ -39,7 +39,7 @@ export const ClientFetchAllThunk = createAsyncThunk
                         email: json[i].email,
                         phone_number: json[i].phone_number,
                         comment: json[i].comment,
-                        archived: json[i].archived
+                        isArchived: json[i].archived
                     })
                 }
                 return allClients

@@ -7,7 +7,7 @@ import { FaRegCalendarAlt } from "react-icons/fa"
 import { MdOutlineBedroomParent } from "react-icons/md"
 import { BiSolidPlusCircle } from "react-icons/bi"
 import { RiExchangeFill } from "react-icons/ri"
-import { MdClients } from "react-icons/md"
+import { FaUserGear } from "react-icons/fa6"
 import { IoEye } from "react-icons/io5"
 import { IoMdEyeOff } from "react-icons/io"
 
@@ -35,7 +35,7 @@ export const DivCtnIcons = styled.div`
     position: relative;
 `
 
-export const IconUser = styled(FaUser)`
+export const IconUser = styled(FaUserGear)`
     width: 4rem;
     height: auto;
     color: ${props => props.theme.iconForm};
@@ -53,7 +53,7 @@ export const IconBed = styled(MdOutlineBedroomParent)`
     color: ${props => props.theme.iconForm};
 `
 
-export const IconClient = styled(MdClients)`
+export const IconClient = styled(FaUser)`
     width: 4.5rem;
     height: auto;
     color: ${props => props.theme.iconForm};

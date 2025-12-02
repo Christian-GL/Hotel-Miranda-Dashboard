@@ -1,12 +1,12 @@
 
 import { styled } from 'styled-components'
 
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { RiHotelFill } from "react-icons/ri";
-import { LuLayoutDashboard } from "react-icons/lu";
-import { MdOutlineBedroomParent } from "react-icons/md";
-import { MdClients } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
+import { FaRegCalendarAlt } from "react-icons/fa"
+import { RiHotelFill } from "react-icons/ri"
+import { LuLayoutDashboard } from "react-icons/lu"
+import { MdOutlineBedroomParent } from "react-icons/md"
+import { FaUserGear } from "react-icons/fa6"
+import { FaUser } from "react-icons/fa"
 
 import * as globalConstStyles from '../../styles/globalConstStyles'
 
@@ -94,7 +94,7 @@ export const IconRooms = styled(MdOutlineBedroomParent)`
     color: ${props => props.theme.iconSidebar};
 `
 
-export const IconClient = styled(MdClients)`
+export const IconClient = styled(FaUser)`
     display: inline-block;
     vertical-align: middle;
     padding: 0.5em;
@@ -105,7 +105,7 @@ export const IconClient = styled(MdClients)`
     color: ${props => props.theme.iconSidebar};
 `
 
-export const IconUsers = styled(FaUser)`
+export const IconUsers = styled(FaUserGear)`
     display: inline-block;
     vertical-align: middle;
     padding: 0.5em;

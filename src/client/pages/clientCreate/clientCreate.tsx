@@ -20,7 +20,7 @@ import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCrea
 import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../../../client/features/thunks/clientFetchAllThunk"
 import { ClientCreateThunk } from "../../../client/features/thunks/clientCreateThunk"
-import { ClientArchivedType } from "../../enums/clientArchivedType"
+import { OptionYesNo } from "common/enums/optionYesNo"
 
 
 export const ClientCreate = () => {
@@ -35,7 +35,7 @@ export const ClientCreate = () => {
         email: '',
         phone_number: '',
         comment: '',
-        archived: ClientArchivedType.notArchived
+        archived: OptionYesNo
     })
 
     useEffect(() => {

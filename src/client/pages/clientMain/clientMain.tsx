@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as clientMainStyles from "./clientMainStyles"
-import { ClientArchivedType } from "../../enums/clientArchivedType"
 import { ClientColumnSort } from '../../enums/clientColumnSort'
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
@@ -28,6 +27,7 @@ import { getClientAllData, getClientAllStatus } from "../../features/clientSlice
 import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
 import { ClientUpdateThunk } from "../../features/thunks/clientUpdateThunk"
 import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
+import { OptionYesNo } from "common/enums/optionYesNo"
 
 
 export const ClientMain = () => {
@@ -40,7 +40,7 @@ export const ClientMain = () => {
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredClients, setFilteredClients] = useState<ClientInterface[]>([])
-    const [displayedNotArchived, setDisplayedNotArchived] = useState<ClientArchivedType>(ClientArchivedType.archived)
+    const [displayedNotArchived, setDisplayedNotArchived] = useState<OptionYesNo>(OptionYesNo.yes)
     const [arrowStates, setArrowStates] = useState<ClientColumnsArrowStatesInterface>({
         orderId: ArrowType.right,
         date: ArrowType.down,
@@ -69,13 +69,13 @@ export const ClientMain = () => {
         setInputText(e.target.value)
         resetPage()
     }
-    const handleTableFilter = (archived: ClientArchivedType): void => {
-        setDisplayedNotArchived(archived)
+    const handleTableFilter = (isArchived: OptionYesNo): void => {
+        setDisplayedNotArchived(isArchived)
         displayClients(displayedNotArchived)
     }
-    const displayClients = (isDisplayedNotArchived: ClientArchivedType): void => {
+    const displayClients = (isDisplayedNotArchived: OptionYesNo): void => {
         const selectArchiveType = clientAll.filter(client =>
-            client.archived !== isDisplayedNotArchived
+            client.isArchived !== isDisplayedNotArchived
         )
         const filteredData = selectArchiveType.filter(client =>
             client.full_name.toLowerCase().includes(inputText.toLowerCase())
@@ -85,10 +85,10 @@ export const ClientMain = () => {
         resetPage()
     }
     const sortData = (filteredData: ClientInterface[]): ClientInterface[] => {
-        const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
+        // !!! OPTIMIZAR LA SIGUIENTE LINEA:
+        const activeColumn = (Object.keys(arrowStates) as (keyof ClientColumnsArrowStatesInterface)[]).find(key => arrowStates[key] !== ArrowType.right)
         let sortedData: ClientInterface[] = [...filteredData]
         if (activeColumn) {
-
             if (activeColumn === ClientColumnSort.orderId) {
                 sortedData.sort((a, b) => {
                     let valueA: string = a._id
@@ -100,17 +100,18 @@ export const ClientMain = () => {
                     }
                 })
             }
-            else if (activeColumn === ClientColumnSort.date) {
-                sortedData.sort((a, b) => {
-                    let valueA: Date = new Date(a.publish_date)
-                    let valueB: Date = new Date(b.publish_date)
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
-            }
+            // !!! Antigua validación por fecha:
+            // else if (activeColumn === ClientColumnSort.date) {
+            //     sortedData.sort((a, b) => {
+            //         let valueA: Date = new Date(a.publish_date)
+            //         let valueB: Date = new Date(b.publish_date)
+            //         if (arrowStates[activeColumn] === ArrowType.up) {
+            //             return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
+            //         } else {
+            //             return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
+            //         }
+            //     })
+            // }
             else if (activeColumn === ClientColumnSort.customer) {
                 sortedData.sort((a, b) => {
                     let valueA: string = a.full_name.toLowerCase()
@@ -134,9 +135,11 @@ export const ClientMain = () => {
             else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
             else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
 
-            Object.keys(newState).map(key => {
-                if (key !== nameColumn) {
-                    newState[key] = ArrowType.right
+            Object.keys(newState as ClientColumnsArrowStatesInterface).forEach((key) => {
+                const typedKey = key as keyof ClientColumnsArrowStatesInterface
+
+                if (typedKey !== nameColumn) {
+                    newState[typedKey] = ArrowType.right
                 }
             })
 
@@ -154,14 +157,14 @@ export const ClientMain = () => {
     const publish = (id: string) => {
         const updatedClient = clientAll.find(client => client._id === id)
         if (updatedClient !== undefined) {
-            const clientUpdated = { ...updatedClient, archived: ClientArchivedType.notArchived }
+            const clientUpdated = { ...updatedClient, archived: OptionYesNo.no }
             dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: clientUpdated }))
         }
     }
     const archive = (id: string) => {
         const updatedClient = clientAll.find(client => client._id === id)
         if (updatedClient !== undefined) {
-            const clientUpdated = { ...updatedClient, archived: ClientArchivedType.archived }
+            const clientUpdated = { ...updatedClient, archived: OptionYesNo.yes }
             dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: clientUpdated }))
         }
     }
@@ -187,12 +190,13 @@ export const ClientMain = () => {
                         pagination={{ clickable: true }}
                         loop={true}
                     >
+                        {/* !!! CAMBIAR EL EMAIL Y EL FULL_NAME POR DATOS RELEVANTES */}
                         {currentPageItems.map((client: ClientInterface, index: number) => {
                             return <SwiperSlide key={index}>
                                 <ArticleReview
                                     nameProfile={client.full_name}
-                                    timeSince={`${formatDateForPrint(client.publish_date)}`}
-                                    textReview={client.comment}
+                                    timeSince={`${formatDateForPrint(client.email)}`}
+                                    textReview={client.full_name}
                                 />
                             </SwiperSlide>
                         })}
@@ -202,8 +206,8 @@ export const ClientMain = () => {
 
             <clientMainStyles.DivCtnFuncionality>
                 <clientMainStyles.DivCtnTableDisplayFilter>
-                    <TableDisplaySelector text='Clients' onClick={() => handleTableFilter(ClientArchivedType.archived)} isSelected={displayedNotArchived === ClientArchivedType.archived} />
-                    <TableDisplaySelector text='Archived' onClick={() => handleTableFilter(ClientArchivedType.notArchived)} isSelected={displayedNotArchived === ClientArchivedType.notArchived} />
+                    <TableDisplaySelector text='Clients' onClick={() => handleTableFilter(OptionYesNo.yes)} isSelected={displayedNotArchived === OptionYesNo.yes} />
+                    <TableDisplaySelector text='Archived' onClick={() => handleTableFilter(OptionYesNo.no)} isSelected={displayedNotArchived === OptionYesNo.no} />
                 </clientMainStyles.DivCtnTableDisplayFilter>
 
                 <clientMainStyles.DivCtnSearch>
@@ -245,11 +249,7 @@ export const ClientMain = () => {
                             #<b>{clientData._id}</b>
                         </PTable>,
 
-                        <PTable key={index + '-2'} >
-                            {formatDateForPrint(clientData.publish_date)}
-                        </PTable>,
-
-                        <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center'>
+                        <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
                             <DivNameTable>
                                 <b>{clientData.full_name}</b>
                             </DivNameTable>
@@ -260,19 +260,19 @@ export const ClientMain = () => {
                             </div>
                         </PTable>,
 
-                        <PTable key={index + '-4'} >
-                            {clientData.comment}
+                        <PTable key={index + '-3'} >
+                            {clientData.booking_id_list}
                         </PTable>,
 
-                        <PTable key={index + '-5'}>
+                        <PTable key={index + '-4'}>
                             {
-                                clientData.archived === ClientArchivedType.archived ?
+                                clientData.isArchived === OptionYesNo.yes ?
                                     <ButtonPublishArchive onClick={() => publish(clientData._id)} archived={false}>Publish</ButtonPublishArchive> :
                                     <ButtonPublishArchive onClick={() => archive(clientData._id)} archived={true}>Archive</ButtonPublishArchive>
                             }
                         </PTable>,
 
-                        <PTable key={index + '-8'}>
+                        <PTable key={index + '-5'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                 <ButtonOption onClick={() => { navigateToClientUpdate(clientData._id) }}>Update</ButtonOption>
