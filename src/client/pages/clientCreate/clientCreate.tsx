@@ -14,8 +14,8 @@ import { ClientInterfaceNoId } from "../../interfaces/clientInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconClient, IconPlus, TitleForm, Form, DivCtnEntry,
-    LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
+    DivCtnForm, DivIcon, DivCtnIcons, IconClient, IconPlus, TitleForm,
+    Form, DivCtnEntry, LabelText, InputText, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"

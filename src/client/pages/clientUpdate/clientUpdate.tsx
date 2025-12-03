@@ -12,10 +12,11 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { ClientInterface } from "../../interfaces/clientInterface"
-import { validateFullName, validateEmail, validateTextArea, validatePhoneNumber } from '../../../common/utils/validators'
+import { createFormHandlers } from '../../../common/utils/formHandlers'
+import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconClient, IconUpdate, TitleForm, Form, DivCtnEntry,
-    LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
+    DivCtnForm, DivIcon, DivCtnIcons, IconClient, IconUpdate, TitleForm,
+    Form, DivCtnEntry, LabelText, InputText, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getClientIdData, getClientIdStatus } from "../../../client/features/clientSlice"
@@ -34,13 +35,13 @@ export const ClientUpdate = () => {
     const clientByIdLoading = useSelector(getClientIdStatus)
     const [clientUpdated, setClientUpdated] = useState<ClientInterface>({
         _id: "0",
-        publish_date: '',
         full_name: '',
         email: '',
         phone_number: '',
-        comment: '',
-        isArchived: OptionYesNo.no
+        isArchived: OptionYesNo.no,
+        booking_id_list: []
     })
+    const { handleStringChange } = createFormHandlers(setClientUpdated)
 
     useEffect(() => {
         if (clientByIdLoading === ApiStatus.idle) { dispatch(ClientFetchByIDThunk(idParams)) }
@@ -50,35 +51,41 @@ export const ClientUpdate = () => {
             }
             setClientUpdated({
                 _id: clientById._id,
-                publish_date: clientById.publish_date || '',
                 full_name: clientById.full_name || '',
                 email: clientById.email || '',
                 phone_number: clientById.phone_number || '',
-                comment: clientById.comment || '',
-                isArchived: clientById.isArchived
+                isArchived: clientById.isArchived,
+                booking_id_list: clientById.booking_id_list || []
             })
         }
         else if (clientByIdLoading === ApiStatus.rejected) { alert("Error in API update client") }
     }, [clientByIdLoading, clientById, id])
 
-    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setClientUpdated({
-            ...clientUpdated,
-            [name]: value
-        })
-    }
-    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        setClientUpdated({
-            ...clientUpdated,
-            [name]: value
-        })
+    const validateAllData = (): string[] => {
+        const allErrorMessages: string[] = []
+
+        validateFullName(clientUpdated.full_name, 'Full name').map(
+            error => allErrorMessages.push(error)
+        )
+        validateEmail(clientUpdated.email, 'Email').map(
+            error => allErrorMessages.push(error)
+        )
+        validatePhoneNumber(clientUpdated.phone_number, 'Phone number').map(
+            error => allErrorMessages.push(error)
+        )
+        validateMongoDBObjectIdList(clientUpdated.booking_id_list, 'Booking ID list').map(
+            error => allErrorMessages.push(error)
+        )
+
+        return allErrorMessages
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!validateAllData()) { return }
+        if (validateAllData().length > 0) {
+            validateAllData().forEach(error => ToastifyError(error))
+            return
+        }
 
         dispatch(ClientUpdateThunk({ idClient: clientUpdated._id, updatedClientData: clientUpdated }))
             .then(() => {
@@ -90,24 +97,6 @@ export const ClientUpdate = () => {
                 ToastifyError(error)
             })
     }
-
-    const validateAllData = (): boolean => {
-
-        const errorsFullName = validateFullName(clientUpdated.full_name, 'Full Name')
-        if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }
-
-        const errorsEmail = validateEmail(clientUpdated.email, 'Email')
-        if (errorsEmail.length > 0) { errorsEmail.map(error => ToastifyError(error)); return false }
-
-        const errorsPhoneNumber = validatePhoneNumber(clientUpdated.phone_number, 'Phone Number')
-        if (errorsPhoneNumber.length > 0) { errorsPhoneNumber.map(error => ToastifyError(error)); return false }
-
-        const errorsTextArea = validateTextArea(clientUpdated.comment, 'Comment')
-        if (errorsTextArea.length > 0) { errorsTextArea.map(error => ToastifyError(error)); return false }
-
-        return true
-    }
-
 
     return (<>
         <ToastContainer />
@@ -138,9 +127,10 @@ export const ClientUpdate = () => {
                         <InputText name="phone_number" value={clientUpdated.phone_number} onChange={handleStringChange} />
                     </DivCtnEntry>
 
+                    {/* !!! DEBE MOSTRAR INFO DE LAS BOOKINGS RELACIONADAS (NO EDITABLE) */}
                     <DivCtnEntry>
-                        <LabelText>Comment</LabelText>
-                        <TextAreaJobDescription name="comment" value={clientUpdated.comment} onChange={handleTextAreaChange} ></TextAreaJobDescription>
+                        <LabelText>Booking ID List</LabelText>
+                        <InputText name="booking_id_list" value={clientUpdated.booking_id_list} onChange={handleStringChange} />
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
