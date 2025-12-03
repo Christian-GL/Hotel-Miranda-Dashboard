@@ -11,7 +11,8 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { ClientInterfaceNoId } from "../../interfaces/clientInterface"
-import { validateFullName, validateEmail, validateTextArea, validatePhoneNumber } from '../../../common/utils/validators'
+import { createFormHandlers } from '../../../common/utils/formHandlers'
+import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconClient, IconPlus, TitleForm, Form, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, DivButtonCreateUser
@@ -30,13 +31,13 @@ export const ClientCreate = () => {
     const clientAll = useSelector(getClientAllData)
     const clientAllLoading = useSelector(getClientAllStatus)
     const [newClient, setNewClient] = useState<ClientInterfaceNoId>({
-        publish_date: '',
         full_name: '',
         email: '',
         phone_number: '',
-        comment: '',
-        archived: OptionYesNo
+        isArchived: OptionYesNo.no,
+        booking_id_list: []
     })
+    const { handleStringChange } = createFormHandlers(setNewClient)
 
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
@@ -44,31 +45,33 @@ export const ClientCreate = () => {
         else if (clientAllLoading === ApiStatus.rejected) { alert("Error in API create client") }
     }, [clientAllLoading, clientAll])
 
-    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setNewClient({
-            ...newClient,
-            [name]: value
-        })
-    }
-    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        setNewClient({
-            ...newClient,
-            [name]: value
-        })
+    const validateAllData = (): string[] => {
+        const allErrorMessages: string[] = []
+
+        validateFullName(newClient.full_name, 'Full name').map(
+            error => allErrorMessages.push(error)
+        )
+        validateEmail(newClient.email, 'Email').map(
+            error => allErrorMessages.push(error)
+        )
+        validatePhoneNumber(newClient.phone_number, 'Phone number').map(
+            error => allErrorMessages.push(error)
+        )
+        validateMongoDBObjectIdList(newClient.booking_id_list, 'Booking ID list').map(
+            error => allErrorMessages.push(error)
+        )
+
+        return allErrorMessages
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!validateAllData()) { return }
-
-        const newClientToDispatch = {
-            ...newClient,
-            publish_date: new Date().toISOString()
+        if (validateAllData().length > 0) {
+            validateAllData().forEach(error => ToastifyError(error))
+            return
         }
 
-        dispatch(ClientCreateThunk(newClientToDispatch))
+        dispatch(ClientCreateThunk(newClient))
             .then(() => {
                 ToastifySuccess('Client created', () => {
                     navigate('../')
@@ -77,22 +80,6 @@ export const ClientCreate = () => {
             .catch((error) => {
                 ToastifyError(error)
             })
-    }
-
-    const validateAllData = (): boolean => {
-        const errorsFullName = validateFullName(newClient.full_name, 'Full Name')
-        if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }
-
-        const errorsEmail = validateEmail(newClient.email, 'Email')
-        if (errorsEmail.length > 0) { errorsEmail.map(error => ToastifyError(error)); return false }
-
-        const errorsPhoneNumber = validatePhoneNumber(newClient.phone_number, 'Phone Number')
-        if (errorsPhoneNumber.length > 0) { errorsPhoneNumber.map(error => ToastifyError(error)); return false }
-
-        const errorsTextArea = validateTextArea(newClient.comment, 'Comment')
-        if (errorsTextArea.length > 0) { errorsTextArea.map(error => ToastifyError(error)); return false }
-
-        return true
     }
 
 
@@ -123,11 +110,6 @@ export const ClientCreate = () => {
                     <DivCtnEntry>
                         <LabelText>Phone Number</LabelText>
                         <InputText name="phone_number" onChange={handleStringChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
-                        <LabelText>Comment</LabelText>
-                        <TextAreaJobDescription name="comment" onChange={handleTextAreaChange} ></TextAreaJobDescription>
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>

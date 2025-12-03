@@ -2,7 +2,7 @@
 import { JobPosition } from "../enums/jobPosition"
 import  { Role } from "../enums/role"
 import { OptionYesNo } from "../../common/enums/optionYesNo"
-// import { UserStatus } from "../enums/userStatus"
+
 
 // OLD VERSION:
 // export interface UserInterfaceNoId {
