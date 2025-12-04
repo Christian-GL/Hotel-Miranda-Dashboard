@@ -100,18 +100,6 @@ export const ClientMain = () => {
                     }
                 })
             }
-            // !!! Antigua validación por fecha:
-            // else if (activeColumn === ClientColumnSort.date) {
-            //     sortedData.sort((a, b) => {
-            //         let valueA: Date = new Date(a.publish_date)
-            //         let valueB: Date = new Date(b.publish_date)
-            //         if (arrowStates[activeColumn] === ArrowType.up) {
-            //             return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-            //         } else {
-            //             return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-            //         }
-            //     })
-            // }
             else if (activeColumn === ClientColumnSort.customer) {
                 sortedData.sort((a, b) => {
                     let valueA: string = a.full_name.toLowerCase()

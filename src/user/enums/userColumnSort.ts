@@ -1,5 +1,7 @@
 
 export enum UserColumnSort {
-    name = 'name',
-    startDate = 'startDate'
+    userInfo = 'userInfo',
+    startDate = 'startDate',
+    endDate = 'endDate',
+    role = 'role'
 }

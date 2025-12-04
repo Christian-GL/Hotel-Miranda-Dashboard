@@ -31,7 +31,7 @@ export const UserMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const nameColumnList: string[] = ['', 'Personal data', 'Phone number', 'Start date', 'End date', 'Job position', 'Role', 'Status', '']
+    const nameColumnList: string[] = ['', 'User info', 'Phone number', 'Start date', 'End date', 'Job position', 'Role', 'Status', '']
     const userAll: UserInterface[] = useSelector(getUserAllData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState<string>('')
@@ -39,8 +39,10 @@ export const UserMain = () => {
     const [selectedButton, setSelectedButton] = useState<UserButtonType>(UserButtonType.all)
     const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([])
     const [arrowStates, setArrowStates] = useState<UserColumnsArrowStatesInterface>({
-        name: ArrowType.right,
-        startDate: ArrowType.down
+        userInfo: ArrowType.down,
+        startDate: ArrowType.right,
+        endDate: ArrowType.right,
+        role: ArrowType.right
     })
     const {
         currentPageItems,
@@ -99,7 +101,7 @@ export const UserMain = () => {
         const activeColumn = (Object.keys(arrowStates) as (keyof UserColumnsArrowStatesInterface)[]).find(key => arrowStates[key] !== ArrowType.right)
         let sortedData: UserInterface[] = [...filteredData]
         if (activeColumn) {
-            if (activeColumn === UserColumnSort.name) {
+            if (activeColumn === UserColumnSort.userInfo || activeColumn === UserColumnSort.role) {
                 sortedData.sort((a, b) => {
                     let valueA: string = a.full_name.toLowerCase()
                     let valueB: string = b.full_name.toLowerCase()
@@ -110,7 +112,7 @@ export const UserMain = () => {
                     }
                 })
             }
-            else if (activeColumn === UserColumnSort.startDate) {
+            else if (activeColumn === UserColumnSort.startDate || activeColumn === UserColumnSort.endDate) {
                 sortedData.sort((a, b) => {
                     let valueA: Date = new Date(a.start_date)
                     let valueB: Date = new Date(b.start_date)
@@ -183,14 +185,46 @@ export const UserMain = () => {
 
 
             <Table rowlistlength={filteredUsers.length + 1} columnlistlength={nameColumnList.length}>
-                {nameColumnList.map((nameColumn, index) =>
-                    index === 1 || index === 2 ?
-                        <THTable key={index} onClick={() => handleColumnClick(index === 1 ? UserColumnSort.name : UserColumnSort.startDate)} cursorPointer='yes'>
-                            {nameColumn}
-                            {index === 1 ? getArrowIcon(UserColumnSort.name) : getArrowIcon(UserColumnSort.startDate)}
-                        </THTable> :
-                        <THTable key={index}>{nameColumn}</THTable>
-                )}
+                {nameColumnList.map((nameColumn, index) => {
+                    let content
+                    switch (index) {
+                        case 1:
+                            content =
+                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.userInfo)} cursorPointer="yes">
+                                    {nameColumn}
+                                    {getArrowIcon(UserColumnSort.userInfo)}
+                                </THTable>
+                            break
+                        case 3:
+                            content =
+                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.startDate)}>
+                                    {nameColumn}
+                                    {getArrowIcon(UserColumnSort.startDate)}
+                                </THTable>
+                            break
+                        case 4:
+                            content =
+                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.endDate)}>
+                                    {nameColumn}
+                                    {getArrowIcon(UserColumnSort.endDate)}
+                                </THTable>
+                            break
+                        case 6:
+                            content =
+                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.role)}>
+                                    {nameColumn}
+                                    {getArrowIcon(UserColumnSort.role)}
+                                </THTable>
+                            break
+                        default:
+                            content =
+                                <THTable key={index}>
+                                    {nameColumn}
+                                </THTable>
+                    }
+
+                    return content
+                })}
                 {currentPageItems.map((userData: UserInterface, index: number) => {
                     return [
                         <DivImgTable key={index + '-1'}>
