@@ -107,7 +107,7 @@ export const DashboardMain = () => {
                     {clientAll.map((client, index) => {
                         return <SwiperSlide key={index}>
                             <ArticleReview
-                                nameProfile={client.full_name}
+                                title={client.full_name}
                                 timeSince={`${formatDateForPrint(client.publish_date)}`}
                                 textReview={client.comment}
                             />

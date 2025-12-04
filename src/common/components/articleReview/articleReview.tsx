@@ -9,7 +9,7 @@ import { IconHotel } from '../layout/sidebarMenuStyles'
 import { PopupText } from "../popupText/popupText"
 
 
-export const ArticleReview: React.FC<ArticleReviewInterface> = ({ nameProfile, textReview, timeSince }) => {
+export const ArticleReview: React.FC<ArticleReviewInterface> = ({ title, subTittle, content }) => {
 
     const [showPopup, setShowPopup] = useState<boolean>(false)
 
@@ -19,21 +19,21 @@ export const ArticleReview: React.FC<ArticleReviewInterface> = ({ nameProfile, t
 
     return (<>
 
-        {showPopup && <PopupText isSlider={true} title={nameProfile} text={textReview} onClose={() => setShowPopup(false)} />}
+        {showPopup && <PopupText isSlider={true} title={title} text={content} onClose={() => setShowPopup(false)} />}
 
+        {/* REPASAR PROPORCIONES PARA QUE NO SE DESCUADREN LOS DATOS */}
         <articleReviewStyles.ArticleReview>
             <articleReviewStyles.PTextReview onClick={openPopup}>
-                {textReview}
+                {content}
             </articleReviewStyles.PTextReview>
 
             <articleReviewStyles.DivCtnDetails>
 
                 <articleReviewStyles.DivCtnReviewDetails>
-                    {/* <articleReviewStyles.ImgProfile src={PedroSanchez} /> */}
                     <IconHotel />
                     <articleReviewStyles.DivCtnInfoDetails>
-                        <articleReviewStyles.TitleNameProfile>{nameProfile}</articleReviewStyles.TitleNameProfile>
-                        <articleReviewStyles.TextH5>{timeSince}</articleReviewStyles.TextH5>
+                        <articleReviewStyles.TitleNameProfile>{title}</articleReviewStyles.TitleNameProfile>
+                        <articleReviewStyles.TextH5>{subTittle}</articleReviewStyles.TextH5>
                     </articleReviewStyles.DivCtnInfoDetails>
                 </articleReviewStyles.DivCtnReviewDetails>
 

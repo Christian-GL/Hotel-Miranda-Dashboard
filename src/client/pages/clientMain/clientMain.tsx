@@ -178,13 +178,13 @@ export const ClientMain = () => {
                         pagination={{ clickable: true }}
                         loop={true}
                     >
-                        {/* !!! CAMBIAR EL EMAIL Y EL FULL_NAME POR DATOS RELEVANTES */}
+                        {/* !!! CAMBIAR POR DATOS RELEVANTES */}
                         {currentPageItems.map((client: ClientInterface, index: number) => {
                             return <SwiperSlide key={index}>
                                 <ArticleReview
-                                    nameProfile={client.full_name}
-                                    timeSince={`${formatDateForPrint(client.email)}`}
-                                    textReview={client.full_name}
+                                    title={client.full_name}
+                                    subTittle={client.email}
+                                    content={client.phone_number}
                                 />
                             </SwiperSlide>
                         })}

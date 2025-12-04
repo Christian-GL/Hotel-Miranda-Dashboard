@@ -196,21 +196,21 @@ export const UserMain = () => {
                             break
                         case 3:
                             content =
-                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.startDate)}>
+                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.startDate)} cursorPointer="yes">
                                     {nameColumn}
                                     {getArrowIcon(UserColumnSort.startDate)}
                                 </THTable>
                             break
                         case 4:
                             content =
-                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.endDate)}>
+                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.endDate)} cursorPointer="yes">
                                     {nameColumn}
                                     {getArrowIcon(UserColumnSort.endDate)}
                                 </THTable>
                             break
                         case 6:
                             content =
-                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.role)}>
+                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.role)} cursorPointer="yes">
                                     {nameColumn}
                                     {getArrowIcon(UserColumnSort.role)}
                                 </THTable>
