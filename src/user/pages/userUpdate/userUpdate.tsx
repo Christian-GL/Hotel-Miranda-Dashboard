@@ -147,8 +147,6 @@ export const UserUpdate = () => {
 
         <GlobalDateTimeStyles />
 
-        {console.log(userUpdated)}
-
         <userUpdateStyles.SectionPageUserUpdate>
             <DivCtnForm>
                 <DivIcon>

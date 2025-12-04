@@ -183,7 +183,6 @@ export const UserMain = () => {
                 </userMainStyles.DivCtnButton>
             </userMainStyles.DivCtnFuncionality>
 
-
             <Table rowlistlength={filteredUsers.length + 1} columnlistlength={nameColumnList.length}>
                 {nameColumnList.map((nameColumn, index) => {
                     let content

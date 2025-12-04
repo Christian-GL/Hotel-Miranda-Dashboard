@@ -42,9 +42,7 @@ export const ClientMain = () => {
     const [filteredClients, setFilteredClients] = useState<ClientInterface[]>([])
     const [displayedNotArchived, setDisplayedNotArchived] = useState<OptionYesNo>(OptionYesNo.yes)
     const [arrowStates, setArrowStates] = useState<ClientColumnsArrowStatesInterface>({
-        orderId: ArrowType.right,
-        date: ArrowType.down,
-        customer: ArrowType.right
+        customerInfo: ArrowType.down
     })
     const {
         currentPageItems,
@@ -89,18 +87,18 @@ export const ClientMain = () => {
         const activeColumn = (Object.keys(arrowStates) as (keyof ClientColumnsArrowStatesInterface)[]).find(key => arrowStates[key] !== ArrowType.right)
         let sortedData: ClientInterface[] = [...filteredData]
         if (activeColumn) {
-            if (activeColumn === ClientColumnSort.orderId) {
-                sortedData.sort((a, b) => {
-                    let valueA: string = a._id
-                    let valueB: string = b._id
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
-            }
-            else if (activeColumn === ClientColumnSort.customer) {
+            // if (activeColumn === ClientColumnSort.orderId) {
+            //     sortedData.sort((a, b) => {
+            //         let valueA: string = a._id
+            //         let valueB: string = b._id
+            //         if (arrowStates[activeColumn] === ArrowType.up) {
+            //             return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
+            //         } else {
+            //             return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
+            //         }
+            //     })
+            // }
+            if (activeColumn === ClientColumnSort.customerInfo) {
                 sortedData.sort((a, b) => {
                     let valueA: string = a.full_name.toLowerCase()
                     let valueB: string = b.full_name.toLowerCase()
@@ -167,6 +165,7 @@ export const ClientMain = () => {
         resetPage()
     }
 
+
     return (
         console.log(filteredClients),
         <clientMainStyles.SectionPageClient>
@@ -209,29 +208,25 @@ export const ClientMain = () => {
             </clientMainStyles.DivCtnFuncionality>
 
             <Table rowlistlength={filteredClients.length + 1} columnlistlength={nameColumnList.length} >
-                {nameColumnList.map((nameColumn, index) =>
-                    index <= 2 ?
-                        <THTable key={index} cursorPointer='yes' onClick={() => {
-                            switch (index) {
-                                case 0: handleColumnClick(ClientColumnSort.orderId); break
-                                case 1: handleColumnClick(ClientColumnSort.date); break
-                                case 2: handleColumnClick(ClientColumnSort.customer); break
-                                default: ; break
-                            }
-                        }}
-                        >
-                            {nameColumn}
-                            {(() => {
-                                switch (index) {
-                                    case 0: return getArrowIcon(ClientColumnSort.orderId)
-                                    case 1: return getArrowIcon(ClientColumnSort.date)
-                                    case 2: return getArrowIcon(ClientColumnSort.customer)
-                                    default: return null
-                                }
-                            })()}
-                        </THTable> :
-                        <THTable key={index}>{nameColumn}</THTable>
-                )}
+                {nameColumnList.map((nameColumn, index) => {
+                    let content
+                    switch (index) {
+                        case 0:
+                            content =
+                                <THTable key={index} onClick={() => handleColumnClick(ClientColumnSort.customerInfo)} cursorPointer="yes">
+                                    {nameColumn}
+                                    {getArrowIcon(ClientColumnSort.customerInfo)}
+                                </THTable>
+                            break
+                        default:
+                            content =
+                                <THTable key={index}>
+                                    {nameColumn}
+                                </THTable>
+                    }
+
+                    return content
+                })}
                 {currentPageItems.map((clientData, index) => {
                     return [
                         <PTable key={index + '-1'} flexdirection='column' alignitems='left' justifycontent='center'>
