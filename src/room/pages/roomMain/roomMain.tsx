@@ -35,7 +35,7 @@ export const RoomMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const nameColumnList: string[] = ['', 'Room number', 'Room type', 'Amenities', 'Price', 'Offer price', 'Booking status', '']
+    const nameColumnList: string[] = ['', 'Room number', 'Room type', 'Amenities', 'Price', 'Offer price', 'Active', '']
     const roomAll: RoomInterfaceBookings[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const bookingAll: BookingInterfaceRoom[] = useSelector(getBookingAllData)
@@ -107,7 +107,7 @@ export const RoomMain = () => {
         resetPage()
     }
     const sortData = (filteredData: RoomInterfaceBookings[]): RoomInterfaceBookings[] => {
-        const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
+        const activeColumn = (Object.keys(arrowStates) as (keyof RoomColumnsArrowStatesInterface)[]).find(key => arrowStates[key] !== ArrowType.right)
         let sortedData: RoomInterfaceBookings[] = [...filteredData]
         if (activeColumn) {
             if (activeColumn === RoomColumnSort.roomNumber) {
@@ -181,7 +181,7 @@ export const RoomMain = () => {
             .then((response) => {
                 const { roomId, bookingsToDelete } = response.payload
                 if (roomId !== 0) {
-                    bookingsToDelete.forEach(bookingId => {
+                    bookingsToDelete.forEach((bookingId: string) => {
                         dispatch(deleteBooking(bookingId))
                     })
                 }
@@ -220,29 +220,39 @@ export const RoomMain = () => {
             </roomMainStyles.DivCtnFuncionality>
 
             <Table rowlistlength={filteredRooms.length + 1} columnlistlength={nameColumnList.length} >
-                {nameColumnList.map((nameColumn, index) =>
-                    index === 1 || index === 4 || index === 5 ?
-                        <THTable key={index} cursorPointer='yes' onClick={() => {
-                            switch (index) {
-                                case 1: handleColumnClick(RoomColumnSort.roomNumber); break
-                                case 4: handleColumnClick(RoomColumnSort.price); break
-                                case 5: handleColumnClick(RoomColumnSort.offerPrice); break
-                                default: ; break
-                            }
-                        }}
-                        >
-                            {nameColumn}
-                            {(() => {
-                                switch (index) {
-                                    case 1: return getArrowIcon(RoomColumnSort.roomNumber)
-                                    case 4: return getArrowIcon(RoomColumnSort.price)
-                                    case 5: return getArrowIcon(RoomColumnSort.offerPrice)
-                                    default: return null
-                                }
-                            })()}
-                        </THTable> :
-                        <THTable key={index}>{nameColumn}</THTable>
-                )}
+                {nameColumnList.map((nameColumn, index) => {
+                    let content
+                    switch (index) {
+                        case 1:
+                            content =
+                                <THTable key={index} onClick={() => handleColumnClick(RoomColumnSort.roomNumber)} cursorPointer="yes">
+                                    {nameColumn}
+                                    {getArrowIcon(RoomColumnSort.roomNumber)}
+                                </THTable>
+                            break
+                        case 4:
+                            content =
+                                <THTable key={index} onClick={() => handleColumnClick(RoomColumnSort.price)} cursorPointer="yes">
+                                    {nameColumn}
+                                    {getArrowIcon(RoomColumnSort.price)}
+                                </THTable>
+                            break
+                        case 5:
+                            content =
+                                <THTable key={index} onClick={() => handleColumnClick(RoomColumnSort.offerPrice)} cursorPointer="yes">
+                                    {nameColumn}
+                                    {getArrowIcon(RoomColumnSort.offerPrice)}
+                                </THTable>
+                            break
+                        default:
+                            content =
+                                <THTable key={index}>
+                                    {nameColumn}
+                                </THTable>
+                    }
+
+                    return content
+                })}
                 {currentPageItems.map((roomData, index) => {
                     return [
                         <DivImgTable key={index + '-1'}>
