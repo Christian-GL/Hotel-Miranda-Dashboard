@@ -2,6 +2,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { RoomInterfaceNoId } from '../../interfaces/roomInterface'
 import { RoomType } from '../../enums/roomType'
+import { OptionYesNo } from "common/enums/optionYesNo"
 
 
 const roomDefaultIfError: RoomInterfaceNoId = {
@@ -11,6 +12,8 @@ const roomDefaultIfError: RoomInterfaceNoId = {
     amenities: [],
     price: 0,
     discount: 0,
+    isActive: OptionYesNo.no,
+    isArchived: OptionYesNo.yes,
     booking_id_list: []
 }
 
