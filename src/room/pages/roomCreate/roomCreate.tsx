@@ -10,13 +10,17 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { RoomInterfaceNoId } from "../../interfaces/roomInterface"
 import { RoomAmenities } from "../../enums/roomAmenities"
 import { RoomType } from "../../enums/roomType"
+import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter"
+import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
-    validatePhotos, validateRoomType, validateAmenities,
-    validateNumberBetween, validateNewRoomNumber
-} from '../../../common/utils/validators'
+    validateNumber, validateRoomPhotoList, validateRoomType,
+    validateAmenities, validateRoomPrice, validateRoomDiscount,
+    validateOptionYesNo, validateMongoDBObjectIdList
+} from '../../../common/utils/commonValidator'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconPlus, TitleForm, Form, ImgRoom, DivCtnEntry,
     LabelText, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
@@ -34,14 +38,22 @@ export const RoomCreate = () => {
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
     const [newRoom, setNewRoom] = useState<RoomInterfaceNoId>({
-        photos: [],
         number: '0',
+        photos: [],
         type: RoomType.singleBed,
         amenities: [],
         price: 0,
         discount: 0,
+        isActive: OptionYesNo.yes,
+        isArchived: OptionYesNo.no,
         booking_id_list: []
     })
+    const { handleStringChange,
+        handleArrayPhotosChange,
+        handleMultiSelectChange,
+        handleNumberFloatChange,
+        handleSelectChange
+    } = createFormHandlers(setNewRoom)
 
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
@@ -49,63 +61,48 @@ export const RoomCreate = () => {
         else if (roomAllLoading === ApiStatus.rejected) { alert("Error in API create user") }
     }, [roomAllLoading, roomAll])
 
-    const handlePhotosChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-        const { files } = e.target
-        if (files && files[0]) {
-            const photoUrl = URL.createObjectURL(files[0])
-            setNewRoom(prevState => {
-                const updatedPhotos = [...prevState.photos]
-                updatedPhotos[index] = photoUrl
-                return {
-                    ...prevState,
-                    photos: updatedPhotos
-                }
-            })
-        }
-    }
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setNewRoom({
-            ...newRoom,
-            [name]: value
-        })
-    }
-    const handleAmenitiesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, options } = e.target
-        const selectedAmenities: string[] = []
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].selected) {
-                selectedAmenities.push(options[i].value)
-            }
-        }
-        setNewRoom({
-            ...newRoom,
-            [name]: selectedAmenities
-        })
-    }
-    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setNewRoom({
-            ...newRoom,
-            [name]: value
-        })
-    }
-    const handleNumberFloatChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setNewRoom({
-            ...newRoom,
-            [name]: value === "" ? 0 : parseFloat(value)
-        })
+    const validateAllData = (): string[] => {
+        const allErrorMessages: string[] = []
+
+        validateNumber(newRoom.number, 'Number').map(
+            error => allErrorMessages.push(error)
+        )
+        validateRoomPhotoList(newRoom.photos, 'Photos').map(
+            error => allErrorMessages.push(error)
+        )
+        validateRoomType(newRoom.type, 'Type').map(
+            error => allErrorMessages.push(error)
+        )
+        validateAmenities(newRoom.amenities, 'Amenities').map(
+            error => allErrorMessages.push(error)
+        )
+        validateRoomPrice(newRoom.price, 'Price').map(
+            error => allErrorMessages.push(error)
+        )
+        validateRoomDiscount(newRoom.discount, 'Discount').map(
+            error => allErrorMessages.push(error)
+        )
+        validateOptionYesNo(newRoom.isActive, 'Room isActive').map(
+            error => allErrorMessages.push(error)
+        )
+        validateOptionYesNo(newRoom.isArchived, 'Room isArchived').map(
+            error => allErrorMessages.push(error)
+        )
+        validateMongoDBObjectIdList(newRoom.booking_id_list).map(
+            error => allErrorMessages.push(error)
+        )
+
+        return allErrorMessages
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!validateAllData()) { return }
-
-        const newRoomToDispatch = {
-            ...newRoom
+        if (validateAllData().length > 0) {
+            validateAllData().forEach(error => ToastifyError(error))
+            return
         }
-        dispatch(RoomCreateThunk(newRoomToDispatch))
+
+        dispatch(RoomCreateThunk(newRoom))
             .then(() => {
                 ToastifySuccess('Room created', () => {
                     navigate('../')
@@ -114,30 +111,6 @@ export const RoomCreate = () => {
             .catch((error) => {
                 ToastifyError(error)
             })
-    }
-
-    const validateAllData = (): boolean => {
-        // const errorsPhotos = validatePhotos(newRoom.photos, 'Photos')
-        // if (errorsPhotos.length > 0) { errorsPhotos.map(error => ToastifyError(error)); return false }
-
-        const errorsRoomNumber = validateNewRoomNumber(newRoom.number, roomAll, 'Room number')
-        if (errorsRoomNumber.length > 0) { errorsRoomNumber.map(error => ToastifyError(error)); return false }
-
-        const errorsRoomType = validateRoomType(newRoom.type, 'Room type')
-        if (errorsRoomType.length > 0) { errorsRoomType.map(error => ToastifyError(error)); return false }
-
-        const errorsAmenities = validateAmenities(newRoom.amenities, 'Amenities')
-        if (errorsAmenities.length > 0) { errorsAmenities.map(error => ToastifyError(error)); return false }
-
-        const errorsPrice = validateNumberBetween(newRoom.price, 25, 100000, 'Price')
-        if (errorsPrice.length > 0) { errorsPrice.map(error => ToastifyError(error)); return false }
-
-        const errorsDiscount = validateNumberBetween(newRoom.discount, 0, 100, 'Discount')
-        if (errorsDiscount.length > 0) { errorsDiscount.map(error => ToastifyError(error)); return false }
-
-        // VALIDAR "booking_id_list"
-
-        return true
     }
 
 
@@ -157,27 +130,27 @@ export const RoomCreate = () => {
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
                         <LabelText>Photo 1 (Main)</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(0, e)} />
+                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(0, "photos")} />
                         <ImgRoom src={newRoom.photos[0]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 2</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(1, e)} />
+                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(1, "photos")} />
                         <ImgRoom src={newRoom.photos[1]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 3</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(2, e)} />
+                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(2, "photos")} />
                         <ImgRoom src={newRoom.photos[2]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 4</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(3, e)} />
+                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(3, "photos")} />
                         <ImgRoom src={newRoom.photos[3]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 5</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(4, e)} />
+                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(4, "photos")} />
                         <ImgRoom src={newRoom.photos[4]} />
                     </DivCtnEntry>
 
@@ -205,7 +178,7 @@ export const RoomCreate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Amenities</LabelText>
-                        <SelectAmenities name="amenities" onChange={handleAmenitiesChange} multiple={true}>
+                        <SelectAmenities name="amenities" onChange={handleMultiSelectChange} multiple={true}>
                             {Object.values(RoomAmenities).map((amenity, index) => (
                                 <Option key={index} value={amenity}>
                                     {amenity}
