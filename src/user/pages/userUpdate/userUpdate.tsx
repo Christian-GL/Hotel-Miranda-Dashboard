@@ -42,7 +42,7 @@ export const UserUpdate = () => {
     const userById = useSelector(getUserIdData)
     const userByIdLoading = useSelector(getUserIdStatus)
     const [userUpdated, setUserUpdated] = useState<UserInterface>({
-        _id: "0",
+        _id: '0',
         photo: null,
         full_name: '',
         email: '',

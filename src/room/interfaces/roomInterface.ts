@@ -28,12 +28,14 @@ export interface RoomInterface extends RoomInterfaceNoId {
 
 // !!! ACTUALIZAR:
 export interface RoomInterfaceBookingsDataNoId {
-    photos: string[]
     number: string
+    photos: string[]
     type: RoomType
     amenities: RoomAmenities[]
     price: number
     discount: number
+    isActive: OptionYesNo
+    isArchived: OptionYesNo
     booking_data_list: BookingInterface[]
 }
 

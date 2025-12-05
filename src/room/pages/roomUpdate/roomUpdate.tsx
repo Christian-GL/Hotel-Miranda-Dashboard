@@ -11,13 +11,16 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { RoomInterface, RoomInterfaceBookings } from "../../interfaces/roomInterface"
 import { RoomAmenities } from "../../enums/roomAmenities"
 import { RoomType } from "../../enums/roomType"
+import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
-    validatePhotos, validateRoomType, validateAmenities,
-    validateNumberBetween, validateExistingRoomNumber
-} from '../../../common/utils/validators'
+    validateNumber, validateRoomPhotoList, validateRoomType,
+    validateAmenities, validateRoomPrice, validateRoomDiscount,
+    validateOptionYesNo, validateMongoDBObjectIdList
+} from '../../../common/utils/commonValidator'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form,
     ImgRoom, DivCtnEntry, LabelText, DivCtnEntryBookings, LabelBookings, LabelTextBookingStatus,
@@ -47,15 +50,23 @@ export const RoomUpdate = () => {
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
     const [roomUpdated, setRoomUpdated] = useState<RoomInterface>({
-        _id: "0",
-        photos: [],
+        _id: '0',
         number: '0',
+        photos: [],
         type: RoomType.singleBed,
         amenities: [],
         price: 0,
         discount: 0,
+        isActive: OptionYesNo.yes,
+        isArchived: OptionYesNo.no,
         booking_id_list: []
     })
+    const { handleStringChange,
+        handleArrayPhotosChange,
+        handleMultiSelectChange,
+        handleNumberFloatChange,
+        handleSelectChange
+    } = createFormHandlers(setRoomUpdated)
 
     useEffect(() => {
         if (roomByIdLoading === ApiStatus.idle) { dispatch(RoomFetchByIDThunk(idParams)) }
@@ -64,13 +75,15 @@ export const RoomUpdate = () => {
                 dispatch(RoomFetchByIDThunk(idParams))
             }
             setRoomUpdated({
-                _id: roomById._id || "0",
-                photos: roomById.photos || [],
+                _id: roomById._id || '0',
                 number: roomById.number || '0',
+                photos: roomById.photos || [],
                 type: roomById.type || RoomType.singleBed,
                 amenities: roomById.amenities || [],
                 price: roomById.price || 0,
                 discount: roomById.discount || 0,
+                isActive: roomById.isActive || OptionYesNo.no,
+                isArchived: roomById.isArchived || OptionYesNo.yes,
                 booking_id_list: roomById.booking_data_list ? roomById.booking_data_list.map(booking => booking._id) : []
             })
         }
@@ -87,58 +100,46 @@ export const RoomUpdate = () => {
         else if (bookingAllLoading === ApiStatus.rejected) { alert("Error in API update rooms > booking update") }
     }, [bookingAllLoading, bookingAll])
 
-    const handlePhotosChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-        const { files } = e.target
-        if (files && files[0]) {
-            const photoUrl = URL.createObjectURL(files[0])
-            setRoomUpdated(prevState => {
-                const updatedPhotos = [...prevState.photos]
-                updatedPhotos[index] = photoUrl
-                return {
-                    ...prevState,
-                    photos: updatedPhotos
-                }
-            })
-        }
-    }
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setRoomUpdated({
-            ...roomUpdated,
-            [name]: value
-        })
-    }
-    const handleAmenitiesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, options } = e.target
-        const selectedAmenities: string[] = []
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].selected) {
-                selectedAmenities.push(options[i].value)
-            }
-        }
-        setRoomUpdated({
-            ...roomUpdated,
-            [name]: selectedAmenities
-        })
-    }
-    const handleStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setRoomUpdated({
-            ...roomUpdated,
-            [name]: value
-        })
-    }
-    const handleNumberFloatChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setRoomUpdated({
-            ...roomUpdated,
-            [name]: value === "" ? 0 : parseFloat(value)
-        })
+    const validateAllData = (): string[] => {
+        const allErrorMessages: string[] = []
+
+        validateNumber(roomUpdated.number, 'Number').map(
+            error => allErrorMessages.push(error)
+        )
+        validateRoomPhotoList(roomUpdated.photos, 'Photos').map(
+            error => allErrorMessages.push(error)
+        )
+        validateRoomType(roomUpdated.type, 'Type').map(
+            error => allErrorMessages.push(error)
+        )
+        validateAmenities(roomUpdated.amenities, 'Amenities').map(
+            error => allErrorMessages.push(error)
+        )
+        validateRoomPrice(roomUpdated.price, 'Price').map(
+            error => allErrorMessages.push(error)
+        )
+        validateRoomDiscount(roomUpdated.discount, 'Discount').map(
+            error => allErrorMessages.push(error)
+        )
+        validateOptionYesNo(roomUpdated.isActive, 'Room isActive').map(
+            error => allErrorMessages.push(error)
+        )
+        validateOptionYesNo(roomUpdated.isArchived, 'Room isArchived').map(
+            error => allErrorMessages.push(error)
+        )
+        validateMongoDBObjectIdList(roomUpdated.booking_id_list).map(
+            error => allErrorMessages.push(error)
+        )
+
+        return allErrorMessages
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!validateAllData()) { return }
+        if (validateAllData().length > 0) {
+            validateAllData().forEach(error => ToastifyError(error))
+            return
+        }
 
         dispatch(RoomUpdateThunk({ idRoom: roomUpdated._id, updatedRoomData: roomUpdated }))
             .then(() => {
@@ -149,30 +150,6 @@ export const RoomUpdate = () => {
             .catch((error) => {
                 ToastifyError(error)
             })
-    }
-
-    const validateAllData = (): boolean => {
-        // const errorsPhotos = validatePhotos(roomUpdated.photos, 'Photos')
-        // if (errorsPhotos.length > 0) { errorsPhotos.map(error => ToastifyError(error)); return false }
-
-        const errorsRoomNumber = validateExistingRoomNumber(roomUpdated.number, roomUpdated.number, roomAll, 'Room number')
-        if (errorsRoomNumber.length > 0) { errorsRoomNumber.map(error => ToastifyError(error)); return false }
-
-        const errorsRoomType = validateRoomType(roomUpdated.type, 'Room type')
-        if (errorsRoomType.length > 0) { errorsRoomType.map(error => ToastifyError(error)); return false }
-
-        const errorsAmenities = validateAmenities(roomUpdated.amenities, 'Amenities')
-        if (errorsAmenities.length > 0) { errorsAmenities.map(error => ToastifyError(error)); return false }
-
-        const errorsPrice = validateNumberBetween(roomUpdated.price, 25, 100000, 'Price')
-        if (errorsPrice.length > 0) { errorsPrice.map(error => ToastifyError(error)); return false }
-
-        const errorsDiscount = validateNumberBetween(roomUpdated.discount, 0, 100, 'Discount')
-        if (errorsDiscount.length > 0) { errorsDiscount.map(error => ToastifyError(error)); return false }
-
-        // VALIDAR booking_id_list
-
-        return true
     }
 
 
@@ -192,27 +169,27 @@ export const RoomUpdate = () => {
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
                         <LabelText>Photo 1 (Main)</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(0, e)} />
+                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(0, "photos")} />
                         <ImgRoom src={roomUpdated.photos[0]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 2</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(1, e)} />
+                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(1, "photos")} />
                         <ImgRoom src={roomUpdated.photos[1]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 3</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(2, e)} />
+                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(2, "photos")} />
                         <ImgRoom src={roomUpdated.photos[2]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 4</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(3, e)} />
+                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(3, "photos")} />
                         <ImgRoom src={roomUpdated.photos[3]} />
                     </DivCtnEntry>
                     <DivCtnEntry>
                         <LabelText>Photo 5</LabelText>
-                        <InputTextPhoto name="photos" type='file' onChange={(e) => handlePhotosChange(4, e)} />
+                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(4, "photos")} />
                         <ImgRoom src={roomUpdated.photos[4]} />
                     </DivCtnEntry>
 
@@ -240,7 +217,7 @@ export const RoomUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Amenities</LabelText>
-                        <SelectAmenities name="amenities" value={roomUpdated.amenities} onChange={handleAmenitiesChange} multiple={true}>
+                        <SelectAmenities name="amenities" value={roomUpdated.amenities} onChange={handleMultiSelectChange} multiple={true}>
                             {Object.values(RoomAmenities).map((amenity, index) => (
                                 <Option key={index} value={amenity}>
                                     {amenity}
@@ -249,6 +226,7 @@ export const RoomUpdate = () => {
                         </SelectAmenities>
                     </DivCtnEntry>
 
+                    {/* !!! ACTUALIZAR */}
                     <DivCtnEntry>
                         <LabelText>Booking Status</LabelText>
                         <DivCtnEntryBookings>

@@ -14,7 +14,6 @@ import { OptionYesNo } from "common/enums/optionYesNo"
 import { RoomInterfaceNoId } from "../../interfaces/roomInterface"
 import { RoomAmenities } from "../../enums/roomAmenities"
 import { RoomType } from "../../enums/roomType"
-import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
     validateNumber, validateRoomPhotoList, validateRoomType,
