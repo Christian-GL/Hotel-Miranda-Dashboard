@@ -1,27 +1,39 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { BookingInterfaceRoom } from '../../interfaces/bookingInterface'
-import { RoomType } from "../../../room/enums/roomType"
+import { BookingInterface } from '../../interfaces/bookingInterface'
+import { OptionYesNo } from "common/enums/optionYesNo"
 
 
-const bookingDefaultIfError: BookingInterfaceRoom = {
-    _id: "0",
-    photo: '',
-    full_name_guest: '',
-    order_date: '',
-    check_in_date: '',
-    check_out_date: '',
+// !!! VERSIÓN ANTERIOR
+// const bookingDefaultIfError: BookingInterfaceRoom = {
+//     _id: "0",
+//     photo: '',
+//     full_name_guest: '',
+//     order_date: '',
+//     check_in_date: '',
+//     check_out_date: '',
+//     special_request: '',
+//     room_data: {
+//         _id: "0",
+//         photos: [],
+//         number: '0',
+//         type: RoomType.singleBed,
+//         amenities: [],
+//         price: 0,
+//         discount: 0,
+//         booking_id_list: []
+//     }
+// }
+const bookingDefaultIfError: BookingInterface = {
+    _id: '',
+    order_date: new Date(),
+    check_in_date: new Date(),
+    check_out_date: new Date(),
+    price: 0,
     special_request: '',
-    room_data: {
-        _id: "0",
-        photos: [],
-        number: '0',
-        type: RoomType.singleBed,
-        amenities: [],
-        price: 0,
-        discount: 0,
-        booking_id_list: []
-    }
+    isArchived: OptionYesNo.yes,
+    room_id_list: [],
+    client_id: ''
 }
 
 export const BookingFetchAllThunk = createAsyncThunk
@@ -40,17 +52,18 @@ export const BookingFetchAllThunk = createAsyncThunk
             })
             if (request.ok) {
                 const json = await request.json()
-                let allBookings: BookingInterfaceRoom[] = []
+                let allBookings: BookingInterface[] = []
                 for (let i = 0; i < json.length; i++) {
                     allBookings.push({
                         _id: json[i]._id,
-                        photo: json[i].photo,
-                        full_name_guest: json[i].full_name_guest,
                         order_date: json[i].order_date,
                         check_in_date: json[i].check_in_date,
                         check_out_date: json[i].check_out_date,
+                        price: json[i].price,
                         special_request: json[i].special_request,
-                        room_data: json[i].room_data
+                        isArchived: json[i].isArchived,
+                        room_id_list: json[i].room_id_list,
+                        client_id: json[i].client_id
                     })
                 }
                 return allBookings

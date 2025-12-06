@@ -1,16 +1,18 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { BookingInterfaceNoId } from '../../interfaces/bookingInterface'
+import { OptionYesNo } from "common/enums/optionYesNo"
 
 
 const bookingDefaultIfError: BookingInterfaceNoId = {
-    photo: '',
-    full_name_guest: '',
-    order_date: '',
-    check_in_date: '',
-    check_out_date: '',
+    order_date: new Date(),
+    check_in_date: new Date(),
+    check_out_date: new Date(),
+    price: 0,
     special_request: '',
-    room_id: "0"
+    isArchived: OptionYesNo.yes,
+    room_id_list: [],
+    client_id: ''
 }
 
 export const BookingCreateThunk = createAsyncThunk

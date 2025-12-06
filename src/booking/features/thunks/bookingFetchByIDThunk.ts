@@ -1,27 +1,19 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { BookingInterfaceRoom } from '../../interfaces/bookingInterface'
-import { RoomType } from "../../../room/enums/roomType"
+import { BookingInterface } from '../../interfaces/bookingInterface'
+import { OptionYesNo } from "common/enums/optionYesNo"
 
 
-const bookingDefaultIfError: BookingInterfaceRoom = {
-    _id: "0",
-    photo: '',
-    full_name_guest: '',
-    order_date: '',
-    check_in_date: '',
-    check_out_date: '',
+const bookingDefaultIfError: BookingInterface = {
+    _id: '',
+    order_date: new Date(),
+    check_in_date: new Date(),
+    check_out_date: new Date(),
+    price: 0,
     special_request: '',
-    room_data: {
-        _id: "0",
-        photos: [],
-        number: '0',
-        type: RoomType.singleBed,
-        amenities: [],
-        price: 0,
-        discount: 0,
-        booking_id_list: []
-    }
+    isArchived: OptionYesNo.yes,
+    room_id_list: [],
+    client_id: ''
 }
 
 export const BookingFetchByIDThunk = createAsyncThunk
@@ -40,15 +32,16 @@ export const BookingFetchByIDThunk = createAsyncThunk
             })
             if (request.ok) {
                 const json = await request.json()
-                let booking: BookingInterfaceRoom = {
+                let booking: BookingInterface = {
                     _id: json._id,
-                    photo: json.photo,
-                    full_name_guest: json.full_name_guest,
                     order_date: json.order_date,
                     check_in_date: json.check_in_date,
                     check_out_date: json.check_out_date,
+                    price: json.price,
                     special_request: json.special_request,
-                    room_data: json.room_data
+                    isArchived: json.isArchived,
+                    room_id_list: json.room_id_list,
+                    client_id: json.client_id
                 }
                 return booking
             }
