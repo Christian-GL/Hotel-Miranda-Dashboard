@@ -10,7 +10,7 @@ import { BookingColumnSort } from "../../enums/bookingColumnSort"
 import { BookingStatus } from './../../enums/bookingStatus'
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { BookingInterfaceRoom } from "./../../interfaces/bookingInterface"
+import { BookingInterface } from "./../../interfaces/bookingInterface"
 import { BookingColumnsArrowStatesInterface } from './../../interfaces/bookingrColumnsArrowStatesInterface'
 import { RoomInterfaceBookings } from "../../../room/interfaces/roomInterface"
 import { ArrowType } from "../../../common/enums/ArrowType"
@@ -39,22 +39,20 @@ export const BookingMain = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const nameColumnList: string[] = ['', 'Guest', 'Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
-    const bookingAll: BookingInterfaceRoom[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const roomAll: RoomInterfaceBookings[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
-    const [filteredBookings, setFilteredBookings] = useState<BookingInterfaceRoom[]>([])
+    const [filteredBookings, setFilteredBookings] = useState<BookingInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<BookingButtonType>(BookingButtonType.all)
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoViewNotes, setInfoViewNotes] = useState<PopupTextInterface>({ title: '', text: '' })
     const [arrowStates, setArrowStates] = useState<BookingColumnsArrowStatesInterface>({
-        guest: ArrowType.right,
         orderDate: ArrowType.right,
         checkIn: ArrowType.right,
-        checkOut: ArrowType.right,
-        roomNumber: ArrowType.down
+        checkOut: ArrowType.right
     })
     const {
         currentPageItems,
@@ -64,7 +62,7 @@ export const BookingMain = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination<BookingInterfaceRoom>(filteredBookings, 10)
+    } = usePagination<BookingInterface>(filteredBookings, 10)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -90,53 +88,45 @@ export const BookingMain = () => {
         displayBookings()
     }
     const displayBookings = (): void => {
-        let filteredData: BookingInterfaceRoom[]
-        switch (selectedButton) {
-            case BookingButtonType.all:
-                filteredData = bookingAll.filter(booking =>
-                    booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase())
-                )
-                break
-            case BookingButtonType.checkin:
-                filteredData = bookingAll.filter(booking =>
-                    booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-                    checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkIn
-                )
-                break
-            case BookingButtonType.inprogress:
-                filteredData = bookingAll.filter(booking =>
-                    booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-                    checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.inProgress
-                )
-                break
-            case BookingButtonType.checkout:
-                filteredData = bookingAll.filter(booking =>
-                    booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-                    checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkOut
-                )
-                break
-        }
+        let filteredData: BookingInterface[]
+        // !!! ACTUALIZAR POR NUMERO DE HABITACIONES AL TENER LOS DATOS:
+        // switch (selectedButton) {
+        //     case BookingButtonType.all:
+        //         filteredData = bookingAll.filter(booking =>
+        //             booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase())
+        //         )
+        //         break
+        //     case BookingButtonType.checkin:
+        //         filteredData = bookingAll.filter(booking =>
+        //             booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
+        //             checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkIn
+        //         )
+        //         break
+        //     case BookingButtonType.inprogress:
+        //         filteredData = bookingAll.filter(booking =>
+        //             booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
+        //             checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.inProgress
+        //         )
+        //         break
+        //     case BookingButtonType.checkout:
+        //         filteredData = bookingAll.filter(booking =>
+        //             booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
+        //             checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkOut
+        //         )
+        //         break
+        // }
+        filteredData = bookingAll   // !!! LINEA PROVISIONAL
         const sortedData = sortData(filteredData)
         setFilteredBookings(sortedData)
         resetPage()
     }
-    const sortData = (filteredData: BookingInterfaceRoom[]): BookingInterfaceRoom[] => {
-        const activeColumn = Object.keys(arrowStates).find(key => arrowStates[key] !== ArrowType.right)
-        let sortedData: BookingInterfaceRoom[] = [...filteredData]
+    const sortData = (filteredData: BookingInterface[]): BookingInterface[] => {
+        const activeColumn = (Object.keys(arrowStates) as (keyof BookingColumnsArrowStatesInterface)[]).find(key => arrowStates[key] !== ArrowType.right)
+        let sortedData: BookingInterface[] = [...filteredData]
         if (activeColumn) {
-            if (activeColumn === BookingColumnSort.guest) {
+            if (activeColumn === BookingColumnSort.orderDate || activeColumn === BookingColumnSort.checkIn || activeColumn === BookingColumnSort.checkOut) {
                 sortedData.sort((a, b) => {
-                    let valueA: string = a.full_name_guest.toLowerCase()
-                    let valueB: string = b.full_name_guest.toLowerCase()
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
-            }
-            else if (activeColumn === BookingColumnSort.orderDate) {
-                sortedData.sort((a, b) => {
+                    // !!!!!
                     let valueA: Date = new Date(a.order_date)
                     let valueB: Date = new Date(b.order_date)
                     if (arrowStates[activeColumn] === ArrowType.up) {
@@ -146,40 +136,6 @@ export const BookingMain = () => {
                     }
                 })
             }
-            else if (activeColumn === BookingColumnSort.checkIn) {
-                sortedData.sort((a, b) => {
-                    let valueA: Date = new Date(a.check_in_date)
-                    let valueB: Date = new Date(b.check_in_date)
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
-            }
-            else if (activeColumn === BookingColumnSort.checkOut) {
-                sortedData.sort((a, b) => {
-                    let valueA: Date = new Date(a.check_out_date)
-                    let valueB: Date = new Date(b.check_out_date)
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
-            }
-            else if (activeColumn === BookingColumnSort.roomNumber) {
-                sortedData.sort((a, b) => {
-                    let valueA: number = parseInt(a.room_data.number)
-                    let valueB: number = parseInt(b.room_data.number)
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
-            }
-
         }
         return sortedData
     }
@@ -191,9 +147,11 @@ export const BookingMain = () => {
             else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
             else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
 
-            Object.keys(newState).map(key => {
-                if (key !== nameColumn) {
-                    newState[key] = ArrowType.right
+            Object.keys(newState as BookingColumnsArrowStatesInterface).forEach((key) => {
+                const typedKey = key as keyof BookingColumnsArrowStatesInterface
+
+                if (typedKey !== nameColumn) {
+                    newState[typedKey] = ArrowType.right
                 }
             })
 
@@ -214,18 +172,6 @@ export const BookingMain = () => {
             setTableOptionsDisplayed(index)
     }
     const deleteBookingById = (id: string, index: number): void => {
-        // const booking: BookingInterfaceRoom | undefined = bookingAll.find(booking => booking.id === id)
-        // if (!booking) { return }
-
-        // const room: RoomInterfaceBookings | undefined = roomAll.find(room => room === booking.room_id)
-        // if (!room) { return }
-
-        // const roomUpdated: RoomInterfaceBookings = {
-        //     ...room,
-        //     booking_id_list: room.booking_id_list.filter(bookingId => bookingId !== booking.room_id)
-        // }
-
-        // dispatch(RoomUpdateThunk(roomUpdated))
         dispatch(BookingDeleteByIdThunk(id))
         displayMenuOptions(index)
     }
@@ -253,66 +199,66 @@ export const BookingMain = () => {
             {showPopup && <PopupText isSlider={false} title={infoViewNotes.title} text={infoViewNotes.text} onClose={() => setShowPopup(false)} />}
 
             <Table rowlistlength={filteredBookings.length + 1} columnlistlength={nameColumnList.length} >
-                {nameColumnList.map((nameColumn, index) =>
-                    index === 1 || index === 3 || index === 4 || index === 5 || index === 7 ?
-                        <THTable key={index} cursorPointer='yes' onClick={() => {
-                            switch (index) {
-                                case 1: handleColumnClick(BookingColumnSort.guest); break
-                                case 3: handleColumnClick(BookingColumnSort.orderDate); break
-                                case 4: handleColumnClick(BookingColumnSort.checkIn); break
-                                case 5: handleColumnClick(BookingColumnSort.checkOut); break
-                                case 7: handleColumnClick(BookingColumnSort.roomNumber); break
-                                default: ; break
-                            }
-                        }}
-                        >
-                            {nameColumn}
-                            {(() => {
-                                switch (index) {
-                                    case 1: return getArrowIcon(BookingColumnSort.guest)
-                                    case 3: return getArrowIcon(BookingColumnSort.orderDate)
-                                    case 4: return getArrowIcon(BookingColumnSort.checkIn)
-                                    case 5: return getArrowIcon(BookingColumnSort.checkOut)
-                                    case 7: return getArrowIcon(BookingColumnSort.roomNumber)
-                                    default: return null
-                                }
-                            })()}
-                        </THTable> :
-                        <THTable key={index}>{nameColumn}</THTable>
-                )}
+                {nameColumnList.map((nameColumn, index) => {
+                    let content
+                    switch (index) {
+                        case 1:
+                            content =
+                                <THTable key={index} onClick={() => handleColumnClick(BookingColumnSort.orderDate)} cursorPointer="yes">
+                                    {nameColumn}
+                                    {getArrowIcon(BookingColumnSort.orderDate)}
+                                </THTable>
+                            break
+                        case 2:
+                            content =
+                                <THTable key={index} onClick={() => handleColumnClick(BookingColumnSort.checkIn)} cursorPointer="yes">
+                                    {nameColumn}
+                                    {getArrowIcon(BookingColumnSort.checkIn)}
+                                </THTable>
+                            break
+                        case 3:
+                            content =
+                                <THTable key={index} onClick={() => handleColumnClick(BookingColumnSort.checkOut)} cursorPointer="yes">
+                                    {nameColumn}
+                                    {getArrowIcon(BookingColumnSort.checkOut)}
+                                </THTable>
+                            break
+                        default:
+                            content =
+                                <THTable key={index}>
+                                    {nameColumn}
+                                </THTable>
+                    }
+
+                    return content
+                })}
                 {currentPageItems.map((bookingData, index) => {
                     return [
                         <DivImgTable key={index + '-1'}>
-                            <ImgTableUser src={`${bookingData.photo}`} />
+                            #<b>{bookingData._id}</b>
                         </DivImgTable>,
 
-                        <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <DivNameTable>
-                                <b>{bookingData.full_name_guest}</b>
-                            </DivNameTable>
-                            <div>#<b>{bookingData._id}</b></div>
-                        </PTable>,
-
-                        <PTable key={index + '-3'}>
+                        <PTable key={index + '-2'}>
                             <ButtonView onClick={() => navigateToBookingDetail(bookingData._id)}>View Details</ButtonView>
                         </PTable>,
 
-                        <PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center' >
+                        <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center' >
                             {formatDateForPrint(bookingData.order_date)}
                         </PTable>,
 
-                        <PTable key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
+                        <PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center'>
                             {formatDateForPrint(bookingData.check_in_date)}
                         </PTable>,
 
-                        <PTable key={index + '-6'} flexdirection='column' alignitems='left' justifycontent='center'>
+                        <PTable key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
                             {formatDateForPrint(bookingData.check_out_date)}
                         </PTable>,
 
-                        <PTable key={index + '-7'}>
+                        <PTable key={index + '-6'}>
                             <ButtonView onClick={() => {
+                                // !!! ACTUALIZAR:
                                 setInfoViewNotes({
-                                    title: `Special request #${bookingData._id} by ${bookingData.full_name_guest}`,
+                                    title: `Special request #${bookingData._id} by ${bookingData.special_request}`,
                                     text: bookingData.special_request
                                 })
                                 setShowPopup(true)
@@ -320,27 +266,27 @@ export const BookingMain = () => {
                             }>View Notes</ButtonView>
                         </PTable>,
 
-                        <PTable key={index + '-8'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div>Nº {bookingData.room_data.number}</div>
-                            <div>{bookingData.room_data.type}</div>
-                        </PTable>,
+                        // <PTable key={index + '-8'} flexdirection='column' alignitems='left' justifycontent='center'>
+                        //     <div>Nº {bookingData.room_data.number}</div>
+                        //     <div>{bookingData.room_data.type}</div>
+                        // </PTable>,
 
-                        <PTable key={index + '-9'}>
-                            {
-                                (() => {
-                                    const status = checkBookingStatus(bookingData.check_in_date, bookingData.check_out_date)
-                                    if (status === BookingStatus.checkIn) {
-                                        return <PStatusBooking status={BookingStatus.checkIn}>Check In</PStatusBooking>
-                                    }
-                                    else if (status === BookingStatus.inProgress) {
-                                        return <PStatusBooking status={BookingStatus.inProgress}>In Progress</PStatusBooking>
-                                    }
-                                    else {
-                                        return <PStatusBooking status={BookingStatus.checkOut}>Check Out</PStatusBooking>
-                                    }
-                                })()
-                            }
-                        </PTable>,
+                        // <PTable key={index + '-9'}>
+                        //     {
+                        //         (() => {
+                        //             const status = checkBookingStatus(bookingData.check_in_date, bookingData.check_out_date)
+                        //             if (status === BookingStatus.checkIn) {
+                        //                 return <PStatusBooking status={BookingStatus.checkIn}>Check In</PStatusBooking>
+                        //             }
+                        //             else if (status === BookingStatus.inProgress) {
+                        //                 return <PStatusBooking status={BookingStatus.inProgress}>In Progress</PStatusBooking>
+                        //             }
+                        //             else {
+                        //                 return <PStatusBooking status={BookingStatus.checkOut}>Check Out</PStatusBooking>
+                        //             }
+                        //         })()
+                        //     }
+                        // </PTable>,
 
                         <PTable key={index + '-9'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
