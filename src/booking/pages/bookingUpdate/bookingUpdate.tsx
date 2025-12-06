@@ -11,12 +11,14 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { OptionYesNo } from "../../../common/enums/optionYesNo"
 import { BookingInterface } from "../../interfaces/bookingInterface"
 import { formatDateForInput } from "../../../common/utils/dateUtils"
+import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
-    validatePhoto, validateFullName, validateCheckInCheckOut,
-    validateDateIsOccupiedIfBookingExists, validateTextArea, validateDateIsOccupied
-} from '../../../common/utils/validators'
+    validatePhoto, validateFullName, validateEmail, validatePhoneNumber, validateDateRelativeToAnother,
+    validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
+} from '../../../common/utils/commonValidator'
 import {
     GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
@@ -44,22 +46,29 @@ export const BookingUpdate = () => {
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
     const [bookingUpdated, setBookingUpdated] = useState<BookingInterface>({
-        _id: "0",
-        photo: '',
-        full_name_guest: '',
-        order_date: '',
-        check_in_date: '',
-        check_out_date: '',
+        _id: '0',
+        order_date: new Date(),
+        check_in_date: new Date(),
+        check_out_date: new Date(),
+        price: 0,
         special_request: '',
-        room_id: "0"
+        isArchived: OptionYesNo.yes,
+        room_id_list: [],
+        client_id: ''
     })
-    const roomsAvailable = roomAll.filter(room => !validateDateIsOccupied(bookingUpdated, bookingAll.filter(booking => booking.room_data._id === room._id)).length)
-    const currentRoom = bookingUpdated.room_id ?
-        roomAll.find(room => Number(room._id) === Number(bookingUpdated.room_id)) :
-        null
-    const effectiveRooms = currentRoom && !roomsAvailable.some(room => Number(room._id) === Number(currentRoom._id)) ?
-        [currentRoom, ...roomsAvailable] :
-        roomsAvailable
+    const { handleStringChange,
+        handleDateChange,
+        handlePhotoChange,
+        handleTextAreaChange,
+        handleSelectChange
+    } = createFormHandlers(setBookingUpdated)
+    // const roomsAvailable = roomAll.filter(room => !validateDateIsOccupied(bookingUpdated, bookingAll.filter(booking => booking.room_data._id === room._id)).length)
+    // const currentRoom = bookingUpdated.room_id ?
+    //     roomAll.find(room => Number(room._id) === Number(bookingUpdated.room_id)) :
+    //     null
+    // const effectiveRooms = currentRoom && !roomsAvailable.some(room => Number(room._id) === Number(currentRoom._id)) ?
+    //     [currentRoom, ...roomsAvailable] :
+    //     roomsAvailable
 
     useEffect(() => {
         if (bookingByIdLoading === ApiStatus.idle) { dispatch(BookingFetchByIDThunk(idParams)) }
@@ -69,13 +78,14 @@ export const BookingUpdate = () => {
             }
             setBookingUpdated({
                 _id: bookingById._id || "0",
-                photo: bookingById.photo || '',
-                full_name_guest: bookingById.full_name_guest || '',
                 order_date: bookingById.order_date || '',
                 check_in_date: bookingById.check_in_date || '',
                 check_out_date: bookingById.check_out_date || '',
+                price: bookingById.price || 0,
                 special_request: bookingById.special_request || '',
-                room_id: bookingById.room_data._id || "0"
+                isArchived: bookingById.isArchived || OptionYesNo.yes,
+                room_id_list: bookingById.room_id_list || [],
+                client_id: bookingById.client_id || ''
             })
         }
         else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error en la api de booking update > bookings") }
@@ -91,53 +101,20 @@ export const BookingUpdate = () => {
         else if (roomAllLoading === ApiStatus.rejected) { alert("Error in API update bookings > rooms") }
     }, [roomAllLoading, roomAll])
 
-    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, files } = e.target
-        if (files && files[0]) {
-            const photoUrl = URL.createObjectURL(files[0])
-            setBookingUpdated({
-                ...bookingUpdated,
-                [name]: photoUrl
-            })
-        }
-    }
-    const handleStringInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setBookingUpdated({
-            ...bookingUpdated,
-            [name]: value
-        })
-    }
-    const handleNumberSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setBookingUpdated({
-            ...bookingUpdated,
-            [name]: parseInt(value)
-        })
-    }
-    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
+    const validateAllData = (): string[] => {
+        const allErrorMessages: string[] = []
 
-        if (!value) return
-        const date = new Date(value)
-        const dateISO = date.toISOString()
+        // !!! IMPORTAR VALIDADORES DE LA API
 
-        setBookingUpdated({
-            ...bookingUpdated,
-            [name]: dateISO
-        })
-    }
-    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        setBookingUpdated({
-            ...bookingUpdated,
-            [name]: value
-        })
+        return allErrorMessages
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!validateAllData()) { return }
+        if (validateAllData().length > 0) {
+            validateAllData().forEach(error => ToastifyError(error))
+            return
+        }
 
         dispatch(BookingUpdateThunk({ idBooking: bookingUpdated._id, updatedBookingData: bookingUpdated }))
             .then(() => {
@@ -148,28 +125,6 @@ export const BookingUpdate = () => {
             .catch((error) => {
                 ToastifyError(error)
             })
-    }
-
-    const validateAllData = (): boolean => {
-        // const errorsPhoto = validatePhoto(newBooking.photo, 'Photo')
-        // if (errorsPhoto.length > 0) { errorsPhoto.map(error => ToastifyError(error)); return false }
-
-        const errorsFullName = validateFullName(bookingUpdated.full_name_guest, 'Full name guest')
-        if (errorsFullName.length > 0) { errorsFullName.map(error => ToastifyError(error)); return false }
-
-        const errorsCheckInDate = validateCheckInCheckOut(new Date(bookingUpdated.check_in_date), new Date(bookingUpdated.check_out_date))
-        if (errorsCheckInDate.length > 0) { errorsCheckInDate.map(error => ToastifyError(error)); return false }
-
-        const errorsSpecialRequest = validateTextArea(bookingUpdated.special_request, 'Special request')
-        if (errorsSpecialRequest.length > 0) { errorsSpecialRequest.map(error => ToastifyError(error)); return false }
-
-        const roomOfBooking = roomAll.find(room => room._id === bookingUpdated.room_id)
-        const bookingsOfRoom = bookingAll.filter(booking => booking.room_data.number === roomOfBooking?.number)
-
-        const errorsDateIsOccupied = validateDateIsOccupiedIfBookingExists(bookingUpdated, bookingsOfRoom)
-        if (errorsDateIsOccupied.length > 0) { errorsDateIsOccupied.map(error => ToastifyError(error)); return false }
-
-        return true
     }
 
 
@@ -190,17 +145,6 @@ export const BookingUpdate = () => {
 
                 <Form onSubmit={handleSubmit}>
                     <DivCtnEntry>
-                        <LabelText>Guest photo</LabelText>
-                        <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
-                        <ImgUser src={bookingUpdated.photo} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
-                        <LabelText>Full name guest</LabelText>
-                        <InputText name="full_name_guest" value={bookingUpdated.full_name_guest} onChange={handleStringInputChange} />
-                    </DivCtnEntry>
-
-                    <DivCtnEntry>
                         <LabelText>Check in date</LabelText>
                         <InputDate name="check_in_date" value={formatDateForInput(bookingUpdated.check_in_date)} type="datetime-local" onChange={handleDateChange} />
 
@@ -210,7 +154,8 @@ export const BookingUpdate = () => {
 
                     <DivCtnEntry>
                         <LabelText>Room number</LabelText>
-                        <Select
+                        {/* !!! ACTUALIZAR AL TENER LOS DATOS: */}
+                        {/* <Select
                             name="room_id"
                             value={bookingUpdated.room_id || (bookingById.room_data ? bookingById.room_data._id : '')}
                             onChange={handleNumberSelectChange}
@@ -241,7 +186,7 @@ export const BookingUpdate = () => {
                                         </>)
                                     }
                                 </>)}
-                        </Select>
+                        </Select> */}
                     </DivCtnEntry>
 
                     <DivCtnEntry>
