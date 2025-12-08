@@ -6,13 +6,12 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as userMainStyles from "./userMainStyles"
 import { UserButtonType } from "../../enums/userButtonType"
-import { UserColumnSort } from '../../enums/userColumnSort'
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { UserInterface } from "./../../interfaces/userInterface"
-import { UserColumnsArrowStatesInterface } from "./../../interfaces/userColumnsArrowStatesInterface"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { ArrowType } from "../../../common/enums/ArrowType"
+import { UserNameColumn } from "../../enums/userNameColumn"
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
@@ -31,18 +30,24 @@ export const UserMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const nameColumnList: string[] = ['', 'User info', 'Phone number', 'Start date', 'End date', 'Job position', 'Role', 'Status', '']
     const userAll: UserInterface[] = useSelector(getUserAllData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [selectedButton, setSelectedButton] = useState<UserButtonType>(UserButtonType.all)
     const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([])
-    const [arrowStates, setArrowStates] = useState<UserColumnsArrowStatesInterface>({
-        userInfo: ArrowType.down,
-        startDate: ArrowType.right,
-        endDate: ArrowType.right,
-        role: ArrowType.right
+    const sortableColumns: UserNameColumn[] = [
+        UserNameColumn.userInfo,
+        UserNameColumn.role,
+        UserNameColumn.startDate,
+        UserNameColumn.endDate
+    ]
+    type ArrowStates = Record<UserNameColumn, ArrowType>
+    const [arrowStates, setArrowStates] = useState<Partial<ArrowStates>>({
+        [UserNameColumn.userInfo]: ArrowType.right,
+        [UserNameColumn.role]: ArrowType.right,
+        [UserNameColumn.startDate]: ArrowType.right,
+        [UserNameColumn.endDate]: ArrowType.right
     })
     const {
         currentPageItems,
@@ -98,10 +103,11 @@ export const UserMain = () => {
     }
     const sortData = (filteredData: UserInterface[]): UserInterface[] => {
         // !!! OPTIMIZAR LA SIGUIENTE LINEA:
-        const activeColumn = (Object.keys(arrowStates) as (keyof UserColumnsArrowStatesInterface)[]).find(key => arrowStates[key] !== ArrowType.right)
+        const activeColumn = (Object.keys(arrowStates) as UserNameColumn[]).find(key => arrowStates[key] !== ArrowType.right)
+
         let sortedData: UserInterface[] = [...filteredData]
         if (activeColumn) {
-            if (activeColumn === UserColumnSort.userInfo || activeColumn === UserColumnSort.role) {
+            if (activeColumn === UserNameColumn.userInfo || activeColumn === UserNameColumn.role) {
                 sortedData.sort((a, b) => {
                     let valueA: string = a.full_name.toLowerCase()
                     let valueB: string = b.full_name.toLowerCase()
@@ -112,7 +118,7 @@ export const UserMain = () => {
                     }
                 })
             }
-            else if (activeColumn === UserColumnSort.startDate || activeColumn === UserColumnSort.endDate) {
+            else if (activeColumn === UserNameColumn.startDate || activeColumn === UserNameColumn.endDate) {
                 sortedData.sort((a, b) => {
                     let valueA: Date = new Date(a.start_date)
                     let valueB: Date = new Date(b.start_date)
@@ -126,27 +132,46 @@ export const UserMain = () => {
         }
         return sortedData
     }
-    const handleColumnClick = (nameColumn: UserColumnSort): void => {
+    // const handleColumnClick = (nameColumn: UserNameColumn): void => {
+    //     setArrowStates(prevState => {
+    //         const newState: UserColumnsArrowStatesInterface = { ...prevState }
+
+    //         if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
+    //         else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
+    //         else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
+
+    //         Object.keys(newState as UserColumnsArrowStatesInterface).forEach((key) => {
+    //             const typedKey = key as keyof UserColumnsArrowStatesInterface
+
+    //             if (typedKey !== nameColumn) {
+    //                 newState[typedKey] = ArrowType.right
+    //             }
+    //         })
+
+    //         return newState
+    //     })
+    //     handleTableFilter(selectedButton)
+    // }
+    const handleColumnClick = (nameColumn: UserNameColumn): void => {
         setArrowStates(prevState => {
-            const newState: UserColumnsArrowStatesInterface = { ...prevState }
+            const newState: Partial<Record<UserNameColumn, ArrowType>> = { ...prevState }
 
             if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
             else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
             else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
 
-            Object.keys(newState as UserColumnsArrowStatesInterface).forEach((key) => {
-                const typedKey = key as keyof UserColumnsArrowStatesInterface
-
-                if (typedKey !== nameColumn) {
-                    newState[typedKey] = ArrowType.right
+            sortableColumns.forEach(col => {
+                if (col !== nameColumn) {
+                    newState[col] = ArrowType.right
                 }
             })
 
             return newState
         })
+
         handleTableFilter(selectedButton)
     }
-    const getArrowIcon = (nameColumn: UserColumnSort): JSX.Element => {
+    const getArrowIcon = (nameColumn: UserNameColumn): JSX.Element => {
         const state = arrowStates[nameColumn]
         if (state === ArrowType.up) { return <TriangleUp /> }
         else if (state === ArrowType.down) { return <TriangleDown /> }
@@ -183,47 +208,26 @@ export const UserMain = () => {
                 </userMainStyles.DivCtnButton>
             </userMainStyles.DivCtnFuncionality>
 
-            <Table rowlistlength={filteredUsers.length + 1} columnlistlength={nameColumnList.length}>
-                {nameColumnList.map((nameColumn, index) => {
-                    let content
-                    switch (index) {
-                        case 1:
-                            content =
-                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.userInfo)} cursorPointer="yes">
-                                    {nameColumn}
-                                    {getArrowIcon(UserColumnSort.userInfo)}
-                                </THTable>
-                            break
-                        case 3:
-                            content =
-                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.startDate)} cursorPointer="yes">
-                                    {nameColumn}
-                                    {getArrowIcon(UserColumnSort.startDate)}
-                                </THTable>
-                            break
-                        case 4:
-                            content =
-                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.endDate)} cursorPointer="yes">
-                                    {nameColumn}
-                                    {getArrowIcon(UserColumnSort.endDate)}
-                                </THTable>
-                            break
-                        case 6:
-                            content =
-                                <THTable key={index} onClick={() => handleColumnClick(UserColumnSort.role)} cursorPointer="yes">
-                                    {nameColumn}
-                                    {getArrowIcon(UserColumnSort.role)}
-                                </THTable>
-                            break
-                        default:
-                            content =
-                                <THTable key={index}>
-                                    {nameColumn}
-                                </THTable>
+            {/* length + 2 debido a las 2 columnas añadidas sin encabezado */}
+            <Table rowlistlength={filteredUsers.length + 1} columnlistlength={Object.values(UserNameColumn).length + 2}>
+                <THTable>{''}</THTable>
+                {Object.values(UserNameColumn).map(entry => {
+                    if (sortableColumns.includes(entry)) {
+                        return (
+                            <THTable key={entry} onClick={() => handleColumnClick(entry)} cursorPointer="yes">
+                                {entry}
+                                {getArrowIcon(entry)}
+                            </THTable>
+                        )
+                    } else {
+                        return (
+                            <THTable key={entry}>
+                                {entry}
+                            </THTable>
+                        )
                     }
-
-                    return content
                 })}
+                <THTable>{''}</THTable>
                 {currentPageItems.map((userData: UserInterface, index: number) => {
                     return [
                         <DivImgTable key={index + '-1'}>
@@ -243,20 +247,20 @@ export const UserMain = () => {
                             {userData.phone_number}
                         </PTable>,
 
-                        <PTable key={index + '-4'}>
-                            {formatDateForPrint(userData.start_date)}
-                        </PTable>,
-
-                        <PTable key={index + '-5'}>
-                            {formatDateForPrint(userData.end_date)}
+                        <PTable key={index + '-7'}>
+                            {userData.role}
                         </PTable>,
 
                         <PTable key={index + '-6'}>
                             {userData.job_position}
                         </PTable>,
 
-                        <PTable key={index + '-7'}>
-                            {userData.role}
+                        <PTable key={index + '-4'}>
+                            {formatDateForPrint(userData.start_date)}
+                        </PTable>,
+
+                        <PTable key={index + '-5'}>
+                            {formatDateForPrint(userData.end_date)}
                         </PTable>,
 
                         <PTable key={index + '-9'}>
