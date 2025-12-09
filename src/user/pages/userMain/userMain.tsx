@@ -11,13 +11,15 @@ import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { UserInterface } from "./../../interfaces/userInterface"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
+import { sortValues } from "common/utils/sortValues"
+import { capitalizeFirstLetter } from "common/utils/capitalizeFirstLetter"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { UserNameColumn } from "../../enums/userNameColumn"
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
+    Table, THTable, DivNameTable, DivImgTable, ImgTableUser, PTable,
     PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
@@ -43,8 +45,8 @@ export const UserMain = () => {
         UserNameColumn.startDate,
         UserNameColumn.endDate
     ]
-    type ArrowStates = Record<UserNameColumn, ArrowType>
-    const [arrowStates, setArrowStates] = useState<Partial<ArrowStates>>({
+    type ArrowStates = Partial<Record<UserNameColumn, ArrowType>>
+    const [arrowStates, setArrowStates] = useState<ArrowStates>({
         [UserNameColumn.userInfo]: ArrowType.right,
         [UserNameColumn.role]: ArrowType.right,
         [UserNameColumn.startDate]: ArrowType.right,
@@ -75,7 +77,6 @@ export const UserMain = () => {
         displayEmployee()
     }
     const displayEmployee = (): void => {
-        // !!! FUNCIÓN OPTIMIZABLE:
         let filteredData: UserInterface[]
         switch (selectedButton) {
             case UserButtonType.all:
@@ -85,49 +86,55 @@ export const UserMain = () => {
                 break
             case UserButtonType.active:
                 filteredData = userAll.filter(user =>
-                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && new Date(user.start_date) < new Date() && new Date(user.end_date) > new Date()
+                    user.full_name.toLowerCase().includes(inputText.toLowerCase())
+                    && new Date(user.start_date) < new Date()
+                    && new Date(user.end_date) > new Date()
                 )
                 break
             case UserButtonType.inactive:
                 filteredData = userAll.filter(user =>
-                    user.full_name.toLowerCase().includes(inputText.toLowerCase()) && (new Date(user.start_date) > new Date() || new Date(user.end_date) < new Date())
+                    user.full_name.toLowerCase().includes(inputText.toLowerCase())
+                    && (new Date(user.start_date) > new Date()
+                        || new Date(user.end_date) < new Date())
                 )
                 break
             // !!! AÑADIR OPION PARA VER TAMBIEN ARCHIVADOS:
         }
-        const sortedData = sortData(filteredData)
-        setFilteredUsers(sortedData)
+        setFilteredUsers(sortData(filteredData))
         resetPage()
     }
     const sortData = (filteredData: UserInterface[]): UserInterface[] => {
-        // !!! OPTIMIZAR LA SIGUIENTE LINEA:
-        const activeColumn = (Object.keys(arrowStates) as UserNameColumn[]).find(key => arrowStates[key] !== ArrowType.right)
+        const arrowStateColumns = Object.keys(arrowStates) as UserNameColumn[]
+        const activeColumn = arrowStateColumns.find(key => arrowStates[key] !== ArrowType.right)
+        if (!activeColumn) return filteredData
 
-        let sortedData: UserInterface[] = [...filteredData]
-        if (activeColumn) {
-            if (activeColumn === UserNameColumn.userInfo || activeColumn === UserNameColumn.role) {
-                sortedData.sort((a, b) => {
-                    let valueA: string = a.full_name.toLowerCase()
-                    let valueB: string = b.full_name.toLowerCase()
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
+        const activeColumnArrowDirection = arrowStates[activeColumn]!
+        const sortedData = [...filteredData]
+
+        sortedData.sort((a, b) => {
+            let valueA: any
+            let valueB: any
+            switch (activeColumn) {
+                case UserNameColumn.userInfo:
+                case UserNameColumn.role:
+                    valueA = a.full_name.toLowerCase()
+                    valueB = b.full_name.toLowerCase()
+                    break
+                case UserNameColumn.startDate:
+                    valueA = new Date(a.start_date).getTime()
+                    valueB = new Date(b.start_date).getTime()
+                    break
+                case UserNameColumn.endDate:
+                    valueA = new Date(a.end_date).getTime()
+                    valueB = new Date(b.end_date).getTime()
+                    break
+                default:
+                    return 0
             }
-            else if (activeColumn === UserNameColumn.startDate || activeColumn === UserNameColumn.endDate) {
-                sortedData.sort((a, b) => {
-                    let valueA: Date = new Date(a.start_date)
-                    let valueB: Date = new Date(b.start_date)
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
-            }
-        }
+
+            return sortValues(valueA, valueB, activeColumnArrowDirection)
+        })
+
         return sortedData
     }
     const handleColumnClick = (nameColumn: UserNameColumn): void => {
@@ -221,7 +228,7 @@ export const UserMain = () => {
                         </PTable>,
 
                         <PTable key={index + '-7'}>
-                            {userData.role}
+                            {capitalizeFirstLetter(userData.role)}
                         </PTable>,
 
                         <PTable key={index + '-6'}>
