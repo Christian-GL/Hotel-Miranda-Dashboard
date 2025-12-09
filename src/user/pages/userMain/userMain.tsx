@@ -12,6 +12,7 @@ import { UserInterface } from "./../../interfaces/userInterface"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
+import { handleColumnClick } from "common/utils/handleColumnClick"
 import { capitalizeFirstLetter } from "common/utils/capitalizeFirstLetter"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { UserNameColumn } from "../../enums/userNameColumn"
@@ -137,25 +138,25 @@ export const UserMain = () => {
 
         return sortedData
     }
-    const handleColumnClick = (nameColumn: UserNameColumn): void => {
-        setArrowStates(prevState => {
-            const newState: Partial<Record<UserNameColumn, ArrowType>> = { ...prevState }
+    // const handleColumnClick = (nameColumn: UserNameColumn): void => {
+    //     setArrowStates(prevState => {
+    //         const newState: Partial<Record<UserNameColumn, ArrowType>> = { ...prevState }
 
-            if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
-            else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
-            else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
+    //         if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
+    //         else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
+    //         else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
 
-            sortableColumns.forEach(col => {
-                if (col !== nameColumn) {
-                    newState[col] = ArrowType.right
-                }
-            })
+    //         sortableColumns.forEach(col => {
+    //             if (col !== nameColumn) {
+    //                 newState[col] = ArrowType.right
+    //             }
+    //         })
 
-            return newState
-        })
+    //         return newState
+    //     })
 
-        handleTableFilter(selectedButton)
-    }
+    //     handleTableFilter(selectedButton)
+    // }
     const displayMenuOptions = (index: number): void => {
         tableOptionsDisplayed === index ?
             setTableOptionsDisplayed(-1) :
@@ -167,6 +168,14 @@ export const UserMain = () => {
         resetPage()
     }
 
+    const handleColumnClickGen = (column: UserNameColumn): void => {
+        handleColumnClick(
+            column,
+            sortableColumns,
+            setArrowStates,
+            () => handleTableFilter(selectedButton)
+        );
+    };
 
     return (<>
         <userMainStyles.SectionPageUser>
@@ -193,7 +202,7 @@ export const UserMain = () => {
                 {Object.values(UserNameColumn).map(entry => {
                     if (sortableColumns.includes(entry)) {
                         return (
-                            <THTable key={entry} onClick={() => handleColumnClick(entry)} cursorPointer="yes">
+                            <THTable key={entry} onClick={() => handleColumnClickGen(entry)} cursorPointer="yes">
                                 {entry}
                                 {getArrowIcon(arrowStates[entry])}
                             </THTable>
