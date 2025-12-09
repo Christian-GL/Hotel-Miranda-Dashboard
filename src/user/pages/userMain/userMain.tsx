@@ -10,6 +10,7 @@ import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { UserInterface } from "./../../interfaces/userInterface"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
+import { getArrowIcon } from "common/utils/getArrowIcon"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { UserNameColumn } from "../../enums/userNameColumn"
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
@@ -64,9 +65,6 @@ export const UserMain = () => {
         else if (userAllLoading === ApiStatus.fulfilled) { displayEmployee() }
         else if (userAllLoading === ApiStatus.rejected) { alert("Error in API userMain") }
     }, [userAllLoading, userAll, inputText, selectedButton, arrowStates])
-
-    const navigateToUserCreate = () => navigate('user-create')
-    const navigateToUserUpdate = (id: string) => navigate(`user-update/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -132,26 +130,6 @@ export const UserMain = () => {
         }
         return sortedData
     }
-    // const handleColumnClick = (nameColumn: UserNameColumn): void => {
-    //     setArrowStates(prevState => {
-    //         const newState: UserColumnsArrowStatesInterface = { ...prevState }
-
-    //         if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
-    //         else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
-    //         else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
-
-    //         Object.keys(newState as UserColumnsArrowStatesInterface).forEach((key) => {
-    //             const typedKey = key as keyof UserColumnsArrowStatesInterface
-
-    //             if (typedKey !== nameColumn) {
-    //                 newState[typedKey] = ArrowType.right
-    //             }
-    //         })
-
-    //         return newState
-    //     })
-    //     handleTableFilter(selectedButton)
-    // }
     const handleColumnClick = (nameColumn: UserNameColumn): void => {
         setArrowStates(prevState => {
             const newState: Partial<Record<UserNameColumn, ArrowType>> = { ...prevState }
@@ -170,12 +148,6 @@ export const UserMain = () => {
         })
 
         handleTableFilter(selectedButton)
-    }
-    const getArrowIcon = (nameColumn: UserNameColumn): JSX.Element => {
-        const state = arrowStates[nameColumn]
-        if (state === ArrowType.up) { return <TriangleUp /> }
-        else if (state === ArrowType.down) { return <TriangleDown /> }
-        else { return <TriangleRight /> }
     }
     const displayMenuOptions = (index: number): void => {
         tableOptionsDisplayed === index ?
@@ -204,7 +176,7 @@ export const UserMain = () => {
                 </userMainStyles.DivCtnSearch>
 
                 <userMainStyles.DivCtnButton>
-                    <ButtonCreate onClick={navigateToUserCreate} children='+ New Employee' />
+                    <ButtonCreate onClick={() => navigate('user-create')} children='+ New Employee' />
                 </userMainStyles.DivCtnButton>
             </userMainStyles.DivCtnFuncionality>
 
@@ -216,10 +188,11 @@ export const UserMain = () => {
                         return (
                             <THTable key={entry} onClick={() => handleColumnClick(entry)} cursorPointer="yes">
                                 {entry}
-                                {getArrowIcon(entry)}
+                                {getArrowIcon(arrowStates[entry])}
                             </THTable>
                         )
-                    } else {
+                    }
+                    else {
                         return (
                             <THTable key={entry}>
                                 {entry}
@@ -278,7 +251,7 @@ export const UserMain = () => {
                         <PTable key={index + '-10'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { navigateToUserUpdate(userData._id) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { () => navigate(`user-update/${userData._id}`) }}>Update</ButtonOption>
                                 <ButtonOption onClick={() => { deleteUserById(userData._id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>
