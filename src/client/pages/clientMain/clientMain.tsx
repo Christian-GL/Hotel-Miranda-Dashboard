@@ -10,9 +10,11 @@ import { ClientColumnSort } from '../../enums/clientColumnSort'
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { ClientInterface } from '../../interfaces/clientInterface'
-import { ClientColumnsArrowStatesInterface } from '../../interfaces/clientColumnsArrowStatesInterface'
+import { getArrowIcon } from "common/utils/getArrowIcon"
+import { sortValues } from "common/utils/sortValues"
+import { handleColumnClick } from "common/utils/handleColumnClick"
 import { ArrowType } from "../../../common/enums/ArrowType"
-import { formatDateForPrint } from '../../../common/utils/dateUtils'
+import { ClientNameColumn } from "../../enums/ClientNameColumn"
 import { ArticleReview } from "../../../common/components/articleReview/articleReview"
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
@@ -34,16 +36,19 @@ export const ClientMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const nameColumnList: string[] = ['Customer Info', 'Phone number', 'Booking list', '']
     const clientAll: ClientInterface[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredClients, setFilteredClients] = useState<ClientInterface[]>([])
-    const [displayedNotArchived, setDisplayedNotArchived] = useState<OptionYesNo>(OptionYesNo.yes)
-    const [arrowStates, setArrowStates] = useState<ClientColumnsArrowStatesInterface>({
-        customerInfo: ArrowType.down
+    const sortableColumns: ClientNameColumn[] = [
+        ClientNameColumn.customerInfo
+    ]
+    type ArrowStates = Partial<Record<ClientNameColumn, ArrowType>>
+    const [arrowStates, setArrowStates] = useState<ArrowStates>({
+        [ClientNameColumn.customerInfo]: ArrowType.down
     })
+    const [displayedNotArchived, setDisplayedNotArchived] = useState<OptionYesNo>(OptionYesNo.yes)
     const {
         currentPageItems,
         currentPage,
@@ -60,9 +65,6 @@ export const ClientMain = () => {
         else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de clients") }
     }, [clientAllLoading, clientAll, inputText, displayedNotArchived, arrowStates])
 
-    const navigateToClientCreate = () => navigate('client-create')
-    const navigateToClientUpdate = (id: string) => navigate(`client-update/${id}`)
-
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
         resetPage()
@@ -78,82 +80,49 @@ export const ClientMain = () => {
         const filteredData = selectArchiveType.filter(client =>
             client.full_name.toLowerCase().includes(inputText.toLowerCase())
         )
-        const sortedData = sortData(filteredData)
-        setFilteredClients(sortedData)
+        setFilteredClients(sortData(filteredData))
         resetPage()
     }
     const sortData = (filteredData: ClientInterface[]): ClientInterface[] => {
-        // !!! OPTIMIZAR LA SIGUIENTE LINEA:
-        const activeColumn = (Object.keys(arrowStates) as (keyof ClientColumnsArrowStatesInterface)[]).find(key => arrowStates[key] !== ArrowType.right)
-        let sortedData: ClientInterface[] = [...filteredData]
-        if (activeColumn) {
-            // if (activeColumn === ClientColumnSort.orderId) {
-            //     sortedData.sort((a, b) => {
-            //         let valueA: string = a._id
-            //         let valueB: string = b._id
-            //         if (arrowStates[activeColumn] === ArrowType.up) {
-            //             return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-            //         } else {
-            //             return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-            //         }
-            //     })
-            // }
-            if (activeColumn === ClientColumnSort.customerInfo) {
-                sortedData.sort((a, b) => {
-                    let valueA: string = a.full_name.toLowerCase()
-                    let valueB: string = b.full_name.toLowerCase()
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
+        const arrowStateColumns = Object.keys(arrowStates) as ClientNameColumn[]
+        const activeColumn = arrowStateColumns.find(key => arrowStates[key] !== ArrowType.right)
+        if (!activeColumn) return filteredData
+
+        const activeColumnArrowDirection = arrowStates[activeColumn]!
+        const sortedData = [...filteredData]
+
+        sortedData.sort((a, b) => {
+            let valueA: any
+            let valueB: any
+            switch (activeColumn) {
+                case ClientNameColumn.customerInfo:
+                    valueA = a.full_name.toLowerCase()
+                    valueB = b.full_name.toLowerCase()
+                    break
+                default:
+                    return 0
             }
 
-        }
-        return sortedData
-    }
-    const handleColumnClick = (nameColumn: ClientColumnSort): void => {
-        setArrowStates(prevState => {
-            const newState = { ...prevState }
-
-            if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
-            else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
-            else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
-
-            Object.keys(newState as ClientColumnsArrowStatesInterface).forEach((key) => {
-                const typedKey = key as keyof ClientColumnsArrowStatesInterface
-
-                if (typedKey !== nameColumn) {
-                    newState[typedKey] = ArrowType.right
-                }
-            })
-
-            return newState
+            return sortValues(valueA, valueB, activeColumnArrowDirection)
         })
 
-        handleTableFilter(displayedNotArchived)
+        return sortedData
     }
-    const getArrowIcon = (nameColumn: ClientColumnSort): JSX.Element => {
-        const state = arrowStates[nameColumn]
-        if (state === ArrowType.up) { return <TriangleUp /> }
-        else if (state === ArrowType.down) { return <TriangleDown /> }
-        else { return <TriangleRight /> }
-    }
-    const publish = (id: string) => {
-        const updatedClient = clientAll.find(client => client._id === id)
-        if (updatedClient !== undefined) {
-            const clientUpdated = { ...updatedClient, archived: OptionYesNo.no }
-            dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: clientUpdated }))
-        }
-    }
-    const archive = (id: string) => {
-        const updatedClient = clientAll.find(client => client._id === id)
-        if (updatedClient !== undefined) {
-            const clientUpdated = { ...updatedClient, archived: OptionYesNo.yes }
-            dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: clientUpdated }))
-        }
-    }
+    // const publish = (id: string) => {
+    //     const updatedClient = clientAll.find(client => client._id === id)
+    //     if (updatedClient !== undefined) {
+    //         const clientUpdated = { ...updatedClient, archived: OptionYesNo.no }
+    //         dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: clientUpdated }))
+    //     }
+    // }
+
+    // const archive = (id: string) => {
+    //     const updatedClient = clientAll.find(client => client._id === id)
+    //     if (updatedClient !== undefined) {
+    //         const clientUpdated = { ...updatedClient, archived: OptionYesNo.yes }
+    //         dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: clientUpdated }))
+    //     }
+    // }
     const displayMenuOptions = (index: number): void => {
         tableOptionsDisplayed === index ?
             setTableOptionsDisplayed(-1) :
@@ -203,30 +172,33 @@ export const ClientMain = () => {
                 </clientMainStyles.DivCtnSearch>
 
                 <clientMainStyles.DivCtnButton>
-                    <ButtonCreate onClick={navigateToClientCreate} children='+ New Client' />
+                    <ButtonCreate onClick={() => navigate('client-create')} children='+ New Client' />
                 </clientMainStyles.DivCtnButton>
             </clientMainStyles.DivCtnFuncionality>
 
-            <Table rowlistlength={filteredClients.length + 1} columnlistlength={nameColumnList.length} >
-                {nameColumnList.map((nameColumn, index) => {
-                    let content
-                    switch (index) {
-                        case 0:
-                            content =
-                                <THTable key={index} onClick={() => handleColumnClick(ClientColumnSort.customerInfo)} cursorPointer="yes">
-                                    {nameColumn}
-                                    {getArrowIcon(ClientColumnSort.customerInfo)}
-                                </THTable>
-                            break
-                        default:
-                            content =
-                                <THTable key={index}>
-                                    {nameColumn}
-                                </THTable>
+            <Table rowlistlength={filteredClients.length + 1} columnlistlength={Object.values(ClientNameColumn).length + 1} >
+                {Object.values(ClientNameColumn).map(entry => {
+                    if (sortableColumns.includes(entry)) {
+                        return (
+                            <THTable
+                                key={entry}
+                                onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayClients(displayedNotArchived))}
+                                cursorPointer="yes"
+                            >
+                                {entry}
+                                {getArrowIcon(arrowStates[entry])}
+                            </THTable>
+                        )
                     }
-
-                    return content
+                    else {
+                        return (
+                            <THTable key={entry}>
+                                {entry}
+                            </THTable>
+                        )
+                    }
                 })}
+                <THTable>{''}</THTable>
                 {currentPageItems.map((clientData, index) => {
                     return [
                         <PTable key={index + '-1'} flexdirection='column' alignitems='left' justifycontent='center'>
@@ -263,7 +235,7 @@ export const ClientMain = () => {
                         <PTable key={index + '-4'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { navigateToClientUpdate(clientData._id) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { () => navigate(`client-update/${clientData._id}`) }}>Update</ButtonOption>
                                 <ButtonOption onClick={() => { deleteClientById(clientData._id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>

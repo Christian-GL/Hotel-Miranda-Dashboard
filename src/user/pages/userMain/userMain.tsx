@@ -48,7 +48,7 @@ export const UserMain = () => {
     ]
     type ArrowStates = Partial<Record<UserNameColumn, ArrowType>>
     const [arrowStates, setArrowStates] = useState<ArrowStates>({
-        [UserNameColumn.userInfo]: ArrowType.right,
+        [UserNameColumn.userInfo]: ArrowType.down,
         [UserNameColumn.role]: ArrowType.right,
         [UserNameColumn.startDate]: ArrowType.right,
         [UserNameColumn.endDate]: ArrowType.right
