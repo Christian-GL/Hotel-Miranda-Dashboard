@@ -73,8 +73,8 @@ export const UserMain = () => {
         setInputText(e.target.value)
         resetPage()
     }
-    const handleTableFilter = (type: UserButtonType): void => {
-        setSelectedButton(type)
+    const handleTableFilter = (selectedButton: UserButtonType): void => {
+        setSelectedButton(selectedButton)
         displayEmployee()
     }
     const displayEmployee = (): void => {
@@ -138,25 +138,6 @@ export const UserMain = () => {
 
         return sortedData
     }
-    // const handleColumnClick = (nameColumn: UserNameColumn): void => {
-    //     setArrowStates(prevState => {
-    //         const newState: Partial<Record<UserNameColumn, ArrowType>> = { ...prevState }
-
-    //         if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
-    //         else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
-    //         else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
-
-    //         sortableColumns.forEach(col => {
-    //             if (col !== nameColumn) {
-    //                 newState[col] = ArrowType.right
-    //             }
-    //         })
-
-    //         return newState
-    //     })
-
-    //     handleTableFilter(selectedButton)
-    // }
     const displayMenuOptions = (index: number): void => {
         tableOptionsDisplayed === index ?
             setTableOptionsDisplayed(-1) :
@@ -168,14 +149,6 @@ export const UserMain = () => {
         resetPage()
     }
 
-    const handleColumnClickGen = (column: UserNameColumn): void => {
-        handleColumnClick(
-            column,
-            sortableColumns,
-            setArrowStates,
-            () => handleTableFilter(selectedButton)
-        );
-    };
 
     return (<>
         <userMainStyles.SectionPageUser>
@@ -202,7 +175,11 @@ export const UserMain = () => {
                 {Object.values(UserNameColumn).map(entry => {
                     if (sortableColumns.includes(entry)) {
                         return (
-                            <THTable key={entry} onClick={() => handleColumnClickGen(entry)} cursorPointer="yes">
+                            <THTable
+                                key={entry}
+                                onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayEmployee())}
+                                cursorPointer="yes"
+                            >
                                 {entry}
                                 {getArrowIcon(arrowStates[entry])}
                             </THTable>
