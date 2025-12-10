@@ -117,9 +117,12 @@ export const UserMain = () => {
             let valueB: any
             switch (activeColumn) {
                 case UserNameColumn.userInfo:
-                case UserNameColumn.role:
                     valueA = a.full_name.toLowerCase()
                     valueB = b.full_name.toLowerCase()
+                    break
+                case UserNameColumn.role:
+                    valueA = a.role.toLowerCase()
+                    valueB = b.role.toLowerCase()
                     break
                 case UserNameColumn.startDate:
                     valueA = new Date(a.start_date).getTime()

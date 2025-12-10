@@ -6,12 +6,14 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as roomMainStyles from "./roomMainStyles"
 import { RoomButtonType } from "../../enums/roomButtonType"
-import { RoomColumnSort } from '../../enums/roomColumnSort'
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { RoomInterfaceBookings } from "./../../interfaces/roomInterface"
-import { RoomColumnsArrowStatesInterface } from './../../interfaces/roomColumnsArrowStatesInterface'
+import { getArrowIcon } from "common/utils/getArrowIcon"
+import { sortValues } from "common/utils/sortValues"
+import { handleColumnClick } from "common/utils/handleColumnClick"
 import { ArrowType } from "../../../common/enums/ArrowType"
+import { RoomNameColumn } from "../../enums/roomNameColumn"
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
@@ -28,14 +30,12 @@ import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk
 import { getBookingAllData, getBookingAllStatus, deleteBooking } from "../../../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.js"
 import { BookingInterfaceRoom } from "../../../booking/interfaces/bookingInterface"
-import { BookingDeleteByIdThunk } from "../../../booking/features/thunks/bookingDeleteByIdThunk"
 
 
 export const RoomMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const nameColumnList: string[] = ['', 'Room number', 'Room type', 'Amenities', 'Price', 'Offer price', 'Active', '']
     const roomAll: RoomInterfaceBookings[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const bookingAll: BookingInterfaceRoom[] = useSelector(getBookingAllData)
@@ -44,10 +44,18 @@ export const RoomMain = () => {
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredRooms, setFilteredRooms] = useState<RoomInterfaceBookings[]>([])
     const [selectedButton, setSelectedButton] = useState<RoomButtonType>(RoomButtonType.all)
-    const [arrowStates, setArrowStates] = useState<RoomColumnsArrowStatesInterface>({
-        roomNumber: ArrowType.down,
-        price: ArrowType.right,
-        offerPrice: ArrowType.right
+    const sortableColumns: RoomNameColumn[] = [
+        RoomNameColumn.number,
+        RoomNameColumn.type,
+        RoomNameColumn.price,
+        RoomNameColumn.discount
+    ]
+    type ArrowStates = Partial<Record<RoomNameColumn, ArrowType>>
+    const [arrowStates, setArrowStates] = useState<ArrowStates>({
+        [RoomNameColumn.number]: ArrowType.down,
+        [RoomNameColumn.type]: ArrowType.right,
+        [RoomNameColumn.price]: ArrowType.right,
+        [RoomNameColumn.discount]: ArrowType.right
     })
     const {
         currentPageItems,
@@ -70,15 +78,12 @@ export const RoomMain = () => {
         else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de room > bookings") }
     }, [bookingAllLoading, bookingAll])
 
-    const navigateToRoomCreate = () => navigate('room-create')
-    const navigateToRoomUpdate = (id: string) => navigate(`room-update/${id}`)
-
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
         resetPage()
     }
-    const handleTableFilter = (type: RoomButtonType): void => {
-        setSelectedButton(type)
+    const handleTableFilter = (selectedButton: RoomButtonType): void => {
+        setSelectedButton(selectedButton)
         displayRooms()
     }
     const displayRooms = (): void => {
@@ -91,85 +96,56 @@ export const RoomMain = () => {
                 break
             case RoomButtonType.available:
                 filteredData = roomAll.filter(room =>
-                    room.number.toString().includes(inputText.toLowerCase()) &&
-                    isAvailable(room)
+                    room.number.toString().includes(inputText.toLowerCase())
+                    && isAvailable(room)
                 )
                 break
             case RoomButtonType.booked:
                 filteredData = roomAll.filter(room =>
-                    room.number.toString().includes(inputText.toLowerCase()) &&
-                    !isAvailable(room)
+                    room.number.toString().includes(inputText.toLowerCase())
+                    && !isAvailable(room)
                 )
                 break
         }
-        const sortedData = sortData(filteredData)
-        setFilteredRooms(sortedData)
+        setFilteredRooms(sortData(filteredData))
         resetPage()
     }
     const sortData = (filteredData: RoomInterfaceBookings[]): RoomInterfaceBookings[] => {
-        const activeColumn = (Object.keys(arrowStates) as (keyof RoomColumnsArrowStatesInterface)[]).find(key => arrowStates[key] !== ArrowType.right)
-        let sortedData: RoomInterfaceBookings[] = [...filteredData]
-        if (activeColumn) {
-            if (activeColumn === RoomColumnSort.roomNumber) {
-                sortedData.sort((a, b) => {
-                    let valueA: number = parseInt(a.number)
-                    let valueB: number = parseInt(b.number)
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
-            }
-            else if (activeColumn === RoomColumnSort.price) {
-                sortedData.sort((a, b) => {
-                    let valueA: number = a.price
-                    let valueB: number = b.price
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
-            }
-            else if (activeColumn === RoomColumnSort.offerPrice) {
-                sortedData.sort((a, b) => {
-                    let valueA: number = applyDiscount(a.price, a.discount)
-                    let valueB: number = applyDiscount(b.price, b.discount)
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
-            }
-        }
-        return sortedData
-    }
-    const handleColumnClick = (nameColumn: RoomColumnSort): void => {
-        setArrowStates(prevState => {
-            const newState: RoomColumnsArrowStatesInterface = { ...prevState }
+        const arrowStateColumns = Object.keys(arrowStates) as RoomNameColumn[]
+        const activeColumn = arrowStateColumns.find(key => arrowStates[key] !== ArrowType.right)
+        if (!activeColumn) return filteredData
 
-            if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
-            else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
-            else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
+        const activeColumnArrowDirection = arrowStates[activeColumn]!
+        const sortedData = [...filteredData]
 
-            Object.keys(newState).map(key => {
-                if (key !== nameColumn) {
-                    newState[key] = ArrowType.right
-                }
-            })
+        sortedData.sort((a, b) => {
+            let valueA: any
+            let valueB: any
+            switch (activeColumn) {
+                case RoomNameColumn.number:
+                    valueA = parseInt(a.number)
+                    valueB = parseInt(b.number)
+                    break
+                case RoomNameColumn.type:
+                    valueA = a.type.toLowerCase()
+                    valueB = b.type.toLowerCase()
+                    break
+                case RoomNameColumn.price:
+                    valueA = a.price
+                    valueB = b.price
+                    break
+                case RoomNameColumn.discount:
+                    valueA = a.discount
+                    valueB = b.discount
+                    break
+                default:
+                    return 0
+            }
 
-            return newState
+            return sortValues(valueA, valueB, activeColumnArrowDirection)
         })
 
-        handleTableFilter(selectedButton)
-    }
-    const getArrowIcon = (nameColumn: RoomColumnSort): JSX.Element => {
-        const state = arrowStates[nameColumn]
-        if (state === ArrowType.up) { return <TriangleUp /> }
-        else if (state === ArrowType.down) { return <TriangleDown /> }
-        else { return <TriangleRight /> }
+        return sortedData
     }
     const displayMenuOptions = (index: number): void => {
         tableOptionsDisplayed === index ?
@@ -215,44 +191,34 @@ export const RoomMain = () => {
                 </roomMainStyles.DivCtnSearch>
 
                 <roomMainStyles.DivCtnButton>
-                    <ButtonCreate onClick={navigateToRoomCreate} children='+ New Room' />
+                    <ButtonCreate onClick={() => navigate('room-create')} children='+ New Room' />
                 </roomMainStyles.DivCtnButton>
             </roomMainStyles.DivCtnFuncionality>
 
-            <Table rowlistlength={filteredRooms.length + 1} columnlistlength={nameColumnList.length} >
-                {nameColumnList.map((nameColumn, index) => {
-                    let content
-                    switch (index) {
-                        case 1:
-                            content =
-                                <THTable key={index} onClick={() => handleColumnClick(RoomColumnSort.roomNumber)} cursorPointer="yes">
-                                    {nameColumn}
-                                    {getArrowIcon(RoomColumnSort.roomNumber)}
-                                </THTable>
-                            break
-                        case 4:
-                            content =
-                                <THTable key={index} onClick={() => handleColumnClick(RoomColumnSort.price)} cursorPointer="yes">
-                                    {nameColumn}
-                                    {getArrowIcon(RoomColumnSort.price)}
-                                </THTable>
-                            break
-                        case 5:
-                            content =
-                                <THTable key={index} onClick={() => handleColumnClick(RoomColumnSort.offerPrice)} cursorPointer="yes">
-                                    {nameColumn}
-                                    {getArrowIcon(RoomColumnSort.offerPrice)}
-                                </THTable>
-                            break
-                        default:
-                            content =
-                                <THTable key={index}>
-                                    {nameColumn}
-                                </THTable>
+            <Table rowlistlength={filteredRooms.length + 1} columnlistlength={Object.values(RoomNameColumn).length + 2} >
+                <THTable>{''}</THTable>
+                {Object.values(RoomNameColumn).map(entry => {
+                    if (sortableColumns.includes(entry)) {
+                        return (
+                            <THTable
+                                key={entry}
+                                onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayRooms())}
+                                cursorPointer="yes"
+                            >
+                                {entry}
+                                {getArrowIcon(arrowStates[entry])}
+                            </THTable>
+                        )
                     }
-
-                    return content
+                    else {
+                        return (
+                            <THTable key={entry}>
+                                {entry}
+                            </THTable>
+                        )
+                    }
                 })}
+                <THTable>{''}</THTable>
                 {currentPageItems.map((roomData, index) => {
                     return [
                         <DivImgTable key={index + '-1'}>
@@ -294,7 +260,7 @@ export const RoomMain = () => {
                         <PTable key={index + '-8'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { navigateToRoomUpdate(roomData._id) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { () => navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
                                 <ButtonOption onClick={() => { deleteRoomById(roomData._id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>
