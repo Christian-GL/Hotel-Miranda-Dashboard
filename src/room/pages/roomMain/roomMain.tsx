@@ -29,7 +29,7 @@ import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
 import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk"
 import { getBookingAllData, getBookingAllStatus, deleteBooking } from "../../../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.js"
-import { BookingInterfaceRoom } from "../../../booking/interfaces/bookingInterface"
+import { BookingInterfaceData } from "../../../booking/interfaces/bookingInterface"
 
 
 export const RoomMain = () => {
@@ -38,7 +38,7 @@ export const RoomMain = () => {
     const dispatch = useDispatch<AppDispatch>()
     const roomAll: RoomInterfaceBookings[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
-    const bookingAll: BookingInterfaceRoom[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterfaceData[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)

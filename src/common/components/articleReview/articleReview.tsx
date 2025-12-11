@@ -4,7 +4,6 @@ import { useState } from "react"
 
 import * as articleReviewStyles from "./articleReviewStyles"
 import { ArticleReviewInterface } from "./articleReviewInterface"
-// import PedroSanchez from '../../../assets/img/PedroSanchez.png'
 import { IconHotel } from '../layout/sidebarMenuStyles'
 import { PopupText } from "../popupText/popupText"
 
@@ -21,7 +20,7 @@ export const ArticleReview: React.FC<ArticleReviewInterface> = ({ title, subTitt
 
         {showPopup && <PopupText isSlider={true} title={title} text={content} onClose={() => setShowPopup(false)} />}
 
-        {/* REPASAR PROPORCIONES PARA QUE NO SE DESCUADREN LOS DATOS */}
+        {/* !!! REPASAR PROPORCIONES PARA QUE NO SE DESCUADREN LOS DATOS */}
         <articleReviewStyles.ArticleReview>
             <articleReviewStyles.PTextReview onClick={openPopup}>
                 {content}

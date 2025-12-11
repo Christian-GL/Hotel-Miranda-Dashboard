@@ -9,13 +9,13 @@ import { BookingButtonType } from "../../enums/bookingButtonType"
 import { BookingStatus } from './../../enums/bookingStatus'
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { BookingInterface } from "./../../interfaces/bookingInterface"
+import { BookingInterface, BookingInterfaceData } from "./../../interfaces/bookingInterface"
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { RoomInterfaceBookings } from "../../../room/interfaces/roomInterface"
 import { ArrowType } from "../../../common/enums/ArrowType"
-import { BookingNameColumn } from "booking/enums/bookingNameColumn"
+import { BookingNameColumn } from "../../enums/bookingNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
 import { PopupTextInterface } from '../../../common/components/popupText/popupTextInterface'
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
@@ -40,14 +40,14 @@ export const BookingMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterfaceData[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const roomAll: RoomInterfaceBookings[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [selectedButton, setSelectedButton] = useState<BookingButtonType>(BookingButtonType.all)
-    const [filteredBookings, setFilteredBookings] = useState<BookingInterface[]>([])
+    const [filteredBookings, setFilteredBookings] = useState<BookingInterfaceData[]>([])
     const sortableColumns: BookingNameColumn[] = [
         BookingNameColumn.orderDate,
         BookingNameColumn.checkIn,
@@ -69,7 +69,7 @@ export const BookingMain = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination<BookingInterface>(filteredBookings, 10)
+    } = usePagination<BookingInterfaceData>(filteredBookings, 10)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -91,7 +91,7 @@ export const BookingMain = () => {
         displayBookings()
     }
     const displayBookings = (): void => {
-        let filteredData: BookingInterface[]
+        let filteredData: BookingInterfaceData[]
         // !!! ACTUALIZAR POR NUMERO DE HABITACIONES AL TENER LOS DATOS:
         // switch (selectedButton) {
         //     case BookingButtonType.all:
@@ -122,7 +122,7 @@ export const BookingMain = () => {
         setFilteredBookings(sortData(filteredData))
         resetPage()
     }
-    const sortData = (filteredData: BookingInterface[]): BookingInterface[] => {
+    const sortData = (filteredData: BookingInterfaceData[]): BookingInterfaceData[] => {
         const arrowStateColumns = Object.keys(arrowStates) as BookingNameColumn[]
         const activeColumn = arrowStateColumns.find(key => arrowStates[key] !== ArrowType.right)
         if (!activeColumn) return filteredData

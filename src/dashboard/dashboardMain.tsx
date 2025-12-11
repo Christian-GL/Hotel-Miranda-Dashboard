@@ -1,12 +1,12 @@
 
-import React from "react"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as dashboardMainStyles from "./dashboardMainStyles"
 import { AppDispatch } from '../common/redux/store'
 import { ApiStatus } from "../common/enums/ApiStatus"
+import { BookingStatus } from "../booking/enums/bookingStatus"
 import { formatDateForPrint } from '../common/utils/dateUtils'
 import { checkBookingStatus } from '../common/utils/checkBookingStatus'
 import { ArticleReview } from "../common/components/articleReview/articleReview"
@@ -14,14 +14,14 @@ import { getBookingAllData, getBookingAllStatus } from '../booking/features/book
 import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk'
 import { getClientAllData, getClientAllStatus } from "../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../client/features/thunks/clientFetchAllThunk"
-import { BookingInterfaceRoom } from "../booking/interfaces/bookingInterface"
+import { BookingInterfaceData } from "../booking/interfaces/bookingInterface"
 import { ClientInterface } from "../client/interfaces/clientInterface"
 
 
 export const DashboardMain = () => {
 
     const dispatch = useDispatch<AppDispatch>()
-    const bookingAll: BookingInterfaceRoom[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterfaceData[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const clientAll: ClientInterface[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
@@ -54,7 +54,7 @@ export const DashboardMain = () => {
                     <dashboardMainStyles.DivCtnInfo>
                         <dashboardMainStyles.NumberH4>
                             {bookingAll.filter(booking =>
-                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === 'Check In'
+                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkIn
                             ).length}
                         </dashboardMainStyles.NumberH4>
                         <dashboardMainStyles.TextH5>Check in</dashboardMainStyles.TextH5>
@@ -65,7 +65,7 @@ export const DashboardMain = () => {
                     <dashboardMainStyles.DivCtnInfo>
                         <dashboardMainStyles.NumberH4>
                             {bookingAll.filter(booking =>
-                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === 'In Progress'
+                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.inProgress
                             ).length}
                         </dashboardMainStyles.NumberH4>
                         <dashboardMainStyles.TextH5>In Progress</dashboardMainStyles.TextH5>
@@ -76,7 +76,7 @@ export const DashboardMain = () => {
                     <dashboardMainStyles.DivCtnInfo>
                         <dashboardMainStyles.NumberH4>
                             {bookingAll.filter(booking =>
-                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === 'Check Out'
+                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkOut
                             ).length}
                         </dashboardMainStyles.NumberH4>
                         <dashboardMainStyles.TextH5>Check Out</dashboardMainStyles.TextH5>
@@ -104,12 +104,13 @@ export const DashboardMain = () => {
                     pagination={{ clickable: true }}
                     loop={true}
                 >
+                    {/* !!! PONER DATOS RELEVANTES: */}
                     {clientAll.map((client, index) => {
                         return <SwiperSlide key={index}>
                             <ArticleReview
                                 title={client.full_name}
-                                timeSince={`${formatDateForPrint(client.publish_date)}`}
-                                textReview={client.comment}
+                                subTittle={`${formatDateForPrint(client.full_name)}`}
+                                content={client.email}
                             />
                         </SwiperSlide>
                     })}

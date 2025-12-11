@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
 import * as bookingDetailsStyles from "./bookingDetailsStyles"
-import { BookingInterfaceRoom } from "../../interfaces/bookingInterface"
+import { BookingInterfaceData } from "../../interfaces/bookingInterface"
 import { DivCtnOptions, ButtonOption } from "../../../common/styles/tableStyles"
 import { AppDispatch } from "../../../common/redux/store"
 import { formatDateForPrint } from "../../../common/utils/dateUtils"
@@ -24,7 +24,7 @@ export const BookingDetails = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { id } = useParams()
     const idParams = id!
-    const bookingById: BookingInterfaceRoom = useSelector(getBookingIdData)
+    const bookingById: BookingInterfaceData = useSelector(getBookingIdData)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
     const [optionsDisplayed, setOptionsDisplayed] = useState<boolean>(false)
 

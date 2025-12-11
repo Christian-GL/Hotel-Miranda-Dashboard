@@ -172,7 +172,6 @@ export const UserMain = () => {
                 </userMainStyles.DivCtnButton>
             </userMainStyles.DivCtnFuncionality>
 
-            {/* length + 2 debido a las 2 columnas añadidas sin encabezado */}
             <Table rowlistlength={filteredUsers.length + 1} columnlistlength={Object.values(UserNameColumn).length + 2}>
                 <THTable>{''}</THTable>
                 {Object.values(UserNameColumn).map(entry => {

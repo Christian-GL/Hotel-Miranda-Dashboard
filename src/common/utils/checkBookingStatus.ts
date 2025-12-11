@@ -2,8 +2,8 @@
 import { BookingStatus } from "../../booking/enums/bookingStatus"
 
 
-export const checkBookingStatus = (checkInDate: string, checkOutDate: string): BookingStatus => {
-    const actualDate = new Date().toISOString()
+export const checkBookingStatus = (checkInDate: Date, checkOutDate: Date): BookingStatus => {
+    const actualDate = new Date()
     if (actualDate < checkInDate) {
         return BookingStatus.checkIn
     }

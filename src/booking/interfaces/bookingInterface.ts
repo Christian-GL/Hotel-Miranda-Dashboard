@@ -19,7 +19,7 @@ export interface BookingInterface extends BookingInterfaceNoId {
 }
 
 // !!! ACTUALIZAR:
-export interface BookingInterfaceBookingsDataNoId {
+export interface BookingInterfaceDataNoId {
     order_date: Date
     check_in_date: Date
     check_out_date: Date
@@ -30,6 +30,6 @@ export interface BookingInterfaceBookingsDataNoId {
     client_id: string
 }
 
-export interface BookingInterfaceRoom extends BookingInterfaceBookingsDataNoId {
+export interface BookingInterfaceData extends BookingInterfaceDataNoId {
     _id: string
 }
