@@ -21,6 +21,7 @@ import { BookingDeleteByIdThunk } from "../../features/thunks/bookingDeleteByIdT
 export const BookingDetails = () => {
 
     const navigate = useNavigate()
+    const navigateBackToBookings = () => navigate('../')
     const dispatch = useDispatch<AppDispatch>()
     const { id } = useParams()
     const idParams = id!
@@ -38,8 +39,6 @@ export const BookingDetails = () => {
         else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error in API bookings > booking details") }
     }, [bookingByIdLoading, bookingById, id])
 
-    const navigateBackToBookings = () => navigate('../')
-
     const switchDisplayMenuOptions = (): void => {
         setOptionsDisplayed(!optionsDisplayed)
     }
@@ -53,10 +52,12 @@ export const BookingDetails = () => {
         <bookingDetailsStyles.SectionPageBookingDetails>
             <bookingDetailsStyles.DivSection padding='2em'>
                 <bookingDetailsStyles.DivCtnImgAndMainData>
-                    <bookingDetailsStyles.ImgProfile src={bookingById.photo} />
+                    {/* !!! TENDRÁ QUE SER LA FOTOS/FOTOS DE LA ROOM ASOCIADA: */}
+                    {/* <bookingDetailsStyles.ImgProfile src={bookingById.photo} /> */}
                     <bookingDetailsStyles.DivCtnMainData>
                         <bookingDetailsStyles.DivCtnNameId>
-                            <bookingDetailsStyles.NameProfileH2>{bookingById.full_name_guest}</bookingDetailsStyles.NameProfileH2>
+                            {/* !!! TENDRÁ QUE SER EL NOMBRE DEL CLIENTE ASOCIADO */}
+                            <bookingDetailsStyles.NameProfileH2>{bookingById.client_id}</bookingDetailsStyles.NameProfileH2>
                             <bookingDetailsStyles.SubTittleH4 isId={true}>ID Booking: #{bookingById._id}</bookingDetailsStyles.SubTittleH4>
                         </bookingDetailsStyles.DivCtnNameId>
                         <bookingDetailsStyles.DivCtnClientMessage>
@@ -103,9 +104,11 @@ export const BookingDetails = () => {
                             Room Info
                         </bookingDetailsStyles.SubTittleH4>
                         <bookingDetailsStyles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em'>
-                            Room Nº {bookingById.room_data?.number}
+                            {/* !!! TENDRÁ QUE SER LOS NÚMEROS DE LAS ROOMS ASOCIADAS */}
+                            {/* Room Nº {bookingById.room_data?.number} */}
                             <br />
-                            {bookingById.room_data?.type}
+                            {/* !!! TENDRÁ QUE SER LOS TIPOS DE LAS ROOMS ASOCIADAS */}
+                            {/* {bookingById.room_data?.type} */}
                         </bookingDetailsStyles.SubTittleH4>
                     </bookingDetailsStyles.Div50PercentageSection>
                     <bookingDetailsStyles.Div50PercentageSection>
@@ -113,9 +116,10 @@ export const BookingDetails = () => {
                             Price
                         </bookingDetailsStyles.SubTittleH4>
                         <bookingDetailsStyles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em'>
-                            <del>${bookingById.room_data?.price} /night</del>
+                            <del>${bookingById.price} /night</del>
                             <br />
-                            ${applyDiscount(bookingById.room_data?.price, bookingById.room_data?.discount)} /night (-{bookingById.room_data?.discount}%)
+                            {/* !!! TENDRÁ QUE SER LOS DESCUENTOS DE LAS ROOMS ASOCIADAS */}
+                            {/* ${applyDiscount(bookingById.price, bookingById.room_data?.discount)} /night (-{bookingById.room_data?.discount}%) */}
                         </bookingDetailsStyles.SubTittleH4>
                     </bookingDetailsStyles.Div50PercentageSection>
                 </bookingDetailsStyles.DivCtnInfo>
@@ -126,7 +130,8 @@ export const BookingDetails = () => {
 
                 <bookingDetailsStyles.DivCtnFacilities>
                     <bookingDetailsStyles.SubTittleH4 isId={true} fontsize='1em'>Facilities</bookingDetailsStyles.SubTittleH4>
-                    {Array.isArray(bookingById.room_data?.amenities) ? (
+                    {/* !!! */}
+                    {/* {Array.isArray(bookingById.room_data?.amenities) ? (
                         bookingById.room_data?.amenities.map((amenity, index) => {
                             switch (amenity) {
                                 case RoomAmenities.bedSpace3:
@@ -162,12 +167,13 @@ export const BookingDetails = () => {
                         (<bookingDetailsStyles.SubTittleH4 fontsize='1em'>
                             No amenities available
                         </bookingDetailsStyles.SubTittleH4>)
-                    }
+                    } */}
                 </bookingDetailsStyles.DivCtnFacilities>
             </bookingDetailsStyles.DivSection>
 
             <bookingDetailsStyles.DivSection>
-                <bookingDetailsStyles.ImgRoom src={bookingById.room_data?.photos[0]} />
+                {/* !!! LA FOTO PRINCIPAL DE CADA ROOM ASOCIADA: */}
+                <bookingDetailsStyles.ImgRoom src={bookingById.room_data_list[0].photos[0]} />
             </bookingDetailsStyles.DivSection>
         </bookingDetailsStyles.SectionPageBookingDetails>
     )
