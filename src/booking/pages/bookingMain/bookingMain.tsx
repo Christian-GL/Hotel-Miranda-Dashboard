@@ -6,14 +6,16 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as bookingMainStyles from './bookingMainStyles'
 import { BookingButtonType } from "../../enums/bookingButtonType"
-import { BookingColumnSort } from "../../enums/bookingColumnSort"
 import { BookingStatus } from './../../enums/bookingStatus'
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { BookingInterface } from "./../../interfaces/bookingInterface"
-import { BookingColumnsArrowStatesInterface } from './../../interfaces/bookingrColumnsArrowStatesInterface'
+import { getArrowIcon } from "common/utils/getArrowIcon"
+import { sortValues } from "common/utils/sortValues"
+import { handleColumnClick } from "common/utils/handleColumnClick"
 import { RoomInterfaceBookings } from "../../../room/interfaces/roomInterface"
 import { ArrowType } from "../../../common/enums/ArrowType"
+import { BookingNameColumn } from "booking/enums/bookingNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
 import { PopupTextInterface } from '../../../common/components/popupText/popupTextInterface'
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
@@ -38,22 +40,27 @@ export const BookingMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const nameColumnList: string[] = ['', 'Guest', 'Details', 'Order date', 'Check in', 'Check out', 'Special request', 'Room info', 'Booking status', '']
     const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const roomAll: RoomInterfaceBookings[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
-    const [filteredBookings, setFilteredBookings] = useState<BookingInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<BookingButtonType>(BookingButtonType.all)
+    const [filteredBookings, setFilteredBookings] = useState<BookingInterface[]>([])
+    const sortableColumns: BookingNameColumn[] = [
+        BookingNameColumn.orderDate,
+        BookingNameColumn.checkIn,
+        BookingNameColumn.checkOut
+    ]
+    type ArrowStates = Partial<Record<BookingNameColumn, ArrowType>>
+    const [arrowStates, setArrowStates] = useState<ArrowStates>({
+        [BookingNameColumn.orderDate]: ArrowType.down,
+        [BookingNameColumn.checkIn]: ArrowType.right,
+        [BookingNameColumn.checkOut]: ArrowType.right
+    })
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoViewNotes, setInfoViewNotes] = useState<PopupTextInterface>({ title: '', text: '' })
-    const [arrowStates, setArrowStates] = useState<BookingColumnsArrowStatesInterface>({
-        orderDate: ArrowType.right,
-        checkIn: ArrowType.right,
-        checkOut: ArrowType.right
-    })
     const {
         currentPageItems,
         currentPage,
@@ -74,10 +81,6 @@ export const BookingMain = () => {
         else if (roomAllLoading === ApiStatus.fulfilled) { }
         else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de bookings > rooms") }
     }, [roomAllLoading, roomAll])
-
-    const navigateToBookingCreate = () => navigate('booking-create')
-    const navigateToBookingUpdate = (id: string) => navigate(`booking-update/${id}`)
-    const navigateToBookingDetail = (id: string) => navigate(`booking-details/${id}`)
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -116,55 +119,41 @@ export const BookingMain = () => {
         //         break
         // }
         filteredData = bookingAll   // !!! LINEA PROVISIONAL
-        const sortedData = sortData(filteredData)
-        setFilteredBookings(sortedData)
+        setFilteredBookings(sortData(filteredData))
         resetPage()
     }
     const sortData = (filteredData: BookingInterface[]): BookingInterface[] => {
-        const activeColumn = (Object.keys(arrowStates) as (keyof BookingColumnsArrowStatesInterface)[]).find(key => arrowStates[key] !== ArrowType.right)
-        let sortedData: BookingInterface[] = [...filteredData]
-        if (activeColumn) {
-            if (activeColumn === BookingColumnSort.orderDate || activeColumn === BookingColumnSort.checkIn || activeColumn === BookingColumnSort.checkOut) {
-                sortedData.sort((a, b) => {
-                    // !!!!!
-                    let valueA: Date = new Date(a.order_date)
-                    let valueB: Date = new Date(b.order_date)
-                    if (arrowStates[activeColumn] === ArrowType.up) {
-                        return valueB > valueA ? 1 : (valueB < valueA ? -1 : 0)
-                    } else {
-                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0)
-                    }
-                })
+        const arrowStateColumns = Object.keys(arrowStates) as BookingNameColumn[]
+        const activeColumn = arrowStateColumns.find(key => arrowStates[key] !== ArrowType.right)
+        if (!activeColumn) return filteredData
+
+        const activeColumnArrowDirection = arrowStates[activeColumn]!
+        const sortedData = [...filteredData]
+
+        sortedData.sort((a, b) => {
+            let valueA: any
+            let valueB: any
+            switch (activeColumn) {
+                case BookingNameColumn.orderDate:
+                    valueA = new Date(a.order_date).getTime()
+                    valueB = new Date(b.order_date).getTime()
+                    break
+                case BookingNameColumn.checkIn:
+                    valueA = new Date(a.check_in_date).getTime()
+                    valueB = new Date(b.check_in_date).getTime()
+                    break
+                case BookingNameColumn.checkOut:
+                    valueA = new Date(a.check_out_date).getTime()
+                    valueB = new Date(b.check_out_date).getTime()
+                    break
+                default:
+                    return 0
             }
-        }
-        return sortedData
-    }
-    const handleColumnClick = (nameColumn: BookingColumnSort): void => {
-        setArrowStates(prevState => {
-            const newState = { ...prevState }
 
-            if (newState[nameColumn] === ArrowType.right) { newState[nameColumn] = ArrowType.down }
-            else if (newState[nameColumn] === ArrowType.down) { newState[nameColumn] = ArrowType.up }
-            else if (newState[nameColumn] === ArrowType.up) { newState[nameColumn] = ArrowType.down }
-
-            Object.keys(newState as BookingColumnsArrowStatesInterface).forEach((key) => {
-                const typedKey = key as keyof BookingColumnsArrowStatesInterface
-
-                if (typedKey !== nameColumn) {
-                    newState[typedKey] = ArrowType.right
-                }
-            })
-
-            return newState
+            return sortValues(valueA, valueB, activeColumnArrowDirection)
         })
 
-        handleTableFilter(selectedButton)
-    }
-    const getArrowIcon = (nameColumn: BookingColumnSort): JSX.Element => {
-        const state = arrowStates[nameColumn]
-        if (state === ArrowType.up) { return <TriangleUp /> }
-        else if (state === ArrowType.down) { return <TriangleDown /> }
-        else { return <TriangleRight /> }
+        return sortedData
     }
     const displayMenuOptions = (index: number): void => {
         tableOptionsDisplayed === index ?
@@ -192,46 +181,36 @@ export const BookingMain = () => {
                 </bookingMainStyles.DivCtnSearch>
 
                 <bookingMainStyles.DivCtnButton>
-                    <ButtonCreate onClick={navigateToBookingCreate} children='+ New Booking' />
+                    <ButtonCreate onClick={() => navigate('booking-create')} children='+ New Booking' />
                 </bookingMainStyles.DivCtnButton>
             </bookingMainStyles.DivCtnFuncionality>
 
             {showPopup && <PopupText isSlider={false} title={infoViewNotes.title} text={infoViewNotes.text} onClose={() => setShowPopup(false)} />}
 
-            <Table rowlistlength={filteredBookings.length + 1} columnlistlength={nameColumnList.length} >
-                {nameColumnList.map((nameColumn, index) => {
-                    let content
-                    switch (index) {
-                        case 1:
-                            content =
-                                <THTable key={index} onClick={() => handleColumnClick(BookingColumnSort.orderDate)} cursorPointer="yes">
-                                    {nameColumn}
-                                    {getArrowIcon(BookingColumnSort.orderDate)}
-                                </THTable>
-                            break
-                        case 2:
-                            content =
-                                <THTable key={index} onClick={() => handleColumnClick(BookingColumnSort.checkIn)} cursorPointer="yes">
-                                    {nameColumn}
-                                    {getArrowIcon(BookingColumnSort.checkIn)}
-                                </THTable>
-                            break
-                        case 3:
-                            content =
-                                <THTable key={index} onClick={() => handleColumnClick(BookingColumnSort.checkOut)} cursorPointer="yes">
-                                    {nameColumn}
-                                    {getArrowIcon(BookingColumnSort.checkOut)}
-                                </THTable>
-                            break
-                        default:
-                            content =
-                                <THTable key={index}>
-                                    {nameColumn}
-                                </THTable>
+            <Table rowlistlength={filteredBookings.length + 1} columnlistlength={Object.values(BookingNameColumn).length + 2} >
+                <THTable>{''}</THTable>
+                {Object.values(BookingNameColumn).map(entry => {
+                    if (sortableColumns.includes(entry)) {
+                        return (
+                            <THTable
+                                key={entry}
+                                onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayBookings())}
+                                cursorPointer="yes"
+                            >
+                                {entry}
+                                {getArrowIcon(arrowStates[entry])}
+                            </THTable>
+                        )
                     }
-
-                    return content
+                    else {
+                        return (
+                            <THTable key={entry}>
+                                {entry}
+                            </THTable>
+                        )
+                    }
                 })}
+                <THTable>{''}</THTable>
                 {currentPageItems.map((bookingData, index) => {
                     return [
                         <DivImgTable key={index + '-1'}>
@@ -239,7 +218,7 @@ export const BookingMain = () => {
                         </DivImgTable>,
 
                         <PTable key={index + '-2'}>
-                            <ButtonView onClick={() => navigateToBookingDetail(bookingData._id)}>View Details</ButtonView>
+                            <ButtonView onClick={() => () => navigate(`booking-details/${bookingData._id}`)}>View Details</ButtonView>
                         </PTable>,
 
                         <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center' >
@@ -291,7 +270,7 @@ export const BookingMain = () => {
                         <PTable key={index + '-9'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { navigateToBookingUpdate(bookingData._id) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { () => navigate(`booking-update/${bookingData._id}`) }}>Update</ButtonOption>
                                 <ButtonOption onClick={() => { deleteBookingById(bookingData._id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>
