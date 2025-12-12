@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
 import * as bookingDetailsStyles from "./bookingDetailsStyles"
-import { BookingInterfaceData } from "../../interfaces/bookingInterface"
+import { BookingInterface } from "../../interfaces/bookingInterface"
 import { DivCtnOptions, ButtonOption } from "../../../common/styles/tableStyles"
 import { AppDispatch } from "../../../common/redux/store"
 import { formatDateForPrint } from "../../../common/utils/dateUtils"
@@ -25,7 +25,7 @@ export const BookingDetails = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { id } = useParams()
     const idParams = id!
-    const bookingById: BookingInterfaceData = useSelector(getBookingIdData)
+    const bookingById: BookingInterface = useSelector(getBookingIdData)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
     const [optionsDisplayed, setOptionsDisplayed] = useState<boolean>(false)
 
@@ -173,7 +173,7 @@ export const BookingDetails = () => {
 
             <bookingDetailsStyles.DivSection>
                 {/* !!! LA FOTO PRINCIPAL DE CADA ROOM ASOCIADA: */}
-                <bookingDetailsStyles.ImgRoom src={bookingById.room_data_list[0].photos[0]} />
+                {/* <bookingDetailsStyles.ImgRoom src={bookingById.room_data_list[0].photos[0]} /> */}
             </bookingDetailsStyles.DivSection>
         </bookingDetailsStyles.SectionPageBookingDetails>
     )

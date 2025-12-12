@@ -3,8 +3,7 @@
 
 import { RoomAmenities } from "../../room/enums/roomAmenities"
 import { RoomType } from "../../room/enums/roomType"
-import { RoomInterfaceBookings } from "../../room/interfaces/roomInterface"
-import { BookingInterface, BookingInterfaceData, BookingInterfaceNoId } from "../../booking/interfaces/bookingInterface"
+import { BookingInterface, BookingInterfaceNoId } from "../../booking/interfaces/bookingInterface"
 
 
 export const validatePhotos = (photos: any[], fieldName: string = 'Photo'): string[] => {
@@ -123,31 +122,31 @@ export const validateCheckInCheckOut = (checkIn: Date, checkOut: Date): string[]
     return errorMessages
 }
 
-export const validateDateIsOccupied = (booking: BookingInterfaceNoId, bookings: BookingInterfaceData[]): string[] => {
-    const errorMessages: string[] = []
+// export const validateDateIsOccupied = (booking: BookingInterfaceNoId, bookings: BookingInterfaceData[]): string[] => {
+//     const errorMessages: string[] = []
 
-    for (let i = 0; i < bookings.length; i++) {
-        if (new Date(booking.check_in_date) < new Date(bookings[i].check_out_date) &&
-            new Date(booking.check_out_date) > new Date(bookings[i].check_in_date)) {
-            errorMessages.push(`This period is already occupied by booking #${bookings[i]._id}`)
-        }
-    }
-    return errorMessages
-}
+//     for (let i = 0; i < bookings.length; i++) {
+//         if (new Date(booking.check_in_date) < new Date(bookings[i].check_out_date) &&
+//             new Date(booking.check_out_date) > new Date(bookings[i].check_in_date)) {
+//             errorMessages.push(`This period is already occupied by booking #${bookings[i]._id}`)
+//         }
+//     }
+//     return errorMessages
+// }
 
-export const validateDateIsOccupiedIfBookingExists = (booking: BookingInterface, bookings: BookingInterfaceData[]): string[] => {
-    const errorMessages: string[] = []
+// export const validateDateIsOccupiedIfBookingExists = (booking: BookingInterface, bookings: BookingInterfaceData[]): string[] => {
+//     const errorMessages: string[] = []
 
-    for (let i = 0; i < bookings.length; i++) {
-        if (new Date(booking.check_in_date) < new Date(bookings[i].check_out_date) &&
-            new Date(booking.check_out_date) > new Date(bookings[i].check_in_date)) {
-            if (booking._id.toString() !== bookings[i]._id.toString()) {
-                errorMessages.push(`This period is already occupied by booking #${bookings[i]._id}`)
-            }
-        }
-    }
-    return errorMessages
-}
+//     for (let i = 0; i < bookings.length; i++) {
+//         if (new Date(booking.check_in_date) < new Date(bookings[i].check_out_date) &&
+//             new Date(booking.check_out_date) > new Date(bookings[i].check_in_date)) {
+//             if (booking._id.toString() !== bookings[i]._id.toString()) {
+//                 errorMessages.push(`This period is already occupied by booking #${bookings[i]._id}`)
+//             }
+//         }
+//     }
+//     return errorMessages
+// }
 
 export const validateTextArea = (textArea: any, fieldName: string = 'Text area'): string[] => {
     const errorMessages: string[] = []
@@ -260,31 +259,31 @@ export const validateAmenities = (amenities: any[], fieldName: string = 'Ameniti
     return errorMessages
 }
 
-const validateRoomNumber = (number: any, allRooms: RoomInterfaceBookings[], actualNumber?: string, fieldName: string = 'Room number'): string[] => {
-    const errorMessages: string[] = []
-    const regex = new RegExp(/^\d{3}$/)
+// const validateRoomNumber = (number: any, allRooms: RoomInterfaceBookings[], actualNumber?: string, fieldName: string = 'Room number'): string[] => {
+//     const errorMessages: string[] = []
+//     const regex = new RegExp(/^\d{3}$/)
 
-    if (!Array.isArray(allRooms)) {
-        errorMessages.push(`${fieldName}: invalid room list`)
-        return errorMessages
-    }
-    if (typeof number !== "string") {
-        errorMessages.push(`${fieldName} is not a string`)
-    }
-    const numStr = String(number)
-    if (!regex.test(numStr)) {
-        errorMessages.push(`${fieldName} must have 3 numeric digits between 000 and 999`)
-    }
-    if (allRooms.some(room => room.number === numStr && room.number !== actualNumber)) {
-        errorMessages.push('Number is already taken')
-    }
+//     if (!Array.isArray(allRooms)) {
+//         errorMessages.push(`${fieldName}: invalid room list`)
+//         return errorMessages
+//     }
+//     if (typeof number !== "string") {
+//         errorMessages.push(`${fieldName} is not a string`)
+//     }
+//     const numStr = String(number)
+//     if (!regex.test(numStr)) {
+//         errorMessages.push(`${fieldName} must have 3 numeric digits between 000 and 999`)
+//     }
+//     if (allRooms.some(room => room.number === numStr && room.number !== actualNumber)) {
+//         errorMessages.push('Number is already taken')
+//     }
 
-    return errorMessages
-}
+//     return errorMessages
+// }
 
-export const validateNewRoomNumber = (number: string, allRooms: RoomInterfaceBookings[], fieldName: string = 'Room number'): string[] => {
-    return validateRoomNumber(number, allRooms, undefined, fieldName)
-}
-export const validateExistingRoomNumber = (number: string, actualNumber: string, allRooms: RoomInterfaceBookings[], fieldName: string = 'Room number'): string[] => {
-    return validateRoomNumber(number, allRooms, actualNumber, fieldName)
-}
+// export const validateNewRoomNumber = (number: string, allRooms: RoomInterfaceBookings[], fieldName: string = 'Room number'): string[] => {
+//     return validateRoomNumber(number, allRooms, undefined, fieldName)
+// }
+// export const validateExistingRoomNumber = (number: string, actualNumber: string, allRooms: RoomInterfaceBookings[], fieldName: string = 'Room number'): string[] => {
+//     return validateRoomNumber(number, allRooms, actualNumber, fieldName)
+// }

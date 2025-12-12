@@ -8,7 +8,7 @@ import * as roomMainStyles from "./roomMainStyles"
 import { RoomButtonType } from "../../enums/roomButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { RoomInterfaceBookings } from "./../../interfaces/roomInterface"
+import { RoomInterface } from "./../../interfaces/roomInterface"
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
@@ -29,20 +29,20 @@ import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
 import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk"
 import { getBookingAllData, getBookingAllStatus, deleteBooking } from "../../../booking/features/bookingSlice.js"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.js"
-import { BookingInterfaceData } from "../../../booking/interfaces/bookingInterface"
+import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
 
 
 export const RoomMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const roomAll: RoomInterfaceBookings[] = useSelector(getRoomAllData)
+    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
-    const bookingAll: BookingInterfaceData[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
-    const [filteredRooms, setFilteredRooms] = useState<RoomInterfaceBookings[]>([])
+    const [filteredRooms, setFilteredRooms] = useState<RoomInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<RoomButtonType>(RoomButtonType.all)
     const sortableColumns: RoomNameColumn[] = [
         RoomNameColumn.number,
@@ -65,7 +65,7 @@ export const RoomMain = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination<RoomInterfaceBookings>(filteredRooms, 10)
+    } = usePagination<RoomInterface>(filteredRooms, 10)
 
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
@@ -87,7 +87,7 @@ export const RoomMain = () => {
         displayRooms()
     }
     const displayRooms = (): void => {
-        let filteredData: RoomInterfaceBookings[]
+        let filteredData: RoomInterface[]
         switch (selectedButton) {
             case RoomButtonType.all:
                 filteredData = roomAll.filter(room =>
@@ -110,7 +110,7 @@ export const RoomMain = () => {
         setFilteredRooms(sortData(filteredData))
         resetPage()
     }
-    const sortData = (filteredData: RoomInterfaceBookings[]): RoomInterfaceBookings[] => {
+    const sortData = (filteredData: RoomInterface[]): RoomInterface[] => {
         const arrowStateColumns = Object.keys(arrowStates) as RoomNameColumn[]
         const activeColumn = arrowStateColumns.find(key => arrowStates[key] !== ArrowType.right)
         if (!activeColumn) return filteredData
@@ -165,15 +165,17 @@ export const RoomMain = () => {
         displayMenuOptions(index)
         resetPage()
     }
-    const isAvailable = (room: RoomInterfaceBookings): boolean => {
-        return !Array.isArray(room.booking_data_list) ||
-            room.booking_data_list.length === 0 ||
-            !room.booking_data_list.some(booking => {
-                const actualDate = new Date()
-                const checkIn = new Date(booking.check_in_date)
-                const checkOut = new Date(booking.check_out_date)
-                return actualDate >= checkIn && actualDate <= checkOut
-            })
+    const isAvailable = (room: RoomInterface): boolean => {
+        // !!! USAR DATOS ASOCIADOS DE LAS BOOKINGS
+        // return !Array.isArray(room.booking_id_list) ||
+        //     room.booking_id_list.length === 0 ||
+        //     !room.booking_id_list.some(booking => {
+        //         const actualDate = new Date()
+        //         const checkIn = new Date(booking.check_in_date)
+        //         const checkOut = new Date(booking.check_out_date)
+        //         return actualDate >= checkIn && actualDate <= checkOut
+        //     })
+        return false
     }
 
 

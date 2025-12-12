@@ -14,14 +14,14 @@ import { getBookingAllData, getBookingAllStatus } from '../booking/features/book
 import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk'
 import { getClientAllData, getClientAllStatus } from "../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../client/features/thunks/clientFetchAllThunk"
-import { BookingInterfaceData } from "../booking/interfaces/bookingInterface"
+import { BookingInterface } from "../booking/interfaces/bookingInterface"
 import { ClientInterface } from "../client/interfaces/clientInterface"
 
 
 export const DashboardMain = () => {
 
     const dispatch = useDispatch<AppDispatch>()
-    const bookingAll: BookingInterfaceData[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const clientAll: ClientInterface[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
