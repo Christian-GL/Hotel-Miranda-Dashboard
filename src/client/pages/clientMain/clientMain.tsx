@@ -84,7 +84,9 @@ export const ClientMain = () => {
             client.isArchived !== isDisplayedNotArchived
         )
         const filteredData = selectArchiveType.filter(client =>
-            client.full_name.toLowerCase().includes(inputText.toLowerCase())
+            client._id.toLocaleLowerCase().includes(inputText.toLowerCase())
+            || client.full_name.toLowerCase().includes(inputText.toLowerCase())
+            || client.email.toLocaleLowerCase().includes(inputText.toLowerCase())
         )
         setFilteredClients(sortData(filteredData))
         resetPage()
@@ -188,7 +190,7 @@ export const ClientMain = () => {
                 </clientMainStyles.DivCtnTableDisplayFilter>
 
                 <clientMainStyles.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search by client name' />
+                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search by client ID/name/email' />
                 </clientMainStyles.DivCtnSearch>
 
                 <clientMainStyles.DivCtnButton>
