@@ -19,17 +19,17 @@ export interface BookingInterface extends BookingInterfaceNoId {
 }
 
 // !!! ACTUALIZAR:
-export interface BookingInterfaceDataNoId {
-    order_date: Date
-    check_in_date: Date
-    check_out_date: Date
-    price: number
-    special_request: string
-    isArchived: OptionYesNo
-    room_data_list: RoomInterface[]
-    client_id: string
-}
+// export interface BookingInterfaceDataNoId {
+//     order_date: Date
+//     check_in_date: Date
+//     check_out_date: Date
+//     price: number
+//     special_request: string
+//     isArchived: OptionYesNo
+//     room_data_list: RoomInterface[]
+//     client_id: string
+// }
 
-export interface BookingInterfaceData extends BookingInterfaceDataNoId {
-    _id: string
-}
+// export interface BookingInterfaceData extends BookingInterfaceDataNoId {
+//     _id: string
+// }

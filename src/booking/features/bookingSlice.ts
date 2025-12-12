@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { ApiStatus } from '../../common/enums/ApiStatus'
 import { BookingStateInterface } from '../interfaces/bookingStateInterface'
-import { BookingInterfaceData } from '../interfaces/bookingInterface'
+import { BookingInterface } from '../interfaces/bookingInterface'
 import { RootState } from '../../common/redux/store'
 import { BookingFetchAllThunk } from './thunks/bookingFetchAllThunk'
 import { BookingFetchByIDThunk } from './thunks/bookingFetchByIDThunk'
@@ -15,8 +15,8 @@ import { BookingDeleteByIdThunk } from './thunks/bookingDeleteByIdThunk'
 export const BookingSlice = createSlice({
     name: 'booking',
     initialState: {
-        allData: [] as BookingInterfaceData[],
-        idData: {} as BookingInterfaceData,
+        allData: [] as BookingInterface[],
+        idData: {} as BookingInterface,
         allStatus: ApiStatus.idle,
         idStatus: ApiStatus.idle,
         createStatus: ApiStatus.idle,
@@ -35,7 +35,7 @@ export const BookingSlice = createSlice({
             .addCase(BookingFetchAllThunk.pending, (state) => {
                 state.allStatus = ApiStatus.pending
             })
-            .addCase(BookingFetchAllThunk.fulfilled, (state, action: PayloadAction<BookingInterfaceData[]>) => {
+            .addCase(BookingFetchAllThunk.fulfilled, (state, action: PayloadAction<BookingInterface[]>) => {
                 state.allStatus = ApiStatus.fulfilled
                 state.allData = action.payload
             })
@@ -47,7 +47,7 @@ export const BookingSlice = createSlice({
             .addCase(BookingFetchByIDThunk.pending, (state) => {
                 state.idStatus = ApiStatus.pending
             })
-            .addCase(BookingFetchByIDThunk.fulfilled, (state, action: PayloadAction<BookingInterfaceData>) => {
+            .addCase(BookingFetchByIDThunk.fulfilled, (state, action: PayloadAction<BookingInterface>) => {
                 state.idStatus = ApiStatus.fulfilled
                 state.idData = action.payload
             })
@@ -59,7 +59,7 @@ export const BookingSlice = createSlice({
             .addCase(BookingCreateThunk.pending, (state) => {
                 state.createStatus = ApiStatus.pending
             })
-            .addCase(BookingCreateThunk.fulfilled, (state, action: PayloadAction<BookingInterfaceData>) => {
+            .addCase(BookingCreateThunk.fulfilled, (state, action: PayloadAction<BookingInterface>) => {
                 state.createStatus = ApiStatus.fulfilled
                 state.allData.push(action.payload)
             })
@@ -72,7 +72,7 @@ export const BookingSlice = createSlice({
             .addCase(BookingUpdateThunk.pending, (state) => {
                 state.updateStatus = ApiStatus.pending
             })
-            .addCase(BookingUpdateThunk.fulfilled, (state, action: PayloadAction<BookingInterfaceData>) => {
+            .addCase(BookingUpdateThunk.fulfilled, (state, action: PayloadAction<BookingInterface>) => {
                 state.updateStatus = ApiStatus.fulfilled
                 const bookingToUpdate = action.payload
                 const index = state.allData.findIndex(booking => booking._id === bookingToUpdate._id)
@@ -105,8 +105,8 @@ export const BookingSlice = createSlice({
 
 export const { deleteBooking } = BookingSlice.actions
 
-export const getBookingAllData = (state: RootState): BookingInterfaceData[] => state.bookingSlice.allData
-export const getBookingIdData = (state: RootState): BookingInterfaceData => state.bookingSlice.idData
+export const getBookingAllData = (state: RootState): BookingInterface[] => state.bookingSlice.allData
+export const getBookingIdData = (state: RootState): BookingInterface => state.bookingSlice.idData
 
 export const getBookingAllStatus = (state: RootState) => state.bookingSlice.allStatus
 export const getBookingIdStatus = (state: RootState) => state.bookingSlice.idStatus

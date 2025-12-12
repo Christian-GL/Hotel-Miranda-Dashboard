@@ -181,7 +181,7 @@ export const BookingMain = () => {
                 </bookingMainStyles.DivCtnSearch>
 
                 <bookingMainStyles.DivCtnButton>
-                    <ButtonCreate onClick={() => navigate('booking-create')} children='+ New Booking' />
+                    <ButtonCreate onClick={() => { navigate('booking-create') }} children='+ New Booking' />
                 </bookingMainStyles.DivCtnButton>
             </bookingMainStyles.DivCtnFuncionality>
 
@@ -270,7 +270,7 @@ export const BookingMain = () => {
                         <PTable key={index + '-9'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { () => navigate(`booking-update/${bookingData._id}`) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { navigate(`booking-update/${bookingData._id}`) }}>Update</ButtonOption>
                                 <ButtonOption onClick={() => { deleteBookingById(bookingData._id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>

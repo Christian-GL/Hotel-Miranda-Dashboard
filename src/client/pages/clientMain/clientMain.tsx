@@ -15,6 +15,7 @@ import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { ClientNameColumn } from "../../enums/ClientNameColumn"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { ArticleReview } from "../../../common/components/articleReview/articleReview"
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
@@ -29,7 +30,10 @@ import { getClientAllData, getClientAllStatus } from "../../features/clientSlice
 import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
 import { ClientUpdateThunk } from "../../features/thunks/clientUpdateThunk"
 import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
-import { OptionYesNo } from "common/enums/optionYesNo"
+import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
+import { getBookingAllData } from "../../../booking/features/bookingSlice"
+import { RoomInterface } from "room/interfaces/roomInterface"
+import { getRoomAllData } from "../../../room/features/roomSlice"
 
 
 export const ClientMain = () => {
@@ -38,6 +42,8 @@ export const ClientMain = () => {
     const dispatch = useDispatch<AppDispatch>()
     const clientAll: ClientInterface[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
+    const bookingsAll: BookingInterface[] = useSelector(getBookingAllData)
+    const roomsAll: RoomInterface[] = useSelector(getRoomAllData)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredClients, setFilteredClients] = useState<ClientInterface[]>([])
@@ -133,6 +139,20 @@ export const ClientMain = () => {
         displayMenuOptions(index)
         resetPage()
     }
+    const getClientBookingRoomsMap = (client: ClientInterface): { bookingId: string; roomNumbers: string[] }[] => {
+
+        return client.booking_id_list.map(bookingId => {
+            const booking = bookingsAll.find(booking => booking._id === bookingId)
+            if (!booking) return null
+
+            const roomNumbers = booking.room_id_list.map(roomId => {
+                const room = roomsAll.find(room => room._id === roomId)
+                return room?.number
+            }).filter(Boolean) as string[]
+
+            return { bookingId, roomNumbers }
+        }).filter(Boolean) as { bookingId: string; roomNumbers: string[] }[]
+    }
 
 
     return (
@@ -214,12 +234,16 @@ export const ClientMain = () => {
                             {clientData.phone_number}
                         </PTable>,
 
-                        // !!! Que muestre los numeros de habitación por cada reserva:
                         <PTable>
                             {
-                                clientData.booking_id_list.length > 0 ?
-                                    clientData.booking_id_list :
-                                    <p>No bookings yet</p>
+                                getClientBookingRoomsMap(clientData).length > 0 ?
+                                    (getClientBookingRoomsMap(clientData).map(b => (
+                                        <p key={b.bookingId}>
+                                            <b>#{b.bookingId}</b>: {b.roomNumbers.join(", ")}
+                                        </p>
+                                    )))
+                                    :
+                                    (<p>No bookings yet</p>)
                             }
                         </PTable>,
 
@@ -235,7 +259,7 @@ export const ClientMain = () => {
                         <PTable key={index + '-4'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { () => navigate(`client-update/${clientData._id}`) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { navigate(`client-update/${clientData._id}`) }}>Update</ButtonOption>
                                 <ButtonOption onClick={() => { deleteClientById(clientData._id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>

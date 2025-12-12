@@ -191,7 +191,7 @@ export const RoomMain = () => {
                 </roomMainStyles.DivCtnSearch>
 
                 <roomMainStyles.DivCtnButton>
-                    <ButtonCreate onClick={() => navigate('room-create')} children='+ New Room' />
+                    <ButtonCreate onClick={() => { navigate('room-create') }} children='+ New Room' />
                 </roomMainStyles.DivCtnButton>
             </roomMainStyles.DivCtnFuncionality>
 
@@ -260,7 +260,7 @@ export const RoomMain = () => {
                         <PTable key={index + '-8'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { () => navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
+                                <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
                                 <ButtonOption onClick={() => { deleteRoomById(roomData._id, index) }}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>

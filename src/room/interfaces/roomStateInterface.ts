@@ -1,10 +1,10 @@
 
-import { RoomInterfaceBookings } from './roomInterface'
+import { RoomInterface } from './roomInterface'
 import { ApiStatus } from "../../common/enums/ApiStatus"
 
 export interface RoomStateInterface {
-    allData: RoomInterfaceBookings[]
-    idData: RoomInterfaceBookings
+    allData: RoomInterface[]
+    idData: RoomInterface
     allStatus: ApiStatus
     idStatus: ApiStatus
     createStatus: ApiStatus

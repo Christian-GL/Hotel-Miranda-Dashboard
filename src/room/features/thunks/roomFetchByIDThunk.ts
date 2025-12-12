@@ -1,11 +1,11 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { RoomInterfaceBookings } from "../../interfaces/roomInterface"
+import { RoomInterface } from "../../interfaces/roomInterface"
 import { RoomType } from "../../enums/roomType"
 import { OptionYesNo } from "common/enums/optionYesNo"
 
 
-const roomDefaultIfError: RoomInterfaceBookings = {
+const roomDefaultIfError: RoomInterface = {
     _id: '0',
     photos: [],
     number: '0',
@@ -15,7 +15,7 @@ const roomDefaultIfError: RoomInterfaceBookings = {
     discount: 0,
     isActive: OptionYesNo.no,
     isArchived: OptionYesNo.yes,
-    booking_data_list: []
+    booking_id_list: []
 }
 
 export const RoomFetchByIDThunk = createAsyncThunk
@@ -34,7 +34,7 @@ export const RoomFetchByIDThunk = createAsyncThunk
             })
             if (request.ok) {
                 const json = await request.json()
-                let room: RoomInterfaceBookings = {
+                let room: RoomInterface = {
                     _id: json._id,
                     photos: json.photo,
                     number: json.number,
@@ -44,7 +44,7 @@ export const RoomFetchByIDThunk = createAsyncThunk
                     discount: json.discount,
                     isActive: json.isActive,
                     isArchived: json.isArchived,
-                    booking_data_list: json.booking_data_list
+                    booking_id_list: json.booking_id_list
                 }
                 return room
             }
