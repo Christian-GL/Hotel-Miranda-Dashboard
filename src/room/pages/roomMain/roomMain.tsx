@@ -16,10 +16,10 @@ import { ArrowType } from "../../../common/enums/ArrowType"
 import { RoomNameColumn } from "../../enums/roomNameColumn"
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
+import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import { applyDiscount } from "../../../common/utils/tableUtils"
 import { usePagination } from "../../../common/hooks/usePagination"
-import * as paginationJS from '../../../common/styles/pagination'
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable,
     ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption
@@ -271,25 +271,14 @@ export const RoomMain = () => {
                 )}
             </Table>
 
-            {/* !!! OPTIMIZABLE EN FUNCIÓN GENÉRICA: */}
-            <paginationJS.DivCtnPagination>
-                <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
-                    &lt;&lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
-                    &lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.SpanPageCount>
-                    {currentPage} of {totalPages}
-                </paginationJS.SpanPageCount>
-                <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
-                    &gt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
-                    &gt;&gt;
-                </paginationJS.ButtonSwitchPage>
-            </paginationJS.DivCtnPagination>
-
+            <TablePagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onReset={resetPage}
+                onPrev={goToPrevPage}
+                onNext={goToNextPage}
+                onLast={lastPage}
+            />
         </roomMainStyles.SectionPageRoom>
     )
 }

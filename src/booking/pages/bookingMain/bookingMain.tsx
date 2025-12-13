@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux"
 
 import * as bookingMainStyles from './bookingMainStyles'
 import { BookingButtonType } from "../../enums/bookingButtonType"
-import { BookingStatus } from './../../enums/bookingStatus'
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { BookingInterface } from "./../../interfaces/bookingInterface"
@@ -18,16 +17,15 @@ import { BookingNameColumn } from "../../enums/bookingNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
 import { PopupTextInterface } from '../../../common/components/popupText/popupTextInterface'
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
-import { checkBookingStatus } from '../../../common/utils/checkBookingStatus'
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
+import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
     IconPhone, IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
-import * as paginationJS from '../../../common/styles/pagination'
 import { getBookingAllData, getBookingAllStatus } from "./../../features/bookingSlice"
 import { BookingFetchAllThunk } from "./../../features/thunks/bookingFetchAllThunk"
 import { BookingDeleteByIdThunk } from "./../../features/thunks/bookingDeleteByIdThunk"
@@ -304,23 +302,14 @@ export const BookingMain = () => {
                 )}
             </Table>
 
-            <paginationJS.DivCtnPagination>
-                <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
-                    &lt;&lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
-                    &lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.SpanPageCount>
-                    {currentPage} of {totalPages}
-                </paginationJS.SpanPageCount>
-                <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
-                    &gt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
-                    &gt;&gt;
-                </paginationJS.ButtonSwitchPage>
-            </paginationJS.DivCtnPagination>
+            <TablePagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onReset={resetPage}
+                onPrev={goToPrevPage}
+                onNext={goToNextPage}
+                onLast={lastPage}
+            />
 
         </bookingMainStyles.SectionPageBookings>
 

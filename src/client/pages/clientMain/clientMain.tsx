@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as clientMainStyles from "./clientMainStyles"
-import { ClientColumnSort } from '../../enums/clientColumnSort'
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { ClientInterface } from '../../interfaces/clientInterface'
@@ -19,16 +18,15 @@ import { OptionYesNo } from "common/enums/optionYesNo"
 import { ArticleReview } from "../../../common/components/articleReview/articleReview"
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
+import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, TriangleUp, DivNameTable, TriangleRight, TriangleDown, PTable,
     IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
-import * as paginationJS from '../../../common/styles/pagination'
 import { getClientAllData, getClientAllStatus } from "../../features/clientSlice"
 import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
-import { ClientUpdateThunk } from "../../features/thunks/clientUpdateThunk"
 import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
 import { RoomInterface } from "room/interfaces/roomInterface"
 import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
@@ -283,23 +281,14 @@ export const ClientMain = () => {
                 })}
             </Table>
 
-            <paginationJS.DivCtnPagination>
-                <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
-                    &lt;&lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
-                    &lt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.SpanPageCount>
-                    {currentPage} of {totalPages}
-                </paginationJS.SpanPageCount>
-                <paginationJS.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
-                    &gt;
-                </paginationJS.ButtonSwitchPage>
-                <paginationJS.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
-                    &gt;&gt;
-                </paginationJS.ButtonSwitchPage>
-            </paginationJS.DivCtnPagination>
+            <TablePagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onReset={resetPage}
+                onPrev={goToPrevPage}
+                onNext={goToNextPage}
+                onLast={lastPage}
+            />
 
         </clientMainStyles.SectionPageClient >
     )

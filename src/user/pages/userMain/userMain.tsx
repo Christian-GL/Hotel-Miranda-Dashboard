@@ -18,13 +18,13 @@ import { ArrowType } from "../../../common/enums/ArrowType"
 import { UserNameColumn } from "../../enums/userNameColumn"
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
+import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, DivNameTable, DivImgTable, ImgTableUser, PTable,
     PStatusAvailableUsers, IconPhone, IconOptions, DivCtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
-import * as paginationStyles from '../../../common/styles/pagination'
 import { getUserAllData, getUserAllStatus } from "./../../features/userSlice"
 import { UserFetchAllThunk } from "./../../features/thunks/userFetchAllThunk"
 import { UserDeleteByIdThunk } from "./../../features/thunks/userDeleteByIdThunk"
@@ -255,23 +255,14 @@ export const UserMain = () => {
                 )}
             </Table>
 
-            <paginationStyles.DivCtnPagination>
-                <paginationStyles.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
-                    &lt;&lt;
-                </paginationStyles.ButtonSwitchPage>
-                <paginationStyles.ButtonSwitchPage onClick={goToPrevPage} disabled={currentPage === 1}>
-                    &lt;
-                </paginationStyles.ButtonSwitchPage>
-                <paginationStyles.SpanPageCount>
-                    {currentPage} of {totalPages}
-                </paginationStyles.SpanPageCount>
-                <paginationStyles.ButtonSwitchPage onClick={goToNextPage} disabled={currentPage === totalPages}>
-                    &gt;
-                </paginationStyles.ButtonSwitchPage>
-                <paginationStyles.ButtonSwitchPage onClick={lastPage} disabled={currentPage === totalPages} margin='0 0 0 1rem'>
-                    &gt;&gt;
-                </paginationStyles.ButtonSwitchPage>
-            </paginationStyles.DivCtnPagination>
+            <TablePagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onReset={resetPage}
+                onPrev={goToPrevPage}
+                onNext={goToNextPage}
+                onLast={lastPage}
+            />
 
         </userMainStyles.SectionPageUser >
     </>)

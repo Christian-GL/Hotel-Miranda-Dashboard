@@ -1,7 +1,7 @@
 
 import { styled } from 'styled-components'
 
-import * as globalConstStyles from './globalConstStyles'
+import * as globalConstStyles from '../../styles/globalConstStyles'
 
 
 export const DivCtnPagination = styled.div`
