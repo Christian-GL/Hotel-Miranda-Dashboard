@@ -30,10 +30,12 @@ import { getClientAllData, getClientAllStatus } from "../../features/clientSlice
 import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
 import { ClientUpdateThunk } from "../../features/thunks/clientUpdateThunk"
 import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
-import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
-import { getBookingAllData } from "../../../booking/features/bookingSlice"
 import { RoomInterface } from "room/interfaces/roomInterface"
-import { getRoomAllData } from "../../../room/features/roomSlice"
+import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
+import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
+import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
+import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
+import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 
 
 export const ClientMain = () => {
@@ -42,8 +44,10 @@ export const ClientMain = () => {
     const dispatch = useDispatch<AppDispatch>()
     const clientAll: ClientInterface[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
-    const bookingsAll: BookingInterface[] = useSelector(getBookingAllData)
-    const roomsAll: RoomInterface[] = useSelector(getRoomAllData)
+    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
+    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [filteredClients, setFilteredClients] = useState<ClientInterface[]>([])
@@ -70,6 +74,16 @@ export const ClientMain = () => {
         else if (clientAllLoading === ApiStatus.fulfilled) { displayClients(displayedNotArchived) }
         else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de clients") }
     }, [clientAllLoading, clientAll, inputText, displayedNotArchived, arrowStates])
+    useEffect(() => {
+        if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
+        else if (roomAllLoading === ApiStatus.fulfilled) { }
+        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de rooms") }
+    }, [roomAllLoading, roomAll])
+    useEffect(() => {
+        if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
+        else if (bookingAllLoading === ApiStatus.fulfilled) { }
+        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de room > bookings") }
+    }, [bookingAllLoading, bookingAll])
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -144,11 +158,11 @@ export const ClientMain = () => {
     const getClientBookingRoomsMap = (client: ClientInterface): { bookingId: string; roomNumbers: string[] }[] => {
 
         return client.booking_id_list.map(bookingId => {
-            const booking = bookingsAll.find(booking => booking._id === bookingId)
+            const booking = bookingAll.find(booking => booking._id === bookingId)
             if (!booking) return null
 
             const roomNumbers = booking.room_id_list.map(roomId => {
-                const room = roomsAll.find(room => room._id === roomId)
+                const room = roomAll.find(room => room._id === roomId)
                 return room?.number
             }).filter(Boolean) as string[]
 

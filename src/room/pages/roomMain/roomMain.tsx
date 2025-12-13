@@ -27,8 +27,8 @@ import {
 import { getRoomAllData, getRoomAllStatus } from "./../../features/roomSlice"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
 import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk"
-import { getBookingAllData, getBookingAllStatus, deleteBooking } from "../../../booking/features/bookingSlice.js"
-import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk.js"
+import { getBookingAllData, getBookingAllStatus, deleteBooking } from "../../../booking/features/bookingSlice"
+import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
 
 
