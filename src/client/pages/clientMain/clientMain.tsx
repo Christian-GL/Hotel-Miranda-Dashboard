@@ -72,17 +72,17 @@ export const ClientMain = () => {
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
         else if (clientAllLoading === ApiStatus.fulfilled) { displayClients(displayedNotArchived) }
-        else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de clients") }
+        else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de clientMain > clients") }
     }, [clientAllLoading, clientAll, inputText, displayedNotArchived, arrowStates])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de rooms") }
+        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de clientMain > rooms") }
     }, [roomAllLoading, roomAll])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de room > bookings") }
+        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de clientMain > bookings") }
     }, [bookingAllLoading, bookingAll])
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {

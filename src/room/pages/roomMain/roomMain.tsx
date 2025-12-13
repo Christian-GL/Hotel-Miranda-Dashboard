@@ -70,12 +70,12 @@ export const RoomMain = () => {
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { displayRooms() }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de rooms") }
+        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de roomMain > rooms") }
     }, [roomAllLoading, roomAll, inputText, selectedButton, arrowStates])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de room > bookings") }
+        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de roomMain > bookings") }
     }, [bookingAllLoading, bookingAll])
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -271,6 +271,7 @@ export const RoomMain = () => {
                 )}
             </Table>
 
+            {/* !!! OPTIMIZABLE EN FUNCIÓN GENÉRICA: */}
             <paginationJS.DivCtnPagination>
                 <paginationJS.ButtonSwitchPage onClick={resetPage} disabled={currentPage === 1} margin='0 1rem 0 0'>
                     &lt;&lt;

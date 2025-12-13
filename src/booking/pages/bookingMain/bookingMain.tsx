@@ -13,7 +13,6 @@ import { BookingInterface } from "./../../interfaces/bookingInterface"
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
-import { RoomInterface } from "../../../room/interfaces/roomInterface"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { BookingNameColumn } from "../../enums/bookingNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
@@ -25,15 +24,19 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
-    IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption
+    IconPhone, IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import * as paginationJS from '../../../common/styles/pagination'
 import { getBookingAllData, getBookingAllStatus } from "./../../features/bookingSlice"
 import { BookingFetchAllThunk } from "./../../features/thunks/bookingFetchAllThunk"
 import { BookingDeleteByIdThunk } from "./../../features/thunks/bookingDeleteByIdThunk"
+import { RoomInterface } from "../../../room/interfaces/roomInterface"
 import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
 import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
+import { ClientInterface } from "../../../client/interfaces/clientInterface"
+import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
+import { ClientFetchAllThunk } from "../../../client/features/thunks/clientFetchAllThunk"
 
 
 export const BookingMain = () => {
@@ -44,6 +47,8 @@ export const BookingMain = () => {
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const roomAll: RoomInterface[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
+    const clientAll: ClientInterface[] = useSelector(getClientAllData)
+    const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [selectedButton, setSelectedButton] = useState<BookingButtonType>(BookingButtonType.all)
@@ -74,13 +79,18 @@ export const BookingMain = () => {
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { displayBookings() }
-        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de bookings") }
+        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de bookingMain > bookings") }
     }, [bookingAllLoading, bookingAll, inputText, selectedButton, arrowStates])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de bookings > rooms") }
+        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de bookingMain > rooms") }
     }, [roomAllLoading, roomAll])
+    useEffect(() => {
+        if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
+        else if (clientAllLoading === ApiStatus.fulfilled) { }
+        else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de bookingMain > clients") }
+    }, [clientAllLoading, clientAll])
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
@@ -187,8 +197,7 @@ export const BookingMain = () => {
 
             {showPopup && <PopupText isSlider={false} title={infoViewNotes.title} text={infoViewNotes.text} onClose={() => setShowPopup(false)} />}
 
-            <Table rowlistlength={filteredBookings.length + 1} columnlistlength={Object.values(BookingNameColumn).length + 2} >
-                <THTable>{''}</THTable>
+            <Table rowlistlength={filteredBookings.length + 1} columnlistlength={Object.values(BookingNameColumn).length + 1} >
                 {Object.values(BookingNameColumn).map(entry => {
                     if (sortableColumns.includes(entry)) {
                         return (
@@ -213,9 +222,9 @@ export const BookingMain = () => {
                 <THTable>{''}</THTable>
                 {currentPageItems.map((bookingData, index) => {
                     return [
-                        <DivImgTable key={index + '-1'}>
+                        <PTable key={index + '-1'}>
                             #<b>{bookingData._id}</b>
-                        </DivImgTable>,
+                        </PTable>,
 
                         <PTable key={index + '-2'}>
                             <ButtonView onClick={() => () => navigate(`booking-details/${bookingData._id}`)}>View Details</ButtonView>
@@ -245,27 +254,43 @@ export const BookingMain = () => {
                             }>View Notes</ButtonView>
                         </PTable>,
 
-                        // <PTable key={index + '-8'} flexdirection='column' alignitems='left' justifycontent='center'>
-                        //     <div>Nº {bookingData.room_data.number}</div>
-                        //     <div>{bookingData.room_data.type}</div>
-                        // </PTable>,
+                        <PTable key={index + '-7'} flexdirection="column" alignitems="left" justifycontent="center"   >
+                            {
+                                (() => {
+                                    const rooms = bookingData.room_id_list
+                                        .map(roomId => roomAll.find(room => room._id === roomId)?.number)
+                                        .filter((number): number is string => Boolean(number))
 
-                        // <PTable key={index + '-9'}>
-                        //     {
-                        //         (() => {
-                        //             const status = checkBookingStatus(bookingData.check_in_date, bookingData.check_out_date)
-                        //             if (status === BookingStatus.checkIn) {
-                        //                 return <PStatusBooking status={BookingStatus.checkIn}>Check In</PStatusBooking>
-                        //             }
-                        //             else if (status === BookingStatus.inProgress) {
-                        //                 return <PStatusBooking status={BookingStatus.inProgress}>In Progress</PStatusBooking>
-                        //             }
-                        //             else {
-                        //                 return <PStatusBooking status={BookingStatus.checkOut}>Check Out</PStatusBooking>
-                        //             }
-                        //         })()
-                        //     }
-                        // </PTable>,
+                                    if (rooms.length > 0) {
+                                        return rooms.map((roomNumber, i) => (
+                                            <div key={i}>Room Nº {roomNumber}</div>
+                                        ))
+                                    }
+                                    else {
+                                        return <div>No rooms assigned</div>
+                                    }
+                                })()
+                            }
+                        </PTable>,
+
+                        <PTable key={index + '-8'} flexdirection="column" alignitems="left" justifycontent="center"  >
+                            {
+                                (() => {
+                                    const client = clientAll.find(client => client._id === bookingData.client_id)
+                                    if (client) {
+                                        return (<>
+                                            <div>#<b>{client._id}</b></div>
+                                            <div><DivNameTable><b>{client.full_name}</b></DivNameTable></div>
+                                            <div>{client.email}</div>
+                                            <div><IconPhone width="1.25rem" />{client.phone_number}</div>
+                                        </>)
+                                    }
+                                    else {
+                                        return <div>No client data</div>
+                                    }
+                                })()
+                            }
+                        </PTable>,
 
                         <PTable key={index + '-9'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
