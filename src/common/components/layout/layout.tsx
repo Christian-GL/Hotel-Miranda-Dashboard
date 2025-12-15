@@ -41,7 +41,7 @@ export const Layout = () => {
     const userById = useSelector(getUserIdData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const userByIdLoading: ApiStatus = useSelector(getUserIdStatus)
-    const loggedUserID = JSON.parse(localStorage.getItem('loggedUserID') || '{}')
+    const loggedUserID = localStorage.getItem('loggedUserID') || null
 
     useEffect(() => {
         if (!isAuthenticated()) {
@@ -53,9 +53,9 @@ export const Layout = () => {
             setTheme(JSON.parse(savedTheme))
     }, [navigate, isAuthenticated, theme])
     useEffect(() => {
-        if (userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(loggedUserID)) }
+        if (loggedUserID && userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(loggedUserID)) }
         else if (userByIdLoading === ApiStatus.fulfilled) {
-            if (loggedUserID !== userById._id && !routeIsActive('/users')) {
+            if (loggedUserID && loggedUserID !== userById._id && !routeIsActive('/users')) {
                 dispatch(UserFetchByIDThunk(loggedUserID))
             }
         }
@@ -194,7 +194,6 @@ export const Layout = () => {
                     </div>
 
                     <sidebarStyles.DivCtnUser display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                        <sidebarStyles.ImgProfile src={userById.photo} />
                         <sidebarStyles.TitleH4>{userById.full_name}</sidebarStyles.TitleH4>
                         <sidebarStyles.TitleH5>{userById.email}</sidebarStyles.TitleH5>
                         <sidebarStyles.ButtonEdit onClick={() => { navigateToUserUpdate(userById._id) }}>Edit</sidebarStyles.ButtonEdit>

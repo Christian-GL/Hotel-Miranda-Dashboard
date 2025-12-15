@@ -1,5 +1,4 @@
 
-import React from "react"
 import { useContext, createContext } from "react"
 import { useDispatch } from "react-redux"
 
@@ -26,19 +25,18 @@ export const LoginProvider = ({ children }: LoginProviderInterface) => {
     const tryLogin = async (email: string, password: string): Promise<boolean> => {
         const loginData = { email: email, password: password }
         const tokenAndUserData = await dispatchRedux(LoginThunk(loginData))
-
         if (LoginThunk.fulfilled.match(tokenAndUserData)) {
-            const tokenPayload: string = tokenAndUserData.payload.token
-            localStorage.setItem('token', tokenPayload)
-            localStorage.setItem('loggedUserID', JSON.stringify(tokenAndUserData.payload.loggedUserID))
+            localStorage.setItem('token', tokenAndUserData.payload.token)
+            localStorage.setItem('loggedUserID', tokenAndUserData.payload.loggedUserID)
+            localStorage.setItem('role', tokenAndUserData.payload.role)
             return true
         }
         else return false
     }
-
     const logout = (): void => {
         localStorage.removeItem('token')
         localStorage.removeItem('loggedUserID')
+        localStorage.removeItem('role')
     }
 
     const isAuthenticated = () => {
@@ -47,10 +45,13 @@ export const LoginProvider = ({ children }: LoginProviderInterface) => {
         }
         return false
     }
+    const getRole = (): string | null => {
+        return localStorage.getItem('role')
+    }
 
 
     return (
-        <loginOptionsContext.Provider value={{ tryLogin, logout, isAuthenticated }}>
+        <loginOptionsContext.Provider value={{ tryLogin, logout, isAuthenticated, getRole }}  >
             {children}
         </loginOptionsContext.Provider>
     )
