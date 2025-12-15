@@ -3,7 +3,7 @@ import React from 'react'
 import { useState } from "react"
 
 import * as articleReviewStyles from "./articleReviewStyles"
-import { ArticleReviewInterface } from "./articleReviewInterface"
+import { ArticleReviewInterface } from "../../interfaces/articleReviewInterface"
 import { IconHotel } from '../layout/sidebarMenuStyles'
 import { PopupText } from "../popupText/popupText"
 
