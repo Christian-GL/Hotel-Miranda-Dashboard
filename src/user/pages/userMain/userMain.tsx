@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as userMainStyles from "./userMainStyles"
+import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { UserButtonType } from "../../enums/userButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { Role } from "../../enums/role"
 import { UserInterface } from "./../../interfaces/userInterface"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
@@ -34,6 +36,7 @@ export const UserMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
+    const { getRole } = useLoginOptionsContext()
     const userAll: UserInterface[] = useSelector(getUserAllData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState<string>('')
@@ -167,9 +170,12 @@ export const UserMain = () => {
                     <TableSearchTerm onchange={handleInputTerm} placeholder='Search employee by name' />
                 </userMainStyles.DivCtnSearch>
 
-                <userMainStyles.DivCtnButton>
-                    <ButtonCreate onClick={() => navigate('user-create')} children='+ New Employee' />
-                </userMainStyles.DivCtnButton>
+                {getRole() === Role.admin && (
+                    < userMainStyles.DivCtnButton >
+                        <ButtonCreate onClick={() => navigate('user-create')} children='+ New Employee' />
+                    </userMainStyles.DivCtnButton>
+                )}
+
             </userMainStyles.DivCtnFuncionality>
 
             <Table rowlistlength={filteredUsers.length + 1} columnlistlength={Object.values(UserNameColumn).length + 2}>
