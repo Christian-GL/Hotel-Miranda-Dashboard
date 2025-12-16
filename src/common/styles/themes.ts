@@ -88,7 +88,9 @@ export const themeLight = {
     iconPopup: color.blackSmooth,
 
     backgroundButtonCreate: color.greenDark,
+    backgroundButtonCreateDisabled: color.graySmooth,
     textButtonCreate: color.white,
+    textButtonCreateDisabled: color.white,
 
     textSearchTerm: color.blackSmooth,
 
@@ -185,7 +187,9 @@ export const themeDark = {
     iconPopup: color.blackSmooth,
 
     backgroundButtonCreate: color.greenSmoothX4,
+    backgroundButtonCreateDisabled: color.graySmooth,
     textButtonCreate: color.whiteSmooth,
+    textButtonCreateDisabled: color.whiteSmooth,
 
     textSearchTerm: color.blackSmooth,
 

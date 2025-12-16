@@ -3,5 +3,6 @@ export interface ButtonCreateInterface extends React.ButtonHTMLAttributes<HTMLBu
     children?: React.ReactNode
     padding?: string
     fontSize?: string
+    disabledClick?: boolean
     onClick?: () => void
 }

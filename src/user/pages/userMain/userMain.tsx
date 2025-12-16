@@ -18,6 +18,8 @@ import { handleColumnClick } from "common/utils/handleColumnClick"
 import { capitalizeFirstLetter } from "common/utils/capitalizeFirstLetter"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { UserNameColumn } from "../../enums/userNameColumn"
+import { PopupText } from "../../../common/components/popupText/popupText"
+import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
@@ -56,6 +58,8 @@ export const UserMain = () => {
         [UserNameColumn.startDate]: ArrowType.right,
         [UserNameColumn.endDate]: ArrowType.right
     })
+    const [showPopup, setShowPopup] = useState<boolean>(false)
+    const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
     const {
         currentPageItems,
         currentPage,
@@ -144,6 +148,13 @@ export const UserMain = () => {
 
         return sortedData
     }
+    const handleNonAdminClick = () => {
+        setInfoPopup({
+            title: 'Access denied',
+            text: 'You need administrator privileges to perform this operation'
+        })
+        setShowPopup(true)
+    }
     const displayMenuOptions = (index: number): void => {
         tableOptionsDisplayed === index ?
             setTableOptionsDisplayed(-1) :
@@ -170,13 +181,18 @@ export const UserMain = () => {
                     <TableSearchTerm onchange={handleInputTerm} placeholder='Search employee by name' />
                 </userMainStyles.DivCtnSearch>
 
-                {getRole() === Role.admin && (
-                    < userMainStyles.DivCtnButton >
-                        <ButtonCreate onClick={() => navigate('user-create')} children='+ New Employee' />
-                    </userMainStyles.DivCtnButton>
-                )}
+                <userMainStyles.DivCtnButton>
+                    <ButtonCreate
+                        disabledClick={getRole() !== Role.admin}
+                        onClick={getRole() === Role.admin ? () => navigate('user-create') : handleNonAdminClick}
+                    >
+                        + New Employee
+                    </ButtonCreate>
+                </userMainStyles.DivCtnButton>
 
             </userMainStyles.DivCtnFuncionality>
+
+            {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             <Table rowlistlength={filteredUsers.length + 1} columnlistlength={Object.values(UserNameColumn).length + 2}>
                 <THTable>{''}</THTable>

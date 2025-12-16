@@ -15,7 +15,7 @@ import { handleColumnClick } from "common/utils/handleColumnClick"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { BookingNameColumn } from "../../enums/bookingNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
-import { PopupTextInterface } from '../../../common/components/popupText/popupTextInterface'
+import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
@@ -63,7 +63,7 @@ export const BookingMain = () => {
         [BookingNameColumn.checkOut]: ArrowType.right
     })
     const [showPopup, setShowPopup] = useState<boolean>(false)
-    const [infoViewNotes, setInfoViewNotes] = useState<PopupTextInterface>({ title: '', text: '' })
+    const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
     const {
         currentPageItems,
         currentPage,
@@ -193,7 +193,7 @@ export const BookingMain = () => {
                 </bookingMainStyles.DivCtnButton>
             </bookingMainStyles.DivCtnFuncionality>
 
-            {showPopup && <PopupText isSlider={false} title={infoViewNotes.title} text={infoViewNotes.text} onClose={() => setShowPopup(false)} />}
+            {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             <Table rowlistlength={filteredBookings.length + 1} columnlistlength={Object.values(BookingNameColumn).length + 1} >
                 {Object.values(BookingNameColumn).map(entry => {
@@ -243,7 +243,7 @@ export const BookingMain = () => {
                         <PTable key={index + '-6'}>
                             <ButtonView onClick={() => {
                                 // !!! ACTUALIZAR:
-                                setInfoViewNotes({
+                                setInfoPopup({
                                     title: `Special request #${bookingData._id} by ${bookingData.special_request}`,
                                     text: bookingData.special_request
                                 })

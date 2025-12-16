@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 import * as globalConstStyles from '../../styles/globalConstStyles'
 
 
-export const ButtonCreateStyle = styled.button<{ padding?: string, fontSize?: string }>`
+export const ButtonCreateStyle = styled.button<{ padding?: string, fontSize?: string, disabledClick?: boolean }>`
     padding: ${props => props.padding || '1em 2em'};
     font-family: ${globalConstStyles.fontPoppins};
     font-size: ${props => props.fontSize || '0.75em'};
@@ -12,6 +12,12 @@ export const ButtonCreateStyle = styled.button<{ padding?: string, fontSize?: st
     border: none;
     border-radius: 0.75rem;
     cursor: pointer;
-    color: ${props => props.theme.textButtonCreate};
-    background-color: ${props => props.theme.backgroundButtonCreate};
+    color: ${props =>
+        props.disabledClick
+            ? props.theme.textButtonCreateDisabled
+            : props.theme.textButtonCreate};
+    background-color: ${props =>
+        props.disabledClick
+            ? props.theme.backgroundButtonCreateDisabled
+            : props.theme.backgroundButtonCreate};
 `
