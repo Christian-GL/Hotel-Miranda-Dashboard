@@ -152,7 +152,7 @@ export const UserCreate = () => {
                     </DivCtnEntry>
 
                     <DivCtnEntry>
-                        <LabelText>Client</LabelText>
+                        <LabelText>Phone number</LabelText>
                         <InputText name="phone_number" onChange={handleStringChange} />
 
                         <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Role</LabelText>
