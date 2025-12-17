@@ -20,9 +20,9 @@ export const SignIn = () => {
         e.preventDefault()
 
         const loginSuccessful = await tryLogin(email, password)
-        loginSuccessful ?
-            navigate('/dashboard') :
-            ToastifyError('Email or password wrong')
+        loginSuccessful.success
+            ? navigate('/dashboard')
+            : ToastifyError(loginSuccessful.error ?? 'Login failed')
     }
 
     return (<>

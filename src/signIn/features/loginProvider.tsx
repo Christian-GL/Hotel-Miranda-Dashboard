@@ -22,16 +22,21 @@ export const LoginProvider = ({ children }: LoginProviderInterface) => {
 
     const dispatchRedux = useDispatch<AppDispatch>()
 
-    const tryLogin = async (email: string, password: string): Promise<boolean> => {
-        const loginData = { email: email, password: password }
-        const tokenAndUserData = await dispatchRedux(LoginThunk(loginData))
-        if (LoginThunk.fulfilled.match(tokenAndUserData)) {
-            localStorage.setItem('token', tokenAndUserData.payload.token)
-            localStorage.setItem('loggedUserID', tokenAndUserData.payload.loggedUserID)
-            localStorage.setItem('role', tokenAndUserData.payload.role)
-            return true
+    const tryLogin = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+        const result = await dispatchRedux(LoginThunk({ email, password }))
+        if (LoginThunk.fulfilled.match(result)) {
+            localStorage.setItem('token', result.payload.token)
+            localStorage.setItem('loggedUserID', result.payload.loggedUserID)
+            localStorage.setItem('role', result.payload.role)
+            return { success: true }
         }
-        else return false
+        if (LoginThunk.rejected.match(result)) {
+            return {
+                success: false,
+                error: result.payload
+            }
+        }
+        return { success: false, error: 'Unknown error' }
     }
     const logout = (): void => {
         localStorage.removeItem('token')
