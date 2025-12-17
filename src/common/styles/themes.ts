@@ -54,6 +54,10 @@ export const themeLight = {
     borderTable: color.graySmoothX3,
     iconTable: color.blackSmooth,
     iconBackgroundTable: color.white,
+    buttonOptionText: color.white,
+    buttonOptionTextDisabled: color.white,
+    buttonOptionBackground: color.graySmoothX2,
+    buttonOptionBackgroundDisabled: color.graySmooth,
     iconOptionsTable: color.blackSmooth,
     containerOptionsTable: color.graySmoothX3,
     containerOptionsNotInTable: color.graySmoothX3,
@@ -87,10 +91,10 @@ export const themeLight = {
     textPopup: color.blackSmooth,
     iconPopup: color.blackSmooth,
 
-    backgroundButtonCreate: color.greenDark,
-    backgroundButtonCreateDisabled: color.graySmooth,
     textButtonCreate: color.white,
     textButtonCreateDisabled: color.white,
+    backgroundButtonCreate: color.greenDark,
+    backgroundButtonCreateDisabled: color.graySmooth,
 
     textSearchTerm: color.blackSmooth,
 
@@ -152,6 +156,11 @@ export const themeDark = {
     textTable2: color.whiteSmooth,
     borderTable: color.graySmoothX4,
     iconTable: color.blackSmooth,
+    iconBackgroundTable: color.graySmoothX2,
+    buttonOptionText: color.blackSmooth,
+    buttonOptionTextDisabled: color.blackSmooth,
+    buttonOptionBackground: color.graySmoothX3,
+    buttonOptionBackgroundDisabled: color.graySmooth,
     iconBackground: color.graySmoothX2,
     iconOptionsTable: color.blackSmooth,
     containerOptionsTable: color.gray,
@@ -186,10 +195,10 @@ export const themeDark = {
     textPopup: color.blackSmooth,
     iconPopup: color.blackSmooth,
 
-    backgroundButtonCreate: color.greenSmoothX4,
-    backgroundButtonCreateDisabled: color.graySmooth,
     textButtonCreate: color.whiteSmooth,
     textButtonCreateDisabled: color.whiteSmooth,
+    backgroundButtonCreate: color.greenSmoothX4,
+    backgroundButtonCreateDisabled: color.graySmooth,
 
     textSearchTerm: color.blackSmooth,
 

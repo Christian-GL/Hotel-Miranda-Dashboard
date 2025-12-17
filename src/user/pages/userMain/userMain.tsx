@@ -269,7 +269,7 @@ export const UserMain = () => {
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                 <ButtonOption onClick={() => { navigate(`user-update/${userData._id}`) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteUserById(userData._id, index) }}>Delete</ButtonOption>
+                                <ButtonOption onClick={getRole() === Role.admin ? () => { deleteUserById(userData._id, index) } : handleNonAdminClick} disabledClick={getRole() !== Role.admin}>Delete</ButtonOption>
                             </DivCtnOptions>
                         </PTable>
                     ]

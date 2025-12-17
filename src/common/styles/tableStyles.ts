@@ -157,15 +157,21 @@ export const DivCtnOptions = styled.div<{ display: string, isInTable: boolean }>
     }
 `
 
-export const ButtonOption = styled.button`
+export const ButtonOption = styled.button<{ disabledClick?: boolean }>`
     padding: 0.5em;
     width: 7.5rem;
     height: auto;
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
-    color: ${props => props.theme.iconTable};
-    background-color: ${props => props.theme.iconBackgroundTable};
+    color: ${props =>
+        props.disabledClick
+            ? props.theme.buttonOptionTextDisabled
+            : props.theme.buttonOptionText};
+    background-color: ${props =>
+        props.disabledClick
+            ? props.theme.buttonOptionBackgroundDisabled
+            : props.theme.buttonOptionBackground};
 
     &:hover {
         font-weight: 700;
