@@ -156,7 +156,7 @@ export const DivCtnUser = styled.div<{ display?: string }>`
     display: ${props => props.display === 'collapsed' ? 'none' : 'block'};
     position: relative;
     margin-top: 2rem;
-    padding: 3em 1em 1em;
+    padding: 6em 1em 1em;
     text-align: center;
     border-radius: 15%;
     box-shadow: ${props => props.theme.boxShadowCustomProfile};
