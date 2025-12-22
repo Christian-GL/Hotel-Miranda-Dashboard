@@ -1,5 +1,4 @@
 
-import React from "react"
 import { useEffect, useState, useContext } from "react"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
@@ -194,6 +193,7 @@ export const Layout = () => {
                     </div>
 
                     <sidebarStyles.DivCtnUser display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarStyles.ImgProfile src={`${userById.photo}`}></sidebarStyles.ImgProfile>
                         <sidebarStyles.TitleH4>{userById.full_name}</sidebarStyles.TitleH4>
                         <sidebarStyles.TitleH5>{userById.email}</sidebarStyles.TitleH5>
                         <sidebarStyles.ButtonEdit onClick={() => { navigateToUserUpdate(userById._id) }}>Edit</sidebarStyles.ButtonEdit>
