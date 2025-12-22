@@ -237,23 +237,23 @@ export const UserMain = () => {
                             {userData.phone_number}
                         </PTable>,
 
-                        <PTable key={index + '-7'}>
+                        <PTable key={index + '-4'}>
                             {capitalizeFirstLetter(userData.role)}
                         </PTable>,
 
-                        <PTable key={index + '-6'}>
+                        <PTable key={index + '-5'}>
                             {userData.job_position}
                         </PTable>,
 
-                        <PTable key={index + '-4'}>
+                        <PTable key={index + '-6'}>
                             {formatDateForPrint(userData.start_date)}
                         </PTable>,
 
-                        <PTable key={index + '-5'}>
+                        <PTable key={index + '-7'}>
                             {formatDateForPrint(userData.end_date)}
                         </PTable>,
 
-                        <PTable key={index + '-9'}>
+                        <PTable key={index + '-8'}>
                             {new Date(userData.start_date) < new Date() && new Date(userData.end_date) > new Date() ?
                                 <PStatusAvailableUsers active={true}>
                                     Active
@@ -265,19 +265,21 @@ export const UserMain = () => {
                             }
                         </PTable>,
 
-                        <PTable key={index + '-10'}>
+                        <PTable key={index + '-9'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                 <ButtonOption
-                                    onClick={getRole() === Role.admin
+                                    onClick={getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID')
                                         ? () => { navigate(`user-update/${userData._id}`) }
-                                        : handleNonAdminClick} disabledClick={getRole() !== Role.admin}
+                                        : handleNonAdminClick}
+                                    disabledClick={!(getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID'))}
                                 >Update
                                 </ButtonOption>
                                 <ButtonOption
                                     onClick={getRole() === Role.admin
                                         ? () => { deleteUserById(userData._id, index) }
-                                        : handleNonAdminClick} disabledClick={getRole() !== Role.admin}
+                                        : handleNonAdminClick}
+                                    disabledClick={getRole() !== Role.admin}
                                 >Delete
                                 </ButtonOption>
                             </DivCtnOptions>
