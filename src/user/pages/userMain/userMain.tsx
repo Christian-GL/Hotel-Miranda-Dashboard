@@ -274,7 +274,8 @@ export const UserMain = () => {
                                     onClick={getRole() === Role.admin
                                         ? () => { navigate(`user-update/${userData._id}`) }
                                         : handleNonAdminClick}
-                                    disabledClick={!(getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID'))}
+                                    // disabledClick={!(getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID'))}
+                                    disabledClick={getRole() !== Role.admin}
                                 >Update
                                 </ButtonOption>
                                 <ButtonOption
