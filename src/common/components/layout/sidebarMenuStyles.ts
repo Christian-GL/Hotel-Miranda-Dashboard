@@ -178,7 +178,7 @@ export const TitleH4 = styled.h4`
 `
 
 export const TitleH5 = styled.h5`
-    margin: 1rem 0;
+    margin-top: 1rem;
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     overflow-wrap: break-word;
@@ -187,6 +187,7 @@ export const TitleH5 = styled.h5`
 `
 
 export const ButtonEdit = styled.button`
+    margin-top: 1rem;
     padding: 1em 2em;
     font-family: ${globalConstStyles.fontPoppins};
     border: none;

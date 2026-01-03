@@ -196,7 +196,8 @@ export const Layout = () => {
                         <sidebarStyles.ImgProfile src={`${userById.photo}`}></sidebarStyles.ImgProfile>
                         <sidebarStyles.TitleH4>{userById.full_name}</sidebarStyles.TitleH4>
                         <sidebarStyles.TitleH5>{userById.email}</sidebarStyles.TitleH5>
-                        <sidebarStyles.ButtonEdit onClick={() => { navigateToUserUpdate(userById._id) }}>Edit</sidebarStyles.ButtonEdit>
+                        {/* !!! SI EL USUARIO SE QUIERE EDITAR A SI MISMO (REPLANTEAR CONCEPTO): */}
+                        {/* <sidebarStyles.ButtonEdit onClick={() => { navigateToUserUpdate(userById._id) }}>Edit</sidebarStyles.ButtonEdit> */}
                     </sidebarStyles.DivCtnUser>
 
                     <sidebarStyles.DivCtnCredits display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >

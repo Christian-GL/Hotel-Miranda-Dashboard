@@ -269,7 +269,9 @@ export const UserMain = () => {
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                 <ButtonOption
-                                    onClick={getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID')
+                                    // !!! SI EL USUARIO SE QUIERE EDITAR A SI MISMO (REPLANTEAR CONCEPTO):
+                                    // onClick={getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID')
+                                    onClick={getRole() === Role.admin
                                         ? () => { navigate(`user-update/${userData._id}`) }
                                         : handleNonAdminClick}
                                     disabledClick={!(getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID'))}
