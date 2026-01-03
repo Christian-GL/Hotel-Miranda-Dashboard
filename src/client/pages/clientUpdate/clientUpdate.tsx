@@ -11,18 +11,24 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { ClientInterface } from "../../interfaces/clientInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
 import {
     DivCtnForm, DivIcon, DivCtnIcons, IconClient, IconUpdate, TitleForm,
-    Form, DivCtnEntry, LabelText, InputText, DivButtonCreateUser
+    Form, DivCtnEntry, LabelText, InputText, LabelTextInfoBooking, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getClientIdData, getClientIdStatus } from "../../../client/features/clientSlice"
 import { ClientFetchByIDThunk } from "../../../client/features/thunks/clientFetchByIDThunk"
 import { ClientUpdateThunk } from '../../../client/features/thunks/clientUpdateThunk'
-import { OptionYesNo } from "common/enums/optionYesNo"
+import { RoomInterface } from "room/interfaces/roomInterface"
+import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
+import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
+import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
+import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
+import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 
 
 export const ClientUpdate = () => {
@@ -33,6 +39,10 @@ export const ClientUpdate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const clientById = useSelector(getClientIdData)
     const clientByIdLoading = useSelector(getClientIdStatus)
+    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
+    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const [clientUpdated, setClientUpdated] = useState<ClientInterface>({
         _id: "0",
         full_name: '',
@@ -60,6 +70,16 @@ export const ClientUpdate = () => {
         }
         else if (clientByIdLoading === ApiStatus.rejected) { alert("Error in API update client") }
     }, [clientByIdLoading, clientById, id])
+    useEffect(() => {
+        if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
+        else if (roomAllLoading === ApiStatus.fulfilled) { }
+        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de clientMain > rooms") }
+    }, [roomAllLoading, roomAll])
+    useEffect(() => {
+        if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
+        else if (bookingAllLoading === ApiStatus.fulfilled) { }
+        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de clientMain > bookings") }
+    }, [bookingAllLoading, bookingAll])
 
     const validateAllData = (): string[] => {
         const allErrorMessages: string[] = []
@@ -98,6 +118,22 @@ export const ClientUpdate = () => {
             })
     }
 
+    // !!! CONVERTIR EN FUNCIÓN COMÚN
+    const getClientBookingRoomsMap = (client: ClientInterface): { bookingId: string; roomNumbers: string[] }[] => {
+
+        return client.booking_id_list.map(bookingId => {
+            const booking = bookingAll.find(booking => booking._id === bookingId)
+            if (!booking) return null
+
+            const roomNumbers = booking.room_id_list.map(roomId => {
+                const room = roomAll.find(room => room._id === roomId)
+                return room?.number
+            }).filter(Boolean) as string[]
+
+            return { bookingId, roomNumbers }
+        }).filter(Boolean) as { bookingId: string; roomNumbers: string[] }[]
+    }
+
     return (<>
         <ToastContainer />
 
@@ -129,8 +165,20 @@ export const ClientUpdate = () => {
 
                     {/* !!! DEBE MOSTRAR INFO DE LAS BOOKINGS RELACIONADAS (NO EDITABLE) */}
                     <DivCtnEntry>
-                        <LabelText>Booking ID List</LabelText>
-                        <InputText name="booking_id_list" value={clientUpdated.booking_id_list} onChange={handleStringChange} />
+                        <LabelText>Room Booking List</LabelText>
+                        <LabelTextInfoBooking>
+                            {
+                                getClientBookingRoomsMap(clientUpdated).length > 0 ?
+                                    (getClientBookingRoomsMap(clientUpdated).map(b => (
+                                        <p key={b.bookingId}>
+                                            {b.roomNumbers.join(", ")}
+                                        </p>
+                                    )))
+                                    :
+                                    (<p>No bookings yet</p>)
+                            }
+                        </LabelTextInfoBooking>
+                        {/* <InputText name="booking_id_list" value={clientUpdated.booking_id_list} onChange={handleStringChange} /> */}
                     </DivCtnEntry>
 
                     <DivButtonCreateUser>
