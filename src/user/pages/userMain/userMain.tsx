@@ -7,7 +7,8 @@ import { useSelector, useDispatch } from "react-redux"
 import * as userMainStyles from "./userMainStyles"
 import { CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
-import { UserButtonType } from "../../enums/userButtonType"
+import { ActiveButtonType } from "../../enums/activeButtonType"
+import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../enums/role"
@@ -46,7 +47,8 @@ export const UserMain = () => {
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
-    const [selectedButton, setSelectedButton] = useState<UserButtonType>(UserButtonType.all)
+    const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.all)
+    const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.all)
     const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([])
     const sortableColumns: UserNameColumn[] = [
         UserNameColumn.userInfo,
@@ -77,40 +79,63 @@ export const UserMain = () => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
         else if (userAllLoading === ApiStatus.fulfilled) { displayEmployee() }
         else if (userAllLoading === ApiStatus.rejected) { alert("Error in API userMain") }
-    }, [userAllLoading, userAll, inputText, selectedButton, arrowStates])
+    }, [userAllLoading, userAll, inputText, activeFilterButton, archivedFilterButton, arrowStates])
 
     const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInputText(e.target.value)
         resetPage()
     }
-    const handleTableFilter = (selectedButton: UserButtonType): void => {
-        setSelectedButton(selectedButton)
-        displayEmployee()
+    const handleActiveTableFilter = (activeFilterButton: ActiveButtonType): void => {
+        setActiveFilterButton(activeFilterButton)
+    }
+    const handleArchivedTableFilter = (archivedFilterButton: ArchivedButtonType): void => {
+        setArchivedFilterButton(archivedFilterButton)
+    }
+    const filterByName = (users: UserInterface[], searchText: string): UserInterface[] => {
+        const normalizedText = searchText.toLowerCase()
+        return users.filter(user =>
+            user.full_name.toLowerCase().includes(normalizedText)
+        )
+    }
+    const filterByActiveStatus = (users: UserInterface[], activeFilterButton: ActiveButtonType): UserInterface[] => {
+        const now = new Date()
+        switch (activeFilterButton) {
+            case ActiveButtonType.active:
+                return users.filter(user =>
+                    new Date(user.start_date) < now
+                    && new Date(user.end_date) > now
+                )
+            case ActiveButtonType.inactive:
+                return users.filter(user =>
+                    new Date(user.start_date) > now
+                    || new Date(user.end_date) < now
+                )
+
+            case ActiveButtonType.all:
+            default:
+                return users
+        }
+    }
+    const filterByArchivedStatus = (users: UserInterface[], archivedFilterButton: ArchivedButtonType): UserInterface[] => {
+        switch (archivedFilterButton) {
+            case ArchivedButtonType.archived:
+                return users.filter(user => user.isArchived === OptionYesNo.yes)
+
+            case ArchivedButtonType.notArchived:
+                return users.filter(user => user.isArchived === OptionYesNo.no)
+
+            case ArchivedButtonType.all:
+            default:
+                return users
+        }
     }
     const displayEmployee = (): void => {
-        let filteredData: UserInterface[]
-        switch (selectedButton) {
-            case UserButtonType.all:
-                filteredData = userAll.filter(user =>
-                    user.full_name.toLowerCase().includes(inputText.toLowerCase())
-                )
-                break
-            case UserButtonType.active:
-                filteredData = userAll.filter(user =>
-                    user.full_name.toLowerCase().includes(inputText.toLowerCase())
-                    && new Date(user.start_date) < new Date()
-                    && new Date(user.end_date) > new Date()
-                )
-                break
-            case UserButtonType.inactive:
-                filteredData = userAll.filter(user =>
-                    user.full_name.toLowerCase().includes(inputText.toLowerCase())
-                    && (new Date(user.start_date) > new Date()
-                        || new Date(user.end_date) < new Date())
-                )
-                break
-            // !!! AÑADIR OPION PARA VER TAMBIEN ARCHIVADOS:
-        }
+        let filteredData = userAll
+
+        filteredData = filterByName(filteredData, inputText)
+        filteredData = filterByActiveStatus(filteredData, activeFilterButton)
+        filteredData = filterByArchivedStatus(filteredData, archivedFilterButton)
+
         setFilteredUsers(sortData(filteredData))
         resetPage()
     }
@@ -185,14 +210,14 @@ export const UserMain = () => {
             <CtnFuncionality>
                 <CtnAllDisplayFilter>
                     <CtnTableDisplayFilter>
-                        <TableDisplaySelector text='All Employee' onClick={() => handleTableFilter(UserButtonType.all)} isSelected={selectedButton === UserButtonType.all} />
-                        <TableDisplaySelector text='Active' onClick={() => handleTableFilter(UserButtonType.active)} isSelected={selectedButton === UserButtonType.active} />
-                        <TableDisplaySelector text='Inactive' onClick={() => handleTableFilter(UserButtonType.inactive)} isSelected={selectedButton === UserButtonType.inactive} />
+                        <TableDisplaySelector text='All Employee' onClick={() => handleActiveTableFilter(ActiveButtonType.all)} isSelected={activeFilterButton === ActiveButtonType.all} />
+                        <TableDisplaySelector text='Active' onClick={() => handleActiveTableFilter(ActiveButtonType.active)} isSelected={activeFilterButton === ActiveButtonType.active} />
+                        <TableDisplaySelector text='Inactive' onClick={() => handleActiveTableFilter(ActiveButtonType.inactive)} isSelected={activeFilterButton === ActiveButtonType.inactive} />
                     </CtnTableDisplayFilter>
                     <CtnTableDisplayFilter>
-                        <TableDisplaySelector text='All Employee' onClick={() => handleTableFilter(UserButtonType.all)} isSelected={selectedButton === UserButtonType.all} />
-                        <TableDisplaySelector text='Not Archived' onClick={() => handleTableFilter(UserButtonType.active)} isSelected={selectedButton === UserButtonType.active} />
-                        <TableDisplaySelector text='Archived' onClick={() => handleTableFilter(UserButtonType.inactive)} isSelected={selectedButton === UserButtonType.inactive} />
+                        <TableDisplaySelector text='All Employee' onClick={() => handleArchivedTableFilter(ArchivedButtonType.all)} isSelected={archivedFilterButton === ArchivedButtonType.all} />
+                        <TableDisplaySelector text='Not Archived' onClick={() => handleArchivedTableFilter(ArchivedButtonType.notArchived)} isSelected={archivedFilterButton === ArchivedButtonType.notArchived} />
+                        <TableDisplaySelector text='Archived' onClick={() => handleArchivedTableFilter(ArchivedButtonType.archived)} isSelected={archivedFilterButton === ArchivedButtonType.archived} />
                     </CtnTableDisplayFilter>
                 </CtnAllDisplayFilter>
 
