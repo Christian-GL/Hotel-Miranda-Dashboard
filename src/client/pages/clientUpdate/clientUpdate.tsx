@@ -93,9 +93,6 @@ export const ClientUpdate = () => {
         validatePhoneNumber(clientUpdated.phone_number, 'Phone number').map(
             error => allErrorMessages.push(error)
         )
-        validateMongoDBObjectIdList(clientUpdated.booking_id_list, 'Booking ID list').map(
-            error => allErrorMessages.push(error)
-        )
 
         return allErrorMessages
     }

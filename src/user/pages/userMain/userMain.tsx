@@ -17,6 +17,7 @@ import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { capitalizeFirstLetter } from "common/utils/capitalizeFirstLetter"
 import { ArrowType } from "../../../common/enums/ArrowType"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { UserNameColumn } from "../../enums/userNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
 import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
@@ -31,6 +32,7 @@ import {
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getUserAllData, getUserAllStatus } from "./../../features/userSlice"
 import { UserFetchAllThunk } from "./../../features/thunks/userFetchAllThunk"
+import { UserUpdateThunk } from "./../../features/thunks/userUpdateThunk"
 import { UserDeleteByIdThunk } from "./../../features/thunks/userDeleteByIdThunk"
 
 
@@ -148,22 +150,31 @@ export const UserMain = () => {
 
         return sortedData
     }
+    const displayMenuOptions = (index: number): void => {
+        tableOptionsDisplayed === index ?
+            setTableOptionsDisplayed(-1) :
+            setTableOptionsDisplayed(index)
+    }
+    const archiveUserById = (id: string, user: UserInterface, index: number): void => {
+        const updatedUser = {
+            ...user,
+            isArchived: OptionYesNo.yes
+        }
+        dispatch(UserUpdateThunk({ idUser: id, updatedUserData: updatedUser }))
+        displayMenuOptions(index)
+        resetPage()
+    }
+    const deleteUserById = (id: string, index: number): void => {
+        dispatch(UserDeleteByIdThunk(id))
+        displayMenuOptions(index)
+        resetPage()
+    }
     const handleNonAdminClick = () => {
         setInfoPopup({
             title: 'Access denied',
             text: 'You need administrator privileges to perform this operation'
         })
         setShowPopup(true)
-    }
-    const displayMenuOptions = (index: number): void => {
-        tableOptionsDisplayed === index ?
-            setTableOptionsDisplayed(-1) :
-            setTableOptionsDisplayed(index)
-    }
-    const deleteUserById = (id: string, index: number): void => {
-        dispatch(UserDeleteByIdThunk(id))
-        displayMenuOptions(index)
-        resetPage()
     }
 
 
@@ -277,6 +288,13 @@ export const UserMain = () => {
                                     // disabledClick={!(getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID'))}
                                     disabledClick={getRole() !== Role.admin}
                                 >Update
+                                </ButtonOption>
+                                <ButtonOption
+                                    onClick={getRole() === Role.admin
+                                        ? () => { archiveUserById(userData._id, userData, index) }
+                                        : handleNonAdminClick}
+                                    disabledClick={getRole() !== Role.admin}
+                                >Archive
                                 </ButtonOption>
                                 <ButtonOption
                                     onClick={getRole() === Role.admin
