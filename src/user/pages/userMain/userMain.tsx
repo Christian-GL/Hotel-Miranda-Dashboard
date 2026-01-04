@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import * as userMainStyles from "./userMainStyles"
+import { CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { UserButtonType } from "../../enums/userButtonType"
 import { AppDispatch } from '../../../common/redux/store'
@@ -181,27 +182,34 @@ export const UserMain = () => {
     return (<>
         <userMainStyles.SectionPageUser>
 
-            <userMainStyles.DivCtnFuncionality>
-                <userMainStyles.DivCtnTableDisplayFilter>
-                    <TableDisplaySelector text='All Employee' onClick={() => handleTableFilter(UserButtonType.all)} isSelected={selectedButton === UserButtonType.all} />
-                    <TableDisplaySelector text='Active Employee' onClick={() => handleTableFilter(UserButtonType.active)} isSelected={selectedButton === UserButtonType.active} />
-                    <TableDisplaySelector text='Inactive Employee' onClick={() => handleTableFilter(UserButtonType.inactive)} isSelected={selectedButton === UserButtonType.inactive} />
-                </userMainStyles.DivCtnTableDisplayFilter>
+            <CtnFuncionality>
+                <CtnAllDisplayFilter>
+                    <CtnTableDisplayFilter>
+                        <TableDisplaySelector text='All Employee' onClick={() => handleTableFilter(UserButtonType.all)} isSelected={selectedButton === UserButtonType.all} />
+                        <TableDisplaySelector text='Active' onClick={() => handleTableFilter(UserButtonType.active)} isSelected={selectedButton === UserButtonType.active} />
+                        <TableDisplaySelector text='Inactive' onClick={() => handleTableFilter(UserButtonType.inactive)} isSelected={selectedButton === UserButtonType.inactive} />
+                    </CtnTableDisplayFilter>
+                    <CtnTableDisplayFilter>
+                        <TableDisplaySelector text='All Employee' onClick={() => handleTableFilter(UserButtonType.all)} isSelected={selectedButton === UserButtonType.all} />
+                        <TableDisplaySelector text='Not Archived' onClick={() => handleTableFilter(UserButtonType.active)} isSelected={selectedButton === UserButtonType.active} />
+                        <TableDisplaySelector text='Archived' onClick={() => handleTableFilter(UserButtonType.inactive)} isSelected={selectedButton === UserButtonType.inactive} />
+                    </CtnTableDisplayFilter>
+                </CtnAllDisplayFilter>
 
-                <userMainStyles.DivCtnSearch>
+                <CtnSearch>
                     <TableSearchTerm onchange={handleInputTerm} placeholder='Search employee by name' />
-                </userMainStyles.DivCtnSearch>
+                </CtnSearch>
 
-                <userMainStyles.DivCtnButton>
+                <CtnButton>
                     <ButtonCreate
                         disabledClick={getRole() !== Role.admin}
                         onClick={getRole() === Role.admin ? () => navigate('user-create') : handleNonAdminClick}
                     >
                         + New Employee
                     </ButtonCreate>
-                </userMainStyles.DivCtnButton>
+                </CtnButton>
 
-            </userMainStyles.DivCtnFuncionality>
+            </CtnFuncionality>
 
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
