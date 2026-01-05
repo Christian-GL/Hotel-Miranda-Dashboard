@@ -81,16 +81,6 @@ export const UserMain = () => {
         else if (userAllLoading === ApiStatus.rejected) { alert("Error in API userMain") }
     }, [userAllLoading, userAll, inputText, activeFilterButton, archivedFilterButton, arrowStates])
 
-    const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setInputText(e.target.value)
-        resetPage()
-    }
-    const handleActiveTableFilter = (activeFilterButton: ActiveButtonType): void => {
-        setActiveFilterButton(activeFilterButton)
-    }
-    const handleArchivedTableFilter = (archivedFilterButton: ArchivedButtonType): void => {
-        setArchivedFilterButton(archivedFilterButton)
-    }
     const filterByName = (users: UserInterface[], searchText: string): UserInterface[] => {
         const normalizedText = searchText.toLowerCase()
         return users.filter(user =>
@@ -210,19 +200,25 @@ export const UserMain = () => {
             <CtnFuncionality>
                 <CtnAllDisplayFilter>
                     <CtnTableDisplayFilter>
-                        <TableDisplaySelector text='All Employee' onClick={() => handleActiveTableFilter(ActiveButtonType.all)} isSelected={activeFilterButton === ActiveButtonType.all} />
-                        <TableDisplaySelector text='Active' onClick={() => handleActiveTableFilter(ActiveButtonType.active)} isSelected={activeFilterButton === ActiveButtonType.active} />
-                        <TableDisplaySelector text='Inactive' onClick={() => handleActiveTableFilter(ActiveButtonType.inactive)} isSelected={activeFilterButton === ActiveButtonType.inactive} />
+                        <TableDisplaySelector text='All Employee' onClick={() => setActiveFilterButton(ActiveButtonType.all)} isSelected={activeFilterButton === ActiveButtonType.all} />
+                        <TableDisplaySelector text='Active' onClick={() => setActiveFilterButton(ActiveButtonType.active)} isSelected={activeFilterButton === ActiveButtonType.active} />
+                        <TableDisplaySelector text='Inactive' onClick={() => setActiveFilterButton(ActiveButtonType.inactive)} isSelected={activeFilterButton === ActiveButtonType.inactive} />
                     </CtnTableDisplayFilter>
                     <CtnTableDisplayFilter>
-                        <TableDisplaySelector text='All Employee' onClick={() => handleArchivedTableFilter(ArchivedButtonType.all)} isSelected={archivedFilterButton === ArchivedButtonType.all} />
-                        <TableDisplaySelector text='Not Archived' onClick={() => handleArchivedTableFilter(ArchivedButtonType.notArchived)} isSelected={archivedFilterButton === ArchivedButtonType.notArchived} />
-                        <TableDisplaySelector text='Archived' onClick={() => handleArchivedTableFilter(ArchivedButtonType.archived)} isSelected={archivedFilterButton === ArchivedButtonType.archived} />
+                        <TableDisplaySelector text='All Employee' onClick={() => setArchivedFilterButton(ArchivedButtonType.all)} isSelected={archivedFilterButton === ArchivedButtonType.all} />
+                        <TableDisplaySelector text='Not Archived' onClick={() => setArchivedFilterButton(ArchivedButtonType.notArchived)} isSelected={archivedFilterButton === ArchivedButtonType.notArchived} />
+                        <TableDisplaySelector text='Archived' onClick={() => setArchivedFilterButton(ArchivedButtonType.archived)} isSelected={archivedFilterButton === ArchivedButtonType.archived} />
                     </CtnTableDisplayFilter>
                 </CtnAllDisplayFilter>
 
                 <CtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search employee by name' />
+                    <TableSearchTerm
+                        onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setInputText(e.target.value)
+                            resetPage()
+                        }}
+                        placeholder="Search employee by name"
+                    />
                 </CtnSearch>
 
                 <CtnButton>
