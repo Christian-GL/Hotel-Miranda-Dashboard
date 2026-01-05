@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as clientMainStyles from "./clientMainStyles"
+import { CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { ClientInterface } from '../../interfaces/clientInterface'
@@ -172,8 +173,9 @@ export const ClientMain = () => {
     return (
         console.log(filteredClients),
         <clientMainStyles.SectionPageClient>
+            {/* !!! ACTUALIZAR Y REUTILIZAR: */}
             <clientMainStyles.SectionReviews>
-                <clientMainStyles.DivCtnReviews>
+                {/* <clientMainStyles.DivCtnReviews>
                     <Swiper
                         spaceBetween={0}
                         slidesPerView={filteredClients.length === 1 ? 1 : filteredClients.length === 2 ? 2 : 3}
@@ -181,7 +183,6 @@ export const ClientMain = () => {
                         pagination={{ clickable: true }}
                         loop={true}
                     >
-                        {/* !!! CAMBIAR POR DATOS RELEVANTES */}
                         {currentPageItems.map((client: ClientInterface, index: number) => {
                             return <SwiperSlide key={index}>
                                 <ArticleReview
@@ -192,7 +193,7 @@ export const ClientMain = () => {
                             </SwiperSlide>
                         })}
                     </Swiper>
-                </clientMainStyles.DivCtnReviews>
+                </clientMainStyles.DivCtnReviews> */}
             </clientMainStyles.SectionReviews>
 
             <clientMainStyles.DivCtnFuncionality>
