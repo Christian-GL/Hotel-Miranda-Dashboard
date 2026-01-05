@@ -2,6 +2,13 @@
 import { styled } from 'styled-components'
 
 
+export const SectionPage = styled.section`
+    padding: 2em;
+    height: 100%;
+    overflow-y: auto;
+    background-color: ${props => props.theme.backgroundPage};
+`
+
 export const CtnFuncionality = styled.div`
     display: flex;
     flex-direction: row;

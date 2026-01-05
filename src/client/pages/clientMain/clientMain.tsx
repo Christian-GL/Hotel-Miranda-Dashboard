@@ -6,7 +6,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as clientMainStyles from "./clientMainStyles"
-import { CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
+import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
+import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { ClientInterface } from '../../interfaces/clientInterface'
@@ -49,6 +50,7 @@ export const ClientMain = () => {
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
+    const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.all)
     const [filteredClients, setFilteredClients] = useState<ClientInterface[]>([])
     const sortableColumns: ClientNameColumn[] = [
         ClientNameColumn.customerInfo
@@ -72,7 +74,7 @@ export const ClientMain = () => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
         else if (clientAllLoading === ApiStatus.fulfilled) { displayClients(displayedNotArchived) }
         else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de clientMain > clients") }
-    }, [clientAllLoading, clientAll, inputText, displayedNotArchived, arrowStates])
+    }, [clientAllLoading, clientAll, inputText, displayedNotArchived, archivedFilterButton, arrowStates])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
@@ -84,23 +86,33 @@ export const ClientMain = () => {
         else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de clientMain > bookings") }
     }, [bookingAllLoading, bookingAll])
 
-    const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setInputText(e.target.value)
-        resetPage()
-    }
-    const handleTableFilter = (isArchived: OptionYesNo): void => {
-        setDisplayedNotArchived(isArchived)
-        displayClients(displayedNotArchived)
-    }
-    const displayClients = (isDisplayedNotArchived: OptionYesNo): void => {
-        const selectArchiveType = clientAll.filter(client =>
-            client.isArchived !== isDisplayedNotArchived
-        )
-        const filteredData = selectArchiveType.filter(client =>
+    const filterByName = (clients: ClientInterface[], searchText: string): ClientInterface[] => {
+        const normalizedText = searchText.toLowerCase()
+        return clients.filter(client =>
             client._id.toLocaleLowerCase().includes(inputText.toLowerCase())
             || client.full_name.toLowerCase().includes(inputText.toLowerCase())
             || client.email.toLocaleLowerCase().includes(inputText.toLowerCase())
         )
+    }
+    const filterByArchivedStatus = (clients: ClientInterface[], archivedFilterButton: ArchivedButtonType): ClientInterface[] => {
+        switch (archivedFilterButton) {
+            case ArchivedButtonType.archived:
+                return clients.filter(user => user.isArchived === OptionYesNo.yes)
+
+            case ArchivedButtonType.notArchived:
+                return clients.filter(user => user.isArchived === OptionYesNo.no)
+
+            case ArchivedButtonType.all:
+            default:
+                return clients
+        }
+    }
+    const displayClients = (): void => {
+        let filteredData = clientAll
+
+        filteredData = filterByName(filteredData, inputText)
+        filteredData = filterByArchivedStatus(filteredData, archivedFilterButton)
+
         setFilteredClients(sortData(filteredData))
         resetPage()
     }
@@ -172,7 +184,7 @@ export const ClientMain = () => {
 
     return (
         console.log(filteredClients),
-        <clientMainStyles.SectionPageClient>
+        <SectionPage>
             {/* !!! ACTUALIZAR Y REUTILIZAR: */}
             <clientMainStyles.SectionReviews>
                 {/* <clientMainStyles.DivCtnReviews>
@@ -196,20 +208,28 @@ export const ClientMain = () => {
                 </clientMainStyles.DivCtnReviews> */}
             </clientMainStyles.SectionReviews>
 
-            <clientMainStyles.DivCtnFuncionality>
-                <clientMainStyles.DivCtnTableDisplayFilter>
-                    <TableDisplaySelector text='Clients' onClick={() => handleTableFilter(OptionYesNo.yes)} isSelected={displayedNotArchived === OptionYesNo.yes} />
-                    <TableDisplaySelector text='Archived' onClick={() => handleTableFilter(OptionYesNo.no)} isSelected={displayedNotArchived === OptionYesNo.no} />
-                </clientMainStyles.DivCtnTableDisplayFilter>
+            <CtnFuncionality>
+                <CtnAllDisplayFilter>
+                    <CtnTableDisplayFilter>
+                        <TableDisplaySelector text='All Clients' onClick={() => setArchivedFilterButton(ArchivedButtonType.all)} isSelected={archivedFilterButton === ArchivedButtonType.all} />
+                        <TableDisplaySelector text='Not Archived' onClick={() => setArchivedFilterButton(ArchivedButtonType.notArchived)} isSelected={archivedFilterButton === ArchivedButtonType.notArchived} />
+                        <TableDisplaySelector text='Archived' onClick={() => setArchivedFilterButton(ArchivedButtonType.archived)} isSelected={archivedFilterButton === ArchivedButtonType.archived} />
+                    </CtnTableDisplayFilter>
+                </CtnAllDisplayFilter>
 
-                <clientMainStyles.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search by client ID/name/email' />
-                </clientMainStyles.DivCtnSearch>
+                <CtnSearch>
+                    <TableSearchTerm
+                        onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setInputText(e.target.value)
+                            resetPage()
+                        }}
+                        placeholder='Search by client ID/name/email' />
+                </CtnSearch>
 
-                <clientMainStyles.DivCtnButton>
+                <CtnButton>
                     <ButtonCreate onClick={() => navigate('client-create')} children='+ New Client' />
-                </clientMainStyles.DivCtnButton>
-            </clientMainStyles.DivCtnFuncionality>
+                </CtnButton>
+            </CtnFuncionality>
 
             <Table rowlistlength={filteredClients.length + 1} columnlistlength={Object.values(ClientNameColumn).length + 1} >
                 {Object.values(ClientNameColumn).map(entry => {
@@ -291,6 +311,6 @@ export const ClientMain = () => {
                 onLast={lastPage}
             />
 
-        </clientMainStyles.SectionPageClient >
+        </SectionPage >
     )
 }

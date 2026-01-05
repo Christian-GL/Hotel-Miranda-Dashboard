@@ -4,8 +4,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as userMainStyles from "./userMainStyles"
-import { CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
+import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { ActiveButtonType } from "../../enums/activeButtonType"
 import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
@@ -195,7 +194,7 @@ export const UserMain = () => {
 
 
     return (<>
-        <userMainStyles.SectionPageUser>
+        <SectionPage>
 
             <CtnFuncionality>
                 <CtnAllDisplayFilter>
@@ -348,6 +347,6 @@ export const UserMain = () => {
                 onLast={lastPage}
             />
 
-        </userMainStyles.SectionPageUser >
+        </SectionPage >
     </>)
 }
