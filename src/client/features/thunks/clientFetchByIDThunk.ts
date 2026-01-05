@@ -34,7 +34,7 @@ export const ClientFetchByIDThunk = createAsyncThunk
                     full_name: json.full_name,
                     email: json.email,
                     phone_number: json.phone_number,
-                    isArchived: json.archived,
+                    isArchived: json.isArchived,
                     booking_id_list: json.booking_id_list
                 }
                 return client

@@ -72,7 +72,7 @@ export const ClientMain = () => {
 
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
-        else if (clientAllLoading === ApiStatus.fulfilled) { displayClients(displayedNotArchived) }
+        else if (clientAllLoading === ApiStatus.fulfilled) { displayClients() }
         else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de clientMain > clients") }
     }, [clientAllLoading, clientAll, inputText, displayedNotArchived, archivedFilterButton, arrowStates])
     useEffect(() => {
@@ -89,18 +89,18 @@ export const ClientMain = () => {
     const filterByName = (clients: ClientInterface[], searchText: string): ClientInterface[] => {
         const normalizedText = searchText.toLowerCase()
         return clients.filter(client =>
-            client._id.toLocaleLowerCase().includes(inputText.toLowerCase())
-            || client.full_name.toLowerCase().includes(inputText.toLowerCase())
-            || client.email.toLocaleLowerCase().includes(inputText.toLowerCase())
+            client._id.toLocaleLowerCase().includes(normalizedText)
+            || client.full_name.toLowerCase().includes(normalizedText)
+            || client.email.toLocaleLowerCase().includes(normalizedText)
         )
     }
     const filterByArchivedStatus = (clients: ClientInterface[], archivedFilterButton: ArchivedButtonType): ClientInterface[] => {
         switch (archivedFilterButton) {
             case ArchivedButtonType.archived:
-                return clients.filter(user => user.isArchived === OptionYesNo.yes)
+                return clients.filter(client => client.isArchived === OptionYesNo.yes)
 
             case ArchivedButtonType.notArchived:
-                return clients.filter(user => user.isArchived === OptionYesNo.no)
+                return clients.filter(client => client.isArchived === OptionYesNo.no)
 
             case ArchivedButtonType.all:
             default:
@@ -183,7 +183,6 @@ export const ClientMain = () => {
 
 
     return (
-        console.log(filteredClients),
         <SectionPage>
             {/* !!! ACTUALIZAR Y REUTILIZAR: */}
             <clientMainStyles.SectionReviews>
@@ -237,7 +236,7 @@ export const ClientMain = () => {
                         return (
                             <THTable
                                 key={entry}
-                                onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayClients(displayedNotArchived))}
+                                onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayClients())}
                                 cursorPointer="yes"
                             >
                                 {entry}
