@@ -16,6 +16,7 @@ import { ClientInterface } from '../../interfaces/clientInterface'
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
+import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { ClientNameColumn } from "../../enums/ClientNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
@@ -184,13 +185,6 @@ export const ClientMain = () => {
             return { bookingId, roomNumbers }
         }).filter(Boolean) as { bookingId: string; roomNumbers: string[] }[]
     }
-    const handleNonAdminClick = () => {
-        setInfoPopup({
-            title: 'Access denied',
-            text: 'You need administrator privileges to perform this operation'
-        })
-        setShowPopup(true)
-    }
 
 
     return (
@@ -304,7 +298,7 @@ export const ClientMain = () => {
                                 <ButtonOption
                                     onClick={getRole() === Role.admin
                                         ? () => { deleteClientById(clientData._id, index) }
-                                        : handleNonAdminClick}
+                                        : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                                     disabledClick={getRole() !== Role.admin}
                                 >Delete
                                 </ButtonOption>

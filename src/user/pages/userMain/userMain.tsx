@@ -16,6 +16,7 @@ import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
+import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { capitalizeFirstLetter } from "common/utils/capitalizeFirstLetter"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { OptionYesNo } from "common/enums/optionYesNo"
@@ -186,13 +187,6 @@ export const UserMain = () => {
         displayMenuOptions(index)
         resetPage()
     }
-    const handleNonAdminClick = () => {
-        setInfoPopup({
-            title: 'Access denied',
-            text: 'You need administrator privileges to perform this operation'
-        })
-        setShowPopup(true)
-    }
 
 
     return (<>
@@ -225,7 +219,7 @@ export const UserMain = () => {
                 <CtnButton>
                     <ButtonCreate
                         disabledClick={getRole() !== Role.admin}
-                        onClick={getRole() === Role.admin ? () => navigate('user-create') : handleNonAdminClick}
+                        onClick={getRole() === Role.admin ? () => navigate('user-create') : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                     >
                         + New Employee
                     </ButtonCreate>
@@ -314,7 +308,7 @@ export const UserMain = () => {
                                     // onClick={getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID')
                                     onClick={getRole() === Role.admin
                                         ? () => { navigate(`user-update/${userData._id}`) }
-                                        : handleNonAdminClick}
+                                        : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                                     // disabledClick={!(getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID'))}
                                     disabledClick={getRole() !== Role.admin}
                                 >Update
@@ -322,14 +316,14 @@ export const UserMain = () => {
                                 <ButtonOption
                                     onClick={getRole() === Role.admin
                                         ? () => { toggleArchivedClient(userData._id, userData, index) }
-                                        : handleNonAdminClick}
+                                        : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                                     disabledClick={getRole() !== Role.admin}
                                 >{userData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                                 </ButtonOption>
                                 <ButtonOption
                                     onClick={getRole() === Role.admin
                                         ? () => { deleteUserById(userData._id, index) }
-                                        : handleNonAdminClick}
+                                        : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                                     disabledClick={getRole() !== Role.admin}
                                 >Delete
                                 </ButtonOption>
