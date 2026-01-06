@@ -7,15 +7,19 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as clientMainStyles from "./clientMainStyles"
 import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
+import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { Role } from "../../../user/enums/role"
 import { ClientInterface } from '../../interfaces/clientInterface'
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { ClientNameColumn } from "../../enums/ClientNameColumn"
+import { PopupText } from "../../../common/components/popupText/popupText"
+import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
 import { OptionYesNo } from "common/enums/optionYesNo"
 import { ArticleReview } from "../../../common/components/articleReview/articleReview"
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
@@ -29,6 +33,7 @@ import {
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getClientAllData, getClientAllStatus } from "../../features/clientSlice"
 import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
+import { ClientUpdateThunk } from "./../../features/thunks/clientUpdateThunk"
 import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
 import { RoomInterface } from "room/interfaces/roomInterface"
 import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
@@ -42,6 +47,7 @@ export const ClientMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
+    const { getRole } = useLoginOptionsContext()
     const clientAll: ClientInterface[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
@@ -59,6 +65,8 @@ export const ClientMain = () => {
     const [arrowStates, setArrowStates] = useState<ArrowStates>({
         [ClientNameColumn.customerInfo]: ArrowType.down
     })
+    const [showPopup, setShowPopup] = useState<boolean>(false)
+    const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
     const [displayedNotArchived, setDisplayedNotArchived] = useState<OptionYesNo>(OptionYesNo.yes)
     const {
         currentPageItems,
@@ -141,25 +149,21 @@ export const ClientMain = () => {
 
         return sortedData
     }
-    // const publish = (id: string) => {
-    //     const updatedClient = clientAll.find(client => client._id === id)
-    //     if (updatedClient !== undefined) {
-    //         const clientUpdated = { ...updatedClient, archived: OptionYesNo.no }
-    //         dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: clientUpdated }))
-    //     }
-    // }
-
-    // const archive = (id: string) => {
-    //     const updatedClient = clientAll.find(client => client._id === id)
-    //     if (updatedClient !== undefined) {
-    //         const clientUpdated = { ...updatedClient, archived: OptionYesNo.yes }
-    //         dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: clientUpdated }))
-    //     }
-    // }
     const displayMenuOptions = (index: number): void => {
         tableOptionsDisplayed === index ?
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
+    }
+    const toggleArchivedClient = (id: string, client: ClientInterface, index: number): void => {
+        const updatedClient = {
+            ...client,
+            isArchived: client.isArchived === OptionYesNo.no
+                ? OptionYesNo.yes
+                : OptionYesNo.no
+        }
+        dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: updatedClient }))
+        displayMenuOptions(index)
+        resetPage()
     }
     const deleteClientById = (id: string, index: number): void => {
         dispatch(ClientDeleteByIdThunk(id))
@@ -179,6 +183,13 @@ export const ClientMain = () => {
 
             return { bookingId, roomNumbers }
         }).filter(Boolean) as { bookingId: string; roomNumbers: string[] }[]
+    }
+    const handleNonAdminClick = () => {
+        setInfoPopup({
+            title: 'Access denied',
+            text: 'You need administrator privileges to perform this operation'
+        })
+        setShowPopup(true)
     }
 
 
@@ -229,6 +240,8 @@ export const ClientMain = () => {
                     <ButtonCreate onClick={() => navigate('client-create')} children='+ New Client' />
                 </CtnButton>
             </CtnFuncionality>
+
+            {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             <Table rowlistlength={filteredClients.length + 1} columnlistlength={Object.values(ClientNameColumn).length + 1} >
                 {Object.values(ClientNameColumn).map(entry => {
@@ -281,20 +294,20 @@ export const ClientMain = () => {
                             }
                         </PTable>,
 
-                        // !!! REUTILIZAR AL ACABAR DE ACTUALIZAR EL DASHBOARD:
-                        // <PTable key={index + '-3'}>
-                        //     {
-                        //         clientData.isArchived === OptionYesNo.yes ?
-                        //             <ButtonPublishArchive onClick={() => publish(clientData._id)} archived={false}>Publish</ButtonPublishArchive> :
-                        //             <ButtonPublishArchive onClick={() => archive(clientData._id)} archived={true}>Archive</ButtonPublishArchive>
-                        //     }
-                        // </PTable>,
-
                         <PTable key={index + '-4'}>
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { navigate(`client-update/${clientData._id}`) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteClientById(clientData._id, index) }}>Delete</ButtonOption>
+                                <ButtonOption onClick={() => navigate(`client-update/${clientData._id}`)}>Update</ButtonOption>
+                                <ButtonOption onClick={() => toggleArchivedClient(clientData._id, clientData, index)}>
+                                    {clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                </ButtonOption>
+                                <ButtonOption
+                                    onClick={getRole() === Role.admin
+                                        ? () => { deleteClientById(clientData._id, index) }
+                                        : handleNonAdminClick}
+                                    disabledClick={getRole() !== Role.admin}
+                                >Delete
+                                </ButtonOption>
                             </DivCtnOptions>
                         </PTable>
                     ]

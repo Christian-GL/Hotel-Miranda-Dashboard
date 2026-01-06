@@ -170,10 +170,12 @@ export const UserMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const archiveUserById = (id: string, user: UserInterface, index: number): void => {
+    const toggleArchivedClient = (id: string, user: UserInterface, index: number): void => {
         const updatedUser = {
             ...user,
-            isArchived: OptionYesNo.yes
+            isArchived: user.isArchived === OptionYesNo.no
+                ? OptionYesNo.yes
+                : OptionYesNo.no
         }
         dispatch(UserUpdateThunk({ idUser: id, updatedUserData: updatedUser }))
         displayMenuOptions(index)
@@ -319,10 +321,10 @@ export const UserMain = () => {
                                 </ButtonOption>
                                 <ButtonOption
                                     onClick={getRole() === Role.admin
-                                        ? () => { archiveUserById(userData._id, userData, index) }
+                                        ? () => { toggleArchivedClient(userData._id, userData, index) }
                                         : handleNonAdminClick}
                                     disabledClick={getRole() !== Role.admin}
-                                >Archive
+                                >{userData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                                 </ButtonOption>
                                 <ButtonOption
                                     onClick={getRole() === Role.admin
