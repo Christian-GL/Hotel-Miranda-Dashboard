@@ -218,10 +218,7 @@ export const RoomMain = () => {
                 </CtnSearch>
 
                 <CtnButton>
-                    <ButtonCreate
-                        disabledClick={getRole() !== Role.admin}
-                        onClick={getRole() === Role.admin ? () => navigate('room-create') : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                    >
+                    <ButtonCreate onClick={getRole() === Role.admin ? () => navigate('room-create') : () => handleNonAdminClick(setInfoPopup, setShowPopup)}>
                         + New Room
                     </ButtonCreate>
                 </CtnButton>

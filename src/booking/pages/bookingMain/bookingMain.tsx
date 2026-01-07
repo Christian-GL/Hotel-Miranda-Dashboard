@@ -4,15 +4,20 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as bookingMainStyles from './bookingMainStyles'
+import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
+import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { BookingButtonType } from "../../enums/bookingButtonType"
+import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { Role } from "../../../user/enums/role"
 import { BookingInterface } from "./../../interfaces/bookingInterface"
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
+import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { ArrowType } from "../../../common/enums/ArrowType"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { BookingNameColumn } from "../../enums/bookingNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
 import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
@@ -28,6 +33,7 @@ import {
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getBookingAllData, getBookingAllStatus } from "./../../features/bookingSlice"
 import { BookingFetchAllThunk } from "./../../features/thunks/bookingFetchAllThunk"
+import { BookingUpdateThunk } from "./../../features/thunks/bookingUpdateThunk"
 import { BookingDeleteByIdThunk } from "./../../features/thunks/bookingDeleteByIdThunk"
 import { RoomInterface } from "../../../room/interfaces/roomInterface"
 import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
@@ -41,6 +47,7 @@ export const BookingMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
+    const { getRole } = useLoginOptionsContext()
     const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const roomAll: RoomInterface[] = useSelector(getRoomAllData)
@@ -49,7 +56,8 @@ export const BookingMain = () => {
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
-    const [selectedButton, setSelectedButton] = useState<BookingButtonType>(BookingButtonType.all)
+    const [bookingStatusButton, setBookingStatusButton] = useState<BookingButtonType>(BookingButtonType.all)
+    const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.all)
     const [filteredBookings, setFilteredBookings] = useState<BookingInterface[]>([])
     const sortableColumns: BookingNameColumn[] = [
         BookingNameColumn.orderDate,
@@ -78,7 +86,7 @@ export const BookingMain = () => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { displayBookings() }
         else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de bookingMain > bookings") }
-    }, [bookingAllLoading, bookingAll, inputText, selectedButton, arrowStates])
+    }, [bookingAllLoading, bookingAll, inputText, archivedFilterButton, bookingStatusButton, arrowStates])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
@@ -90,44 +98,62 @@ export const BookingMain = () => {
         else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de bookingMain > clients") }
     }, [clientAllLoading, clientAll])
 
-    const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setInputText(e.target.value)
-        resetPage()
+    const filterByClientName = (bookings: BookingInterface[], clients: ClientInterface[], searchText: string): BookingInterface[] => {
+        const normalizedText = searchText.trim().toLowerCase()
+        if (!normalizedText) return bookings
+
+        const clientNameMap = new Map<string, string>(
+            clients.map(client => [client._id, client.full_name.toLowerCase()])
+        )
+        return bookings.filter(booking => {
+            const clientName = clientNameMap.get(booking.client_id)
+            return clientName?.includes(normalizedText)
+        })
     }
-    const handleTableFilter = (type: BookingButtonType): void => {
-        setSelectedButton(type)
-        displayBookings()
+    const filterByBookingStatus = (bookings: BookingInterface[], bookingStatusButton: BookingButtonType): BookingInterface[] => {
+        const now = new Date()
+
+        switch (bookingStatusButton) {
+            case BookingButtonType.checkIn:
+                return bookings.filter(booking =>
+                    new Date(booking.check_in_date) > now
+                )
+            case BookingButtonType.inProgress:
+                return bookings.filter(booking =>
+                    new Date(booking.check_in_date) <= now
+                    && new Date(booking.check_out_date) >= now
+                )
+            case BookingButtonType.checkOut:
+                return bookings.filter(booking =>
+                    new Date(booking.check_out_date) < now
+                )
+            case BookingButtonType.all:
+            default:
+                return bookings
+        }
+    }
+    const filterByArchivedStatus = (bookings: BookingInterface[], archivedFilterButton: ArchivedButtonType): BookingInterface[] => {
+        switch (archivedFilterButton) {
+            case ArchivedButtonType.archived:
+                return bookings.filter(booking => booking.isArchived === OptionYesNo.yes)
+
+            case ArchivedButtonType.notArchived:
+                return bookings.filter(booking => booking.isArchived === OptionYesNo.no)
+
+            case ArchivedButtonType.all:
+            default:
+                return bookings
+        }
     }
     const displayBookings = (): void => {
-        let filteredData: BookingInterface[]
-        // !!! ACTUALIZAR POR NUMERO DE HABITACIONES AL TENER LOS DATOS:
-        // switch (selectedButton) {
-        //     case BookingButtonType.all:
-        //         filteredData = bookingAll.filter(booking =>
-        //             booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase())
-        //         )
-        //         break
-        //     case BookingButtonType.checkin:
-        //         filteredData = bookingAll.filter(booking =>
-        //             booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-        //             checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkIn
-        //         )
-        //         break
-        //     case BookingButtonType.inprogress:
-        //         filteredData = bookingAll.filter(booking =>
-        //             booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-        //             checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.inProgress
-        //         )
-        //         break
-        //     case BookingButtonType.checkout:
-        //         filteredData = bookingAll.filter(booking =>
-        //             booking.full_name_guest.toLowerCase().includes(inputText.toLowerCase()) &&
-        //             checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkOut
-        //         )
-        //         break
-        // }
-        filteredData = bookingAll   // !!! LINEA PROVISIONAL
-        setFilteredBookings(sortData(filteredData))
+        let filteredDataBookings = bookingAll
+        let filteredDataClients = clientAll
+
+        filteredDataBookings = filterByClientName(filteredDataBookings, filteredDataClients, inputText)
+        filteredDataBookings = filterByBookingStatus(filteredDataBookings, bookingStatusButton)
+        filteredDataBookings = filterByArchivedStatus(filteredDataBookings, archivedFilterButton)
+
+        setFilteredBookings(sortData(filteredDataBookings))
         resetPage()
     }
     const sortData = (filteredData: BookingInterface[]): BookingInterface[] => {
@@ -168,30 +194,57 @@ export const BookingMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
+    const toggleArchivedClient = (id: string, booking: BookingInterface, index: number): void => {
+        const updatedBooking = {
+            ...booking,
+            isArchived: booking.isArchived === OptionYesNo.no
+                ? OptionYesNo.yes
+                : OptionYesNo.no
+        }
+        dispatch(BookingUpdateThunk({ idBooking: id, updatedBookingData: updatedBooking }))
+        displayMenuOptions(index)
+        resetPage()
+    }
     const deleteBookingById = (id: string, index: number): void => {
         dispatch(BookingDeleteByIdThunk(id))
         displayMenuOptions(index)
+        resetPage()
     }
 
 
     return (
-        <bookingMainStyles.SectionPageBookings>
-            <bookingMainStyles.DivCtnFuncionality>
-                <bookingMainStyles.DivCtnTableDisplayFilter>
-                    <TableDisplaySelector text='All Bookings' onClick={() => handleTableFilter(BookingButtonType.all)} isSelected={selectedButton === BookingButtonType.all} />
-                    <TableDisplaySelector text='Check In' onClick={() => handleTableFilter(BookingButtonType.checkin)} isSelected={selectedButton === BookingButtonType.checkin} />
-                    <TableDisplaySelector text='In Progress' onClick={() => handleTableFilter(BookingButtonType.inprogress)} isSelected={selectedButton === BookingButtonType.inprogress} />
-                    <TableDisplaySelector text='Check Out' onClick={() => handleTableFilter(BookingButtonType.checkout)} isSelected={selectedButton === BookingButtonType.checkout} />
-                </bookingMainStyles.DivCtnTableDisplayFilter>
+        <SectionPage>
+            <CtnFuncionality>
+                <CtnAllDisplayFilter>
+                    <CtnTableDisplayFilter>
+                        <TableDisplaySelector text='All Bookings' onClick={() => setBookingStatusButton(BookingButtonType.all)} isSelected={bookingStatusButton === BookingButtonType.all} />
+                        <TableDisplaySelector text='Check In' onClick={() => setBookingStatusButton(BookingButtonType.checkIn)} isSelected={bookingStatusButton === BookingButtonType.checkIn} />
+                        <TableDisplaySelector text='In Progress' onClick={() => setBookingStatusButton(BookingButtonType.inProgress)} isSelected={bookingStatusButton === BookingButtonType.inProgress} />
+                        <TableDisplaySelector text='Check Out' onClick={() => setBookingStatusButton(BookingButtonType.checkOut)} isSelected={bookingStatusButton === BookingButtonType.checkOut} />
+                    </CtnTableDisplayFilter>
+                    <CtnTableDisplayFilter>
+                        <TableDisplaySelector text='All Bookings' onClick={() => setArchivedFilterButton(ArchivedButtonType.all)} isSelected={archivedFilterButton === ArchivedButtonType.all} />
+                        <TableDisplaySelector text='Not Archived' onClick={() => setArchivedFilterButton(ArchivedButtonType.notArchived)} isSelected={archivedFilterButton === ArchivedButtonType.notArchived} />
+                        <TableDisplaySelector text='Archived' onClick={() => setArchivedFilterButton(ArchivedButtonType.archived)} isSelected={archivedFilterButton === ArchivedButtonType.archived} />
+                    </CtnTableDisplayFilter>
+                </CtnAllDisplayFilter>
 
-                <bookingMainStyles.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search booking by client name' />
-                </bookingMainStyles.DivCtnSearch>
+                <CtnSearch>
+                    <TableSearchTerm
+                        onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setInputText(e.target.value)
+                            resetPage()
+                        }}
+                        placeholder="Search booking by client name"
+                    />
+                </CtnSearch>
 
-                <bookingMainStyles.DivCtnButton>
-                    <ButtonCreate onClick={() => { navigate('booking-create') }} children='+ New Booking' />
-                </bookingMainStyles.DivCtnButton>
-            </bookingMainStyles.DivCtnFuncionality>
+                <CtnButton>
+                    <ButtonCreate onClick={getRole() === Role.admin ? () => navigate('booking-create') : () => handleNonAdminClick(setInfoPopup, setShowPopup)} >
+                        + New Booking
+                    </ButtonCreate>
+                </CtnButton>
+            </CtnFuncionality>
 
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
@@ -294,7 +347,16 @@ export const BookingMain = () => {
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                 <ButtonOption onClick={() => { navigate(`booking-update/${bookingData._id}`) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteBookingById(bookingData._id, index) }}>Delete</ButtonOption>
+                                <ButtonOption onClick={() => toggleArchivedClient(bookingData._id, bookingData, index)}>
+                                    {bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                </ButtonOption>
+                                <ButtonOption
+                                    onClick={getRole() === Role.admin
+                                        ? () => { deleteBookingById(bookingData._id, index) }
+                                        : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                    disabledClick={getRole() !== Role.admin}
+                                >Delete
+                                </ButtonOption>
                             </DivCtnOptions>
                         </PTable>
                     ]
@@ -311,7 +373,6 @@ export const BookingMain = () => {
                 onLast={lastPage}
             />
 
-        </bookingMainStyles.SectionPageBookings>
-
+        </SectionPage>
     )
 }

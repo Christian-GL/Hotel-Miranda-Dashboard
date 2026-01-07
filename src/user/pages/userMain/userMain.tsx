@@ -100,7 +100,6 @@ export const UserMain = () => {
                     new Date(user.start_date) > now
                     || new Date(user.end_date) < now
                 )
-
             case ActiveButtonType.all:
             default:
                 return users
