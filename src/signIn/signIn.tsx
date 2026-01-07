@@ -12,7 +12,7 @@ import { useLoginOptionsContext } from "./features/loginProvider"
 export const SignIn = () => {
 
     const navigate = useNavigate()
-    const [email, setEmail] = useState<string>('AdminDefault@gmail.com')            // Valor por defecto para logeo rápido en testeos
+    const [email, setEmail] = useState<string>('admindefault@gmail.com')            // Valor por defecto para logeo rápido en testeos
     const [password, setPassword] = useState<string>('Abcd1234.')                   // Valor por defecto para logeo rápido en testeos
     const { tryLogin } = useLoginOptionsContext()
 

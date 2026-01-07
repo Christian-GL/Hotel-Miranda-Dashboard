@@ -4,16 +4,23 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as roomMainStyles from "./roomMainStyles"
+import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
+import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
+import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { RoomButtonType } from "../../enums/roomButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { Role } from "../../../user/enums/role"
 import { RoomInterface } from "./../../interfaces/roomInterface"
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
+import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { ArrowType } from "../../../common/enums/ArrowType"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { RoomNameColumn } from "../../enums/roomNameColumn"
+import { PopupText } from "../../../common/components/popupText/popupText"
+import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
@@ -26,6 +33,7 @@ import {
 } from "../../../common/styles/tableStyles"
 import { getRoomAllData, getRoomAllStatus } from "./../../features/roomSlice"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
+import { RoomUpdateThunk } from "./../../features/thunks/roomUpdateThunk"
 import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk"
 import { getBookingAllData, getBookingAllStatus, deleteBooking } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
@@ -36,12 +44,14 @@ export const RoomMain = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
+    const { getRole } = useLoginOptionsContext()
     const roomAll: RoomInterface[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
+    const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.all)
     const [filteredRooms, setFilteredRooms] = useState<RoomInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<RoomButtonType>(RoomButtonType.all)
     const sortableColumns: RoomNameColumn[] = [
@@ -57,6 +67,8 @@ export const RoomMain = () => {
         [RoomNameColumn.price]: ArrowType.right,
         [RoomNameColumn.discount]: ArrowType.right
     })
+    const [showPopup, setShowPopup] = useState<boolean>(false)
+    const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
     const {
         currentPageItems,
         currentPage,
@@ -71,42 +83,37 @@ export const RoomMain = () => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { displayRooms() }
         else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de roomMain > rooms") }
-    }, [roomAllLoading, roomAll, inputText, selectedButton, arrowStates])
+    }, [roomAllLoading, roomAll, inputText, selectedButton, archivedFilterButton, arrowStates])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
         else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de roomMain > bookings") }
     }, [bookingAllLoading, bookingAll])
 
-    const handleInputTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setInputText(e.target.value)
-        resetPage()
+    const filterByRoomNumber = (rooms: RoomInterface[], searchText: string): RoomInterface[] => {
+        return rooms.filter(room =>
+            room.number.toString().includes(searchText.toLowerCase())
+        )
     }
-    const handleTableFilter = (selectedButton: RoomButtonType): void => {
-        setSelectedButton(selectedButton)
-        displayRooms()
+    const filterByArchivedStatus = (rooms: RoomInterface[], archivedFilterButton: ArchivedButtonType): RoomInterface[] => {
+        switch (archivedFilterButton) {
+            case ArchivedButtonType.archived:
+                return rooms.filter(room => room.isArchived === OptionYesNo.yes)
+
+            case ArchivedButtonType.notArchived:
+                return rooms.filter(room => room.isArchived === OptionYesNo.no)
+
+            case ArchivedButtonType.all:
+            default:
+                return rooms
+        }
     }
     const displayRooms = (): void => {
-        let filteredData: RoomInterface[]
-        switch (selectedButton) {
-            case RoomButtonType.all:
-                filteredData = roomAll.filter(room =>
-                    room.number.toString().includes(inputText.toLowerCase())
-                )
-                break
-            case RoomButtonType.available:
-                filteredData = roomAll.filter(room =>
-                    room.number.toString().includes(inputText.toLowerCase())
-                    && isAvailable(room)
-                )
-                break
-            case RoomButtonType.booked:
-                filteredData = roomAll.filter(room =>
-                    room.number.toString().includes(inputText.toLowerCase())
-                    && !isAvailable(room)
-                )
-                break
-        }
+        let filteredData = roomAll
+
+        filteredData = filterByRoomNumber(filteredData, inputText)
+        filteredData = filterByArchivedStatus(filteredData, archivedFilterButton)
+
         setFilteredRooms(sortData(filteredData))
         resetPage()
     }
@@ -152,16 +159,19 @@ export const RoomMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
+    const toggleArchivedClient = (id: string, room: RoomInterface, index: number): void => {
+        const updatedUser = {
+            ...room,
+            isArchived: room.isArchived === OptionYesNo.no
+                ? OptionYesNo.yes
+                : OptionYesNo.no
+        }
+        dispatch(RoomUpdateThunk({ idRoom: id, updatedRoomData: updatedUser }))
+        displayMenuOptions(index)
+        resetPage()
+    }
     const deleteRoomById = (id: string, index: number): void => {
         dispatch(RoomDeleteByIdThunk(id))
-            .then((response) => {
-                const { roomId, bookingsToDelete } = response.payload
-                if (roomId !== 0) {
-                    bookingsToDelete.forEach((bookingId: string) => {
-                        dispatch(deleteBooking(bookingId))
-                    })
-                }
-            })
         displayMenuOptions(index)
         resetPage()
     }
@@ -180,22 +190,44 @@ export const RoomMain = () => {
 
 
     return (
-        <roomMainStyles.SectionPageRoom>
-            <roomMainStyles.DivCtnFuncionality>
-                <roomMainStyles.DivCtnTableDisplayFilter>
-                    <TableDisplaySelector text='All Rooms' onClick={() => handleTableFilter(RoomButtonType.all)} isSelected={selectedButton === RoomButtonType.all} />
-                    <TableDisplaySelector text='Available Rooms' onClick={() => handleTableFilter(RoomButtonType.available)} isSelected={selectedButton === RoomButtonType.available} />
-                    <TableDisplaySelector text='Booked Rooms' onClick={() => handleTableFilter(RoomButtonType.booked)} isSelected={selectedButton === RoomButtonType.booked} />
-                </roomMainStyles.DivCtnTableDisplayFilter>
+        <SectionPage>
 
-                <roomMainStyles.DivCtnSearch>
-                    <TableSearchTerm onchange={handleInputTerm} placeholder='Search by room number' />
-                </roomMainStyles.DivCtnSearch>
+            <CtnFuncionality>
+                <CtnAllDisplayFilter>
+                    {/* !!! AÑADIR FILTRO: */}
+                    <CtnTableDisplayFilter>
+                        {/* <TableDisplaySelector text='All Rooms' onClick={() => handleTableFilter(RoomButtonType.all)} isSelected={selectedButton === RoomButtonType.all} />
+                        <TableDisplaySelector text='Available Rooms' onClick={() => handleTableFilter(RoomButtonType.available)} isSelected={selectedButton === RoomButtonType.available} />
+                        <TableDisplaySelector text='Booked Rooms' onClick={() => handleTableFilter(RoomButtonType.booked)} isSelected={selectedButton === RoomButtonType.booked} /> */}
+                    </CtnTableDisplayFilter>
+                    <CtnTableDisplayFilter>
+                        <TableDisplaySelector text='All Rooms' onClick={() => setArchivedFilterButton(ArchivedButtonType.all)} isSelected={archivedFilterButton === ArchivedButtonType.all} />
+                        <TableDisplaySelector text='Not Archived' onClick={() => setArchivedFilterButton(ArchivedButtonType.notArchived)} isSelected={archivedFilterButton === ArchivedButtonType.notArchived} />
+                        <TableDisplaySelector text='Archived' onClick={() => setArchivedFilterButton(ArchivedButtonType.archived)} isSelected={archivedFilterButton === ArchivedButtonType.archived} />
+                    </CtnTableDisplayFilter>
+                </CtnAllDisplayFilter>
 
-                <roomMainStyles.DivCtnButton>
-                    <ButtonCreate onClick={() => { navigate('room-create') }} children='+ New Room' />
-                </roomMainStyles.DivCtnButton>
-            </roomMainStyles.DivCtnFuncionality>
+                <CtnSearch>
+                    <TableSearchTerm
+                        onchange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setInputText(e.target.value)
+                            resetPage()
+                        }}
+                        placeholder="Search by room number"
+                    />
+                </CtnSearch>
+
+                <CtnButton>
+                    <ButtonCreate
+                        disabledClick={getRole() !== Role.admin}
+                        onClick={getRole() === Role.admin ? () => navigate('room-create') : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                    >
+                        + New Room
+                    </ButtonCreate>
+                </CtnButton>
+            </CtnFuncionality>
+
+            {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             <Table rowlistlength={filteredRooms.length + 1} columnlistlength={Object.values(RoomNameColumn).length + 2} >
                 <THTable>{''}</THTable>
@@ -263,7 +295,16 @@ export const RoomMain = () => {
                             <IconOptions onClick={() => { displayMenuOptions(index) }} />
                             <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                 <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => { deleteRoomById(roomData._id, index) }}>Delete</ButtonOption>
+                                <ButtonOption onClick={() => toggleArchivedClient(roomData._id, roomData, index)}>
+                                    {roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                </ButtonOption>
+                                <ButtonOption
+                                    onClick={getRole() === Role.admin
+                                        ? () => { deleteRoomById(roomData._id, index) }
+                                        : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                    disabledClick={getRole() !== Role.admin}
+                                >Delete
+                                </ButtonOption>
                             </DivCtnOptions>
                         </PTable>
                     ]
@@ -279,6 +320,6 @@ export const RoomMain = () => {
                 onNext={goToNextPage}
                 onLast={lastPage}
             />
-        </roomMainStyles.SectionPageRoom>
+        </SectionPage>
     )
 }
