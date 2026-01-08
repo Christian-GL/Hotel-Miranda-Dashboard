@@ -17,6 +17,7 @@ import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
+import { getClientBookingsByRoom } from "../../../common/utils/clientBookingsByRoom"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { ClientNameColumn } from "../../enums/ClientNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
@@ -171,20 +172,6 @@ export const ClientMain = () => {
         displayMenuOptions(index)
         resetPage()
     }
-    const getClientBookingRoomsMap = (client: ClientInterface): { bookingId: string; roomNumbers: string[] }[] => {
-
-        return client.booking_id_list.map(bookingId => {
-            const booking = bookingAll.find(booking => booking._id === bookingId)
-            if (!booking) return null
-
-            const roomNumbers = booking.room_id_list.map(roomId => {
-                const room = roomAll.find(room => room._id === roomId)
-                return room?.number
-            }).filter(Boolean) as string[]
-
-            return { bookingId, roomNumbers }
-        }).filter(Boolean) as { bookingId: string; roomNumbers: string[] }[]
-    }
 
 
     return (
@@ -261,6 +248,7 @@ export const ClientMain = () => {
                 })}
                 <THTable>{''}</THTable>
                 {currentPageItems.map((clientData, index) => {
+                    const clientBookingsByRoom = getClientBookingsByRoom(clientData, bookingAll, roomAll)
                     return [
                         <PTable key={index + '-1'} flexdirection='column' alignitems='left' justifycontent='center'>
                             <DivNameTable>
@@ -277,14 +265,15 @@ export const ClientMain = () => {
 
                         <PTable>
                             {
-                                getClientBookingRoomsMap(clientData).length > 0 ?
-                                    (getClientBookingRoomsMap(clientData).map(b => (
-                                        <p key={b.bookingId}>
-                                            <b>#{b.bookingId}</b>: {b.roomNumbers.join(", ")}
+                                clientBookingsByRoom.length > 0 ? (
+                                    clientBookingsByRoom.map(booking => (
+                                        <p key={booking.bookingId}>
+                                            {booking.roomNumbers.join(', ')}
                                         </p>
-                                    )))
-                                    :
-                                    (<p>No bookings yet</p>)
+                                    ))
+                                ) : (
+                                    <p>No bookings yet</p>
+                                )
                             }
                         </PTable>,
 

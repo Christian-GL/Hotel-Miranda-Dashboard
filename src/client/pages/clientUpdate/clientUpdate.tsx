@@ -20,6 +20,7 @@ import {
     Form, DivCtnEntry, LabelText, InputText, LabelTextInfoBooking, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
+import { getClientBookingsByRoom } from "../../../common/utils/clientBookingsByRoom"
 import { getClientIdData, getClientIdStatus } from "../../../client/features/clientSlice"
 import { ClientFetchByIDThunk } from "../../../client/features/thunks/clientFetchByIDThunk"
 import { ClientUpdateThunk } from '../../../client/features/thunks/clientUpdateThunk'
@@ -52,6 +53,7 @@ export const ClientUpdate = () => {
         booking_id_list: []
     })
     const { handleStringChange } = createFormHandlers(setClientUpdated)
+    const clientBookingsByRoom = getClientBookingsByRoom(clientUpdated, bookingAll, roomAll)
 
     useEffect(() => {
         if (clientByIdLoading === ApiStatus.idle) { dispatch(ClientFetchByIDThunk(idParams)) }
@@ -115,21 +117,6 @@ export const ClientUpdate = () => {
             })
     }
 
-    // !!! CONVERTIR EN FUNCIÓN COMÚN
-    const getClientBookingRoomsMap = (client: ClientInterface): { bookingId: string; roomNumbers: string[] }[] => {
-
-        return client.booking_id_list.map(bookingId => {
-            const booking = bookingAll.find(booking => booking._id === bookingId)
-            if (!booking) return null
-
-            const roomNumbers = booking.room_id_list.map(roomId => {
-                const room = roomAll.find(room => room._id === roomId)
-                return room?.number
-            }).filter(Boolean) as string[]
-
-            return { bookingId, roomNumbers }
-        }).filter(Boolean) as { bookingId: string; roomNumbers: string[] }[]
-    }
 
     return (<>
         <ToastContainer />
@@ -165,14 +152,15 @@ export const ClientUpdate = () => {
                         <LabelText>Room Booking List</LabelText>
                         <LabelTextInfoBooking>
                             {
-                                getClientBookingRoomsMap(clientUpdated).length > 0 ?
-                                    (getClientBookingRoomsMap(clientUpdated).map(b => (
-                                        <p key={b.bookingId}>
-                                            {b.roomNumbers.join(", ")}
+                                clientBookingsByRoom.length > 0 ? (
+                                    clientBookingsByRoom.map(booking => (
+                                        <p key={booking.bookingId}>
+                                            {booking.roomNumbers.join(', ')}
                                         </p>
-                                    )))
-                                    :
-                                    (<p>No bookings yet</p>)
+                                    ))
+                                ) : (
+                                    <p>No bookings yet</p>
+                                )
                             }
                         </LabelTextInfoBooking>
                         {/* <InputText name="booking_id_list" value={clientUpdated.booking_id_list} onChange={handleStringChange} /> */}
