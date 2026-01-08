@@ -1,5 +1,5 @@
 
-// import { BookingInterfaceDatesAndIdNotArchived, BookingInterfaceDatesNotArchived, BookingInterfaceDTO, BookingInterfaceId } from "../interfaces/mongodb/bookingInterfaceMongodb"
+import { BookingInterfaceCheckInOutId, BookingInterfaceCheckInOut, BookingInterfaceNoId, BookingInterface } from "../../booking/interfaces/bookingInterface"
 import { RoomType } from "../../room/enums/roomType"
 import { Role } from "../../user/enums/role"
 import { RoomAmenities } from "../../room/enums/roomAmenities"
@@ -215,7 +215,7 @@ export const validateDateRelativeToAnother = (date1: Date, mustBeBeforeNow: bool
     return errorMessages
 }
 
-export const validateCheckInCheckOut = (checkIn: Date, checkOut: Date): string[] => {
+export const validateCheckInCheckOutNewBooking = (checkIn: Date, checkOut: Date): string[] => {
     const errorMessages: string[] = []
 
     validateDateRelativeToAnother(checkIn, false, new Date(), 'Check in date').map(
@@ -231,32 +231,47 @@ export const validateCheckInCheckOut = (checkIn: Date, checkOut: Date): string[]
     return errorMessages
 }
 
-// !!! DESCOMENTAR Y ARREGLAR IMPORT AL ACTUALIZAR BOOKING
-// export const validateDateIsOccupied = (booking: BookingInterfaceDTO, otherBookings: BookingInterfaceDatesNotArchived[]): string[] => {
-//     const errorMessages: string[] = []
+export const validateCheckInCheckOutExistingBooking = (checkIn: Date, checkOut: Date): string[] => {
+    const errorMessages: string[] = []
 
-//     for (let i = 0; i < otherBookings.length; i++) {
-//         if (new Date(booking.check_in_date) < new Date(otherBookings[i].check_out_date) &&
-//             new Date(booking.check_out_date) > new Date(otherBookings[i].check_in_date)) {
-//             errorMessages.push(`This period is already occupied`)
-//         }
-//     }
-//     return errorMessages
-// }
+    validateDate(checkIn, 'Check In').map(error => {
+        errorMessages.push(error)
+    })
+    validateDate(checkOut, 'Check Out').map(error => {
+        errorMessages.push(error)
+    })
+    if (checkIn >= checkOut) {
+        errorMessages.push('Check in date must be before Check out date')
+    }
 
-// export const validateDateIsOccupiedIfBookingExists = (booking: BookingInterfaceId, bookings: BookingInterfaceDatesAndIdNotArchived[]): string[] => {
-//     const errorMessages: string[] = []
+    return errorMessages
+}
 
-//     for (let i = 0; i < bookings.length; i++) {
-//         if (new Date(booking.check_in_date) < new Date(bookings[i].check_out_date) &&
-//             new Date(booking.check_out_date) > new Date(bookings[i].check_in_date)) {
-//             if (booking._id.toString() !== bookings[i]._id.toString()) {
-//                 errorMessages.push(`This period is already occupied by booking #${bookings[i]._id}`)
-//             }
-//         }
-//     }
-//     return errorMessages
-// }
+export const validateDateIsOccupied = (booking: BookingInterfaceNoId, otherBookings: BookingInterfaceCheckInOut[]): string[] => {
+    const errorMessages: string[] = []
+
+    for (let i = 0; i < otherBookings.length; i++) {
+        if (new Date(booking.check_in_date) < new Date(otherBookings[i].check_out_date) &&
+            new Date(booking.check_out_date) > new Date(otherBookings[i].check_in_date)) {
+            errorMessages.push(`This period is already occupied`)
+        }
+    }
+    return errorMessages
+}
+
+export const validateDateIsOccupiedIfBookingExists = (booking: BookingInterface, bookings: BookingInterfaceCheckInOutId[]): string[] => {
+    const errorMessages: string[] = []
+
+    for (let i = 0; i < bookings.length; i++) {
+        if (new Date(booking.check_in_date) < new Date(bookings[i].check_out_date) &&
+            new Date(booking.check_out_date) > new Date(bookings[i].check_in_date)) {
+            if (booking._id.toString() !== bookings[i]._id.toString()) {
+                errorMessages.push(`This period is already occupied by booking #${bookings[i]._id}`)
+            }
+        }
+    }
+    return errorMessages
+}
 
 export const validateNumberBetween = (price: number, minor: number, mayor: number, fieldName: string = 'Number'): string[] => {
     const errorMessages: string[] = []
