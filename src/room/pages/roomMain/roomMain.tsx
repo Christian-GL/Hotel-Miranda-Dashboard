@@ -29,7 +29,7 @@ import { applyDiscount } from "../../../common/utils/tableUtils"
 import { usePagination } from "../../../common/hooks/usePagination"
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable,
-    ImgTableRoom, PTable, PStatusRoomList, IconOptions, DivCtnOptions, ButtonOption
+    ImgTableRoom, PTable, PStatusRoomList, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { getRoomAllData, getRoomAllStatus } from "./../../features/roomSlice"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
@@ -288,21 +288,23 @@ export const RoomMain = () => {
                             }
                         </PTable>,
 
-                        <PTable key={index + '-8'}>
-                            <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                            <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => toggleArchivedClient(roomData._id, roomData, index)}>
-                                    {roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
-                                </ButtonOption>
-                                <ButtonOption
-                                    onClick={getRole() === Role.admin
-                                        ? () => { deleteRoomById(roomData._id, index) }
-                                        : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                                    disabledClick={getRole() !== Role.admin}
-                                >Delete
-                                </ButtonOption>
-                            </DivCtnOptions>
+                        <PTable key={index + '-8'} justifycontent="flex-end">
+                            <CtnMenuOptions>
+                                <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                                <CtnOptionsDisplayed display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                    <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
+                                    <ButtonOption onClick={() => toggleArchivedClient(roomData._id, roomData, index)}>
+                                        {roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                    </ButtonOption>
+                                    <ButtonOption
+                                        onClick={getRole() === Role.admin
+                                            ? () => { deleteRoomById(roomData._id, index) }
+                                            : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                        disabledClick={getRole() !== Role.admin}
+                                    >Delete
+                                    </ButtonOption>
+                                </CtnOptionsDisplayed>
+                            </CtnMenuOptions>
                         </PTable>
                     ]
                 }

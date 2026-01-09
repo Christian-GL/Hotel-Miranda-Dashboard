@@ -54,14 +54,10 @@ export const TriangleDown = styled(GoTriangleDown)`
     background-color: ${props => props.theme.iconBackgroundTable};
 `
 
-export const PTable = styled.p<{
-    justifycontent?: string;
-    alignitems?: string;
-    flexdirection?: string;
-}>`
-    position: relative;
+const allowedValues = ['flex-start', 'center', 'flex-end', 'space-between', 'space-around'] as const
+export const PTable = styled.p<{ justifycontent?: string; alignitems?: string; flexdirection?: string }>`
     display: flex;
-    justify-content: ${props => props.justifycontent === 'center' ? 'center' : 'flex-start'};
+    justify-content: ${({ justifycontent }) => allowedValues.includes(justifycontent as any) ? justifycontent : 'flex-start'};
     align-items: ${props => props.alignitems === 'left' ? 'left' : 'center'};
     flex-direction: ${props => props.flexdirection === 'column' ? 'column' : 'row'};
     padding: 1em;
@@ -128,22 +124,28 @@ export const PStatusAvailableUsers = styled.p<{ active: boolean }>`
     background-color: transparent;
 `
 
+export const CtnMenuOptions = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+`
+
 export const IconOptions = styled(SlOptionsVertical)`
+    position: relative;
     padding: 0.5em;
     width: 1.75rem;
-    height: auto;
+    height: 1.75rem;
+    border-radius: 50%;
     cursor: pointer;
     color: ${props => props.theme.iconOptionsTable};
     background-color: ${props => props.theme.iconBackgroundTable};
 `
 
-export const DivCtnOptions = styled.div<{ display: string, isInTable: boolean }>`
+export const CtnOptionsDisplayed = styled.div<{ display: string, isInTable: boolean }>`
     z-index: 1;
     position: absolute;
-    top: ${props => (props.isInTable ? '50%' : '30%')};
-    left: ${props => (props.isInTable ? '0' : 'unset')};
-    right: ${props => (props.isInTable ? 'unset' : '1%')};
-    transform: ${props => (props.isInTable ? 'translate(-50%, 25%)' : 'unset')};
+    top: calc(100% + 0.5rem);
+    right: 0;
     display: ${props => props.display};
     flex-direction: column;
     gap: 0.5rem;

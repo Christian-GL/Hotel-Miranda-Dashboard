@@ -28,7 +28,7 @@ import { TablePagination } from "../../../common/components/tablePagination/tabl
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
-    IconPhone, IconOptions, ButtonView, PStatusBooking, DivCtnOptions, ButtonOption
+    IconPhone, ButtonView, PStatusBooking, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getBookingAllData, getBookingAllStatus } from "./../../features/bookingSlice"
@@ -343,21 +343,23 @@ export const BookingMain = () => {
                             }
                         </PTable>,
 
-                        <PTable key={index + '-9'}>
-                            <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                            <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => { navigate(`booking-update/${bookingData._id}`) }}>Update</ButtonOption>
-                                <ButtonOption onClick={() => toggleArchivedClient(bookingData._id, bookingData, index)}>
-                                    {bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
-                                </ButtonOption>
-                                <ButtonOption
-                                    onClick={getRole() === Role.admin
-                                        ? () => { deleteBookingById(bookingData._id, index) }
-                                        : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                                    disabledClick={getRole() !== Role.admin}
-                                >Delete
-                                </ButtonOption>
-                            </DivCtnOptions>
+                        <PTable key={index + '-9'} justifycontent="flex-end">
+                            <CtnMenuOptions>
+                                <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                                <CtnOptionsDisplayed display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                    <ButtonOption onClick={() => { navigate(`booking-update/${bookingData._id}`) }}>Update</ButtonOption>
+                                    <ButtonOption onClick={() => toggleArchivedClient(bookingData._id, bookingData, index)}>
+                                        {bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                    </ButtonOption>
+                                    <ButtonOption
+                                        onClick={getRole() === Role.admin
+                                            ? () => { deleteBookingById(bookingData._id, index) }
+                                            : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                        disabledClick={getRole() !== Role.admin}
+                                    >Delete
+                                    </ButtonOption>
+                                </CtnOptionsDisplayed>
+                            </CtnMenuOptions>
                         </PTable>
                     ]
                 }

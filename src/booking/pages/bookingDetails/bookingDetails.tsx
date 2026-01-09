@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom"
 
 import * as bookingDetailsStyles from "./bookingDetailsStyles"
 import { BookingInterface } from "../../interfaces/bookingInterface"
-import { DivCtnOptions, ButtonOption } from "../../../common/styles/tableStyles"
+import { CtnMenuOptions, CtnOptionsDisplayed, ButtonOption } from "../../../common/styles/tableStyles"
 import { AppDispatch } from "../../../common/redux/store"
 import { formatDateForPrint } from "../../../common/utils/dateUtils"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
@@ -71,10 +71,10 @@ export const BookingDetails = () => {
 
 
                     <bookingDetailsStyles.IconOptions onClick={() => { switchDisplayMenuOptions() }} />
-                    <DivCtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} isInTable={false}>
+                    <CtnOptionsDisplayed display={`${optionsDisplayed ? 'flex' : 'none'}`} isInTable={false}>
                         <ButtonOption onClick={() => { navigateBackToBookings() }}>Go to bookings</ButtonOption>
                         <ButtonOption onClick={() => { deleteThisBooking() }}>Delete</ButtonOption>
-                    </DivCtnOptions>
+                    </CtnOptionsDisplayed>
 
 
                 </bookingDetailsStyles.DivCtnImgAndMainData>

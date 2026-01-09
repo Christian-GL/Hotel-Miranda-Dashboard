@@ -30,7 +30,7 @@ import { TablePagination } from "../../../common/components/tablePagination/tabl
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, TriangleUp, DivNameTable, TriangleRight, TriangleDown, PTable,
-    IconPhone, ButtonPublishArchive, IconOptions, DivCtnOptions, ButtonOption
+    IconPhone, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getClientAllData, getClientAllStatus } from "../../features/clientSlice"
@@ -277,21 +277,23 @@ export const ClientMain = () => {
                             }
                         </PTable>,
 
-                        <PTable key={index + '-4'}>
-                            <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                            <DivCtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                <ButtonOption onClick={() => navigate(`client-update/${clientData._id}`)}>Update</ButtonOption>
-                                <ButtonOption onClick={() => toggleArchivedClient(clientData._id, clientData, index)}>
-                                    {clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
-                                </ButtonOption>
-                                <ButtonOption
-                                    onClick={getRole() === Role.admin
-                                        ? () => { deleteClientById(clientData._id, index) }
-                                        : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                                    disabledClick={getRole() !== Role.admin}
-                                >Delete
-                                </ButtonOption>
-                            </DivCtnOptions>
+                        <PTable key={index + '-4'} justifycontent="flex-end">
+                            <CtnMenuOptions>
+                                <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                                <CtnOptionsDisplayed display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                    <ButtonOption onClick={() => navigate(`client-update/${clientData._id}`)}>Update</ButtonOption>
+                                    <ButtonOption onClick={() => toggleArchivedClient(clientData._id, clientData, index)}>
+                                        {clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                    </ButtonOption>
+                                    <ButtonOption
+                                        onClick={getRole() === Role.admin
+                                            ? () => { deleteClientById(clientData._id, index) }
+                                            : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                        disabledClick={getRole() !== Role.admin}
+                                    >Delete
+                                    </ButtonOption>
+                                </CtnOptionsDisplayed>
+                            </CtnMenuOptions>
                         </PTable>
                     ]
                 })}
