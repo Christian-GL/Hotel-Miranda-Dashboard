@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
+import { ActiveButtonType } from "../../../common/enums/activeButtonType"
 import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { RoomButtonType } from "../../enums/roomButtonType"
 import { AppDispatch } from '../../../common/redux/store'
@@ -51,6 +52,7 @@ export const RoomMain = () => {
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
+    const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.all)
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.all)
     const [filteredRooms, setFilteredRooms] = useState<RoomInterface[]>([])
     const [selectedButton, setSelectedButton] = useState<RoomButtonType>(RoomButtonType.all)
@@ -83,7 +85,7 @@ export const RoomMain = () => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { displayRooms() }
         else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de roomMain > rooms") }
-    }, [roomAllLoading, roomAll, inputText, selectedButton, archivedFilterButton, arrowStates])
+    }, [roomAllLoading, roomAll, inputText, selectedButton, activeFilterButton, archivedFilterButton, arrowStates])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
@@ -94,6 +96,22 @@ export const RoomMain = () => {
         return rooms.filter(room =>
             room.number.toString().includes(searchText.toLowerCase())
         )
+    }
+    const filterByActiveStatus = (rooms: RoomInterface[], activeFilterButton: ActiveButtonType): RoomInterface[] => {
+        const now = new Date()
+        switch (activeFilterButton) {
+            case ActiveButtonType.active:
+                return rooms.filter(user =>
+                    user.isActive === OptionYesNo.yes
+                )
+            case ActiveButtonType.inactive:
+                return rooms.filter(user =>
+                    user.isActive === OptionYesNo.no
+                )
+            case ActiveButtonType.all:
+            default:
+                return rooms
+        }
     }
     const filterByArchivedStatus = (rooms: RoomInterface[], archivedFilterButton: ArchivedButtonType): RoomInterface[] => {
         switch (archivedFilterButton) {
@@ -112,6 +130,7 @@ export const RoomMain = () => {
         let filteredData = roomAll
 
         filteredData = filterByRoomNumber(filteredData, inputText)
+        filteredData = filterByActiveStatus(filteredData, activeFilterButton)
         filteredData = filterByArchivedStatus(filteredData, archivedFilterButton)
 
         setFilteredRooms(sortData(filteredData))
@@ -195,10 +214,15 @@ export const RoomMain = () => {
             <CtnFuncionality>
                 <CtnAllDisplayFilter>
                     {/* !!! AÑADIR FILTRO: */}
-                    <CtnTableDisplayFilter>
-                        {/* <TableDisplaySelector text='All Rooms' onClick={() => handleTableFilter(RoomButtonType.all)} isSelected={selectedButton === RoomButtonType.all} />
+                    {/* <CtnTableDisplayFilter>
+                        <TableDisplaySelector text='All Rooms' onClick={() => handleTableFilter(RoomButtonType.all)} isSelected={selectedButton === RoomButtonType.all} />
                         <TableDisplaySelector text='Available Rooms' onClick={() => handleTableFilter(RoomButtonType.available)} isSelected={selectedButton === RoomButtonType.available} />
-                        <TableDisplaySelector text='Booked Rooms' onClick={() => handleTableFilter(RoomButtonType.booked)} isSelected={selectedButton === RoomButtonType.booked} /> */}
+                        <TableDisplaySelector text='Booked Rooms' onClick={() => handleTableFilter(RoomButtonType.booked)} isSelected={selectedButton === RoomButtonType.booked} />
+                    </CtnTableDisplayFilter> */}
+                    <CtnTableDisplayFilter>
+                        <TableDisplaySelector text='All Rooms' onClick={() => setActiveFilterButton(ActiveButtonType.all)} isSelected={activeFilterButton === ActiveButtonType.all} />
+                        <TableDisplaySelector text='Active' onClick={() => setActiveFilterButton(ActiveButtonType.active)} isSelected={activeFilterButton === ActiveButtonType.active} />
+                        <TableDisplaySelector text='Inactive' onClick={() => setActiveFilterButton(ActiveButtonType.inactive)} isSelected={activeFilterButton === ActiveButtonType.inactive} />
                     </CtnTableDisplayFilter>
                     <CtnTableDisplayFilter>
                         <TableDisplaySelector text='All Rooms' onClick={() => setArchivedFilterButton(ArchivedButtonType.all)} isSelected={archivedFilterButton === ArchivedButtonType.all} />

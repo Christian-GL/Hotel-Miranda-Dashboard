@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
-import { ActiveButtonType } from "../../enums/activeButtonType"
+import { ActiveButtonType } from "../../../common/enums/activeButtonType"
 import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"

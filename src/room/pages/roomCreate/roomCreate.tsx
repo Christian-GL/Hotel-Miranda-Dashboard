@@ -16,7 +16,7 @@ import { RoomAmenities } from "../../enums/roomAmenities"
 import { RoomType } from "../../enums/roomType"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
-    validateNumber, validateRoomPhotoList, validateRoomType,
+    validateRoomNumber, validateRoomPhotoList, validateRoomType,
     validateAmenities, validateRoomPrice, validateRoomDiscount,
     validateOptionYesNo, validateMongoDBObjectIdList
 } from '../../../common/utils/commonValidator'
@@ -62,8 +62,8 @@ export const RoomCreate = () => {
 
     const validateAllData = (): string[] => {
         const allErrorMessages: string[] = []
-
-        validateNumber(newRoom.number, 'Number').map(
+        
+        validateRoomNumber(newRoom.number, 'Number').map(
             error => allErrorMessages.push(error)
         )
         validateRoomPhotoList(newRoom.photos, 'Photos').map(
