@@ -10,6 +10,8 @@ import { BookingFetchByIDThunk } from './thunks/bookingFetchByIDThunk'
 import { BookingCreateThunk } from './thunks/bookingCreateThunk'
 import { BookingUpdateThunk } from './thunks/bookingUpdateThunk'
 import { BookingDeleteByIdThunk } from './thunks/bookingDeleteByIdThunk'
+import { RoomUpdateThunk } from '../../room/features/thunks/roomUpdateThunk'
+import { RoomDeleteByIdThunk } from '../../room/features/thunks/roomDeleteByIdThunk'
 
 
 export const BookingSlice = createSlice({
@@ -99,6 +101,26 @@ export const BookingSlice = createSlice({
             .addCase(BookingDeleteByIdThunk.rejected, (state) => {
                 state.error = true
                 state.deleteStatus = ApiStatus.rejected
+            })
+
+            // ROOM:
+            .addCase(RoomUpdateThunk.fulfilled, (state, action) => {
+                const { updatedBookings } = action.payload
+
+                updatedBookings.forEach(updatedBooking => {
+                    const index = state.allData.findIndex(b => b._id === updatedBooking._id)
+                    if (index !== -1) {
+                        state.allData[index] = updatedBooking
+                    }
+                })
+            })
+            .addCase(RoomDeleteByIdThunk.fulfilled, (state, action) => {
+                action.payload.updatedBookings.forEach(booking => {
+                    const index = state.allData.findIndex(b => b._id === booking._id)
+                    if (index !== -1) {
+                        state.allData[index] = booking
+                    }
+                })
             })
     }
 })

@@ -66,17 +66,18 @@ export const RoomSlice = createSlice({
             .addCase(RoomUpdateThunk.pending, (state) => {
                 state.updateStatus = ApiStatus.pending
             })
-            .addCase(RoomUpdateThunk.fulfilled, (state, action: PayloadAction<RoomInterface>) => {
+            .addCase(RoomUpdateThunk.fulfilled, (state, action) => {
                 state.updateStatus = ApiStatus.fulfilled
-                const roomToUpdate = action.payload
-                const index = state.allData.findIndex(room => room._id === roomToUpdate._id)
+                const { room } = action.payload
+                const index = state.allData.findIndex(r => r._id === room._id)
                 if (index !== -1) {
-                    state.allData[index] = roomToUpdate
+                    state.allData[index] = room
                 }
-                if (state.idData && state.idData._id === roomToUpdate._id) {
-                    state.idData = roomToUpdate
+                if (state.idData?._id === room._id) {
+                    state.idData = room
                 }
             })
+
             .addCase(RoomUpdateThunk.rejected, (state) => {
                 state.error = true
                 state.updateStatus = ApiStatus.rejected
@@ -85,10 +86,9 @@ export const RoomSlice = createSlice({
             .addCase(RoomDeleteByIdThunk.pending, (state) => {
                 state.deleteStatus = ApiStatus.pending
             })
-            .addCase(RoomDeleteByIdThunk.fulfilled, (state, action: PayloadAction<{ roomId: string, bookingsToDelete: number[] }>) => {
+            .addCase(RoomDeleteByIdThunk.fulfilled, (state, action) => {
                 state.deleteStatus = ApiStatus.fulfilled
-                const { roomId } = action.payload
-                state.allData = state.allData.filter(room => room._id !== roomId)
+                state.allData = state.allData.filter(room => room._id !== action.payload.roomId)
             })
             .addCase(RoomDeleteByIdThunk.rejected, (state) => {
                 state.error = true
