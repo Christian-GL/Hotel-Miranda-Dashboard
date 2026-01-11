@@ -10,6 +10,9 @@ import { RoomFetchByIDThunk } from './thunks/roomFetchByIDThunk'
 import { RoomCreateThunk } from './thunks/roomCreateThunk'
 import { RoomUpdateThunk } from './thunks/roomUpdateThunk'
 import { RoomDeleteByIdThunk } from './thunks/roomDeleteByIdThunk'
+import { BookingCreateThunk } from '../../booking/features/thunks/bookingCreateThunk'
+import { BookingDeleteByIdThunk } from '../../booking/features/thunks/bookingDeleteByIdThunk'
+import { BookingUpdateThunk } from '../../booking/features/thunks/bookingUpdateThunk'
 
 
 export const RoomSlice = createSlice({
@@ -77,7 +80,6 @@ export const RoomSlice = createSlice({
                     state.idData = room
                 }
             })
-
             .addCase(RoomUpdateThunk.rejected, (state) => {
                 state.error = true
                 state.updateStatus = ApiStatus.rejected
@@ -88,12 +90,46 @@ export const RoomSlice = createSlice({
             })
             .addCase(RoomDeleteByIdThunk.fulfilled, (state, action) => {
                 state.deleteStatus = ApiStatus.fulfilled
-                state.allData = state.allData.filter(room => room._id !== action.payload.roomId)
+                const { roomId } = action.payload
+                state.allData = state.allData.filter(room => room._id !== roomId)
+                if (state.idData?._id === roomId) {
+                    state.idData = {} as RoomInterface
+                }
             })
             .addCase(RoomDeleteByIdThunk.rejected, (state) => {
                 state.error = true
                 state.deleteStatus = ApiStatus.rejected
             })
+
+            // BOOKING
+            .addCase(BookingCreateThunk.fulfilled, (state, action) => {
+                const updatedRooms: RoomInterface[] = action.payload.updatedRooms
+                updatedRooms.forEach(updatedRoom => {
+                    const index = state.allData.findIndex(r => r._id === updatedRoom._id)
+                    if (index !== -1) {
+                        state.allData[index] = updatedRoom
+                    }
+                })
+            })
+            .addCase(BookingUpdateThunk.fulfilled, (state, action) => {
+                const updatedRooms: RoomInterface[] = action.payload.updatedRooms
+                updatedRooms.forEach(updatedRoom => {
+                    const index = state.allData.findIndex(r => r._id === updatedRoom._id)
+                    if (index !== -1) {
+                        state.allData[index] = updatedRoom
+                    }
+                })
+            })
+            .addCase(BookingDeleteByIdThunk.fulfilled, (state, action) => {
+                const { updatedRooms } = action.payload
+                updatedRooms.forEach((updatedRoom: RoomInterface) => {
+                    const index = state.allData.findIndex(r => r._id === updatedRoom._id)
+                    if (index !== -1) {
+                        state.allData[index] = updatedRoom
+                    }
+                })
+            })
+
     }
 })
 

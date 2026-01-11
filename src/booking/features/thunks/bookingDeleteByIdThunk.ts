@@ -17,8 +17,10 @@ export const BookingDeleteByIdThunk = createAsyncThunk
                 },
             })
             if (request.ok) {
-                return bookingId
-            } else {
+                const responseData = await request.json()
+                return responseData
+            }
+            else {
                 console.log("Error: ", request.statusText)
                 return "0"
             }
