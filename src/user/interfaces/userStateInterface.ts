@@ -10,5 +10,5 @@ export interface UserStateInterface {
     createStatus: ApiStatus
     updateStatus: ApiStatus
     deleteStatus: ApiStatus
-    error: boolean
+    errorMessage: string | null
 }

@@ -2,11 +2,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
-export const UserDeleteByIdThunk = createAsyncThunk
-    ("user/deleteById", async (userId: string) => {
+export const UserDeleteByIdThunk = createAsyncThunk<
+    string,
+    string,
+    { rejectValue: string }
+>(
+    "user/deleteById",
+    async (userId, { rejectWithValue }) => {
 
-        const apiToken = localStorage.getItem('token')
-        if (!apiToken) return "0"
+        const apiToken = localStorage.getItem("token")
+        if (!apiToken) {
+            return rejectWithValue("No authentication token found")
+        }
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_USERS}/${userId}`, {
@@ -18,14 +25,16 @@ export const UserDeleteByIdThunk = createAsyncThunk
             })
             if (request.ok) {
                 return userId
-            } else {
-                console.log("Error: ", request.statusText)
-                return "0"
+            }
+            else {
+                const errorData = await request.json().catch(() => null)
+                return rejectWithValue(
+                    errorData?.message ?? request.statusText ?? 'Error fetching user'
+                )
             }
         }
         catch (error) {
-            console.log(error)
-            return "0"
+            return rejectWithValue('Network or server error')
         }
 
     })

@@ -1,30 +1,20 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { UserInterface } from '../../interfaces/userInterface'
-import { JobPosition } from "../../enums/jobPosition"
-import { Role } from "../../enums/role"
-import { OptionYesNo } from "../../../common/enums/optionYesNo"
 
 
-const userDefaultIfError: UserInterface = {
-    _id: "0",
-    photo: '',
-    full_name: '',
-    email: '',
-    phone_number: '',
-    start_date: new Date(),
-    end_date: new Date(),
-    job_position: JobPosition.receptionist,
-    role: Role.user,
-    password: '1234',
-    isArchived: OptionYesNo.yes
-}
-
-export const UserFetchAllThunk = createAsyncThunk
-    ("user/fetchAll", async () => {
+export const UserFetchAllThunk = createAsyncThunk<
+    UserInterface[],
+    void,
+    { rejectValue: string }
+>(
+    "user/fetchAll",
+    async (_, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return [userDefaultIfError]
+        if (!apiToken) {
+            return rejectWithValue('No authentication token found')
+        }
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_USERS}`, {
@@ -55,13 +45,12 @@ export const UserFetchAllThunk = createAsyncThunk
                 return allUsers
             }
             else {
-                console.error('Error: ', request.statusText)
-                return [userDefaultIfError]
+                const errorData = await request.json()
+                return rejectWithValue(errorData.message || 'Failed to fetch users')
             }
         }
         catch (error) {
-            console.error(error)
-            return [userDefaultIfError]
+            return rejectWithValue('Network or server error')
         }
 
     })

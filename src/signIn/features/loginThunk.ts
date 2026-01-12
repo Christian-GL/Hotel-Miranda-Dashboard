@@ -23,13 +23,11 @@ export const LoginThunk = createAsyncThunk<
                 return tokenAndUserID
             }
             else {
-                console.error("Error: ", request.statusText)
                 const errorData = await request.json()
                 return rejectWithValue(errorData.message || 'Error: email or password wrong')
             }
         }
         catch (error) {
-            console.error(error)
             return rejectWithValue('Error: email or password wrong')
         }
 
