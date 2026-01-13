@@ -37,7 +37,7 @@ export const UserCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const userAll = useSelector(getUserAllData)
     const userAllLoading = useSelector(getUserAllStatus)
-    const errorMessage = useSelector(getUserErrorMessage)
+    const userErrorMessage = useSelector(getUserErrorMessage)
     const [newUser, setNewUser] = useState<UserInterfaceNoId>({
         photo: null,
         full_name: '',
@@ -61,8 +61,8 @@ export const UserCreate = () => {
     useEffect(() => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
         else if (userAllLoading === ApiStatus.fulfilled) { }
-        else if (userAllLoading === ApiStatus.rejected && errorMessage) { ToastifyError(errorMessage) }
-    }, [userAllLoading, userAll, errorMessage])
+        else if (userAllLoading === ApiStatus.rejected && userErrorMessage) { ToastifyError(userErrorMessage) }
+    }, [userAllLoading, userAll, userErrorMessage])
 
     const validateAllData = (): string[] => {
         // !!! CREAR FUNCIÓN COMÚN PARA VALIDAR USUARIOS NUEVOS Y USUARIOS ACTUALIZADOS SIMILAR A COMO ES EN LA API

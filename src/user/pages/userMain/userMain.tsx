@@ -46,7 +46,7 @@ export const UserMain = () => {
     const { getRole } = useLoginOptionsContext()
     const userAll: UserInterface[] = useSelector(getUserAllData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
-    const errorMessage = useSelector(getUserErrorMessage)
+    const userErrorMessage = useSelector(getUserErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.all)
@@ -80,7 +80,7 @@ export const UserMain = () => {
     useEffect(() => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
         else if (userAllLoading === ApiStatus.fulfilled) { displayEmployee() }
-        else if (userAllLoading === ApiStatus.rejected && errorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', errorMessage) }
+        else if (userAllLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
     }, [userAllLoading, userAll, inputText, activeFilterButton, archivedFilterButton, arrowStates])
 
     const filterByName = (users: UserInterface[], searchText: string): UserInterface[] => {
@@ -172,6 +172,7 @@ export const UserMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
+    // !!! ESTA FUNCIÓN PUEDE SER COMÚN (DELETE TAMBIÉN)
     const toggleArchivedClient = async (id: string, user: UserInterface, index: number): Promise<void> => {
         const updatedUser = {
             ...user,

@@ -21,7 +21,7 @@ import {
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getClientBookingsByRoom } from "../../../common/utils/clientBookingsByRoom"
-import { getClientIdData, getClientIdStatus } from "../../../client/features/clientSlice"
+import { getClientIdData, getClientIdStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
 import { ClientFetchByIDThunk } from "../../../client/features/thunks/clientFetchByIDThunk"
 import { ClientUpdateThunk } from '../../../client/features/thunks/clientUpdateThunk'
 import { RoomInterface } from "room/interfaces/roomInterface"
@@ -40,6 +40,7 @@ export const ClientUpdate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const clientById = useSelector(getClientIdData)
     const clientByIdLoading = useSelector(getClientIdStatus)
+    const clientErrorMessage = useSelector(getClientErrorMessage)
     const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const roomAll: RoomInterface[] = useSelector(getRoomAllData)
@@ -70,7 +71,7 @@ export const ClientUpdate = () => {
                 booking_id_list: clientById.booking_id_list || []
             })
         }
-        else if (clientByIdLoading === ApiStatus.rejected) { alert("Error in API update client") }
+        else if (clientByIdLoading === ApiStatus.rejected && clientErrorMessage) { ToastifyError(clientErrorMessage) }
     }, [clientByIdLoading, clientById, id])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }

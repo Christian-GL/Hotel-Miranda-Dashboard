@@ -41,7 +41,7 @@ export const UserUpdate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const userById = useSelector(getUserIdData)
     const userByIdLoading = useSelector(getUserIdStatus)
-    const errorMessage = useSelector(getUserErrorMessage)
+    const userErrorMessage = useSelector(getUserErrorMessage)
     const [userUpdated, setUserUpdated] = useState<UserInterface>({
         _id: '0',
         photo: null,
@@ -85,7 +85,7 @@ export const UserUpdate = () => {
             })
             setOldPassword(userById.password)
         }
-        else if (userByIdLoading === ApiStatus.rejected && errorMessage) { ToastifyError(errorMessage) }
+        else if (userByIdLoading === ApiStatus.rejected && userErrorMessage) { ToastifyError(userErrorMessage) }
     }, [userByIdLoading, userById, id])
 
     const validateAllData = (): string[] => {

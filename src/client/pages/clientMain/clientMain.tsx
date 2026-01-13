@@ -17,6 +17,7 @@ import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
+import { customPopupMessage } from 'common/utils/customPopupMessage'
 import { getClientBookingsByRoom } from "../../../common/utils/clientBookingsByRoom"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { ClientNameColumn } from "../../enums/ClientNameColumn"
@@ -33,7 +34,7 @@ import {
     IconPhone, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
-import { getClientAllData, getClientAllStatus } from "../../features/clientSlice"
+import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../features/clientSlice"
 import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
 import { ClientUpdateThunk } from "./../../features/thunks/clientUpdateThunk"
 import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
@@ -52,6 +53,7 @@ export const ClientMain = () => {
     const { getRole } = useLoginOptionsContext()
     const clientAll: ClientInterface[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
+    const clientErrorMessage = useSelector(getClientErrorMessage)
     const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const roomAll: RoomInterface[] = useSelector(getRoomAllData)
@@ -83,7 +85,7 @@ export const ClientMain = () => {
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
         else if (clientAllLoading === ApiStatus.fulfilled) { displayClients() }
-        else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de clientMain > clients") }
+        else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
     }, [clientAllLoading, clientAll, inputText, displayedNotArchived, archivedFilterButton, arrowStates])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
@@ -156,21 +158,31 @@ export const ClientMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const toggleArchivedClient = (id: string, client: ClientInterface, index: number): void => {
+    const toggleArchivedClient = async (id: string, client: ClientInterface, index: number): Promise<void> => {
         const updatedClient = {
             ...client,
             isArchived: client.isArchived === OptionYesNo.no
                 ? OptionYesNo.yes
                 : OptionYesNo.no
         }
-        dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: updatedClient }))
-        displayMenuOptions(index)
-        resetPage()
+        try {
+            await dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: updatedClient })).unwrap()
+            displayMenuOptions(index)
+            resetPage()
+        }
+        catch (error) {
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+        }
     }
-    const deleteClientById = (id: string, index: number): void => {
-        dispatch(ClientDeleteByIdThunk(id))
-        displayMenuOptions(index)
-        resetPage()
+    const deleteClientById = async (id: string, index: number): Promise<void> => {
+        try {
+            await dispatch(ClientDeleteByIdThunk(id)).unwrap()
+            displayMenuOptions(index)
+            resetPage()
+        }
+        catch (error) {
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+        }
     }
 
 

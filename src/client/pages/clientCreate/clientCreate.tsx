@@ -18,7 +18,7 @@ import {
     Form, DivCtnEntry, LabelText, InputText, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
+import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../../../client/features/thunks/clientFetchAllThunk"
 import { ClientCreateThunk } from "../../../client/features/thunks/clientCreateThunk"
 import { OptionYesNo } from "common/enums/optionYesNo"
@@ -30,6 +30,7 @@ export const ClientCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const clientAll = useSelector(getClientAllData)
     const clientAllLoading = useSelector(getClientAllStatus)
+    const clientErrorMessage = useSelector(getClientErrorMessage)
     const [newClient, setNewClient] = useState<ClientInterfaceNoId>({
         full_name: '',
         email: '',
@@ -42,7 +43,7 @@ export const ClientCreate = () => {
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
         else if (clientAllLoading === ApiStatus.fulfilled) { }
-        else if (clientAllLoading === ApiStatus.rejected) { alert("Error in API create client") }
+        else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { ToastifyError(clientErrorMessage) }
     }, [clientAllLoading, clientAll])
 
     const validateAllData = (): string[] => {
@@ -63,23 +64,24 @@ export const ClientCreate = () => {
 
         return allErrorMessages
     }
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (validateAllData().length > 0) {
-            validateAllData().forEach(error => ToastifyError(error))
+        const errors = validateAllData()
+        if (errors.length > 0) {
+            errors.forEach(error => ToastifyError(error))
             return
         }
 
-        dispatch(ClientCreateThunk(newClient))
-            .then(() => {
-                ToastifySuccess('Client created', () => {
-                    navigate('../')
-                })
+        try {
+            await dispatch(ClientCreateThunk(newClient)).unwrap()
+            ToastifySuccess('Client created', () => {
+                navigate('../')
             })
-            .catch((error) => {
-                ToastifyError(error)
-            })
+        }
+        catch (error) {
+            ToastifyError(String(error))
+        }
     }
 
 
