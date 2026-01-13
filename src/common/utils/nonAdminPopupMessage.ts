@@ -2,6 +2,7 @@
 import { PopupTextInterface } from "common/interfaces/popupTextInterface"
 
 
+// !!! CONVINAR CON customPopupMessage ???
 export const handleNonAdminClick = (
     setInfoPopup: React.Dispatch<React.SetStateAction<PopupTextInterface>>,
     setShowPopup: React.Dispatch<React.SetStateAction<boolean>>

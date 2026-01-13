@@ -28,7 +28,7 @@ import {
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getUserIdData, getUserIdStatus } from "../../features/userSlice"
+import { getUserIdData, getUserIdStatus, getUserErrorMessage } from "../../features/userSlice"
 import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk"
 import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk"
 
@@ -41,6 +41,7 @@ export const UserUpdate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const userById = useSelector(getUserIdData)
     const userByIdLoading = useSelector(getUserIdStatus)
+    const errorMessage = useSelector(getUserErrorMessage)
     const [userUpdated, setUserUpdated] = useState<UserInterface>({
         _id: '0',
         photo: null,
@@ -84,7 +85,7 @@ export const UserUpdate = () => {
             })
             setOldPassword(userById.password)
         }
-        else if (userByIdLoading === ApiStatus.rejected) { alert("Error in API update users") }
+        else if (userByIdLoading === ApiStatus.rejected && errorMessage) { ToastifyError(errorMessage) }
     }, [userByIdLoading, userById, id])
 
     const validateAllData = (): string[] => {
@@ -123,23 +124,24 @@ export const UserUpdate = () => {
 
         return allErrorMessages
     }
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (validateAllData().length > 0) {
-            validateAllData().forEach(error => ToastifyError(error))
+        const errors = validateAllData()
+        if (errors.length > 0) {
+            errors.forEach(error => ToastifyError(error))
             return
         }
 
-        dispatch(UserUpdateThunk({ idUser: userUpdated._id, updatedUserData: userUpdated }))
-            .then(() => {
-                ToastifySuccess('User updated', () => {
-                    navigate('../')
-                })
+        try {
+            await dispatch(UserUpdateThunk({ idUser: userUpdated._id, updatedUserData: userUpdated }))
+            ToastifySuccess('User updated', () => {
+                navigate('../')
             })
-            .catch((error) => {
-                ToastifyError(error)
-            })
+        }
+        catch (error) {
+            ToastifyError(String(error))
+        }
     }
 
     return (<>

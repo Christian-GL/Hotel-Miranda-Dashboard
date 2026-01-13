@@ -17,6 +17,7 @@ import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
+import { customPopupMessage } from 'common/utils/customPopupMessage'
 import { capitalizeFirstLetter } from "common/utils/capitalizeFirstLetter"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { OptionYesNo } from "common/enums/optionYesNo"
@@ -32,7 +33,7 @@ import {
     PStatusAvailableUsers, IconPhone, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
-import { getUserAllData, getUserAllStatus } from "./../../features/userSlice"
+import { getUserAllData, getUserAllStatus, getUserErrorMessage } from "./../../features/userSlice"
 import { UserFetchAllThunk } from "./../../features/thunks/userFetchAllThunk"
 import { UserUpdateThunk } from "./../../features/thunks/userUpdateThunk"
 import { UserDeleteByIdThunk } from "./../../features/thunks/userDeleteByIdThunk"
@@ -45,6 +46,7 @@ export const UserMain = () => {
     const { getRole } = useLoginOptionsContext()
     const userAll: UserInterface[] = useSelector(getUserAllData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
+    const errorMessage = useSelector(getUserErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.all)
@@ -78,7 +80,7 @@ export const UserMain = () => {
     useEffect(() => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
         else if (userAllLoading === ApiStatus.fulfilled) { displayEmployee() }
-        else if (userAllLoading === ApiStatus.rejected) { alert("Error in API userMain") }
+        else if (userAllLoading === ApiStatus.rejected && errorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', errorMessage) }
     }, [userAllLoading, userAll, inputText, activeFilterButton, archivedFilterButton, arrowStates])
 
     const filterByName = (users: UserInterface[], searchText: string): UserInterface[] => {
@@ -170,21 +172,31 @@ export const UserMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const toggleArchivedClient = (id: string, user: UserInterface, index: number): void => {
+    const toggleArchivedClient = async (id: string, user: UserInterface, index: number): Promise<void> => {
         const updatedUser = {
             ...user,
             isArchived: user.isArchived === OptionYesNo.no
                 ? OptionYesNo.yes
                 : OptionYesNo.no
         }
-        dispatch(UserUpdateThunk({ idUser: id, updatedUserData: updatedUser }))
-        displayMenuOptions(index)
-        resetPage()
+        try {
+            await dispatch(UserUpdateThunk({ idUser: id, updatedUserData: updatedUser })).unwrap()
+            displayMenuOptions(index)
+            resetPage()
+        }
+        catch (error) {
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+        }
     }
-    const deleteUserById = (id: string, index: number): void => {
-        dispatch(UserDeleteByIdThunk(id))
-        displayMenuOptions(index)
-        resetPage()
+    const deleteUserById = async (id: string, index: number): Promise<void> => {
+        try {
+            await dispatch(UserDeleteByIdThunk(id)).unwrap()
+            displayMenuOptions(index)
+            resetPage()
+        }
+        catch (error) {
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+        }
     }
 
 

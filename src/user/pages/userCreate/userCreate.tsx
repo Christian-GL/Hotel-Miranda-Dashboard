@@ -26,7 +26,7 @@ import {
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getUserAllData, getUserAllStatus } from "../../features/userSlice"
+import { getUserAllData, getUserAllStatus, getUserErrorMessage } from "../../features/userSlice"
 import { UserFetchAllThunk } from "../../features/thunks/userFetchAllThunk"
 import { UserCreateThunk } from "../../features/thunks/userCreateThunk"
 
@@ -37,6 +37,7 @@ export const UserCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const userAll = useSelector(getUserAllData)
     const userAllLoading = useSelector(getUserAllStatus)
+    const errorMessage = useSelector(getUserErrorMessage)
     const [newUser, setNewUser] = useState<UserInterfaceNoId>({
         photo: null,
         full_name: '',
@@ -60,8 +61,8 @@ export const UserCreate = () => {
     useEffect(() => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
         else if (userAllLoading === ApiStatus.fulfilled) { }
-        else if (userAllLoading === ApiStatus.rejected) { alert("Error in API create of User") }
-    }, [userAllLoading, userAll])
+        else if (userAllLoading === ApiStatus.rejected && errorMessage) { ToastifyError(errorMessage) }
+    }, [userAllLoading, userAll, errorMessage])
 
     const validateAllData = (): string[] => {
         // !!! CREAR FUNCIÓN COMÚN PARA VALIDAR USUARIOS NUEVOS Y USUARIOS ACTUALIZADOS SIMILAR A COMO ES EN LA API
@@ -97,23 +98,25 @@ export const UserCreate = () => {
 
         return allErrorMessages
     }
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (validateAllData().length > 0) {
-            validateAllData().forEach(error => ToastifyError(error))
+        const errors = validateAllData()
+        if (errors.length > 0) {
+            errors.forEach(error => ToastifyError(error))
             return
         }
 
-        dispatch(UserCreateThunk(newUser))
-            .then(() => {
-                ToastifySuccess('User created', () => {
-                    navigate('../')
-                })
+        try {
+            await dispatch(UserCreateThunk(newUser)).unwrap()
+            ToastifySuccess('User created', () => {
+                navigate('../')
             })
-            .catch((error) => {
-                ToastifyError(error)
-            })
+        }
+        catch (error) {
+            ToastifyError(String(error))
+        }
     }
 
 
