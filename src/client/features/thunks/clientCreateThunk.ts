@@ -1,22 +1,20 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { ClientInterfaceNoId } from "../../interfaces/clientInterface"
-import { OptionYesNo } from "common/enums/optionYesNo"
+import { ClientInterface, ClientInterfaceNoId } from "../../interfaces/clientInterface"
 
 
-const clientDefaultIfError: ClientInterfaceNoId = {
-    full_name: '',
-    email: '',
-    phone_number: '',
-    isArchived: OptionYesNo.no,
-    booking_id_list: []
-}
-
-export const ClientCreateThunk = createAsyncThunk
-    ("client/create", async (newClientData: ClientInterfaceNoId) => {
+export const ClientCreateThunk = createAsyncThunk<
+    ClientInterface,
+    ClientInterfaceNoId,
+    { rejectValue: string }
+>(
+    "client/create",
+    async (newClientData, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return clientDefaultIfError
+        if (!apiToken) {
+            return rejectWithValue('No authentication token found')
+        }
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CLIENTS}`, {
@@ -30,14 +28,16 @@ export const ClientCreateThunk = createAsyncThunk
             if (request.ok) {
                 const clientCreated = await request.json()
                 return clientCreated
-            } else {
-                console.log("Error: ", request.statusText)
-                return clientDefaultIfError
+            }
+            else {
+                const errorData = await request.json().catch(() => null)
+                return rejectWithValue(
+                    errorData?.message ?? request.statusText ?? 'Error fetching client'
+                )
             }
         }
         catch (error) {
-            console.log(error)
-            return clientDefaultIfError
+            return rejectWithValue('Network or server error')
         }
 
     })

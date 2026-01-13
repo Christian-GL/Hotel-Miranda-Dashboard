@@ -12,5 +12,5 @@ export interface ClientStateInterface {
     createStatus: ApiStatus
     updateStatus: ApiStatus
     deleteStatus: ApiStatus
-    error: boolean
+    errorMessage: string | null
 }

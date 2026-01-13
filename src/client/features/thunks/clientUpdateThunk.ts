@@ -1,24 +1,20 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { ClientInterface } from "../../interfaces/clientInterface"
-import { OptionYesNo } from "common/enums/optionYesNo"
+import { ClientInterface, ClientInterfaceNoId } from "../../interfaces/clientInterface"
 
 
-const clientDefaultIfError: ClientInterface = {
-    _id: "0",
-    full_name: '',
-    email: '',
-    phone_number: '',
-    isArchived: OptionYesNo.no,
-    booking_id_list: []
-}
-
-export const ClientUpdateThunk = createAsyncThunk
-    ("client/update", async ({ idClient, updatedClientData }
-        : { idClient: string, updatedClientData: ClientInterface }) => {
+export const ClientUpdateThunk = createAsyncThunk<
+    ClientInterface,
+    { idClient: string; updatedClientData: ClientInterfaceNoId },
+    { rejectValue: string }
+>(
+    "client/update",
+    async ({ idClient, updatedClientData }, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return clientDefaultIfError
+        if (!apiToken) {
+            return rejectWithValue('No authentication token found')
+        }
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CLIENTS}/${idClient}`, {
@@ -33,14 +29,16 @@ export const ClientUpdateThunk = createAsyncThunk
             if (request.ok) {
                 const clientUpdated = await request.json()
                 return clientUpdated
-            } else {
-                console.log("Error: ", request.statusText)
-                return clientDefaultIfError
+            }
+            else {
+                const errorData = await request.json().catch(() => null)
+                return rejectWithValue(
+                    errorData?.message ?? request.statusText ?? 'Error fetching client'
+                )
             }
         }
         catch (error) {
-            console.log(error)
-            return clientDefaultIfError
+            return rejectWithValue('Network or server error')
         }
 
     })

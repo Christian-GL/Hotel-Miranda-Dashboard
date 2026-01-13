@@ -1,23 +1,20 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { ClientInterface } from "../../interfaces/clientInterface"
-import { OptionYesNo } from "common/enums/optionYesNo"
 
 
-const clientDefaultIfError: ClientInterface = {
-    _id: "0",
-    full_name: '',
-    email: '',
-    phone_number: '',
-    isArchived: OptionYesNo.no,
-    booking_id_list: []
-}
-
-export const ClientFetchAllThunk = createAsyncThunk
-    ("client/fetchAll", async () => {
+export const ClientFetchAllThunk = createAsyncThunk<
+    ClientInterface[],
+    void,
+    { rejectValue: string }
+>(
+    "client/fetchAll",
+    async (_, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return [clientDefaultIfError]
+        if (!apiToken) {
+            return rejectWithValue('No authentication token found')
+        }
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CLIENTS}`, {
@@ -43,13 +40,12 @@ export const ClientFetchAllThunk = createAsyncThunk
                 return allClients
             }
             else {
-                console.error('Error: ', request.statusText)
-                return [clientDefaultIfError]
+                const errorData = await request.json()
+                return rejectWithValue(errorData.message || 'Failed to fetch clients')
             }
         }
         catch (error) {
-            console.error(error)
-            return [clientDefaultIfError]
+            return rejectWithValue('Network or server error')
         }
 
     })

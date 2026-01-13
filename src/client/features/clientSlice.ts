@@ -25,49 +25,56 @@ export const ClientSlice = createSlice({
         createStatus: ApiStatus.idle,
         updateStatus: ApiStatus.idle,
         deleteStatus: ApiStatus.idle,
-        error: false
+        errorMessage: null
     } as ClientStateInterface,
     reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(ClientFetchAllThunk.pending, (state) => {
                 state.allStatus = ApiStatus.pending
+                state.errorMessage = null
             })
             .addCase(ClientFetchAllThunk.fulfilled, (state, action: PayloadAction<ClientInterface[]>) => {
                 state.allStatus = ApiStatus.fulfilled
                 state.allData = action.payload
+                state.errorMessage = null
             })
-            .addCase(ClientFetchAllThunk.rejected, (state) => {
-                state.error = true
+            .addCase(ClientFetchAllThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.allStatus = ApiStatus.rejected
+                state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             .addCase(ClientFetchByIDThunk.pending, (state) => {
                 state.idStatus = ApiStatus.pending
+                state.errorMessage = null
             })
             .addCase(ClientFetchByIDThunk.fulfilled, (state, action: PayloadAction<ClientInterface>) => {
                 state.idStatus = ApiStatus.fulfilled
                 state.idData = action.payload
+                state.errorMessage = null
             })
-            .addCase(ClientFetchByIDThunk.rejected, (state) => {
-                state.error = true
+            .addCase(ClientFetchByIDThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.idStatus = ApiStatus.rejected
+                state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             .addCase(ClientCreateThunk.pending, (state) => {
                 state.createStatus = ApiStatus.pending
+                state.errorMessage = null
             })
             .addCase(ClientCreateThunk.fulfilled, (state, action: PayloadAction<ClientInterface>) => {
                 state.createStatus = ApiStatus.fulfilled
                 state.allData.push(action.payload)
+                state.errorMessage = null
             })
-            .addCase(ClientCreateThunk.rejected, (state) => {
-                state.error = true
+            .addCase(ClientCreateThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.createStatus = ApiStatus.rejected
+                state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             .addCase(ClientUpdateThunk.pending, (state) => {
                 state.updateStatus = ApiStatus.pending
+                state.errorMessage = null
             })
             .addCase(ClientUpdateThunk.fulfilled, (state, action: PayloadAction<ClientInterface>) => {
                 state.updateStatus = ApiStatus.fulfilled
@@ -79,23 +86,26 @@ export const ClientSlice = createSlice({
                 if (state.idData && state.idData._id === clientToUpdate._id) {
                     state.idData = clientToUpdate
                 }
+                state.errorMessage = null
             })
-            .addCase(ClientUpdateThunk.rejected, (state) => {
-                state.error = true
+            .addCase(ClientUpdateThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.updateStatus = ApiStatus.rejected
+                state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             .addCase(ClientDeleteByIdThunk.pending, (state) => {
                 state.deleteStatus = ApiStatus.pending
+                state.errorMessage = null
             })
             .addCase(ClientDeleteByIdThunk.fulfilled, (state, action: PayloadAction<string>) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const clientIdToDelete = action.payload
                 state.allData = state.allData.filter(client => client._id !== clientIdToDelete)
+                state.errorMessage = null
             })
-            .addCase(ClientDeleteByIdThunk.rejected, (state) => {
-                state.error = true
+            .addCase(ClientDeleteByIdThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.deleteStatus = ApiStatus.rejected
+                state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             // BOOKING:
@@ -121,13 +131,8 @@ export const ClientSlice = createSlice({
                     state.allData[index] = updatedClient
                 }
             })
-
-
     }
 })
-
-
-// export const { archiveClient, restoreClient } = ClientSlice.actions
 
 export const getClientAllData = (state: RootState): ClientInterface[] => state.clientSlice.allData
 export const getClientIdData = (state: RootState): ClientInterface => state.clientSlice.idData
@@ -138,4 +143,4 @@ export const getClientCreateStatus = (state: RootState) => state.clientSlice.cre
 export const getClientUpdateStatus = (state: RootState) => state.clientSlice.updateStatus
 export const getClientDeleteStatus = (state: RootState) => state.clientSlice.deleteStatus
 
-export const getClientError = (state: RootState) => state.clientSlice.error
+export const getClientErrorMessage = (state: RootState) => state.clientSlice.errorMessage
