@@ -1,28 +1,22 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { RoomInterface } from "../../interfaces/roomInterface"
-import { RoomType } from "../../enums/roomType"
-import { OptionYesNo } from "common/enums/optionYesNo"
 
 
-const roomDefaultIfError: RoomInterface = {
-    _id: '0',
-    photos: [],
-    number: '0',
-    type: RoomType.singleBed,
-    amenities: [],
-    price: 0,
-    discount: 0,
-    isActive: OptionYesNo.no,
-    isArchived: OptionYesNo.yes,
-    booking_id_list: []
-}
+// export const RoomFetchAllThunk = createAsyncThunk
+//     ("room/fetchAll", async () => {
+export const RoomFetchAllThunk = createAsyncThunk<
+    RoomInterface[],
+    void,
+    { rejectValue: string }
+>(
+    "room/fetchAll",
+    async (_, { rejectWithValue }) => {
 
-export const RoomFetchAllThunk = createAsyncThunk
-    ("room/fetchAll", async () => {
-
-        const apiToken = localStorage.getItem('token')
-        if (!apiToken) return [roomDefaultIfError]
+        const apiToken = localStorage.getItem("token")
+        if (!apiToken) {
+            return rejectWithValue("No authentication token found")
+        }
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}`, {
@@ -52,13 +46,14 @@ export const RoomFetchAllThunk = createAsyncThunk
                 return allRooms
             }
             else {
-                console.error('Error: ', request.statusText)
-                return [roomDefaultIfError]
+                const errorData = await request.json().catch(() => null)
+                return rejectWithValue(
+                    errorData?.message ?? request.statusText ?? 'Error fetching room'
+                )
             }
         }
         catch (error) {
-            console.error(error)
-            return [roomDefaultIfError]
+            return rejectWithValue('Network or server error')
         }
 
     })

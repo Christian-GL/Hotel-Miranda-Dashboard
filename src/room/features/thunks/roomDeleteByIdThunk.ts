@@ -1,38 +1,44 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { BookingInterface } from "booking/interfaces/bookingInterface"
+import { RoomDeleteResponseInterface } from "../../../common/interfaces/apiResponses/roomDeleteResponseInterface"
 
 
-export const RoomDeleteByIdThunk = createAsyncThunk("room/deleteById", async (roomId: string, { rejectWithValue }) => {
+export const RoomDeleteByIdThunk = createAsyncThunk<
+    RoomDeleteResponseInterface,
+    string,
+    { rejectValue: string }
+>(
+    "room/deleteById",
+    async (roomId, { rejectWithValue }) => {
 
-    const apiToken = localStorage.getItem('token')
-    if (!apiToken) return rejectWithValue("Missing token")
+        const apiToken = localStorage.getItem("token")
+        if (!apiToken) {
+            return rejectWithValue("No authentication token found")
+        }
 
-    try {
-        const request = await fetch(
-            `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}/${roomId}`,
-            {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${apiToken}`
+        try {
+            const request = await fetch(
+                `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}/${roomId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiToken}`
+                    }
                 }
+            )
+            if (request.ok) {
+                return await request.json() as RoomDeleteResponseInterface
             }
-        )
-
-        if (!request.ok) {
-            throw new Error(request.statusText)
+            else {
+                const errorData = await request.json().catch(() => null)
+                return rejectWithValue(
+                    errorData?.message ?? request.statusText ?? 'Error fetching room'
+                )
+            }
         }
-        const responseData = await request.json()
-        return responseData as {
-            deleted: boolean
-            roomId: string
-            updatedBookings: BookingInterface[]
+        catch (error) {
+            return rejectWithValue('Network or server error')
         }
     }
-    catch (error: any) {
-        console.error(error)
-        return rejectWithValue(error.message)
-    }
-}
 )

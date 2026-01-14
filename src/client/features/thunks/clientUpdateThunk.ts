@@ -1,10 +1,11 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { ClientInterface, ClientInterfaceNoId } from "../../interfaces/clientInterface"
+import { ClientInterfaceNoId } from "../../interfaces/clientInterface"
+import { ClientUpdateResponseInterface } from '../../../common/interfaces/apiResponses/clientUpdateResponseInterface'
 
 
 export const ClientUpdateThunk = createAsyncThunk<
-    ClientInterface,
+    ClientUpdateResponseInterface,
     { idClient: string; updatedClientData: ClientInterfaceNoId },
     { rejectValue: string }
 >(
@@ -25,10 +26,8 @@ export const ClientUpdateThunk = createAsyncThunk<
                 },
                 body: JSON.stringify(updatedClientData)
             })
-
             if (request.ok) {
-                const clientUpdated = await request.json()
-                return clientUpdated
+                return await request.json() as ClientUpdateResponseInterface
             }
             else {
                 const errorData = await request.json().catch(() => null)

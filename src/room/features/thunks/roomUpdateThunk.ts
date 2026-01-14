@@ -1,33 +1,20 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { RoomInterface } from "../../interfaces/roomInterface"
-import { BookingInterface } from "booking/interfaces/bookingInterface"
-import { RoomType } from "../../enums/roomType"
-import { OptionYesNo } from "common/enums/optionYesNo"
+import { RoomUpdateResponseInterface } from "../../../common/interfaces/apiResponses/roomUpdateResponseInterface"
 
-
-const roomDefaultIfError: RoomInterface = {
-    _id: '0',
-    photos: [],
-    number: '0',
-    type: RoomType.singleBed,
-    amenities: [],
-    price: 0,
-    discount: 0,
-    isActive: OptionYesNo.no,
-    isArchived: OptionYesNo.yes,
-    booking_id_list: []
-}
 
 export const RoomUpdateThunk = createAsyncThunk<
-    { room: RoomInterface, updatedBookings: BookingInterface[] },
-    { idRoom: string; updatedRoomData: RoomInterface }
+    RoomUpdateResponseInterface,
+    { idRoom: string; updatedRoomData: RoomInterface },
+    { rejectValue: string }
 >(
-    "room/update", async ({ idRoom, updatedRoomData }, { rejectWithValue }) => {
+    "room/update",
+    async ({ idRoom, updatedRoomData }, { rejectWithValue }) => {
 
-        const apiToken = localStorage.getItem('token')
+        const apiToken = localStorage.getItem("token")
         if (!apiToken) {
-            return rejectWithValue("Missing token")
+            return rejectWithValue("No authentication token found")
         }
 
         try {
@@ -42,15 +29,18 @@ export const RoomUpdateThunk = createAsyncThunk<
                     body: JSON.stringify(updatedRoomData)
                 }
             )
-
-            if (!request.ok) {
-                throw new Error(request.statusText)
+            if (request.ok) {
+                return await request.json()
             }
-
-            return await request.json()
+            else {
+                const errorData = await request.json().catch(() => null)
+                return rejectWithValue(
+                    errorData?.message ?? request.statusText ?? 'Error fetching room'
+                )
+            }
         }
-        catch (error: any) {
-            return rejectWithValue(error.message)
+        catch (error) {
+            return rejectWithValue('Network or server error')
         }
     }
 )

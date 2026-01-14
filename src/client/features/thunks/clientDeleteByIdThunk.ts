@@ -1,9 +1,10 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
+import { ClientDeleteResponseInterface } from '../../../common/interfaces/apiResponses/clientDeleteResponseInterface'
 
 
 export const ClientDeleteByIdThunk = createAsyncThunk<
-    string,
+    ClientDeleteResponseInterface,
     string,
     { rejectValue: string }
 >(
@@ -24,8 +25,10 @@ export const ClientDeleteByIdThunk = createAsyncThunk<
                 },
             })
             if (request.ok) {
-                return clientId
-            } else {
+                const data: ClientDeleteResponseInterface = await request.json()
+                return data
+            }
+            else {
                 const errorData = await request.json().catch(() => null)
                 return rejectWithValue(
                     errorData?.message ?? request.statusText ?? 'Error fetching client'
