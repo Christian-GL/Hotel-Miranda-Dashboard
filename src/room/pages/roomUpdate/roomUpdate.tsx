@@ -12,7 +12,7 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
-import { RoomInterface, RoomInterfaceBookings } from "../../interfaces/roomInterface"
+import { RoomInterface } from "../../interfaces/roomInterface"
 import { RoomAmenities } from "../../enums/roomAmenities"
 import { RoomType } from "../../enums/roomType"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
@@ -28,7 +28,7 @@ import {
 } from "../../../common/styles/form"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "../../features/roomSlice"
+import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus, getRoomErrorMessage } from "../../features/roomSlice"
 import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
 import { RoomFetchByIDThunk } from "../../features/thunks/roomFetchByIDThunk"
 import { RoomUpdateThunk } from '../../features/thunks/roomUpdateThunk'
@@ -47,6 +47,7 @@ export const RoomUpdate = () => {
     const roomByIdLoading = useSelector(getRoomIdStatus)
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
+    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
     const [roomUpdated, setRoomUpdated] = useState<RoomInterface>({
@@ -84,15 +85,15 @@ export const RoomUpdate = () => {
                 discount: roomById.discount || 0,
                 isActive: roomById.isActive || OptionYesNo.no,
                 isArchived: roomById.isArchived || OptionYesNo.yes,
-                booking_id_list: roomById.booking_data_list ? roomById.booking_data_list.map(booking => booking._id) : []
+                booking_id_list: roomById.booking_id_list || []
             })
         }
-        else if (roomByIdLoading === ApiStatus.rejected) { alert("Error in API update rooms") }
+        else if (roomByIdLoading === ApiStatus.rejected && roomErrorMessage) { ToastifyError(roomErrorMessage) }
     }, [roomByIdLoading, roomById, bookingAllLoading, bookingAll, id])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error in API update rooms") }
+        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { ToastifyError(roomErrorMessage) }
     }, [roomAllLoading, roomAll])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -226,7 +227,7 @@ export const RoomUpdate = () => {
                         </SelectAmenities>
                     </DivCtnEntry>
 
-                    {/* !!! ACTUALIZAR */}
+                    {/* !!! 
                     <DivCtnEntry>
                         <LabelText>Booking Status</LabelText>
                         <DivCtnEntryBookings>
@@ -247,6 +248,7 @@ export const RoomUpdate = () => {
                             }
                         </DivCtnEntryBookings>
                     </DivCtnEntry>
+                    */}
 
                     <DivButtonCreateUser>
                         <ButtonCreate type="submit" children='⮂ Update Room' fontSize='1.25em'></ButtonCreate>

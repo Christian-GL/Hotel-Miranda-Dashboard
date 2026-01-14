@@ -25,7 +25,7 @@ import {
     LabelText, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getRoomAllData, getRoomAllStatus } from "../../features/roomSlice"
+import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../../features/roomSlice"
 import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
 import { RoomCreateThunk } from "../../features/thunks/roomCreateThunk"
 
@@ -36,6 +36,7 @@ export const RoomCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
+    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [newRoom, setNewRoom] = useState<RoomInterfaceNoId>({
         number: '0',
         photos: [],
@@ -57,12 +58,12 @@ export const RoomCreate = () => {
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error in API create user") }
+        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { ToastifyError(roomErrorMessage) }
     }, [roomAllLoading, roomAll])
 
     const validateAllData = (): string[] => {
         const allErrorMessages: string[] = []
-        
+
         validateRoomNumber(newRoom.number, 'Number').map(
             error => allErrorMessages.push(error)
         )

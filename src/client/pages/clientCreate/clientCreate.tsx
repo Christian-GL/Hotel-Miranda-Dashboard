@@ -10,6 +10,7 @@ import { ToastifySuccess } from "../../../common/components/toastify/successPopu
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { ClientInterfaceNoId } from "../../interfaces/clientInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
@@ -21,7 +22,6 @@ import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCrea
 import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../../../client/features/thunks/clientFetchAllThunk"
 import { ClientCreateThunk } from "../../../client/features/thunks/clientCreateThunk"
-import { OptionYesNo } from "common/enums/optionYesNo"
 
 
 export const ClientCreate = () => {

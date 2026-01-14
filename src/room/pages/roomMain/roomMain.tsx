@@ -17,6 +17,7 @@ import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
+import { customPopupMessage } from 'common/utils/customPopupMessage'
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { OptionYesNo } from "common/enums/optionYesNo"
 import { RoomNameColumn } from "../../enums/roomNameColumn"
@@ -32,11 +33,11 @@ import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable,
     ImgTableRoom, PTable, PStatusRoomList, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
 } from "../../../common/styles/tableStyles"
-import { getRoomAllData, getRoomAllStatus } from "./../../features/roomSlice"
+import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "./../../features/roomSlice"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
 import { RoomUpdateThunk } from "./../../features/thunks/roomUpdateThunk"
 import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk"
-import { getBookingAllData, getBookingAllStatus, deleteBooking } from "../../../booking/features/bookingSlice"
+import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
 
@@ -48,6 +49,7 @@ export const RoomMain = () => {
     const { getRole } = useLoginOptionsContext()
     const roomAll: RoomInterface[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
+    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const [inputText, setInputText] = useState<string>('')
@@ -84,7 +86,7 @@ export const RoomMain = () => {
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { displayRooms() }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de roomMain > rooms") }
+        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
     }, [roomAllLoading, roomAll, inputText, selectedButton, activeFilterButton, archivedFilterButton, arrowStates])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -178,21 +180,31 @@ export const RoomMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const toggleArchivedClient = (id: string, room: RoomInterface, index: number): void => {
-        const updatedUser = {
+    const toggleArchivedClient = async (id: string, room: RoomInterface, index: number): Promise<void> => {
+        const updatedRoom = {
             ...room,
             isArchived: room.isArchived === OptionYesNo.no
                 ? OptionYesNo.yes
                 : OptionYesNo.no
         }
-        dispatch(RoomUpdateThunk({ idRoom: id, updatedRoomData: updatedUser }))
-        displayMenuOptions(index)
-        resetPage()
+        try {
+            await dispatch(RoomUpdateThunk({ idRoom: id, updatedRoomData: updatedRoom })).unwrap()
+            displayMenuOptions(index)
+            resetPage()
+        }
+        catch (error) {
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+        }
     }
-    const deleteRoomById = (id: string, index: number): void => {
-        dispatch(RoomDeleteByIdThunk(id))
-        displayMenuOptions(index)
-        resetPage()
+    const deleteRoomById = async (id: string, index: number): Promise<void> => {
+        try {
+            await dispatch(RoomDeleteByIdThunk(id)).unwrap()
+            displayMenuOptions(index)
+            resetPage()
+        }
+        catch (error) {
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+        }
     }
     const isAvailable = (room: RoomInterface): boolean => {
         // !!! USAR DATOS ASOCIADOS DE LAS BOOKINGS

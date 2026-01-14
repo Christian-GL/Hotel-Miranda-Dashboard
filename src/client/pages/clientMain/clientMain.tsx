@@ -39,7 +39,7 @@ import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
 import { ClientUpdateThunk } from "./../../features/thunks/clientUpdateThunk"
 import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
 import { RoomInterface } from "room/interfaces/roomInterface"
-import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
+import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../../../room/features/roomSlice"
 import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
 import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
 import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
@@ -58,6 +58,7 @@ export const ClientMain = () => {
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const roomAll: RoomInterface[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
+    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.all)
@@ -71,7 +72,6 @@ export const ClientMain = () => {
     })
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
-    const [displayedNotArchived, setDisplayedNotArchived] = useState<OptionYesNo>(OptionYesNo.yes)
     const {
         currentPageItems,
         currentPage,
@@ -86,11 +86,11 @@ export const ClientMain = () => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
         else if (clientAllLoading === ApiStatus.fulfilled) { displayClients() }
         else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
-    }, [clientAllLoading, clientAll, inputText, displayedNotArchived, archivedFilterButton, arrowStates])
+    }, [clientAllLoading, clientAll, inputText, archivedFilterButton, arrowStates])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de clientMain > rooms") }
+        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
     }, [roomAllLoading, roomAll])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
