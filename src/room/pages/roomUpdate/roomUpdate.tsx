@@ -33,7 +33,7 @@ import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
 import { RoomFetchByIDThunk } from "../../features/thunks/roomFetchByIDThunk"
 import { RoomUpdateThunk } from '../../features/thunks/roomUpdateThunk'
 
-import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
+import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 
 
@@ -50,6 +50,7 @@ export const RoomUpdate = () => {
     const roomErrorMessage = useSelector(getRoomErrorMessage)
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
+    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const [roomUpdated, setRoomUpdated] = useState<RoomInterface>({
         _id: '0',
         number: '0',
@@ -98,7 +99,7 @@ export const RoomUpdate = () => {
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error in API update rooms > booking update") }
+        else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { ToastifyError(bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
 
     const validateAllData = (): string[] => {

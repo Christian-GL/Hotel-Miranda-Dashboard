@@ -16,6 +16,7 @@ import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
+import { customPopupMessage } from 'common/utils/customPopupMessage'
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { OptionYesNo } from "common/enums/optionYesNo"
 import { BookingNameColumn } from "../../enums/bookingNameColumn"
@@ -31,15 +32,15 @@ import {
     IconPhone, ButtonView, PStatusBooking, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
-import { getBookingAllData, getBookingAllStatus } from "./../../features/bookingSlice"
+import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "./../../features/bookingSlice"
 import { BookingFetchAllThunk } from "./../../features/thunks/bookingFetchAllThunk"
 import { BookingUpdateThunk } from "./../../features/thunks/bookingUpdateThunk"
 import { BookingDeleteByIdThunk } from "./../../features/thunks/bookingDeleteByIdThunk"
 import { RoomInterface } from "../../../room/interfaces/roomInterface"
-import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
+import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../../../room/features/roomSlice"
 import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
 import { ClientInterface } from "../../../client/interfaces/clientInterface"
-import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
+import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../../../client/features/thunks/clientFetchAllThunk"
 
 
@@ -50,10 +51,13 @@ export const BookingMain = () => {
     const { getRole } = useLoginOptionsContext()
     const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
+    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const roomAll: RoomInterface[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
+    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const clientAll: ClientInterface[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
+    const clientErrorMessage = useSelector(getClientErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [bookingStatusButton, setBookingStatusButton] = useState<BookingButtonType>(BookingButtonType.all)
@@ -85,17 +89,17 @@ export const BookingMain = () => {
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { displayBookings() }
-        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de bookingMain > bookings") }
+        else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll, inputText, archivedFilterButton, bookingStatusButton, arrowStates])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error en la api de bookingMain > rooms") }
+        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
     }, [roomAllLoading, roomAll])
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
         else if (clientAllLoading === ApiStatus.fulfilled) { }
-        else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de bookingMain > clients") }
+        else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
     }, [clientAllLoading, clientAll])
 
     const filterByClientName = (bookings: BookingInterface[], clients: ClientInterface[], searchText: string): BookingInterface[] => {
@@ -194,21 +198,31 @@ export const BookingMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const toggleArchivedClient = (id: string, booking: BookingInterface, index: number): void => {
+    const toggleArchivedClient = async (id: string, booking: BookingInterface, index: number): Promise<void> => {
         const updatedBooking = {
             ...booking,
             isArchived: booking.isArchived === OptionYesNo.no
                 ? OptionYesNo.yes
                 : OptionYesNo.no
         }
-        dispatch(BookingUpdateThunk({ idBooking: id, updatedBookingData: updatedBooking }))
-        displayMenuOptions(index)
-        resetPage()
+        try {
+            await dispatch(BookingUpdateThunk({ idBooking: id, updatedBookingData: updatedBooking })).unwrap()
+            displayMenuOptions(index)
+            resetPage()
+        }
+        catch (error) {
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+        }
     }
-    const deleteBookingById = (id: string, index: number): void => {
-        dispatch(BookingDeleteByIdThunk(id))
-        displayMenuOptions(index)
-        resetPage()
+    const deleteBookingById = async (id: string, index: number): Promise<void> => {
+        try {
+            await dispatch(BookingDeleteByIdThunk(id)).unwrap()
+            displayMenuOptions(index)
+            resetPage()
+        }
+        catch (error) {
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+        }
     }
 
 

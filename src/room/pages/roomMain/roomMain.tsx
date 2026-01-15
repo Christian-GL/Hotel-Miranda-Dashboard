@@ -37,7 +37,7 @@ import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "./../../f
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
 import { RoomUpdateThunk } from "./../../features/thunks/roomUpdateThunk"
 import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk"
-import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
+import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
 
@@ -52,6 +52,7 @@ export const RoomMain = () => {
     const roomErrorMessage = useSelector(getRoomErrorMessage)
     const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
+    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.all)
@@ -91,7 +92,7 @@ export const RoomMain = () => {
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de roomMain > bookings") }
+        else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
 
     const filterByRoomNumber = (rooms: RoomInterface[], searchText: string): RoomInterface[] => {

@@ -24,12 +24,11 @@ import {
     LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice"
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
 import { BookingUpdateThunk } from "../../../booking/features/thunks/bookingUpdateThunk"
-import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
+import { getBookingAllData, getBookingAllStatus, getBookingIdData, getBookingIdStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
-import { getRoomAllData, getRoomAllStatus } from '../../../room/features/roomSlice'
+import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from '../../../room/features/roomSlice'
 import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk'
 
 
@@ -43,8 +42,10 @@ export const BookingUpdate = () => {
     const bookingByIdLoading = useSelector(getBookingIdStatus)
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
+    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
+    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [bookingUpdated, setBookingUpdated] = useState<BookingInterface>({
         _id: '0',
         order_date: new Date(),
@@ -88,17 +89,17 @@ export const BookingUpdate = () => {
                 client_id: bookingById.client_id || ''
             })
         }
-        else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error en la api de booking update > bookings") }
+        else if (bookingByIdLoading === ApiStatus.rejected && bookingErrorMessage) { ToastifyError(bookingErrorMessage) }
     }, [bookingByIdLoading, bookingById, id])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error in API create booking") }
+        else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { ToastifyError(bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected) { alert("Error in API update bookings > rooms") }
+        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { ToastifyError(roomErrorMessage) }
     }, [roomAllLoading, roomAll])
 
     const validateAllData = (): string[] => {
