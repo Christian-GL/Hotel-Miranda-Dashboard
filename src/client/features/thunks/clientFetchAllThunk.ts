@@ -40,8 +40,10 @@ export const ClientFetchAllThunk = createAsyncThunk<
                 return allClients
             }
             else {
-                const errorData = await request.json()
-                return rejectWithValue(errorData.message || 'Failed to fetch clients')
+                const errorData = await request.json().catch(() => null)
+                return rejectWithValue(
+                    errorData?.message ?? request.statusText ?? 'Error fetching clients'
+                )
             }
         }
         catch (error) {

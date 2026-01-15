@@ -31,7 +31,7 @@ export const ClientDeleteByIdThunk = createAsyncThunk<
             else {
                 const errorData = await request.json().catch(() => null)
                 return rejectWithValue(
-                    errorData?.message ?? request.statusText ?? 'Error fetching client'
+                    errorData?.message ?? request.statusText ?? 'Error deleting client'
                 )
             }
         }

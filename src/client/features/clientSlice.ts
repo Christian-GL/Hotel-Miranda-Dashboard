@@ -1,5 +1,5 @@
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 import { ApiStatus } from '../../common/enums/ApiStatus'
 import { ClientStateInterface } from '../interfaces/clientStateInterface'
@@ -13,8 +13,6 @@ import { ClientDeleteByIdThunk } from './thunks/clientDeleteByIdThunk'
 import { BookingCreateThunk } from '../../booking/features/thunks/bookingCreateThunk'
 import { BookingDeleteByIdThunk } from '../../booking/features/thunks/bookingDeleteByIdThunk'
 import { BookingUpdateThunk } from '../../booking/features/thunks/bookingUpdateThunk'
-import { ClientUpdateResponseInterface } from '../../common/interfaces/apiResponses/clientUpdateResponseInterface'
-import { ClientDeleteResponseInterface } from '../../common/interfaces/apiResponses/clientDeleteResponseInterface'
 
 
 export const ClientSlice = createSlice({
@@ -36,12 +34,12 @@ export const ClientSlice = createSlice({
                 state.allStatus = ApiStatus.pending
                 state.errorMessage = null
             })
-            .addCase(ClientFetchAllThunk.fulfilled, (state, action: PayloadAction<ClientInterface[]>) => {
+            .addCase(ClientFetchAllThunk.fulfilled, (state, action) => {
                 state.allStatus = ApiStatus.fulfilled
                 state.allData = action.payload
                 state.errorMessage = null
             })
-            .addCase(ClientFetchAllThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
+            .addCase(ClientFetchAllThunk.rejected, (state, action) => {
                 state.allStatus = ApiStatus.rejected
                 state.errorMessage = action.payload ?? 'Unknown error'
             })
@@ -50,12 +48,12 @@ export const ClientSlice = createSlice({
                 state.idStatus = ApiStatus.pending
                 state.errorMessage = null
             })
-            .addCase(ClientFetchByIDThunk.fulfilled, (state, action: PayloadAction<ClientInterface>) => {
+            .addCase(ClientFetchByIDThunk.fulfilled, (state, action) => {
                 state.idStatus = ApiStatus.fulfilled
                 state.idData = action.payload
                 state.errorMessage = null
             })
-            .addCase(ClientFetchByIDThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
+            .addCase(ClientFetchByIDThunk.rejected, (state, action) => {
                 state.idStatus = ApiStatus.rejected
                 state.errorMessage = action.payload ?? 'Unknown error'
             })
@@ -64,12 +62,12 @@ export const ClientSlice = createSlice({
                 state.createStatus = ApiStatus.pending
                 state.errorMessage = null
             })
-            .addCase(ClientCreateThunk.fulfilled, (state, action: PayloadAction<ClientInterface>) => {
+            .addCase(ClientCreateThunk.fulfilled, (state, action) => {
                 state.createStatus = ApiStatus.fulfilled
                 state.allData.push(action.payload)
                 state.errorMessage = null
             })
-            .addCase(ClientCreateThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
+            .addCase(ClientCreateThunk.rejected, (state, action) => {
                 state.createStatus = ApiStatus.rejected
                 state.errorMessage = action.payload ?? 'Unknown error'
             })
@@ -78,9 +76,8 @@ export const ClientSlice = createSlice({
                 state.updateStatus = ApiStatus.pending
                 state.errorMessage = null
             })
-            .addCase(ClientUpdateThunk.fulfilled, (state, action: PayloadAction<ClientUpdateResponseInterface>) => {
+            .addCase(ClientUpdateThunk.fulfilled, (state, action) => {
                 state.updateStatus = ApiStatus.fulfilled
-                state.errorMessage = null
                 const { clientUpdated } = action.payload
                 if (!clientUpdated) return
                 const index = state.allData.findIndex(client => client._id === clientUpdated._id)
@@ -90,9 +87,9 @@ export const ClientSlice = createSlice({
                 if (state.idData && state.idData._id === clientUpdated._id) {
                     state.idData = clientUpdated
                 }
-            }
-            )
-            .addCase(ClientUpdateThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
+                state.errorMessage = null
+            })
+            .addCase(ClientUpdateThunk.rejected, (state, action) => {
                 state.updateStatus = ApiStatus.rejected
                 state.errorMessage = action.payload ?? 'Unknown error'
             })
@@ -101,40 +98,52 @@ export const ClientSlice = createSlice({
                 state.deleteStatus = ApiStatus.pending
                 state.errorMessage = null
             })
-            .addCase(ClientDeleteByIdThunk.fulfilled, (state, action: PayloadAction<ClientDeleteResponseInterface>) => {
+            .addCase(ClientDeleteByIdThunk.fulfilled, (state, action) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const { clientId } = action.payload
                 state.allData = state.allData.filter(client => client._id !== clientId)
                 state.errorMessage = null
             })
-            .addCase(ClientDeleteByIdThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
+            .addCase(ClientDeleteByIdThunk.rejected, (state, action) => {
                 state.deleteStatus = ApiStatus.rejected
                 state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             // BOOKING:
             .addCase(BookingCreateThunk.fulfilled, (state, action) => {
-                const updatedClient = action.payload.updatedClient
-                if (state.idData && state.idData._id === updatedClient._id) {
+                const { updatedClient } = action.payload
+                if (!updatedClient) return
+                const index = state.allData.findIndex(c => c._id === updatedClient._id)
+                if (index !== -1) {
+                    state.allData[index] = updatedClient
+                }
+                if (state.idData?._id === updatedClient._id) {
                     state.idData = updatedClient
                 }
             })
             .addCase(BookingUpdateThunk.fulfilled, (state, action) => {
-                const updatedClient = action.payload.updatedClient
-                if (state.idData && state.idData._id === updatedClient._id) {
+                const { updatedClient } = action.payload
+                if (!updatedClient) return
+                const index = state.allData.findIndex(c => c._id === updatedClient._id)
+                if (index !== -1) {
+                    state.allData[index] = updatedClient
+                }
+                if (state.idData?._id === updatedClient._id) {
                     state.idData = updatedClient
                 }
             })
             .addCase(BookingDeleteByIdThunk.fulfilled, (state, action) => {
-                const updatedClient = action.payload.updatedClient
-                if (state.idData && state.idData._id === updatedClient._id) {
-                    state.idData = updatedClient
-                }
-                const index = state.allData.findIndex(client => client._id === updatedClient._id)
+                const { updatedClient } = action.payload
+                if (!updatedClient) return
+                const index = state.allData.findIndex(c => c._id === updatedClient._id)
                 if (index !== -1) {
                     state.allData[index] = updatedClient
                 }
+                if (state.idData?._id === updatedClient._id) {
+                    state.idData = updatedClient
+                }
             })
+
     }
 })
 

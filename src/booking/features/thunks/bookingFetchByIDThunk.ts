@@ -1,26 +1,20 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { BookingInterface } from '../../interfaces/bookingInterface'
-import { OptionYesNo } from "common/enums/optionYesNo"
 
 
-const bookingDefaultIfError: BookingInterface = {
-    _id: '',
-    order_date: new Date(),
-    check_in_date: new Date(),
-    check_out_date: new Date(),
-    price: 0,
-    special_request: '',
-    isArchived: OptionYesNo.yes,
-    room_id_list: [],
-    client_id: ''
-}
-
-export const BookingFetchByIDThunk = createAsyncThunk
-    ("booking/fetchById", async (bookingId: string) => {
+export const BookingFetchByIDThunk = createAsyncThunk<
+    BookingInterface,
+    string,
+    { rejectValue: string }
+>(
+    "booking/fetchById",
+    async (bookingId, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return bookingDefaultIfError
+        if (!apiToken) {
+            return rejectWithValue('No authentication token found')
+        }
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_BOOKINGS}/${bookingId}`, {
@@ -46,13 +40,14 @@ export const BookingFetchByIDThunk = createAsyncThunk
                 return booking
             }
             else {
-                console.error('Error: ', request.statusText)
-                return bookingDefaultIfError
+                const errorData = await request.json().catch(() => null)
+                return rejectWithValue(
+                    errorData?.message ?? request.statusText ?? 'Error fetching booking'
+                )
             }
         }
         catch (error) {
-            console.error(error)
-            return bookingDefaultIfError
+            return rejectWithValue('Network or server error')
         }
 
     })

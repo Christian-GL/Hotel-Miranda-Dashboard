@@ -1,12 +1,20 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
+import { BookingDeleteResponseInterface } from '../../../common/interfaces/apiResponses/bookingDeleteResponseInterface'
 
 
-export const BookingDeleteByIdThunk = createAsyncThunk
-    ("booking/deleteById", async (bookingId: string) => {
+export const BookingDeleteByIdThunk = createAsyncThunk<
+    BookingDeleteResponseInterface,
+    string,
+    { rejectValue: string }
+>(
+    "booking/deleteById",
+    async (bookingId, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return "0"
+        if (!apiToken) {
+            return rejectWithValue('No authentication token found')
+        }
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_BOOKINGS}/${bookingId}`, {
@@ -17,17 +25,17 @@ export const BookingDeleteByIdThunk = createAsyncThunk
                 },
             })
             if (request.ok) {
-                const responseData = await request.json()
-                return responseData
+                return await request.json() as BookingDeleteResponseInterface
             }
             else {
-                console.log("Error: ", request.statusText)
-                return "0"
+                const errorData = await request.json().catch(() => null)
+                return rejectWithValue(
+                    errorData?.message ?? request.statusText ?? 'Error deleting booking'
+                )
             }
         }
         catch (error) {
-            console.log(error)
-            return "0"
+            return rejectWithValue('Network or server error')
         }
 
     })

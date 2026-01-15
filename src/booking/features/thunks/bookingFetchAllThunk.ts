@@ -1,46 +1,20 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { BookingInterface } from '../../interfaces/bookingInterface'
-import { OptionYesNo } from "common/enums/optionYesNo"
 
 
-// !!! VERSIÓN ANTERIOR
-// const bookingDefaultIfError: BookingInterfaceRoom = {
-//     _id: "0",
-//     photo: '',
-//     full_name_guest: '',
-//     order_date: '',
-//     check_in_date: '',
-//     check_out_date: '',
-//     special_request: '',
-//     room_data: {
-//         _id: "0",
-//         photos: [],
-//         number: '0',
-//         type: RoomType.singleBed,
-//         amenities: [],
-//         price: 0,
-//         discount: 0,
-//         booking_id_list: []
-//     }
-// }
-const bookingDefaultIfError: BookingInterface = {
-    _id: '',
-    order_date: new Date(),
-    check_in_date: new Date(),
-    check_out_date: new Date(),
-    price: 0,
-    special_request: '',
-    isArchived: OptionYesNo.yes,
-    room_id_list: [],
-    client_id: ''
-}
-
-export const BookingFetchAllThunk = createAsyncThunk
-    ("booking/fetchAll", async () => {
+export const BookingFetchAllThunk = createAsyncThunk<
+    BookingInterface[],
+    void,
+    { rejectValue: string }
+>(
+    "booking/fetchAll",
+    async (_, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
-        if (!apiToken) return [bookingDefaultIfError]
+        if (!apiToken) {
+            return rejectWithValue('No authentication token found')
+        }
 
         try {
             const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_BOOKINGS}`, {
@@ -69,13 +43,14 @@ export const BookingFetchAllThunk = createAsyncThunk
                 return allBookings
             }
             else {
-                console.error('Error: ', request.statusText)
-                return [bookingDefaultIfError]
+                const errorData = await request.json().catch(() => null)
+                return rejectWithValue(
+                    errorData?.message ?? request.statusText ?? 'Error fetching bookings'
+                )
             }
         }
         catch (error) {
-            console.error(error)
-            return [bookingDefaultIfError]
+            return rejectWithValue('Network or server error')
         }
 
     })

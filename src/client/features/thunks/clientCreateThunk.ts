@@ -32,7 +32,7 @@ export const ClientCreateThunk = createAsyncThunk<
             else {
                 const errorData = await request.json().catch(() => null)
                 return rejectWithValue(
-                    errorData?.message ?? request.statusText ?? 'Error fetching client'
+                    errorData?.message ?? request.statusText ?? 'Error creating client'
                 )
             }
         }

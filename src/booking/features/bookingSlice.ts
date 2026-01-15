@@ -1,5 +1,5 @@
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 import { ApiStatus } from '../../common/enums/ApiStatus'
 import { BookingStateInterface } from '../interfaces/bookingStateInterface'
@@ -12,8 +12,6 @@ import { BookingUpdateThunk } from './thunks/bookingUpdateThunk'
 import { BookingDeleteByIdThunk } from './thunks/bookingDeleteByIdThunk'
 import { RoomUpdateThunk } from '../../room/features/thunks/roomUpdateThunk'
 import { RoomDeleteByIdThunk } from '../../room/features/thunks/roomDeleteByIdThunk'
-import { ClientInterface } from '../../client/interfaces/clientInterface'
-import { RoomInterface } from '../../room/interfaces/roomInterface'
 
 
 export const BookingSlice = createSlice({
@@ -26,92 +24,91 @@ export const BookingSlice = createSlice({
         createStatus: ApiStatus.idle,
         updateStatus: ApiStatus.idle,
         deleteStatus: ApiStatus.idle,
-        error: false
+        errorMessage: null
     } as BookingStateInterface,
-    reducers: {
-        deleteBooking: (state, action: PayloadAction<string>) => {
-            const idToDelete = action.payload
-            state.allData = state.allData.filter(booking => booking._id !== idToDelete)
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(BookingFetchAllThunk.pending, (state) => {
                 state.allStatus = ApiStatus.pending
+                state.errorMessage = null
             })
-            .addCase(BookingFetchAllThunk.fulfilled, (state, action: PayloadAction<BookingInterface[]>) => {
+            .addCase(BookingFetchAllThunk.fulfilled, (state, action) => {
                 state.allStatus = ApiStatus.fulfilled
                 state.allData = action.payload
+                state.errorMessage = null
             })
-            .addCase(BookingFetchAllThunk.rejected, (state) => {
-                state.error = true
+            .addCase(BookingFetchAllThunk.rejected, (state, action) => {
                 state.allStatus = ApiStatus.rejected
+                state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             .addCase(BookingFetchByIDThunk.pending, (state) => {
                 state.idStatus = ApiStatus.pending
+                state.errorMessage = null
             })
-            .addCase(BookingFetchByIDThunk.fulfilled, (state, action: PayloadAction<BookingInterface>) => {
+            .addCase(BookingFetchByIDThunk.fulfilled, (state, action) => {
                 state.idStatus = ApiStatus.fulfilled
                 state.idData = action.payload
+                state.errorMessage = null
             })
-            .addCase(BookingFetchByIDThunk.rejected, (state) => {
-                state.error = true
+            .addCase(BookingFetchByIDThunk.rejected, (state, action) => {
                 state.idStatus = ApiStatus.rejected
+                state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             .addCase(BookingCreateThunk.pending, (state) => {
                 state.createStatus = ApiStatus.pending
+                state.errorMessage = null
             })
-            .addCase(BookingCreateThunk.fulfilled, (state, action: PayloadAction<{
-                booking: BookingInterface
-                updatedRooms: RoomInterface[]
-                updatedClient: ClientInterface
-            }>) => {
+            .addCase(BookingCreateThunk.fulfilled, (state, action) => {
                 state.createStatus = ApiStatus.fulfilled
-                state.allData.push(action.payload.booking)
-            })
-            .addCase(BookingCreateThunk.rejected, (state) => {
-                state.error = true
+                const { booking } = action.payload
+                state.allData.push(booking)
+                state.idData = booking
+                state.errorMessage = null
+            }
+            )
+            .addCase(BookingCreateThunk.rejected, (state, action) => {
                 state.createStatus = ApiStatus.rejected
+                state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             .addCase(BookingUpdateThunk.pending, (state) => {
                 state.updateStatus = ApiStatus.pending
+                state.errorMessage = null
             })
-            .addCase(BookingUpdateThunk.fulfilled, (state, action: PayloadAction<{
-                booking: BookingInterface
-                updatedRooms: RoomInterface[]
-                updatedClient: ClientInterface
-            }>) => {
+            .addCase(BookingUpdateThunk.fulfilled, (state, action) => {
                 state.updateStatus = ApiStatus.fulfilled
-
-                const bookingToUpdate = action.payload.booking
-                const index = state.allData.findIndex(b => b._id === bookingToUpdate._id)
+                const { booking } = action.payload
+                if (!booking) return
+                const index = state.allData.findIndex(b => b._id === booking._id)
                 if (index !== -1) {
-                    state.allData[index] = bookingToUpdate
+                    state.allData[index] = booking
                 }
-
-                if (state.idData && state.idData._id === bookingToUpdate._id) {
-                    state.idData = bookingToUpdate
+                if (state.idData?._id === booking._id) {
+                    state.idData = booking
                 }
+                state.errorMessage = null
             })
-            .addCase(BookingUpdateThunk.rejected, (state) => {
-                state.error = true
+            .addCase(BookingUpdateThunk.rejected, (state, action) => {
                 state.updateStatus = ApiStatus.rejected
+                state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             .addCase(BookingDeleteByIdThunk.pending, (state) => {
                 state.deleteStatus = ApiStatus.pending
+                state.errorMessage = null
             })
             .addCase(BookingDeleteByIdThunk.fulfilled, (state, action) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const { bookingId } = action.payload
                 state.allData = state.allData.filter(booking => booking._id !== bookingId)
+                state.errorMessage = null
             })
-            .addCase(BookingDeleteByIdThunk.rejected, (state) => {
-                state.error = true
+            .addCase(BookingDeleteByIdThunk.rejected, (state, action) => {
                 state.deleteStatus = ApiStatus.rejected
+                state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             // ROOM:
@@ -136,8 +133,6 @@ export const BookingSlice = createSlice({
     }
 })
 
-export const { deleteBooking } = BookingSlice.actions
-
 export const getBookingAllData = (state: RootState): BookingInterface[] => state.bookingSlice.allData
 export const getBookingIdData = (state: RootState): BookingInterface => state.bookingSlice.idData
 
@@ -147,4 +142,4 @@ export const getBookingCreateStatus = (state: RootState) => state.bookingSlice.c
 export const getBookingUpdateStatus = (state: RootState) => state.bookingSlice.updateStatus
 export const getBookingDeleteStatus = (state: RootState) => state.bookingSlice.deleteStatus
 
-export const getBookingError = (state: RootState) => state.bookingSlice.error
+export const getBookingErrorMessage = (state: RootState) => state.bookingSlice.errorMessage

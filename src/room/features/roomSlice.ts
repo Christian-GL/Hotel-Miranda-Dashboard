@@ -1,5 +1,5 @@
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 import { ApiStatus } from '../../common/enums/ApiStatus'
 import { RoomStateInterface } from '../interfaces/roomStateInterface'
@@ -36,12 +36,12 @@ export const RoomSlice = createSlice({
                 state.allStatus = ApiStatus.pending
                 state.errorMessage = null
             })
-            .addCase(RoomFetchAllThunk.fulfilled, (state, action: PayloadAction<RoomInterface[]>) => {
+            .addCase(RoomFetchAllThunk.fulfilled, (state, action) => {
                 state.allStatus = ApiStatus.fulfilled
                 state.allData = action.payload
                 state.errorMessage = null
             })
-            .addCase(RoomFetchAllThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
+            .addCase(RoomFetchAllThunk.rejected, (state, action) => {
                 state.allStatus = ApiStatus.rejected
                 state.errorMessage = action.payload ?? 'Unknown error'
             })
@@ -50,12 +50,12 @@ export const RoomSlice = createSlice({
                 state.idStatus = ApiStatus.pending
                 state.errorMessage = null
             })
-            .addCase(RoomFetchByIDThunk.fulfilled, (state, action: PayloadAction<RoomInterface>) => {
+            .addCase(RoomFetchByIDThunk.fulfilled, (state, action) => {
                 state.idStatus = ApiStatus.fulfilled
                 state.idData = action.payload
                 state.errorMessage = null
             })
-            .addCase(RoomFetchByIDThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
+            .addCase(RoomFetchByIDThunk.rejected, (state, action) => {
                 state.idStatus = ApiStatus.rejected
                 state.errorMessage = action.payload ?? 'Unknown error'
             })
@@ -64,12 +64,12 @@ export const RoomSlice = createSlice({
                 state.createStatus = ApiStatus.pending
                 state.errorMessage = null
             })
-            .addCase(RoomCreateThunk.fulfilled, (state, action: PayloadAction<RoomInterface>) => {
+            .addCase(RoomCreateThunk.fulfilled, (state, action) => {
                 state.createStatus = ApiStatus.fulfilled
                 state.allData.push(action.payload)
                 state.errorMessage = null
             })
-            .addCase(RoomCreateThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
+            .addCase(RoomCreateThunk.rejected, (state, action) => {
                 state.createStatus = ApiStatus.rejected
                 state.errorMessage = action.payload ?? 'Unknown error'
             })
@@ -78,7 +78,7 @@ export const RoomSlice = createSlice({
                 state.updateStatus = ApiStatus.pending
                 state.errorMessage = null
             })
-            .addCase(RoomUpdateThunk.fulfilled, (state, action: PayloadAction<RoomUpdateResponseInterface>) => {
+            .addCase(RoomUpdateThunk.fulfilled, (state, action) => {
                 state.updateStatus = ApiStatus.fulfilled
                 const { roomUpdated } = action.payload
                 if (!roomUpdated) return
@@ -91,7 +91,7 @@ export const RoomSlice = createSlice({
                 }
                 state.errorMessage = null
             })
-            .addCase(RoomUpdateThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
+            .addCase(RoomUpdateThunk.rejected, (state, action) => {
                 state.updateStatus = ApiStatus.rejected
                 state.errorMessage = action.payload ?? 'Unknown error'
             })
@@ -100,7 +100,7 @@ export const RoomSlice = createSlice({
                 state.deleteStatus = ApiStatus.pending
                 state.errorMessage = null
             })
-            .addCase(RoomDeleteByIdThunk.fulfilled, (state, action: PayloadAction<RoomDeleteResponseInterface>) => {
+            .addCase(RoomDeleteByIdThunk.fulfilled, (state, action) => {
                 state.deleteStatus = ApiStatus.fulfilled
                 const { roomId } = action.payload
                 state.allData = state.allData.filter(room => room._id !== roomId)
@@ -109,36 +109,45 @@ export const RoomSlice = createSlice({
                 }
             }
             )
-            .addCase(RoomDeleteByIdThunk.rejected, (state, action: PayloadAction<string | undefined>) => {
+            .addCase(RoomDeleteByIdThunk.rejected, (state, action) => {
                 state.deleteStatus = ApiStatus.rejected
                 state.errorMessage = action.payload ?? 'Unknown error'
             })
 
             // BOOKING
             .addCase(BookingCreateThunk.fulfilled, (state, action) => {
-                const updatedRooms: RoomInterface[] = action.payload.updatedRooms
+                const updatedRooms = action.payload.updatedRooms ?? []
                 updatedRooms.forEach(updatedRoom => {
                     const index = state.allData.findIndex(r => r._id === updatedRoom._id)
                     if (index !== -1) {
                         state.allData[index] = updatedRoom
+                    }
+                    if (state.idData?._id === updatedRoom._id) {
+                        state.idData = updatedRoom
                     }
                 })
             })
             .addCase(BookingUpdateThunk.fulfilled, (state, action) => {
-                const updatedRooms: RoomInterface[] = action.payload.updatedRooms
+                const updatedRooms = action.payload.updatedRooms ?? []
                 updatedRooms.forEach(updatedRoom => {
                     const index = state.allData.findIndex(r => r._id === updatedRoom._id)
                     if (index !== -1) {
                         state.allData[index] = updatedRoom
                     }
+                    if (state.idData?._id === updatedRoom._id) {
+                        state.idData = updatedRoom
+                    }
                 })
             })
             .addCase(BookingDeleteByIdThunk.fulfilled, (state, action) => {
-                const { updatedRooms } = action.payload
-                updatedRooms.forEach((updatedRoom: RoomInterface) => {
+                const updatedRooms = action.payload.updatedRooms ?? []
+                updatedRooms.forEach(updatedRoom => {
                     const index = state.allData.findIndex(r => r._id === updatedRoom._id)
                     if (index !== -1) {
                         state.allData[index] = updatedRoom
+                    }
+                    if (state.idData?._id === updatedRoom._id) {
+                        state.idData = updatedRoom
                     }
                 })
             })
