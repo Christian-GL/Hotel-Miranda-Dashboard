@@ -94,23 +94,23 @@ export const RoomCreate = () => {
 
         return allErrorMessages
     }
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (validateAllData().length > 0) {
-            validateAllData().forEach(error => ToastifyError(error))
+        const errors = validateAllData()
+        if (errors.length > 0) {
+            errors.forEach(error => ToastifyError(error))
             return
         }
 
-        dispatch(RoomCreateThunk(newRoom))
-            .then(() => {
-                ToastifySuccess('Room created', () => {
-                    navigate('../')
-                })
-            })
-            .catch((error) => {
-                ToastifyError(error)
-            })
+        try {
+            await dispatch(RoomCreateThunk(newRoom))
+                .unwrap()
+                .then(() => ToastifySuccess('Room created', () => navigate('../')))
+        }
+        catch (error) {
+            ToastifyError(String(error))
+        }
     }
 
 

@@ -74,10 +74,9 @@ export const ClientCreate = () => {
         }
 
         try {
-            await dispatch(ClientCreateThunk(newClient)).unwrap()
-            ToastifySuccess('Client created', () => {
-                navigate('../')
-            })
+            await dispatch(ClientCreateThunk(newClient))
+                .unwrap()
+                .then(() => ToastifySuccess('Client created', () => navigate('../')))
         }
         catch (error) {
             ToastifyError(String(error))

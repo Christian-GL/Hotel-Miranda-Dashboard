@@ -4,6 +4,6 @@ import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
 
 
 export interface RoomUpdateResponseInterface {
-    roomUpdated: RoomInterface | null
+    roomUpdated: RoomInterface
     updatedBookings: BookingInterface[]
 }

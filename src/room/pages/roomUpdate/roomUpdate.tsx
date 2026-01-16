@@ -135,23 +135,24 @@ export const RoomUpdate = () => {
 
         return allErrorMessages
     }
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (validateAllData().length > 0) {
-            validateAllData().forEach(error => ToastifyError(error))
+        const errors = validateAllData()
+        if (errors.length > 0) {
+            errors.forEach(error => ToastifyError(error))
             return
         }
 
-        dispatch(RoomUpdateThunk({ idRoom: roomUpdated._id, updatedRoomData: roomUpdated }))
-            .then(() => {
-                ToastifySuccess('Room updated', () => {
-                    navigate('../')
-                })
-            })
-            .catch((error) => {
-                ToastifyError(error)
-            })
+        try {
+            await dispatch(RoomUpdateThunk({ idRoom: roomUpdated._id, updatedRoomData: roomUpdated }))
+                .unwrap()
+                .then(() => ToastifySuccess('Room updated', () => navigate('../')))
+        }
+        catch (error) {
+            ToastifyError(String(error))
+        }
+
     }
 
 

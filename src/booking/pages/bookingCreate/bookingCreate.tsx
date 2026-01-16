@@ -75,11 +75,12 @@ export const BookingCreate = () => {
 
         return allErrorMessages
     }
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (validateAllData().length > 0) {
-            validateAllData().forEach(error => ToastifyError(error))
+        const errors = validateAllData()
+        if (errors.length > 0) {
+            errors.forEach(error => ToastifyError(error))
             return
         }
 
@@ -88,15 +89,14 @@ export const BookingCreate = () => {
             order_date: new Date()
         }
 
-        dispatch(BookingCreateThunk(newBookingToDispatch))
-            .then(() => {
-                ToastifySuccess('Booking Created', () => {
-                    navigate('../')
-                })
-            })
-            .catch((error) => {
-                ToastifyError(error)
-            })
+        try {
+            await dispatch(BookingCreateThunk(newBookingToDispatch))
+                .unwrap()
+                .then(() => ToastifySuccess('Booking created', () => navigate('../')))
+        }
+        catch (error) {
+            ToastifyError(String(error))
+        }
     }
 
 

@@ -135,9 +135,8 @@ export const UserUpdate = () => {
 
         try {
             await dispatch(UserUpdateThunk({ idUser: userUpdated._id, updatedUserData: userUpdated }))
-            ToastifySuccess('User updated', () => {
-                navigate('../')
-            })
+                .unwrap()
+                .then(() => ToastifySuccess('User updated', () => navigate('../')))
         }
         catch (error) {
             ToastifyError(String(error))

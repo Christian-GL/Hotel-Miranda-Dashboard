@@ -13,8 +13,6 @@ import { RoomDeleteByIdThunk } from './thunks/roomDeleteByIdThunk'
 import { BookingCreateThunk } from '../../booking/features/thunks/bookingCreateThunk'
 import { BookingDeleteByIdThunk } from '../../booking/features/thunks/bookingDeleteByIdThunk'
 import { BookingUpdateThunk } from '../../booking/features/thunks/bookingUpdateThunk'
-import { RoomUpdateResponseInterface } from '../../common/interfaces/apiResponses/roomUpdateResponseInterface'
-import { RoomDeleteResponseInterface } from '../../common/interfaces/apiResponses/roomDeleteResponseInterface'
 
 
 export const RoomSlice = createSlice({
@@ -86,7 +84,7 @@ export const RoomSlice = createSlice({
                 if (index !== -1) {
                     state.allData[index] = roomUpdated
                 }
-                if (state.idData?._id === roomUpdated._id) {
+                if (state.idData && state.idData._id === roomUpdated._id) {
                     state.idData = roomUpdated
                 }
                 state.errorMessage = null

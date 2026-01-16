@@ -109,10 +109,9 @@ export const UserCreate = () => {
         }
 
         try {
-            await dispatch(UserCreateThunk(newUser)).unwrap()
-            ToastifySuccess('User created', () => {
-                navigate('../')
-            })
+            await dispatch(UserCreateThunk(newUser))
+                .unwrap()
+                .then(() => ToastifySuccess('User created', () => navigate('../')))
         }
         catch (error) {
             ToastifyError(String(error))
