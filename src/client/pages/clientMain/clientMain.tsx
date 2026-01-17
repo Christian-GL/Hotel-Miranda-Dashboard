@@ -62,7 +62,7 @@ export const ClientMain = () => {
     const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
-    const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.all)
+    const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
     const [filteredClients, setFilteredClients] = useState<ClientInterface[]>([])
     const sortableColumns: ClientNameColumn[] = [
         ClientNameColumn.customerInfo
