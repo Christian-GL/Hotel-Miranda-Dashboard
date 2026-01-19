@@ -14,6 +14,7 @@ import { BookingCreateThunk } from '../../booking/features/thunks/bookingCreateT
 import { BookingDeleteByIdThunk } from '../../booking/features/thunks/bookingDeleteByIdThunk'
 import { BookingUpdateThunk } from '../../booking/features/thunks/bookingUpdateThunk'
 import { RoomUpdateThunk } from '../../room/features/thunks/roomUpdateThunk'
+import { RoomDeleteByIdThunk } from '../../room/features/thunks/roomDeleteByIdThunk'
 
 
 export const ClientSlice = createSlice({
@@ -160,6 +161,19 @@ export const ClientSlice = createSlice({
                 if (updatedClients.length > 0) {
                     state.allData = [...state.allData]
                 }
+            })
+            .addCase(RoomDeleteByIdThunk.fulfilled, (state, action) => {
+                const updatedClients = action.payload.updatedClients ?? []
+
+                updatedClients.forEach(client => {
+                    const index = state.allData.findIndex(c => c._id === client._id)
+                    if (index !== -1) {
+                        state.allData[index] = client
+                    }
+                    if (state.idData?._id === client._id) {
+                        state.idData = client
+                    }
+                })
             })
 
     }
