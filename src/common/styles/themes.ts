@@ -46,6 +46,9 @@ export const themeLight = {
     textForm: color.blackSmooth,
     textLabelForm: color.blackSmooth,
     textLabelStatusForm: color.greenSmoothX2,
+    buttonFormAdd: color.green,
+    buttonFormDelete: color.red,
+    buttonFormText: color.white,
 
     backgroundTable: color.white,
     nameTable: color.greenSmoothX2,
@@ -149,6 +152,9 @@ export const themeDark = {
     textForm: color.blackSmooth,
     textLabelForm: color.whiteSmooth,
     textLabelStatusForm: color.greenSmoothX4,
+    buttonFormAdd: color.green,
+    buttonFormDelete: color.red,
+    buttonFormText: color.white,
 
     backgroundTable: color.graySmoothX2,
     nameTable: color.greenSmoothX4,

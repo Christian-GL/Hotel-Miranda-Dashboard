@@ -20,8 +20,8 @@ import {
     validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
 } from '../../../common/utils/commonValidator'
 import {
-    GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
-    LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
+    GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntry,
+    Text, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
@@ -57,11 +57,8 @@ export const BookingUpdate = () => {
         room_id_list: [],
         client_id: ''
     })
-    const { handleStringChange,
-        handleDateChange,
-        handlePhotoChange,
+    const { handleDateChange,
         handleTextAreaChange,
-        handleSelectChange
     } = createFormHandlers(setBookingUpdated)
     // const roomsAvailable = roomAll.filter(room => !validateDateIsOccupied(bookingUpdated, bookingAll.filter(booking => booking.room_data._id === room._id)).length)
     // const currentRoom = bookingUpdated.room_id ?
@@ -86,7 +83,7 @@ export const BookingUpdate = () => {
                 special_request: bookingById.special_request || '',
                 isArchived: bookingById.isArchived || OptionYesNo.yes,
                 room_id_list: bookingById.room_id_list || [],
-                client_id: bookingById.client_id || ''
+                client_id: bookingById.client_id || '0'
             })
         }
         else if (bookingByIdLoading === ApiStatus.rejected && bookingErrorMessage) { ToastifyError(bookingErrorMessage) }
@@ -135,26 +132,26 @@ export const BookingUpdate = () => {
         <GlobalDateTimeStyles />
 
         <bookingUpdateStyles.SectionPageBookingUpdate>
-            <DivCtnForm>
-                <DivIcon>
-                    <DivCtnIcons>
+            <CtnForm>
+                <CtnPrimaryIcon>
+                    <CtnSecondaryIcon>
                         <IconCalendar />
                         <IconUpdate />
-                    </DivCtnIcons>
-                </DivIcon>
+                    </CtnSecondaryIcon>
+                </CtnPrimaryIcon>
                 <TitleForm>Update Booking #{bookingUpdated._id}</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
-                    <DivCtnEntry>
-                        <LabelText>Check in date</LabelText>
+                    <CtnEntry>
+                        <Text>Check in date</Text>
                         <InputDate name="check_in_date" value={formatDateForInput(bookingUpdated.check_in_date)} type="datetime-local" onChange={handleDateChange} />
 
-                        <LabelText minWidth="10rem" margin="0 0 0 5rem">Check out date</LabelText>
+                        <Text minWidth="10rem" margin="0 0 0 5rem">Check out date</Text>
                         <InputDate name="check_out_date" value={formatDateForInput(bookingUpdated.check_out_date)} type="datetime-local" onChange={handleDateChange} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Room number</LabelText>
+                    <CtnEntry>
+                        <Text>Room number</Text>
                         {/* !!! ACTUALIZAR AL TENER LOS DATOS: */}
                         {/* <Select
                             name="room_id"
@@ -188,18 +185,18 @@ export const BookingUpdate = () => {
                                     }
                                 </>)}
                         </Select> */}
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Special request</LabelText>
+                    <CtnEntry>
+                        <Text>Special request</Text>
                         <TextAreaJobDescription name="special_request" value={bookingUpdated.special_request} onChange={handleTextAreaChange} ></TextAreaJobDescription>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
                     <DivButtonCreateUser>
                         <ButtonCreate type="submit" children='⮂ Update Booking' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
-            </DivCtnForm>
+            </CtnForm>
         </bookingUpdateStyles.SectionPageBookingUpdate >
     </>)
 }

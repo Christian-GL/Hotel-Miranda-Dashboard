@@ -24,8 +24,8 @@ import {
     validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
 } from '../../../common/utils/commonValidator'
 import {
-    GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
-    LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
+    GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntry,
+    Text, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getUserIdData, getUserIdStatus, getUserErrorMessage } from "../../features/userSlice"
@@ -149,55 +149,55 @@ export const UserUpdate = () => {
         <GlobalDateTimeStyles />
 
         <userUpdateStyles.SectionPageUserUpdate>
-            <DivCtnForm>
-                <DivIcon>
-                    <DivCtnIcons>
+            <CtnForm>
+                <CtnPrimaryIcon>
+                    <CtnSecondaryIcon>
                         <IconUser />
                         <IconUpdate />
-                    </DivCtnIcons>
-                </DivIcon>
+                    </CtnSecondaryIcon>
+                </CtnPrimaryIcon>
                 <TitleForm>Update User #{userUpdated._id}</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
-                    <DivCtnEntry>
-                        <LabelText>Photo</LabelText>
+                    <CtnEntry>
+                        <Text>Photo</Text>
                         <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
                         <ImgUser src={
                             userUpdated.photo ?
                                 userUpdated.photo :
                                 userDefault
                         } />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Full name</LabelText>
+                    <CtnEntry>
+                        <Text>Full name</Text>
                         <InputText name="full_name" value={userUpdated.full_name} onChange={handleStringChange} />
 
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Email</LabelText>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Email</Text>
                         <InputText name="email" value={userUpdated.email} onChange={handleStringChange} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Client</LabelText>
+                    <CtnEntry>
+                        <Text>Client</Text>
                         <InputText name="phone_number" value={userUpdated.phone_number} onChange={handleStringChange} />
 
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Role</LabelText>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Role</Text>
                         <Select name="role" value={userUpdated.role} onChange={handleSelectChange}>
                             <Option value={Role.admin}>{capitalizeFirstLetter(Role.admin)}</Option>
                             <Option value={Role.user}>{capitalizeFirstLetter(Role.user)}</Option>
                         </Select>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
+                    <CtnEntry>
+                        <Text>Start Date</Text>
                         <InputDate name="start_date" type="datetime-local" value={formatDateForInput(userUpdated.start_date)} onChange={handleDateChange} />
 
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">End Date</LabelText>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">End Date</Text>
                         <InputDate name="end_date" type="datetime-local" value={formatDateForInput(userUpdated.end_date)} onChange={handleDateChange} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Password</LabelText>
+                    <CtnEntry>
+                        <Text>Password</Text>
                         {passwordVisible ?
                             <InputText name="password" value={userUpdated.password} type="password" onChange={handleStringChange} /> :
                             <InputText name="password" value={userUpdated.password} onChange={handleStringChange} />
@@ -208,26 +208,26 @@ export const UserUpdate = () => {
                                 <EyeOpen onClick={() => setPasswordVisible(!passwordVisible)} />
                             }
                         </DivButtonHidePassword>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Job Position</LabelText>
+                    <CtnEntry>
+                        <Text>Job Position</Text>
                         <TextAreaJobDescription name="job_position" value={userUpdated.job_position} onChange={handleTextAreaChange}></TextAreaJobDescription>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Archived</LabelText>
+                    <CtnEntry>
+                        <Text>Archived</Text>
                         <Select name="isArchived" value={userUpdated.isArchived} onChange={handleSelectChange}>
                             <Option value={OptionYesNo.no}>No</Option>
                             <Option value={OptionYesNo.yes}>Yes</Option>
                         </Select>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
                     <DivButtonCreateUser>
                         <ButtonCreate type="submit" children='⮂ Update User' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
-            </DivCtnForm>
+            </CtnForm>
         </userUpdateStyles.SectionPageUserUpdate>
 
     </>)

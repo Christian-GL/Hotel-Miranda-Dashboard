@@ -22,8 +22,8 @@ import {
     validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
 } from '../../../common/utils/commonValidator'
 import {
-    GlobalDateTimeStyles, DivCtnForm, DivIcon, DivCtnIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, DivCtnEntry,
-    LabelText, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
+    GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntry,
+    Text, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getUserAllData, getUserAllStatus, getUserErrorMessage } from "../../features/userSlice"
@@ -125,55 +125,55 @@ export const UserCreate = () => {
         <GlobalDateTimeStyles />
 
         <userCreateStyles.SectionPageUserCreate>
-            <DivCtnForm>
-                <DivIcon>
-                    <DivCtnIcons>
+            <CtnForm>
+                <CtnPrimaryIcon>
+                    <CtnSecondaryIcon>
                         <IconUser />
                         <IconPlus />
-                    </DivCtnIcons>
-                </DivIcon>
+                    </CtnSecondaryIcon>
+                </CtnPrimaryIcon>
                 <TitleForm>Create User</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
-                    <DivCtnEntry>
-                        <LabelText>Photo</LabelText>
+                    <CtnEntry>
+                        <Text>Photo</Text>
                         <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
                         <ImgUser src={
                             newUser.photo ?
                                 newUser.photo :
                                 userDefault
                         } />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Full name</LabelText>
+                    <CtnEntry>
+                        <Text>Full name</Text>
                         <InputText name="full_name" onChange={handleStringChange} />
 
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Email</LabelText>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Email</Text>
                         <InputText name="email" onChange={handleStringChange} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Phone number</LabelText>
+                    <CtnEntry>
+                        <Text>Phone number</Text>
                         <InputText name="phone_number" onChange={handleStringChange} />
 
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Role</LabelText>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Role</Text>
                         <Select name="role" onChange={handleSelectChange}>
                             <Option value={Role.admin}>{capitalizeFirstLetter(Role.admin)}</Option>
                             <Option value={Role.user}>{capitalizeFirstLetter(Role.user)}</Option>
                         </Select>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Start Date</LabelText>
+                    <CtnEntry>
+                        <Text>Start Date</Text>
                         <InputDate name="start_date" type="datetime-local" onChange={handleDateChange} />
 
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">End Date</LabelText>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">End Date</Text>
                         <InputDate name="end_date" type="datetime-local" onChange={handleDateChange} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Password</LabelText>
+                    <CtnEntry>
+                        <Text>Password</Text>
                         {passwordVisible ?
                             <InputText name="password" type="password" onChange={handleStringChange} /> :
                             <InputText name="password" onChange={handleStringChange} />
@@ -184,18 +184,18 @@ export const UserCreate = () => {
                                 <EyeOpen onClick={() => setPasswordVisible(!passwordVisible)} />
                             }
                         </DivButtonHidePassword>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Job Position</LabelText>
+                    <CtnEntry>
+                        <Text>Job Position</Text>
                         <TextAreaJobDescription name="job_position" onChange={handleTextAreaChange}></TextAreaJobDescription>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
                     <DivButtonCreateUser>
                         <ButtonCreate type="submit" children='+ Create User' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
-            </DivCtnForm>
+            </CtnForm>
         </userCreateStyles.SectionPageUserCreate>
     </>)
 }

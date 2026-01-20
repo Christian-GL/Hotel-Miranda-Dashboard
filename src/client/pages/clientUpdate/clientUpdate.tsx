@@ -16,8 +16,8 @@ import { ClientInterface } from "../../interfaces/clientInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconClient, IconUpdate, TitleForm,
-    Form, DivCtnEntry, LabelText, InputText, LabelTextInfoBooking, DivButtonCreateUser
+    CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconClient, IconUpdate, TitleForm,
+    Form, CtnEntry, Text, InputText, TextInfoBooking, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getClientBookingsByRoom } from "../../../common/utils/clientBookingsByRoom"
@@ -125,35 +125,35 @@ export const ClientUpdate = () => {
         <ToastContainer />
 
         <clientCreateJS.SectionPageClientUpdate>
-            <DivCtnForm>
-                <DivIcon>
-                    <DivCtnIcons>
+            <CtnForm>
+                <CtnPrimaryIcon>
+                    <CtnSecondaryIcon>
                         <IconClient />
                         <IconUpdate />
-                    </DivCtnIcons>
-                </DivIcon>
+                    </CtnSecondaryIcon>
+                </CtnPrimaryIcon>
                 <TitleForm>Update Client #{clientUpdated._id}</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
-                    <DivCtnEntry>
-                        <LabelText>Full Name</LabelText>
+                    <CtnEntry>
+                        <Text>Full Name</Text>
                         <InputText name="full_name" value={clientUpdated.full_name} onChange={handleStringChange} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Email</LabelText>
+                    <CtnEntry>
+                        <Text>Email</Text>
                         <InputText name="email" value={clientUpdated.email} onChange={handleStringChange} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Phone Number</LabelText>
+                    <CtnEntry>
+                        <Text>Phone Number</Text>
                         <InputText name="phone_number" value={clientUpdated.phone_number} onChange={handleStringChange} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
                     {/* !!! DEBE MOSTRAR INFO DE LAS BOOKINGS RELACIONADAS (NO EDITABLE) */}
-                    <DivCtnEntry>
-                        <LabelText>Room Booking List</LabelText>
-                        <LabelTextInfoBooking>
+                    <CtnEntry>
+                        <Text>Room Booking List</Text>
+                        <TextInfoBooking>
                             {
                                 clientBookingsByRoom.length > 0 ? (
                                     clientBookingsByRoom.map(booking => (
@@ -165,15 +165,15 @@ export const ClientUpdate = () => {
                                     <p>No bookings yet</p>
                                 )
                             }
-                        </LabelTextInfoBooking>
+                        </TextInfoBooking>
                         {/* <InputText name="booking_id_list" value={clientUpdated.booking_id_list} onChange={handleStringChange} /> */}
-                    </DivCtnEntry>
+                    </CtnEntry>
 
                     <DivButtonCreateUser>
                         <ButtonCreate type="submit" children='⮂ Update Client' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
-            </DivCtnForm>
+            </CtnForm>
         </clientCreateJS.SectionPageClientUpdate>
     </>)
 }

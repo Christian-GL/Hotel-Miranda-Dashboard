@@ -21,8 +21,8 @@ import {
     validateOptionYesNo, validateMongoDBObjectIdList
 } from '../../../common/utils/commonValidator'
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconPlus, TitleForm, Form, ImgRoom, DivCtnEntry,
-    LabelText, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
+    CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconBed, IconPlus, TitleForm, Form, ImgRoom, CtnEntry,
+    Text, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../../features/roomSlice"
@@ -118,66 +118,66 @@ export const RoomCreate = () => {
         <ToastContainer />
 
         <roomCreateStyles.SectionPageRoomCreate>
-            <DivCtnForm>
-                <DivIcon>
-                    <DivCtnIcons>
+            <CtnForm>
+                <CtnPrimaryIcon>
+                    <CtnSecondaryIcon>
                         <IconBed />
                         <IconPlus />
-                    </DivCtnIcons>
-                </DivIcon>
+                    </CtnSecondaryIcon>
+                </CtnPrimaryIcon>
                 <TitleForm>Create Room</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
-                    <DivCtnEntry>
-                        <LabelText>Photo 1 (Main)</LabelText>
+                    <CtnEntry>
+                        <Text>Photo 1 (Main)</Text>
                         <InputTextPhoto type="file" onChange={handleArrayPhotosChange(0, "photos")} />
                         <ImgRoom src={newRoom.photos[0]} />
-                    </DivCtnEntry>
-                    <DivCtnEntry>
-                        <LabelText>Photo 2</LabelText>
+                    </CtnEntry>
+                    <CtnEntry>
+                        <Text>Photo 2</Text>
                         <InputTextPhoto type="file" onChange={handleArrayPhotosChange(1, "photos")} />
                         <ImgRoom src={newRoom.photos[1]} />
-                    </DivCtnEntry>
-                    <DivCtnEntry>
-                        <LabelText>Photo 3</LabelText>
+                    </CtnEntry>
+                    <CtnEntry>
+                        <Text>Photo 3</Text>
                         <InputTextPhoto type="file" onChange={handleArrayPhotosChange(2, "photos")} />
                         <ImgRoom src={newRoom.photos[2]} />
-                    </DivCtnEntry>
-                    <DivCtnEntry>
-                        <LabelText>Photo 4</LabelText>
+                    </CtnEntry>
+                    <CtnEntry>
+                        <Text>Photo 4</Text>
                         <InputTextPhoto type="file" onChange={handleArrayPhotosChange(3, "photos")} />
                         <ImgRoom src={newRoom.photos[3]} />
-                    </DivCtnEntry>
-                    <DivCtnEntry>
-                        <LabelText>Photo 5</LabelText>
+                    </CtnEntry>
+                    <CtnEntry>
+                        <Text>Photo 5</Text>
                         <InputTextPhoto type="file" onChange={handleArrayPhotosChange(4, "photos")} />
                         <ImgRoom src={newRoom.photos[4]} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Number</LabelText>
+                    <CtnEntry>
+                        <Text>Number</Text>
                         <InputText name="number" onChange={handleStringChange} />
 
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Room Type</LabelText>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Room Type</Text>
                         <Select name="type" onChange={handleSelectChange}>
-                            {Object.values(RoomType).map((type, index) => (
+                            {Object.values(RoomType).map((room, index) => (
                                 index === 0 ?
-                                    <Option key={index} value={type} selected>{type}</Option> :
-                                    <Option key={index} value={type}>{type}</Option>
+                                    <Option key={index} value={room} selected>{room}</Option> :
+                                    <Option key={index} value={room}>{room}</Option>
                             ))}
                         </Select>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Price</LabelText>
+                    <CtnEntry>
+                        <Text>Price</Text>
                         <InputText name="price" onChange={handleNumberFloatChange} />
 
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</LabelText>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</Text>
                         <InputText name="discount" onChange={handleNumberFloatChange} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Amenities</LabelText>
+                    <CtnEntry>
+                        <Text>Amenities</Text>
                         <SelectAmenities name="amenities" onChange={handleMultiSelectChange} multiple={true}>
                             {Object.values(RoomAmenities).map((amenity, index) => (
                                 <Option key={index} value={amenity}>
@@ -185,13 +185,13 @@ export const RoomCreate = () => {
                                 </Option>
                             ))}
                         </SelectAmenities>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
                     <DivButtonCreateUser>
                         <ButtonCreate type="submit" children='+ Create Room' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
-            </DivCtnForm>
+            </CtnForm>
         </roomCreateStyles.SectionPageRoomCreate>
     </>)
 }

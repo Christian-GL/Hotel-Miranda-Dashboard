@@ -14,12 +14,12 @@ import { IoMdEyeOff } from "react-icons/io"
 import * as globalConstStyles from './globalConstStyles'
 
 
-export const DivCtnForm = styled.div`
+export const CtnForm = styled.div`
     padding: 0 2em;
     background-color: ${props => props.theme.backgroundPage};
 `
 
-export const DivIcon = styled.div`
+export const CtnPrimaryIcon = styled.div`
     padding-top: 2em;
     text-align: center;
     border-top-left-radius: 2.5rem;
@@ -27,7 +27,7 @@ export const DivIcon = styled.div`
     background-color: transparent;
 `
 
-export const DivCtnIcons = styled.div`
+export const CtnSecondaryIcon = styled.div`
     position: relative;
     margin: 0 auto;
     width: 5rem;
@@ -117,14 +117,14 @@ export const ImgUser = styled.img`
     max-height: 7.5rem;
 `
 
-export const DivCtnEntry = styled.div`
+export const CtnEntry = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
     padding: 1em 0;
 `
 
-export const LabelText = styled.label<{ minWidth?: string, margin?: string }>`
+export const Text = styled.label<{ minWidth?: string, margin?: string }>`
     min-width: ${props => props.minWidth || '10rem'};
     margin: ${props => props.margin || '0'};
     font-family: ${globalConstStyles.fontPoppins};
@@ -133,7 +133,7 @@ export const LabelText = styled.label<{ minWidth?: string, margin?: string }>`
     color: ${props => props.theme.textLabelForm};
 `
 
-export const LabelTextNote = styled.label`
+export const TextNote = styled.label`
     margin-left: 1rem;
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
@@ -141,7 +141,7 @@ export const LabelTextNote = styled.label`
     color: ${props => props.theme.textLabelForm};
 `
 
-export const DivCtnEntryBookings = styled.div`
+export const CtnEntryBookings = styled.div`
     display: flex;
     flex-direction: column;
     align-items: left;
@@ -156,7 +156,7 @@ export const LabelBookings = styled.label`
     color: ${props => props.theme.textLabelForm};
 `
 
-export const LabelTextBookingStatus = styled.label`
+export const TextBookingStatus = styled.label`
     min-width: 10rem;
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
@@ -165,7 +165,7 @@ export const LabelTextBookingStatus = styled.label`
     color: ${props => props.theme.textLabelStatusForm};
 `
 
-export const LabelTextInfoBooking = styled.label`
+export const TextInfoBooking = styled.label`
     margin-right: 1rem;
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
@@ -293,4 +293,40 @@ export const EyeClose = styled(IoMdEyeOff)`
     cursor: pointer;
     color: ${props => props.theme.iconEye};
     background-color: ${props => props.theme.iconEyeBackground};
+`
+
+export const ButtonAddDelete = styled.button<{ margin?: string; isAdd?: boolean }>`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: ${props => props.margin || '0rem'};
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    font-size: 1.25em;
+    font-weight: 700;
+    cursor: pointer;
+    color: ${props => props.theme.buttonFormText};
+    background-color: ${props => props.isAdd ? props.theme.buttonFormAdd : props.theme.buttonFormDelete || 'green'};    // !!! EL COLOR NO SEA PUESTO A PIÑON
+`
+
+export const ArrayBox = styled.div`
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    width: fit-content;
+    font-weight: 600;
+    max-width: 35rem;
+    border: 2px solid black;    // !!! EL COLOR NO SEA PUESTO A PIÑON
+    border-radius: 0.4rem;
+    color: gray;                // !!! EL COLOR NO SEA PUESTO A PIÑON
+    background-color: gray;     // !!! EL COLOR NO SEA PUESTO A PIÑON
+`
+
+export const ArrayItem = styled.span`
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.5rem;
 `

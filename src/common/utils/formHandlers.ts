@@ -36,6 +36,23 @@ export const createFormHandlers = <T extends AnyState>(setState: SetState<T>) =>
         setState(prev => ({ ...prev, [name]: value } as T))
     }
 
+    const handleSelectAppendToArray = <K extends keyof T>(field: K) => (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value
+        if (value === 'null') return
+
+        setState(prev => {
+            const prevArr = Array.isArray(prev[field])
+                ? (prev[field] as string[])
+                : []
+
+            if (prevArr.includes(value)) return prev
+            return {
+                ...prev,
+                [field]: [...prevArr, value]
+            }
+        })
+    }
+
     const handleArrayPhotosChange = (index: number, field: keyof T) => (e: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = e.target
         if (files && files[0]) {
@@ -80,6 +97,7 @@ export const createFormHandlers = <T extends AnyState>(setState: SetState<T>) =>
         handlePhotoChange,
         handleTextAreaChange,
         handleSelectChange,
+        handleSelectAppendToArray,
         handleArrayPhotosChange,
         handleMultiSelectChange,
         handleNumberFloatChange

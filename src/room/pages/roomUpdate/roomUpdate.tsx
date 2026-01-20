@@ -22,9 +22,9 @@ import {
     validateOptionYesNo, validateMongoDBObjectIdList
 } from '../../../common/utils/commonValidator'
 import {
-    DivCtnForm, DivIcon, DivCtnIcons, IconBed, IconUpdate, TitleForm, Form,
-    ImgRoom, DivCtnEntry, LabelText, DivCtnEntryBookings, LabelBookings, LabelTextBookingStatus,
-    LabelTextInfoBooking, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
+    CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconBed, IconUpdate, TitleForm, Form,
+    ImgRoom, CtnEntry, Text, CtnEntryBookings, LabelBookings, TextBookingStatus,
+    TextInfoBooking, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
@@ -160,47 +160,47 @@ export const RoomUpdate = () => {
         <ToastContainer />
 
         <roomUpdateStyles.SectionPageRoomUpdate>
-            <DivCtnForm>
-                <DivIcon>
-                    <DivCtnIcons>
+            <CtnForm>
+                <CtnPrimaryIcon>
+                    <CtnSecondaryIcon>
                         <IconBed />
                         <IconUpdate />
-                    </DivCtnIcons>
-                </DivIcon>
+                    </CtnSecondaryIcon>
+                </CtnPrimaryIcon>
                 <TitleForm>Update Room #{roomUpdated._id}</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
-                    <DivCtnEntry>
-                        <LabelText>Photo 1 (Main)</LabelText>
+                    <CtnEntry>
+                        <Text>Photo 1 (Main)</Text>
                         <InputTextPhoto type="file" onChange={handleArrayPhotosChange(0, "photos")} />
                         <ImgRoom src={roomUpdated.photos[0]} />
-                    </DivCtnEntry>
-                    <DivCtnEntry>
-                        <LabelText>Photo 2</LabelText>
+                    </CtnEntry>
+                    <CtnEntry>
+                        <Text>Photo 2</Text>
                         <InputTextPhoto type="file" onChange={handleArrayPhotosChange(1, "photos")} />
                         <ImgRoom src={roomUpdated.photos[1]} />
-                    </DivCtnEntry>
-                    <DivCtnEntry>
-                        <LabelText>Photo 3</LabelText>
+                    </CtnEntry>
+                    <CtnEntry>
+                        <Text>Photo 3</Text>
                         <InputTextPhoto type="file" onChange={handleArrayPhotosChange(2, "photos")} />
                         <ImgRoom src={roomUpdated.photos[2]} />
-                    </DivCtnEntry>
-                    <DivCtnEntry>
-                        <LabelText>Photo 4</LabelText>
+                    </CtnEntry>
+                    <CtnEntry>
+                        <Text>Photo 4</Text>
                         <InputTextPhoto type="file" onChange={handleArrayPhotosChange(3, "photos")} />
                         <ImgRoom src={roomUpdated.photos[3]} />
-                    </DivCtnEntry>
-                    <DivCtnEntry>
-                        <LabelText>Photo 5</LabelText>
+                    </CtnEntry>
+                    <CtnEntry>
+                        <Text>Photo 5</Text>
                         <InputTextPhoto type="file" onChange={handleArrayPhotosChange(4, "photos")} />
                         <ImgRoom src={roomUpdated.photos[4]} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Number</LabelText>
+                    <CtnEntry>
+                        <Text>Number</Text>
                         <InputText name="number" value={roomUpdated.number} onChange={handleStringChange} />
 
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Room Type</LabelText>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Room Type</Text>
                         <Select name="type" value={roomUpdated.type} onChange={handleSelectChange}>
                             {Object.values(RoomType).map((type, index) => (
                                 <option key={index} value={type}>
@@ -208,18 +208,18 @@ export const RoomUpdate = () => {
                                 </option>
                             ))}
                         </Select>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Price</LabelText>
+                    <CtnEntry>
+                        <Text>Price</Text>
                         <InputText name="price" value={roomUpdated.price} onChange={handleNumberFloatChange} />
 
-                        <LabelText minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</LabelText>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</Text>
                         <InputText name="discount" value={roomUpdated.discount} onChange={handleNumberFloatChange} />
-                    </DivCtnEntry>
+                    </CtnEntry>
 
-                    <DivCtnEntry>
-                        <LabelText>Amenities</LabelText>
+                    <CtnEntry>
+                        <Text>Amenities</Text>
                         <SelectAmenities name="amenities" value={roomUpdated.amenities} onChange={handleMultiSelectChange} multiple={true}>
                             {Object.values(RoomAmenities).map((amenity, index) => (
                                 <Option key={index} value={amenity}>
@@ -227,7 +227,7 @@ export const RoomUpdate = () => {
                                 </Option>
                             ))}
                         </SelectAmenities>
-                    </DivCtnEntry>
+                    </CtnEntry>
 
                     {/* !!! 
                     <DivCtnEntry>
@@ -256,7 +256,7 @@ export const RoomUpdate = () => {
                         <ButtonCreate type="submit" children='⮂ Update Room' fontSize='1.25em'></ButtonCreate>
                     </DivButtonCreateUser>
                 </Form>
-            </DivCtnForm>
+            </CtnForm>
         </roomUpdateStyles.SectionPageRoomUpdate>
     </>)
 }
