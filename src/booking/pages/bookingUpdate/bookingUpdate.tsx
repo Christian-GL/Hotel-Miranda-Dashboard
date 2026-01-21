@@ -12,16 +12,15 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
-import { BookingInterface } from "../../interfaces/bookingInterface"
+import { BookingInterfaceCheckInOutId, BookingInterface } from "../../interfaces/bookingInterface"
 import { formatDateForInput } from "../../../common/utils/dateUtils"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
-    validatePhoto, validateFullName, validateEmail, validatePhoneNumber, validateDateRelativeToAnother,
-    validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
+    validateCheckInCheckOutNewBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupiedIfBookingExists
 } from '../../../common/utils/commonValidator'
 import {
     GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntry,
-    Text, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
+    Text, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, SelectMultipleOptions
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
@@ -30,6 +29,8 @@ import { getBookingAllData, getBookingAllStatus, getBookingIdData, getBookingIdS
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from '../../../room/features/roomSlice'
 import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk'
+import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
+import { ClientFetchAllThunk } from '../../../client/features/thunks/clientFetchAllThunk'
 
 
 export const BookingUpdate = () => {
@@ -46,6 +47,9 @@ export const BookingUpdate = () => {
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
     const roomErrorMessage = useSelector(getRoomErrorMessage)
+    const clientAll = useSelector(getClientAllData)
+    const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
+    const clientErrorMessage = useSelector(getClientErrorMessage)
     const [bookingUpdated, setBookingUpdated] = useState<BookingInterface>({
         _id: '0',
         order_date: new Date(),
@@ -59,15 +63,25 @@ export const BookingUpdate = () => {
     })
     const { handleDateChange,
         handleTextAreaChange,
+        handleSelectChange,
+        handleMultiSelectChange
     } = createFormHandlers(setBookingUpdated)
-    // const roomsAvailable = roomAll.filter(room => !validateDateIsOccupied(bookingUpdated, bookingAll.filter(booking => booking.room_data._id === room._id)).length)
-    // const currentRoom = bookingUpdated.room_id ?
-    //     roomAll.find(room => Number(room._id) === Number(bookingUpdated.room_id)) :
-    //     null
-    // const effectiveRooms = currentRoom && !roomsAvailable.some(room => Number(room._id) === Number(currentRoom._id)) ?
-    //     [currentRoom, ...roomsAvailable] :
-    //     roomsAvailable
 
+    const roomsAvailable = roomAll.filter(room => {
+        const bookingsOfRoom: BookingInterfaceCheckInOutId[] = bookingAll
+            .filter(booking => booking.room_id_list.includes(room._id))
+            .map(booking => ({
+                _id: booking._id,
+                check_in_date: booking.check_in_date,
+                check_out_date: booking.check_out_date
+            }))
+
+        return validateDateIsOccupiedIfBookingExists(bookingUpdated, bookingsOfRoom).length === 0
+    })
+
+
+
+    // !!! DEBERÍA SER SUFICIENTE CON 1 DE LOS 2 PRIMEROS useEffects?
     useEffect(() => {
         if (bookingByIdLoading === ApiStatus.idle) { dispatch(BookingFetchByIDThunk(idParams)) }
         else if (bookingByIdLoading === ApiStatus.fulfilled) {
@@ -98,11 +112,56 @@ export const BookingUpdate = () => {
         else if (roomAllLoading === ApiStatus.fulfilled) { }
         else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { ToastifyError(roomErrorMessage) }
     }, [roomAllLoading, roomAll])
+    useEffect(() => {
+        if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
+        else if (clientAllLoading === ApiStatus.fulfilled) { }
+        else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { ToastifyError(clientErrorMessage) }
+    }, [clientAllLoading, clientAll])
 
     const validateAllData = (): string[] => {
         const allErrorMessages: string[] = []
 
-        // !!! IMPORTAR VALIDADORES DE LA API
+        if (bookingUpdated.room_id_list.length < 1) {
+            allErrorMessages.push('Room ID list is empty')
+        }
+        if (bookingUpdated.client_id === '') {
+            allErrorMessages.push('Client ID is empty')
+        }
+
+        validateTextArea(bookingUpdated.special_request, 'Booking special request').map(
+            error => allErrorMessages.push(error)
+        )
+        validateOptionYesNo(bookingUpdated.isArchived, 'Booking isArchived').map(
+            error => allErrorMessages.push(error)
+        )
+        validateCheckInCheckOutNewBooking(bookingUpdated.check_in_date, bookingUpdated.check_out_date).map(
+            error => allErrorMessages.push(error)
+        )
+
+        const bookingDates: BookingInterfaceCheckInOutId[] = bookingAll.map(booking => ({
+            _id: booking._id,
+            check_in_date: booking.check_in_date,
+            check_out_date: booking.check_out_date
+        }))
+        validateDateIsOccupiedIfBookingExists(bookingUpdated, bookingDates).map(
+            error => allErrorMessages.push(error)
+        )
+
+        // Comprobamos que los IDs de las rooms y el cliente asociados a la booking existan en BD
+        const allRoomIdsNotArchived: string[] = roomAll
+            .filter(room => room.isArchived === OptionYesNo.no)
+            .map(room => room._id)
+        for (const roomId of bookingUpdated.room_id_list) {
+            if (!allRoomIdsNotArchived.includes(roomId)) {
+                allErrorMessages.push(`Room ID: ${roomId} didn't exist in DB or is archived`)
+            }
+        }
+        const allClientIdsNotArchived: string[] = clientAll
+            .filter(client => client.isArchived === OptionYesNo.no)
+            .map(client => client._id)
+        if (!allClientIdsNotArchived.includes(bookingUpdated.client_id)) {
+            allErrorMessages.push(`Client ID: ${bookingUpdated.client_id} didn't exist in DB or is archived`)
+        }
 
         return allErrorMessages
     }
@@ -128,7 +187,7 @@ export const BookingUpdate = () => {
 
     return (<>
         <ToastContainer />
-
+        {console.log(bookingUpdated)}
         <GlobalDateTimeStyles />
 
         <bookingUpdateStyles.SectionPageBookingUpdate>
@@ -152,39 +211,31 @@ export const BookingUpdate = () => {
 
                     <CtnEntry>
                         <Text>Room number</Text>
-                        {/* !!! ACTUALIZAR AL TENER LOS DATOS: */}
-                        {/* <Select
-                            name="room_id"
-                            value={bookingUpdated.room_id || (bookingById.room_data ? bookingById.room_data._id : '')}
-                            onChange={handleNumberSelectChange}
-                            disabled={
-                                !bookingUpdated.check_in_date ||
-                                !bookingUpdated.check_out_date ||
-                                effectiveRooms.length === 0
-                            }
+                        <SelectMultipleOptions
+                            name="room_id_list"
+                            width="100%"
+                            value={bookingUpdated.room_id_list}
+                            onChange={handleMultiSelectChange}
+                            multiple={true}
                         >
-                            {!bookingUpdated.check_in_date || !bookingUpdated.check_out_date ?
-                                (<Option value="null" selected disabled>
-                                    ⚠️ Select Check-in date & Check-out date first
-                                </Option>)
-                                :
-                                (<>
-                                    {effectiveRooms.length === 0 ?
-                                        (<Option value="null" selected disabled>
-                                            ❌ No rooms available for the selected dates
-                                        </Option>)
-                                        :
-                                        (<>
-                                            <Option value="null" selected></Option>
-                                            {effectiveRooms.map(room => (
-                                                <Option key={room._id} value={room._id.toString()}>
-                                                    {room.number}
-                                                </Option>
-                                            ))}
-                                        </>)
-                                    }
-                                </>)}
-                        </Select> */}
+                            {roomsAvailable.length === 0
+                                ? <Option value="null" disabled>❌ No rooms available for the selected dates</Option>
+                                : roomsAvailable.map((room, index) => (
+                                    <Option key={index} value={room._id}>
+                                        {room.number}
+                                    </Option>
+                                ))}
+                        </SelectMultipleOptions>
+
+                        <Text minWidth="10rem" margin="0 0 0 5rem">Client</Text>
+                        <Select name="client_id" value={bookingUpdated.client_id} onChange={handleSelectChange}>
+                            <Option value="null"></Option>
+                            {Object.values(clientAll).map(client => (
+                                <Option value={client._id}>
+                                    {client.full_name}
+                                </Option>
+                            ))}
+                        </Select>
                     </CtnEntry>
 
                     <CtnEntry>

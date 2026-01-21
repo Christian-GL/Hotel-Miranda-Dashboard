@@ -259,14 +259,14 @@ export const validateDateIsOccupied = (booking: BookingInterfaceNoId, otherBooki
     return errorMessages
 }
 
-export const validateDateIsOccupiedIfBookingExists = (booking: BookingInterface, bookings: BookingInterfaceCheckInOutId[]): string[] => {
+export const validateDateIsOccupiedIfBookingExists = (booking: BookingInterface, otherBookings: BookingInterfaceCheckInOutId[]): string[] => {
     const errorMessages: string[] = []
 
-    for (let i = 0; i < bookings.length; i++) {
-        if (new Date(booking.check_in_date) < new Date(bookings[i].check_out_date) &&
-            new Date(booking.check_out_date) > new Date(bookings[i].check_in_date)) {
-            if (booking._id.toString() !== bookings[i]._id.toString()) {
-                errorMessages.push(`This period is already occupied by booking #${bookings[i]._id}`)
+    for (let i = 0; i < otherBookings.length; i++) {
+        if (new Date(booking.check_in_date) < new Date(otherBookings[i].check_out_date) &&
+            new Date(booking.check_out_date) > new Date(otherBookings[i].check_in_date)) {
+            if (booking._id.toString() !== otherBookings[i]._id.toString()) {
+                errorMessages.push(`This period is already occupied by booking #${otherBookings[i]._id}`)
             }
         }
     }

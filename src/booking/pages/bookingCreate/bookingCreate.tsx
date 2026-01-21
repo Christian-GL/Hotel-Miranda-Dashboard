@@ -29,7 +29,6 @@ import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from '../../../
 import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk'
 import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
 import { ClientFetchAllThunk } from '../../../client/features/thunks/clientFetchAllThunk'
-import { RoomInterface } from "room/interfaces/roomInterface"
 
 
 export const BookingCreate = () => {
@@ -45,11 +44,10 @@ export const BookingCreate = () => {
     const clientAll = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const clientErrorMessage = useSelector(getClientErrorMessage)
-    const defaultDateValue = new Date()
     const [newBooking, setNewBooking] = useState<BookingInterfaceNoId>({
         order_date: new Date(),
-        check_in_date: defaultDateValue,
-        check_out_date: defaultDateValue,
+        check_in_date: new Date(),
+        check_out_date: new Date(),
         price: 0,
         special_request: '',
         isArchived: OptionYesNo.yes,
@@ -169,7 +167,7 @@ export const BookingCreate = () => {
 
     return (<>
         <ToastContainer />
-        {console.log(newBooking)}
+
         <GlobalDateTimeStyles />
 
         <bookingCreateStyles.SectionPageBookingCreate>
@@ -199,7 +197,12 @@ export const BookingCreate = () => {
 
                     <CtnEntry>
                         <Text>Room number</Text>
-                        <SelectMultipleOptions name="room_id_list" width="100%" onChange={handleMultiSelectChange} multiple={true}>
+                        <SelectMultipleOptions
+                            name="room_id_list"
+                            width="100%"
+                            onChange={handleMultiSelectChange}
+                            multiple={true}
+                        >
                             {!datesSelected
                                 ? <Option value="null" disabled>⚠️ Select Check-in date & Check-out date first</Option>
                                 : roomsAvailable.length === 0
