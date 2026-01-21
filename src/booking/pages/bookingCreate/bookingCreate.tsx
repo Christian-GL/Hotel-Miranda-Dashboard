@@ -14,11 +14,12 @@ import { OptionYesNo } from "../../../common/enums/optionYesNo"
 import { BookingInterfaceCheckInOut, BookingInterfaceNoId } from "../../interfaces/bookingInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
-    validateFullName, validateCheckInCheckOutNewBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupied
+    validateCheckInCheckOutNewBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupied
 } from '../../../common/utils/commonValidator'
 import {
     GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconCalendar, IconPlus, TitleForm, Form, CtnEntry,
-    Text, ArrayBox, ArrayItem, ButtonAddDelete, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser
+    Text, ArrayBox, ArrayItem, ButtonAddDelete, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser,
+    SelectMultipleOptions
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
@@ -58,7 +59,7 @@ export const BookingCreate = () => {
     const { handleDateChange,
         handleTextAreaChange,
         handleSelectChange,
-        handleSelectAppendToArray,
+        handleMultiSelectChange,
     } = createFormHandlers(setNewBooking)
 
     const [checkInTouched, setCheckInTouched] = useState(false)
@@ -198,7 +199,18 @@ export const BookingCreate = () => {
 
                     <CtnEntry>
                         <Text>Room number</Text>
-                        <Select
+                        <SelectMultipleOptions name="room_id_list" width="100%" onChange={handleMultiSelectChange} multiple={true}>
+                            {!datesSelected
+                                ? <Option value="null" disabled>⚠️ Select Check-in date & Check-out date first</Option>
+                                : roomsAvailable.length === 0
+                                    ? <Option value="null" disabled>❌ No rooms available for the selected dates</Option>
+                                    : roomsAvailable.map((room, index) => (
+                                        <Option key={index} value={room._id}>
+                                            {room.number}
+                                        </Option>
+                                    ))}
+                        </SelectMultipleOptions>
+                        {/* <Select
                             name="room_id_list"
                             onChange={handleSelectAppendToArray("room_id_list")}
                             value={newBooking.room_id_list[0]}
@@ -216,7 +228,7 @@ export const BookingCreate = () => {
                                             </Option>
                                         ))}</>
                                     )}
-                        </Select>
+                        </Select> */}
 
                         <Text minWidth="10rem" margin="0 0 0 5rem">Client</Text>
                         <Select name="client_id" onChange={handleSelectChange}>
@@ -229,7 +241,7 @@ export const BookingCreate = () => {
                         </Select>
                     </CtnEntry>
 
-                    <CtnEntry>
+                    {/* <CtnEntry>
                         {newBooking.room_id_list.length > 0 && (
                             <ArrayBox>
                                 {newBooking.room_id_list.map((room, index) => (
@@ -238,14 +250,14 @@ export const BookingCreate = () => {
                                         <ButtonAddDelete
                                             margin="0 0 0 0.35rem"
                                             isAdd={false}
-                                            // onClick={() => handleRemoveTelefono(index)}
+                                        // onClick={() => handleRemoveTelefono(index)}
                                         > &times;
                                         </ButtonAddDelete>
                                     </ArrayItem>
                                 ))}
                             </ArrayBox>
                         )}
-                    </CtnEntry>
+                    </CtnEntry> */}
 
                     <CtnEntry>
                         <Text>Special request</Text>

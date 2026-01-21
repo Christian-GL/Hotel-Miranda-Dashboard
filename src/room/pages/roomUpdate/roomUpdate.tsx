@@ -24,7 +24,7 @@ import {
 import {
     CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconBed, IconUpdate, TitleForm, Form,
     ImgRoom, CtnEntry, Text, CtnEntryBookings, LabelBookings, TextBookingStatus,
-    TextInfoBooking, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
+    TextInfoBooking, InputText, InputTextPhoto, Select, Option, SelectMultipleOptions, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
@@ -220,13 +220,13 @@ export const RoomUpdate = () => {
 
                     <CtnEntry>
                         <Text>Amenities</Text>
-                        <SelectAmenities name="amenities" value={roomUpdated.amenities} onChange={handleMultiSelectChange} multiple={true}>
+                        <SelectMultipleOptions name="amenities" value={roomUpdated.amenities} onChange={handleMultiSelectChange} multiple={true}>
                             {Object.values(RoomAmenities).map((amenity, index) => (
                                 <Option key={index} value={amenity}>
                                     {amenity}
                                 </Option>
                             ))}
-                        </SelectAmenities>
+                        </SelectMultipleOptions>
                     </CtnEntry>
 
                     {/* !!! 

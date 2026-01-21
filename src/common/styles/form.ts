@@ -233,9 +233,10 @@ export const TextAreaJobDescription = styled.textarea`
     color: ${props => props.theme.textForm};
 `
 
-export const SelectAmenities = styled.select`
-    min-width: 10rem;
+export const SelectMultipleOptions = styled.select<{ width?: string }>`
     padding: 1em;
+    min-width: 10rem;
+    width: ${props => props.width || '10rem'};
     height: 10rem;
     font-family: ${globalConstStyles.fontPoppins};
     border: none;
@@ -295,6 +296,7 @@ export const EyeClose = styled(IoMdEyeOff)`
     background-color: ${props => props.theme.iconEyeBackground};
 `
 
+// !!! ELIMINAR SI NO SE USAN LAS SIGUIENTES 3 CONSTANTES:
 export const ButtonAddDelete = styled.button<{ margin?: string; isAdd?: boolean }>`
     display: flex;
     align-items: center;

@@ -22,7 +22,7 @@ import {
 } from '../../../common/utils/commonValidator'
 import {
     CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconBed, IconPlus, TitleForm, Form, ImgRoom, CtnEntry,
-    Text, InputText, InputTextPhoto, Select, Option, SelectAmenities, DivButtonCreateUser
+    Text, InputText, InputTextPhoto, Select, Option, SelectMultipleOptions, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../../features/roomSlice"
@@ -160,10 +160,10 @@ export const RoomCreate = () => {
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">Room Type</Text>
                         <Select name="type" onChange={handleSelectChange}>
-                            {Object.values(RoomType).map((room, index) => (
-                                index === 0 ?
-                                    <Option key={index} value={room} selected>{room}</Option> :
-                                    <Option key={index} value={room}>{room}</Option>
+                            {Object.values(RoomType).map((roomType, index) => (
+                                index === 0
+                                    ? <Option key={index} value={roomType} selected>{roomType}</Option>
+                                    : <Option key={index} value={roomType}>{roomType}</Option>
                             ))}
                         </Select>
                     </CtnEntry>
@@ -178,13 +178,13 @@ export const RoomCreate = () => {
 
                     <CtnEntry>
                         <Text>Amenities</Text>
-                        <SelectAmenities name="amenities" onChange={handleMultiSelectChange} multiple={true}>
+                        <SelectMultipleOptions name="amenities" width="100%" onChange={handleMultiSelectChange} multiple={true}>
                             {Object.values(RoomAmenities).map((amenity, index) => (
                                 <Option key={index} value={amenity}>
                                     {amenity}
                                 </Option>
                             ))}
-                        </SelectAmenities>
+                        </SelectMultipleOptions>
                     </CtnEntry>
 
                     <DivButtonCreateUser>

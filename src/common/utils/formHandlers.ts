@@ -1,6 +1,7 @@
 
 import React from "react"
 
+
 type AnyState = Record<string, any>
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>
 
@@ -36,6 +37,7 @@ export const createFormHandlers = <T extends AnyState>(setState: SetState<T>) =>
         setState(prev => ({ ...prev, [name]: value } as T))
     }
 
+    // !!! ELIMINAR SI NO SE USA:
     const handleSelectAppendToArray = <K extends keyof T>(field: K) => (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value
         if (value === 'null') return
