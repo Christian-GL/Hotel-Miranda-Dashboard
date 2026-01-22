@@ -30,7 +30,7 @@ import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCrea
 import { applyDiscount } from "../../../common/utils/tableUtils"
 import { usePagination } from "../../../common/hooks/usePagination"
 import {
-    Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable,
+    Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, PStatusAvailableUsers,
     ImgTableRoom, PTable, PStatusRoomList, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "./../../features/roomSlice"
@@ -325,7 +325,14 @@ export const RoomMain = () => {
                             }
                         </PTable>,
 
-                        <PTable key={index + '-8'} justifycontent="flex-end">
+                        <PTable key={index + '8'}>
+                            {roomData.isArchived === OptionYesNo.no
+                                ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
+                                : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
+                            }
+                        </PTable>,
+
+                        <PTable key={index + '-9'} justifycontent="flex-end">
                             <CtnMenuOptions>
                                 <IconOptions onClick={() => { displayMenuOptions(index) }} />
                                 <CtnOptionsDisplayed display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >

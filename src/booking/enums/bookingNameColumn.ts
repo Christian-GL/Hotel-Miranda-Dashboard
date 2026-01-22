@@ -7,5 +7,6 @@ export enum BookingNameColumn {
     checkOut = 'Check Out',
     specialRequest = 'Special request',
     roomNumbers = 'Room numbers',
-    clientInfo = 'Client info'
+    clientInfo = 'Client info',
+    isArchived = 'Is archived'
 }

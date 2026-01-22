@@ -6,5 +6,6 @@ export enum UserNameColumn {
     jobPosition = 'Job position',
     startDate = 'Start date',
     endDate = 'End date',
-    status = 'Status'
+    status = 'Status',
+    isArchived = 'Is archived'
 }

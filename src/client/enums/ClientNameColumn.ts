@@ -3,5 +3,6 @@
 export enum ClientNameColumn {
     customerInfo = 'Customer info',
     phoneNumber = 'Phone number',
-    bookingList = 'Booking list'
+    bookingList = 'Booking list',
+    isArchived = 'Is archived'
 }

@@ -30,7 +30,7 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    Table, THTable, TriangleUp, DivNameTable, TriangleRight, TriangleDown, PTable,
+    Table, THTable, TriangleUp, DivNameTable, TriangleRight, TriangleDown, PTable, PStatusAvailableUsers,
     IconPhone, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
@@ -287,6 +287,13 @@ export const ClientMain = () => {
                                 ) : (
                                     <p>No bookings yet</p>
                                 )
+                            }
+                        </PTable>,
+
+                        <PTable key={index + '3'}>
+                            {clientData.isArchived === OptionYesNo.no
+                                ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
+                                : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
                             }
                         </PTable>,
 
