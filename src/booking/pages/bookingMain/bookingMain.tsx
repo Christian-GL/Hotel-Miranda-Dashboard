@@ -102,7 +102,7 @@ export const BookingMain = () => {
         else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
     }, [clientAllLoading, clientAll])
 
-    const filterByClientName = (bookings: BookingInterfaceId[], clients: ClientInterfaceId[], searchText: string): BookingInterfaceId[] => {
+    const filterByIdOrClientName = (bookings: BookingInterfaceId[], clients: ClientInterfaceId[], searchText: string): BookingInterfaceId[] => {
         const normalizedText = searchText.trim().toLowerCase()
         if (!normalizedText) return bookings
 
@@ -112,6 +112,7 @@ export const BookingMain = () => {
         return bookings.filter(booking => {
             const clientName = clientNameMap.get(booking.client_id)
             return clientName?.includes(normalizedText)
+                || booking._id.toLocaleLowerCase().includes(normalizedText)
         })
     }
     const filterByBookingStatus = (bookings: BookingInterfaceId[], bookingStatusButton: BookingButtonType): BookingInterfaceId[] => {
@@ -153,7 +154,7 @@ export const BookingMain = () => {
         let filteredDataBookings = bookingAll
         let filteredDataClients = clientAll
 
-        filteredDataBookings = filterByClientName(filteredDataBookings, filteredDataClients, inputText)
+        filteredDataBookings = filterByIdOrClientName(filteredDataBookings, filteredDataClients, inputText)
         filteredDataBookings = filterByBookingStatus(filteredDataBookings, bookingStatusButton)
         filteredDataBookings = filterByArchivedStatus(filteredDataBookings, archivedFilterButton)
 
@@ -249,7 +250,7 @@ export const BookingMain = () => {
                             setInputText(e.target.value)
                             resetPage()
                         }}
-                        placeholder="Search booking by client name"
+                        placeholder="Search booking by ID/client name"
                     />
                 </CtnSearch>
 

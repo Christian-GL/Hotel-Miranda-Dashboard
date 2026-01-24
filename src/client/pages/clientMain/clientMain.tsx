@@ -99,7 +99,7 @@ export const ClientMain = () => {
         else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
 
-    const filterByName = (clients: ClientInterfaceId[], searchText: string): ClientInterfaceId[] => {
+    const filterByIdOrNameOrEmail = (clients: ClientInterfaceId[], searchText: string): ClientInterfaceId[] => {
         const normalizedText = searchText.toLowerCase()
         return clients.filter(client =>
             client._id.toLocaleLowerCase().includes(normalizedText)
@@ -123,7 +123,7 @@ export const ClientMain = () => {
     const displayClients = (): void => {
         let filteredData = clientAll
 
-        filteredData = filterByName(filteredData, inputText)
+        filteredData = filterByIdOrNameOrEmail(filteredData, inputText)
         filteredData = filterByArchivedStatus(filteredData, archivedFilterButton)
 
         setFilteredClients(sortData(filteredData))
@@ -227,7 +227,8 @@ export const ClientMain = () => {
                             setInputText(e.target.value)
                             resetPage()
                         }}
-                        placeholder='Search by client ID/name/email' />
+                        placeholder="Search client by client ID/name/email"
+                    />
                 </CtnSearch>
 
                 <CtnButton>

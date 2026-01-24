@@ -83,10 +83,11 @@ export const UserMain = () => {
         else if (userAllLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
     }, [userAllLoading, userAll, inputText, activeFilterButton, archivedFilterButton, arrowStates])
 
-    const filterByName = (users: UserInterfaceId[], searchText: string): UserInterfaceId[] => {
+    const filterByIdOrName = (users: UserInterfaceId[], searchText: string): UserInterfaceId[] => {
         const normalizedText = searchText.toLowerCase()
         return users.filter(user =>
-            user.full_name.toLowerCase().includes(normalizedText)
+            user._id.toLocaleLowerCase().includes(normalizedText)
+            || user.full_name.toLowerCase().includes(normalizedText)
         )
     }
     const filterByActiveStatus = (users: UserInterfaceId[], activeFilterButton: ActiveButtonType): UserInterfaceId[] => {
@@ -123,7 +124,7 @@ export const UserMain = () => {
     const displayEmployee = (): void => {
         let filteredData = userAll
 
-        filteredData = filterByName(filteredData, inputText)
+        filteredData = filterByIdOrName(filteredData, inputText)
         filteredData = filterByActiveStatus(filteredData, activeFilterButton)
         filteredData = filterByArchivedStatus(filteredData, archivedFilterButton)
 
@@ -224,7 +225,7 @@ export const UserMain = () => {
                             setInputText(e.target.value)
                             resetPage()
                         }}
-                        placeholder="Search employee by name"
+                        placeholder="Search user by ID/name"
                     />
                 </CtnSearch>
 

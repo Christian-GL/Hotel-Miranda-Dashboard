@@ -95,9 +95,11 @@ export const RoomMain = () => {
         else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
 
-    const filterByRoomNumber = (rooms: RoomInterfaceId[], searchText: string): RoomInterfaceId[] => {
+    const filterByIdOrNumber = (rooms: RoomInterfaceId[], searchText: string): RoomInterfaceId[] => {
+        const normalizedText = searchText.toLowerCase()
         return rooms.filter(room =>
-            room.number.toString().includes(searchText.toLowerCase())
+            room._id.toLocaleLowerCase().includes(normalizedText)
+            || room.number.toString().includes(normalizedText)
         )
     }
     const filterByActiveStatus = (rooms: RoomInterfaceId[], activeFilterButton: ActiveButtonType): RoomInterfaceId[] => {
@@ -132,7 +134,7 @@ export const RoomMain = () => {
     const displayRooms = (): void => {
         let filteredData = roomAll
 
-        filteredData = filterByRoomNumber(filteredData, inputText)
+        filteredData = filterByIdOrNumber(filteredData, inputText)
         filteredData = filterByActiveStatus(filteredData, activeFilterButton)
         filteredData = filterByArchivedStatus(filteredData, archivedFilterButton)
 
@@ -250,7 +252,7 @@ export const RoomMain = () => {
                             setInputText(e.target.value)
                             resetPage()
                         }}
-                        placeholder="Search by room number"
+                        placeholder="Search room by ID/number"
                     />
                 </CtnSearch>
 
