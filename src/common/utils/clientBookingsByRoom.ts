@@ -1,14 +1,14 @@
 
-import { ClientInterface } from "client/interfaces/clientInterface"
-import { BookingInterface } from "booking/interfaces/bookingInterface"
-import { RoomInterface } from "room/interfaces/roomInterface"
+import { ClientInterfaceId } from "client/interfaces/clientInterface"
+import { BookingInterfaceId } from "booking/interfaces/bookingInterface"
+import { RoomInterfaceId } from "room/interfaces/roomInterface"
 import { ClientBookingsByRoomInterface } from "../interfaces/clientBookingsByRoomInterface"
 
 
 export const getClientBookingsByRoom = (
-    client: ClientInterface,
-    bookings: BookingInterface[],
-    rooms: RoomInterface[])
+    client: ClientInterfaceId,
+    bookings: BookingInterfaceId[],
+    rooms: RoomInterfaceId[])
     : ClientBookingsByRoomInterface[] => {
 
     const bookingIds = client.booking_id_list

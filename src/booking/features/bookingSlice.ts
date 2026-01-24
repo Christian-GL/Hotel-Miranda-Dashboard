@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { ApiStatus } from '../../common/enums/ApiStatus'
 import { BookingStateInterface } from '../interfaces/bookingStateInterface'
-import { BookingInterface } from '../interfaces/bookingInterface'
+import { BookingInterfaceId } from '../interfaces/bookingInterface'
 import { RootState } from '../../common/redux/store'
 import { BookingFetchAllThunk } from './thunks/bookingFetchAllThunk'
 import { BookingFetchByIDThunk } from './thunks/bookingFetchByIDThunk'
@@ -19,8 +19,8 @@ import { ClientDeleteByIdThunk } from '../../client/features/thunks/clientDelete
 export const BookingSlice = createSlice({
     name: 'booking',
     initialState: {
-        allData: [] as BookingInterface[],
-        idData: {} as BookingInterface,
+        allData: [] as BookingInterfaceId[],
+        idData: {} as BookingInterfaceId,
         allStatus: ApiStatus.idle,
         idStatus: ApiStatus.idle,
         createStatus: ApiStatus.idle,
@@ -164,8 +164,8 @@ export const BookingSlice = createSlice({
     }
 })
 
-export const getBookingAllData = (state: RootState): BookingInterface[] => state.bookingSlice.allData
-export const getBookingIdData = (state: RootState): BookingInterface => state.bookingSlice.idData
+export const getBookingAllData = (state: RootState): BookingInterfaceId[] => state.bookingSlice.allData
+export const getBookingIdData = (state: RootState): BookingInterfaceId => state.bookingSlice.idData
 
 export const getBookingAllStatus = (state: RootState) => state.bookingSlice.allStatus
 export const getBookingIdStatus = (state: RootState) => state.bookingSlice.idStatus

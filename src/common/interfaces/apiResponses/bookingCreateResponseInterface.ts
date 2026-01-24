@@ -1,11 +1,11 @@
 
-import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
-import { RoomInterface } from "../../../room/interfaces/roomInterface"
-import { ClientInterface } from "../../../client/interfaces/clientInterface"
+import { BookingInterfaceId } from "../../../booking/interfaces/bookingInterface"
+import { RoomInterfaceId } from "../../../room/interfaces/roomInterface"
+import { ClientInterfaceId } from "../../../client/interfaces/clientInterface"
 
 
 export interface BookingCreateResponseInterface {
-    booking: BookingInterface
-    updatedRooms: RoomInterface[]
-    updatedClient: ClientInterface
+    booking: BookingInterfaceId
+    updatedRooms: RoomInterfaceId[]
+    updatedClient: ClientInterfaceId
 }

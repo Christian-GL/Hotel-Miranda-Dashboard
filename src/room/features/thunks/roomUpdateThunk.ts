@@ -1,12 +1,12 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { RoomInterface } from "../../interfaces/roomInterface"
+import { RoomInterfaceId } from "../../interfaces/roomInterface"
 import { RoomUpdateResponseInterface } from "../../../common/interfaces/apiResponses/roomUpdateResponseInterface"
 
 
 export const RoomUpdateThunk = createAsyncThunk<
     RoomUpdateResponseInterface,
-    { idRoom: string; updatedRoomData: RoomInterface },
+    { idRoom: string; updatedRoomData: RoomInterfaceId },
     { rejectValue: string }
 >(
     "room/update",

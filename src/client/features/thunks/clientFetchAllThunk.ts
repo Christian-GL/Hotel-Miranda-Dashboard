@@ -1,10 +1,10 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { ClientInterface } from "../../interfaces/clientInterface"
+import { ClientInterfaceId } from "../../interfaces/clientInterface"
 
 
 export const ClientFetchAllThunk = createAsyncThunk<
-    ClientInterface[],
+    ClientInterfaceId[],
     void,
     { rejectValue: string }
 >(
@@ -26,7 +26,7 @@ export const ClientFetchAllThunk = createAsyncThunk<
             })
             if (request.ok) {
                 const json = await request.json()
-                let allClients: ClientInterface[] = []
+                let allClients: ClientInterfaceId[] = []
                 for (let i = 0; i < json.length; i++) {
                     allClients.push({
                         _id: json[i]._id,

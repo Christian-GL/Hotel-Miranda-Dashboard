@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { ApiStatus } from '../../common/enums/ApiStatus'
 import { ClientStateInterface } from '../interfaces/clientStateInterface'
-import { ClientInterface } from '../interfaces/clientInterface'
+import { ClientInterfaceId } from '../interfaces/clientInterface'
 import { RootState } from '../../common/redux/store'
 import { ClientFetchAllThunk } from './thunks/clientFetchAllThunk'
 import { ClientFetchByIDThunk } from './thunks/clientFetchByIDThunk'
@@ -20,8 +20,8 @@ import { RoomDeleteByIdThunk } from '../../room/features/thunks/roomDeleteByIdTh
 export const ClientSlice = createSlice({
     name: 'client',
     initialState: {
-        allData: [] as ClientInterface[],
-        idData: {} as ClientInterface,
+        allData: [] as ClientInterfaceId[],
+        idData: {} as ClientInterfaceId,
         allStatus: ApiStatus.idle,
         idStatus: ApiStatus.idle,
         createStatus: ApiStatus.idle,
@@ -179,8 +179,8 @@ export const ClientSlice = createSlice({
     }
 })
 
-export const getClientAllData = (state: RootState): ClientInterface[] => state.clientSlice.allData
-export const getClientIdData = (state: RootState): ClientInterface => state.clientSlice.idData
+export const getClientAllData = (state: RootState): ClientInterfaceId[] => state.clientSlice.allData
+export const getClientIdData = (state: RootState): ClientInterfaceId => state.clientSlice.idData
 
 export const getClientAllStatus = (state: RootState) => state.clientSlice.allStatus
 export const getClientIdStatus = (state: RootState) => state.clientSlice.idStatus

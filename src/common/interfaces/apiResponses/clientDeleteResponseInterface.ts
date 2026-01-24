@@ -1,9 +1,9 @@
 
-import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
+import { BookingInterfaceId } from "../../../booking/interfaces/bookingInterface"
 
 
 export interface ClientDeleteResponseInterface {
-    clientDeleted: boolean
+    clientIsDeleted: boolean
     clientId: string
-    updatedBookings: BookingInterface[]
+    updatedBookings: BookingInterfaceId[]
 }

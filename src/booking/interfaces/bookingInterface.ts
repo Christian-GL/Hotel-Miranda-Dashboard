@@ -11,10 +11,8 @@ export interface BookingInterfaceCheckInOutId extends BookingInterfaceCheckInOut
     _id: string
 }
 
-export interface BookingInterfaceNoId extends BookingInterfaceCheckInOut {
+export interface BookingInterface extends BookingInterfaceCheckInOut {
     order_date: Date
-    // check_in_date: Date
-    // check_out_date: Date
     price: number
     special_request: string
     isArchived: OptionYesNo
@@ -22,6 +20,6 @@ export interface BookingInterfaceNoId extends BookingInterfaceCheckInOut {
     client_id: string
 }
 
-export interface BookingInterface extends BookingInterfaceNoId {
+export interface BookingInterfaceId extends BookingInterface {
     _id: string
 }

@@ -3,7 +3,7 @@
 
 import { RoomAmenities } from "../../room/enums/roomAmenities"
 import { RoomType } from "../../room/enums/roomType"
-import { BookingInterface, BookingInterfaceNoId } from "../../booking/interfaces/bookingInterface"
+import { BookingInterfaceId, BookingInterface } from "../../booking/interfaces/bookingInterface"
 
 
 export const validatePhotos = (photos: any[], fieldName: string = 'Photo'): string[] => {

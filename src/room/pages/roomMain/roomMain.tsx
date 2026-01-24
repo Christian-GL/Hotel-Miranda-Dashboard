@@ -12,7 +12,7 @@ import { RoomButtonType } from "../../enums/roomButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
-import { RoomInterface } from "./../../interfaces/roomInterface"
+import { RoomInterfaceId } from "./../../interfaces/roomInterface"
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
@@ -39,7 +39,7 @@ import { RoomUpdateThunk } from "./../../features/thunks/roomUpdateThunk"
 import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk"
 import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
-import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
+import { BookingInterfaceId } from "../../../booking/interfaces/bookingInterface"
 
 
 export const RoomMain = () => {
@@ -47,17 +47,17 @@ export const RoomMain = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { getRole } = useLoginOptionsContext()
-    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAll: RoomInterfaceId[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const roomErrorMessage = useSelector(getRoomErrorMessage)
-    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterfaceId[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.active)
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
-    const [filteredRooms, setFilteredRooms] = useState<RoomInterface[]>([])
+    const [filteredRooms, setFilteredRooms] = useState<RoomInterfaceId[]>([])
     const [selectedButton, setSelectedButton] = useState<RoomButtonType>(RoomButtonType.all)
     const sortableColumns: RoomNameColumn[] = [
         RoomNameColumn.number,
@@ -82,7 +82,7 @@ export const RoomMain = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination<RoomInterface>(filteredRooms, 10)
+    } = usePagination<RoomInterfaceId>(filteredRooms, 10)
 
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
@@ -95,12 +95,12 @@ export const RoomMain = () => {
         else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
 
-    const filterByRoomNumber = (rooms: RoomInterface[], searchText: string): RoomInterface[] => {
+    const filterByRoomNumber = (rooms: RoomInterfaceId[], searchText: string): RoomInterfaceId[] => {
         return rooms.filter(room =>
             room.number.toString().includes(searchText.toLowerCase())
         )
     }
-    const filterByActiveStatus = (rooms: RoomInterface[], activeFilterButton: ActiveButtonType): RoomInterface[] => {
+    const filterByActiveStatus = (rooms: RoomInterfaceId[], activeFilterButton: ActiveButtonType): RoomInterfaceId[] => {
         const now = new Date()
         switch (activeFilterButton) {
             case ActiveButtonType.active:
@@ -116,7 +116,7 @@ export const RoomMain = () => {
                 return rooms
         }
     }
-    const filterByArchivedStatus = (rooms: RoomInterface[], archivedFilterButton: ArchivedButtonType): RoomInterface[] => {
+    const filterByArchivedStatus = (rooms: RoomInterfaceId[], archivedFilterButton: ArchivedButtonType): RoomInterfaceId[] => {
         switch (archivedFilterButton) {
             case ArchivedButtonType.archived:
                 return rooms.filter(room => room.isArchived === OptionYesNo.yes)
@@ -139,7 +139,7 @@ export const RoomMain = () => {
         setFilteredRooms(sortData(filteredData))
         resetPage()
     }
-    const sortData = (filteredData: RoomInterface[]): RoomInterface[] => {
+    const sortData = (filteredData: RoomInterfaceId[]): RoomInterfaceId[] => {
         const arrowStateColumns = Object.keys(arrowStates) as RoomNameColumn[]
         const activeColumn = arrowStateColumns.find(key => arrowStates[key] !== ArrowType.right)
         if (!activeColumn) return filteredData
@@ -181,7 +181,7 @@ export const RoomMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const toggleArchivedClient = async (id: string, room: RoomInterface, index: number): Promise<void> => {
+    const toggleArchivedClient = async (id: string, room: RoomInterfaceId, index: number): Promise<void> => {
         const updatedRoom = {
             ...room,
             isArchived: room.isArchived === OptionYesNo.no
@@ -207,7 +207,7 @@ export const RoomMain = () => {
             customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
         }
     }
-    const isAvailable = (room: RoomInterface): boolean => {
+    const isAvailable = (room: RoomInterfaceId): boolean => {
         // !!! USAR DATOS ASOCIADOS DE LAS BOOKINGS
         // return !Array.isArray(room.booking_id_list) ||
         //     room.booking_id_list.length === 0 ||

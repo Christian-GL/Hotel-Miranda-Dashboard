@@ -2,7 +2,7 @@
 import { OptionYesNo } from 'common/enums/optionYesNo'
 
 
-export interface ClientInterfaceNoId {
+export interface ClientInterface {
     full_name: string
     email: string
     phone_number: string
@@ -10,6 +10,6 @@ export interface ClientInterfaceNoId {
     booking_id_list: string[]
 }
 
-export interface ClientInterface extends ClientInterfaceNoId {
+export interface ClientInterfaceId extends ClientInterface {
     _id: string
 }

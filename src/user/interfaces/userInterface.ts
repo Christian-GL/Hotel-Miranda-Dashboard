@@ -1,26 +1,10 @@
 
 import { JobPosition } from "../enums/jobPosition"
-import  { Role } from "../enums/role"
+import { Role } from "../enums/role"
 import { OptionYesNo } from "../../common/enums/optionYesNo"
 
 
-// OLD VERSION:
-// export interface UserInterfaceNoId {
-//     photo: string
-//     full_name: string
-//     email: string
-//     start_date: string
-//     description: string
-//     phone_number: string
-//     status: UserStatus
-//     password: string
-// }
-
-// export interface UserInterface extends UserInterfaceNoId {
-//     _id: string
-// }
-
-export interface UserInterfaceNoId {
+export interface UserInterface {
     photo: string | null
     full_name: string
     email: string
@@ -33,6 +17,6 @@ export interface UserInterfaceNoId {
     isArchived: OptionYesNo
 }
 
-export interface UserInterface extends UserInterfaceNoId {
+export interface UserInterfaceId extends UserInterface {
     _id: string
 }

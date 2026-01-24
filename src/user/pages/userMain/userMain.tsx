@@ -11,7 +11,7 @@ import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../enums/role"
-import { UserInterface } from "./../../interfaces/userInterface"
+import { UserInterfaceId } from "./../../interfaces/userInterface"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
@@ -44,14 +44,14 @@ export const UserMain = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { getRole } = useLoginOptionsContext()
-    const userAll: UserInterface[] = useSelector(getUserAllData)
+    const userAll: UserInterfaceId[] = useSelector(getUserAllData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const userErrorMessage = useSelector(getUserErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.active)
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
-    const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>([])
+    const [filteredUsers, setFilteredUsers] = useState<UserInterfaceId[]>([])
     const sortableColumns: UserNameColumn[] = [
         UserNameColumn.userInfo,
         UserNameColumn.role,
@@ -75,7 +75,7 @@ export const UserMain = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination<UserInterface>(filteredUsers, 10)
+    } = usePagination<UserInterfaceId>(filteredUsers, 10)
 
     useEffect(() => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
@@ -83,13 +83,13 @@ export const UserMain = () => {
         else if (userAllLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
     }, [userAllLoading, userAll, inputText, activeFilterButton, archivedFilterButton, arrowStates])
 
-    const filterByName = (users: UserInterface[], searchText: string): UserInterface[] => {
+    const filterByName = (users: UserInterfaceId[], searchText: string): UserInterfaceId[] => {
         const normalizedText = searchText.toLowerCase()
         return users.filter(user =>
             user.full_name.toLowerCase().includes(normalizedText)
         )
     }
-    const filterByActiveStatus = (users: UserInterface[], activeFilterButton: ActiveButtonType): UserInterface[] => {
+    const filterByActiveStatus = (users: UserInterfaceId[], activeFilterButton: ActiveButtonType): UserInterfaceId[] => {
         const now = new Date()
         switch (activeFilterButton) {
             case ActiveButtonType.active:
@@ -107,7 +107,7 @@ export const UserMain = () => {
                 return users
         }
     }
-    const filterByArchivedStatus = (users: UserInterface[], archivedFilterButton: ArchivedButtonType): UserInterface[] => {
+    const filterByArchivedStatus = (users: UserInterfaceId[], archivedFilterButton: ArchivedButtonType): UserInterfaceId[] => {
         switch (archivedFilterButton) {
             case ArchivedButtonType.archived:
                 return users.filter(user => user.isArchived === OptionYesNo.yes)
@@ -130,7 +130,7 @@ export const UserMain = () => {
         setFilteredUsers(sortData(filteredData))
         resetPage()
     }
-    const sortData = (filteredData: UserInterface[]): UserInterface[] => {
+    const sortData = (filteredData: UserInterfaceId[]): UserInterfaceId[] => {
         const arrowStateColumns = Object.keys(arrowStates) as UserNameColumn[]
         const activeColumn = arrowStateColumns.find(key => arrowStates[key] !== ArrowType.right)
         if (!activeColumn) return filteredData
@@ -173,7 +173,7 @@ export const UserMain = () => {
             setTableOptionsDisplayed(index)
     }
     // !!! ESTA FUNCIÓN PUEDE SER COMÚN (DELETE TAMBIÉN)
-    const toggleArchivedClient = async (id: string, user: UserInterface, index: number): Promise<void> => {
+    const toggleArchivedClient = async (id: string, user: UserInterfaceId, index: number): Promise<void> => {
         const updatedUser = {
             ...user,
             isArchived: user.isArchived === OptionYesNo.no
@@ -265,7 +265,7 @@ export const UserMain = () => {
                     }
                 })}
                 <THTable>{''}</THTable>
-                {currentPageItems.map((userData: UserInterface, index: number) => {
+                {currentPageItems.map((userData: UserInterfaceId, index: number) => {
                     return [
                         <DivImgTable key={index + '-1'}>
                             <ImgTableUser src={`${userData.photo}`} />

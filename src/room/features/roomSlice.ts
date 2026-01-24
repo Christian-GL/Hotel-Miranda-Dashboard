@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { ApiStatus } from '../../common/enums/ApiStatus'
 import { RoomStateInterface } from '../interfaces/roomStateInterface'
-import { RoomInterface } from '../interfaces/roomInterface'
+import { RoomInterfaceId } from '../interfaces/roomInterface'
 import { RootState } from '../../common/redux/store'
 import { RoomFetchAllThunk } from './thunks/roomFetchAllThunk'
 import { RoomFetchByIDThunk } from './thunks/roomFetchByIDThunk'
@@ -18,8 +18,8 @@ import { BookingUpdateThunk } from '../../booking/features/thunks/bookingUpdateT
 export const RoomSlice = createSlice({
     name: 'room',
     initialState: {
-        allData: [] as RoomInterface[],
-        idData: {} as RoomInterface,
+        allData: [] as RoomInterfaceId[],
+        idData: {} as RoomInterfaceId,
         allStatus: ApiStatus.idle,
         idStatus: ApiStatus.idle,
         createStatus: ApiStatus.idle,
@@ -103,7 +103,7 @@ export const RoomSlice = createSlice({
                 const { roomId } = action.payload
                 state.allData = state.allData.filter(room => room._id !== roomId)
                 if (state.idData?._id === roomId) {
-                    state.idData = {} as RoomInterface
+                    state.idData = {} as RoomInterfaceId
                 }
             }
             )
@@ -153,8 +153,8 @@ export const RoomSlice = createSlice({
     }
 })
 
-export const getRoomAllData = (state: RootState): RoomInterface[] => state.roomSlice.allData
-export const getRoomIdData = (state: RootState): RoomInterface => state.roomSlice.idData
+export const getRoomAllData = (state: RootState): RoomInterfaceId[] => state.roomSlice.allData
+export const getRoomIdData = (state: RootState): RoomInterfaceId => state.roomSlice.idData
 
 export const getRoomAllStatus = (state: RootState) => state.roomSlice.allStatus
 export const getRoomIdStatus = (state: RootState) => state.roomSlice.idStatus

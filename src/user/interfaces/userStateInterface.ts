@@ -1,10 +1,10 @@
 
-import { UserInterface } from "./userInterface"
+import { UserInterfaceId } from "./userInterface"
 import { ApiStatus } from "../../common/enums/ApiStatus"
 
 export interface UserStateInterface {
-    allData: UserInterface[]
-    idData: UserInterface
+    allData: UserInterfaceId[]
+    idData: UserInterfaceId
     allStatus: ApiStatus
     idStatus: ApiStatus
     createStatus: ApiStatus

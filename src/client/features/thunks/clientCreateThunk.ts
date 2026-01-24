@@ -1,11 +1,11 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { ClientInterface, ClientInterfaceNoId } from "../../interfaces/clientInterface"
+import { ClientInterfaceId, ClientInterface } from "../../interfaces/clientInterface"
 
 
 export const ClientCreateThunk = createAsyncThunk<
+    ClientInterfaceId,
     ClientInterface,
-    ClientInterfaceNoId,
     { rejectValue: string }
 >(
     "client/create",

@@ -1,10 +1,10 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { BookingInterface } from '../../interfaces/bookingInterface'
+import { BookingInterfaceId } from '../../interfaces/bookingInterface'
 
 
 export const BookingFetchAllThunk = createAsyncThunk<
-    BookingInterface[],
+    BookingInterfaceId[],
     void,
     { rejectValue: string }
 >(
@@ -26,7 +26,7 @@ export const BookingFetchAllThunk = createAsyncThunk<
             })
             if (request.ok) {
                 const json = await request.json()
-                let allBookings: BookingInterface[] = []
+                let allBookings: BookingInterfaceId[] = []
                 for (let i = 0; i < json.length; i++) {
                     allBookings.push({
                         _id: json[i]._id,

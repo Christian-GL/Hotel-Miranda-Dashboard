@@ -11,7 +11,7 @@ import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
-import { BookingInterface } from "./../../interfaces/bookingInterface"
+import { BookingInterfaceId } from "./../../interfaces/bookingInterface"
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
@@ -36,10 +36,10 @@ import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "
 import { BookingFetchAllThunk } from "./../../features/thunks/bookingFetchAllThunk"
 import { BookingUpdateThunk } from "./../../features/thunks/bookingUpdateThunk"
 import { BookingDeleteByIdThunk } from "./../../features/thunks/bookingDeleteByIdThunk"
-import { RoomInterface } from "../../../room/interfaces/roomInterface"
+import { RoomInterfaceId } from "../../../room/interfaces/roomInterface"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../../../room/features/roomSlice"
 import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
-import { ClientInterface } from "../../../client/interfaces/clientInterface"
+import { ClientInterfaceId } from "../../../client/interfaces/clientInterface"
 import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../../../client/features/thunks/clientFetchAllThunk"
 
@@ -49,20 +49,20 @@ export const BookingMain = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { getRole } = useLoginOptionsContext()
-    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterfaceId[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const bookingErrorMessage = useSelector(getBookingErrorMessage)
-    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAll: RoomInterfaceId[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const roomErrorMessage = useSelector(getRoomErrorMessage)
-    const clientAll: ClientInterface[] = useSelector(getClientAllData)
+    const clientAll: ClientInterfaceId[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const clientErrorMessage = useSelector(getClientErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [bookingStatusButton, setBookingStatusButton] = useState<BookingButtonType>(BookingButtonType.all)
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
-    const [filteredBookings, setFilteredBookings] = useState<BookingInterface[]>([])
+    const [filteredBookings, setFilteredBookings] = useState<BookingInterfaceId[]>([])
     const sortableColumns: BookingNameColumn[] = [
         BookingNameColumn.orderDate,
         BookingNameColumn.checkIn,
@@ -84,7 +84,7 @@ export const BookingMain = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination<BookingInterface>(filteredBookings, 10)
+    } = usePagination<BookingInterfaceId>(filteredBookings, 10)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -102,7 +102,7 @@ export const BookingMain = () => {
         else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
     }, [clientAllLoading, clientAll])
 
-    const filterByClientName = (bookings: BookingInterface[], clients: ClientInterface[], searchText: string): BookingInterface[] => {
+    const filterByClientName = (bookings: BookingInterfaceId[], clients: ClientInterfaceId[], searchText: string): BookingInterfaceId[] => {
         const normalizedText = searchText.trim().toLowerCase()
         if (!normalizedText) return bookings
 
@@ -114,7 +114,7 @@ export const BookingMain = () => {
             return clientName?.includes(normalizedText)
         })
     }
-    const filterByBookingStatus = (bookings: BookingInterface[], bookingStatusButton: BookingButtonType): BookingInterface[] => {
+    const filterByBookingStatus = (bookings: BookingInterfaceId[], bookingStatusButton: BookingButtonType): BookingInterfaceId[] => {
         const now = new Date()
 
         switch (bookingStatusButton) {
@@ -136,7 +136,7 @@ export const BookingMain = () => {
                 return bookings
         }
     }
-    const filterByArchivedStatus = (bookings: BookingInterface[], archivedFilterButton: ArchivedButtonType): BookingInterface[] => {
+    const filterByArchivedStatus = (bookings: BookingInterfaceId[], archivedFilterButton: ArchivedButtonType): BookingInterfaceId[] => {
         switch (archivedFilterButton) {
             case ArchivedButtonType.archived:
                 return bookings.filter(booking => booking.isArchived === OptionYesNo.yes)
@@ -160,7 +160,7 @@ export const BookingMain = () => {
         setFilteredBookings(sortData(filteredDataBookings))
         resetPage()
     }
-    const sortData = (filteredData: BookingInterface[]): BookingInterface[] => {
+    const sortData = (filteredData: BookingInterfaceId[]): BookingInterfaceId[] => {
         const arrowStateColumns = Object.keys(arrowStates) as BookingNameColumn[]
         const activeColumn = arrowStateColumns.find(key => arrowStates[key] !== ArrowType.right)
         if (!activeColumn) return filteredData
@@ -198,7 +198,7 @@ export const BookingMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const toggleArchivedClient = async (id: string, booking: BookingInterface, index: number): Promise<void> => {
+    const toggleArchivedClient = async (id: string, booking: BookingInterfaceId, index: number): Promise<void> => {
         const updatedBooking = {
             ...booking,
             isArchived: booking.isArchived === OptionYesNo.no

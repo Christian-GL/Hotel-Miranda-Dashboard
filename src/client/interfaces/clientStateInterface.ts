@@ -1,12 +1,12 @@
 
-import { ClientInterface } from "./clientInterface"
+import { ClientInterfaceId } from "./clientInterface"
 import { ApiStatus } from "../../common/enums/ApiStatus"
 
 export interface ClientStateInterface {
-    allData: ClientInterface[]
-    notArchived: ClientInterface[]
-    archived: ClientInterface[]
-    idData: ClientInterface
+    allData: ClientInterfaceId[]
+    notArchived: ClientInterfaceId[]
+    archived: ClientInterfaceId[]
+    idData: ClientInterfaceId
     allStatus: ApiStatus
     idStatus: ApiStatus
     createStatus: ApiStatus

@@ -11,7 +11,7 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
-import { RoomInterfaceNoId } from "../../interfaces/roomInterface"
+import { RoomInterface } from "../../interfaces/roomInterface"
 import { RoomAmenities } from "../../enums/roomAmenities"
 import { RoomType } from "../../enums/roomType"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
@@ -37,7 +37,7 @@ export const RoomCreate = () => {
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
     const roomErrorMessage = useSelector(getRoomErrorMessage)
-    const [newRoom, setNewRoom] = useState<RoomInterfaceNoId>({
+    const [newRoom, setNewRoom] = useState<RoomInterface>({
         number: '0',
         photos: [],
         type: RoomType.singleBed,

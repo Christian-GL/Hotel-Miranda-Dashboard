@@ -12,7 +12,7 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
-import { RoomInterface } from "../../interfaces/roomInterface"
+import { RoomInterfaceId } from "../../interfaces/roomInterface"
 import { RoomAmenities } from "../../enums/roomAmenities"
 import { RoomType } from "../../enums/roomType"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
@@ -51,7 +51,7 @@ export const RoomUpdate = () => {
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
     const bookingErrorMessage = useSelector(getBookingErrorMessage)
-    const [roomUpdated, setRoomUpdated] = useState<RoomInterface>({
+    const [roomUpdated, setRoomUpdated] = useState<RoomInterfaceId>({
         _id: '0',
         number: '0',
         photos: [],

@@ -1,12 +1,12 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { BookingInterfaceNoId } from "../../interfaces/bookingInterface"
+import { BookingInterface } from "../../interfaces/bookingInterface"
 import { BookingUpdateResponseInterface } from '../../../common/interfaces/apiResponses/bookingUpdateResponseInterface'
 
 
 export const BookingUpdateThunk = createAsyncThunk<
     BookingUpdateResponseInterface,
-    { idBooking: string; updatedBookingData: BookingInterfaceNoId },
+    { idBooking: string; updatedBookingData: BookingInterface },
     { rejectValue: string }
 >(
     "booking/update",

@@ -12,11 +12,11 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
-import { BookingInterfaceCheckInOutId, BookingInterface } from "../../interfaces/bookingInterface"
+import { BookingInterfaceCheckInOutId, BookingInterfaceId } from "../../interfaces/bookingInterface"
 import { formatDateForInput } from "../../../common/utils/dateUtils"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
-    validateCheckInCheckOutNewBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupiedIfBookingExists
+    validateCheckInCheckOutExistingBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupiedIfBookingExists
 } from '../../../common/utils/commonValidator'
 import {
     GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntry,
@@ -50,7 +50,7 @@ export const BookingUpdate = () => {
     const clientAll = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const clientErrorMessage = useSelector(getClientErrorMessage)
-    const [bookingUpdated, setBookingUpdated] = useState<BookingInterface>({
+    const [bookingUpdated, setBookingUpdated] = useState<BookingInterfaceId>({
         _id: '0',
         order_date: new Date(),
         check_in_date: new Date(),
@@ -78,8 +78,6 @@ export const BookingUpdate = () => {
 
         return validateDateIsOccupiedIfBookingExists(bookingUpdated, bookingsOfRoom).length === 0
     })
-
-
 
     // !!! DEBERÍA SER SUFICIENTE CON 1 DE LOS 2 PRIMEROS useEffects?
     useEffect(() => {
@@ -134,7 +132,7 @@ export const BookingUpdate = () => {
         validateOptionYesNo(bookingUpdated.isArchived, 'Booking isArchived').map(
             error => allErrorMessages.push(error)
         )
-        validateCheckInCheckOutNewBooking(bookingUpdated.check_in_date, bookingUpdated.check_out_date).map(
+        validateCheckInCheckOutExistingBooking(new Date(bookingUpdated.check_in_date), new Date(bookingUpdated.check_out_date)).map(
             error => allErrorMessages.push(error)
         )
 
@@ -187,7 +185,7 @@ export const BookingUpdate = () => {
 
     return (<>
         <ToastContainer />
-        {console.log(bookingUpdated)}
+
         <GlobalDateTimeStyles />
 
         <bookingUpdateStyles.SectionPageBookingUpdate>

@@ -12,7 +12,7 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
-import { ClientInterface } from "../../interfaces/clientInterface"
+import { ClientInterfaceId } from "../../interfaces/clientInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
 import {
@@ -24,10 +24,10 @@ import { getClientBookingsByRoom } from "../../../common/utils/clientBookingsByR
 import { getClientIdData, getClientIdStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
 import { ClientFetchByIDThunk } from "../../../client/features/thunks/clientFetchByIDThunk"
 import { ClientUpdateThunk } from '../../../client/features/thunks/clientUpdateThunk'
-import { RoomInterface } from "room/interfaces/roomInterface"
+import { RoomInterfaceId } from "room/interfaces/roomInterface"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../../../room/features/roomSlice"
 import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
-import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
+import { BookingInterfaceId } from "../../../booking/interfaces/bookingInterface"
 import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 
@@ -41,13 +41,13 @@ export const ClientUpdate = () => {
     const clientById = useSelector(getClientIdData)
     const clientByIdLoading = useSelector(getClientIdStatus)
     const clientErrorMessage = useSelector(getClientErrorMessage)
-    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterfaceId[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const bookingErrorMessage = useSelector(getBookingErrorMessage)
-    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAll: RoomInterfaceId[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const roomErrorMessage = useSelector(getRoomErrorMessage)
-    const [clientUpdated, setClientUpdated] = useState<ClientInterface>({
+    const [clientUpdated, setClientUpdated] = useState<ClientInterfaceId>({
         _id: "0",
         full_name: '',
         email: '',

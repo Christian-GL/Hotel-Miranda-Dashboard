@@ -11,7 +11,7 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
-import { BookingInterfaceCheckInOut, BookingInterfaceNoId } from "../../interfaces/bookingInterface"
+import { BookingInterfaceCheckInOut, BookingInterface } from "../../interfaces/bookingInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
     validateCheckInCheckOutNewBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupied
@@ -44,7 +44,7 @@ export const BookingCreate = () => {
     const clientAll = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const clientErrorMessage = useSelector(getClientErrorMessage)
-    const [newBooking, setNewBooking] = useState<BookingInterfaceNoId>({
+    const [newBooking, setNewBooking] = useState<BookingInterface>({
         order_date: new Date(),
         check_in_date: new Date(),
         check_out_date: new Date(),
@@ -75,8 +75,6 @@ export const BookingCreate = () => {
 
             return validateDateIsOccupied(newBooking, bookingsOfRoom).length === 0
         })
-
-
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }

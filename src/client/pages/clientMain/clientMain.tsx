@@ -12,7 +12,7 @@ import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
-import { ClientInterface } from '../../interfaces/clientInterface'
+import { ClientInterfaceId } from '../../interfaces/clientInterface'
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
@@ -38,10 +38,10 @@ import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../
 import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
 import { ClientUpdateThunk } from "./../../features/thunks/clientUpdateThunk"
 import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
-import { RoomInterface } from "room/interfaces/roomInterface"
+import { RoomInterfaceId } from "room/interfaces/roomInterface"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../../../room/features/roomSlice"
 import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
-import { BookingInterface } from "../../../booking/interfaces/bookingInterface"
+import { BookingInterfaceId } from "../../../booking/interfaces/bookingInterface"
 import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 
@@ -51,19 +51,19 @@ export const ClientMain = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { getRole } = useLoginOptionsContext()
-    const clientAll: ClientInterface[] = useSelector(getClientAllData)
+    const clientAll: ClientInterfaceId[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const clientErrorMessage = useSelector(getClientErrorMessage)
-    const bookingAll: BookingInterface[] = useSelector(getBookingAllData)
+    const bookingAll: BookingInterfaceId[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const bookingErrorMessage = useSelector(getBookingErrorMessage)
-    const roomAll: RoomInterface[] = useSelector(getRoomAllData)
+    const roomAll: RoomInterfaceId[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
-    const [filteredClients, setFilteredClients] = useState<ClientInterface[]>([])
+    const [filteredClients, setFilteredClients] = useState<ClientInterfaceId[]>([])
     const sortableColumns: ClientNameColumn[] = [
         ClientNameColumn.customerInfo
     ]
@@ -81,7 +81,7 @@ export const ClientMain = () => {
         goToPrevPage,
         resetPage,
         lastPage
-    } = usePagination<ClientInterface>(filteredClients, 10)
+    } = usePagination<ClientInterfaceId>(filteredClients, 10)
 
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
@@ -99,7 +99,7 @@ export const ClientMain = () => {
         else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
 
-    const filterByName = (clients: ClientInterface[], searchText: string): ClientInterface[] => {
+    const filterByName = (clients: ClientInterfaceId[], searchText: string): ClientInterfaceId[] => {
         const normalizedText = searchText.toLowerCase()
         return clients.filter(client =>
             client._id.toLocaleLowerCase().includes(normalizedText)
@@ -107,7 +107,7 @@ export const ClientMain = () => {
             || client.email.toLocaleLowerCase().includes(normalizedText)
         )
     }
-    const filterByArchivedStatus = (clients: ClientInterface[], archivedFilterButton: ArchivedButtonType): ClientInterface[] => {
+    const filterByArchivedStatus = (clients: ClientInterfaceId[], archivedFilterButton: ArchivedButtonType): ClientInterfaceId[] => {
         switch (archivedFilterButton) {
             case ArchivedButtonType.archived:
                 return clients.filter(client => client.isArchived === OptionYesNo.yes)
@@ -129,7 +129,7 @@ export const ClientMain = () => {
         setFilteredClients(sortData(filteredData))
         resetPage()
     }
-    const sortData = (filteredData: ClientInterface[]): ClientInterface[] => {
+    const sortData = (filteredData: ClientInterfaceId[]): ClientInterfaceId[] => {
         const arrowStateColumns = Object.keys(arrowStates) as ClientNameColumn[]
         const activeColumn = arrowStateColumns.find(key => arrowStates[key] !== ArrowType.right)
         if (!activeColumn) return filteredData
@@ -159,7 +159,7 @@ export const ClientMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const toggleArchivedClient = async (id: string, client: ClientInterface, index: number): Promise<void> => {
+    const toggleArchivedClient = async (id: string, client: ClientInterfaceId, index: number): Promise<void> => {
         const updatedClient = {
             ...client,
             isArchived: client.isArchived === OptionYesNo.no

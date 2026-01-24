@@ -13,7 +13,7 @@ import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { JobPosition } from "../../enums/jobPosition"
 import { Role } from "../../enums/role"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
-import { UserInterfaceNoId } from "../../interfaces/userInterface"
+import { UserInterface } from "../../interfaces/userInterface"
 import userDefault from '../../../assets/img/userDefault.png'
 import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
@@ -38,7 +38,7 @@ export const UserCreate = () => {
     const userAll = useSelector(getUserAllData)
     const userAllLoading = useSelector(getUserAllStatus)
     const userErrorMessage = useSelector(getUserErrorMessage)
-    const [newUser, setNewUser] = useState<UserInterfaceNoId>({
+    const [newUser, setNewUser] = useState<UserInterface>({
         photo: null,
         full_name: '',
         email: '',

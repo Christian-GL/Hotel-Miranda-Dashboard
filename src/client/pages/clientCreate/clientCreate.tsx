@@ -11,7 +11,7 @@ import { ToastifyError } from "../../../common/components/toastify/errorPopup/to
 import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
-import { ClientInterfaceNoId } from "../../interfaces/clientInterface"
+import { ClientInterface } from "../../interfaces/clientInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
 import {
@@ -31,7 +31,7 @@ export const ClientCreate = () => {
     const clientAll = useSelector(getClientAllData)
     const clientAllLoading = useSelector(getClientAllStatus)
     const clientErrorMessage = useSelector(getClientErrorMessage)
-    const [newClient, setNewClient] = useState<ClientInterfaceNoId>({
+    const [newClient, setNewClient] = useState<ClientInterface>({
         full_name: '',
         email: '',
         phone_number: '',

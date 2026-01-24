@@ -1,10 +1,10 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { RoomInterface } from "../../interfaces/roomInterface"
+import { RoomInterfaceId } from "../../interfaces/roomInterface"
 
 
 export const RoomFetchByIDThunk = createAsyncThunk<
-    RoomInterface,
+    RoomInterfaceId,
     string,
     { rejectValue: string }
 >(
@@ -26,7 +26,7 @@ export const RoomFetchByIDThunk = createAsyncThunk<
             })
             if (request.ok) {
                 const json = await request.json()
-                let room: RoomInterface = {
+                let room: RoomInterfaceId = {
                     _id: json._id,
                     photos: json.photo,
                     number: json.number,

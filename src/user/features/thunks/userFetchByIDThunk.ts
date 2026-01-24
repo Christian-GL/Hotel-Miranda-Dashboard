@@ -1,10 +1,10 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { UserInterface } from '../../interfaces/userInterface'
+import { UserInterfaceId } from '../../interfaces/userInterface'
 
 
 export const UserFetchByIDThunk = createAsyncThunk<
-    UserInterface,
+    UserInterfaceId,
     string,
     { rejectValue: string }
 >(
@@ -26,7 +26,7 @@ export const UserFetchByIDThunk = createAsyncThunk<
             })
             if (request.ok) {
                 const json = await request.json()
-                let user: UserInterface = {
+                let user: UserInterfaceId = {
                     _id: json._id,
                     photo: json.photo,
                     full_name: json.full_name,

@@ -1,5 +1,5 @@
 
-import { BookingInterfaceCheckInOutId, BookingInterfaceCheckInOut, BookingInterfaceNoId, BookingInterface } from "../../booking/interfaces/bookingInterface"
+import { BookingInterfaceCheckInOutId, BookingInterfaceCheckInOut, BookingInterface, BookingInterfaceId } from "../../booking/interfaces/bookingInterface"
 import { RoomType } from "../../room/enums/roomType"
 import { Role } from "../../user/enums/role"
 import { RoomAmenities } from "../../room/enums/roomAmenities"
@@ -247,7 +247,7 @@ export const validateCheckInCheckOutExistingBooking = (checkIn: Date, checkOut: 
     return errorMessages
 }
 
-export const validateDateIsOccupied = (booking: BookingInterfaceNoId, otherBookings: BookingInterfaceCheckInOut[]): string[] => {
+export const validateDateIsOccupied = (booking: BookingInterface, otherBookings: BookingInterfaceCheckInOut[]): string[] => {
     const errorMessages: string[] = []
 
     for (let i = 0; i < otherBookings.length; i++) {
@@ -259,7 +259,7 @@ export const validateDateIsOccupied = (booking: BookingInterfaceNoId, otherBooki
     return errorMessages
 }
 
-export const validateDateIsOccupiedIfBookingExists = (booking: BookingInterface, otherBookings: BookingInterfaceCheckInOutId[]): string[] => {
+export const validateDateIsOccupiedIfBookingExists = (booking: BookingInterfaceId, otherBookings: BookingInterfaceCheckInOutId[]): string[] => {
     const errorMessages: string[] = []
 
     for (let i = 0; i < otherBookings.length; i++) {

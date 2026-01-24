@@ -1,12 +1,12 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { RoomInterface } from "../../interfaces/roomInterface"
+import { RoomInterfaceId } from "../../interfaces/roomInterface"
 
 
 // export const RoomFetchAllThunk = createAsyncThunk
 //     ("room/fetchAll", async () => {
 export const RoomFetchAllThunk = createAsyncThunk<
-    RoomInterface[],
+    RoomInterfaceId[],
     void,
     { rejectValue: string }
 >(
@@ -28,7 +28,7 @@ export const RoomFetchAllThunk = createAsyncThunk<
             })
             if (request.ok) {
                 const json = await request.json()
-                let allRooms: RoomInterface[] = []
+                let allRooms: RoomInterfaceId[] = []
                 for (let i = 0; i < json.length; i++) {
                     allRooms.push({
                         _id: json[i]._id,
