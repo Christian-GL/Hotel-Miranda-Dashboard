@@ -85,7 +85,7 @@ export const ArticleKPI = styled.article`
     
 `
 
-export const DivCtnInfo = styled.div`
+export const CtnInfo = styled.div`
     display: inline-block;
     vertical-align: middle;
     padding: 1em;
@@ -103,7 +103,7 @@ export const TextH5 = styled.h5`
     color: ${props => props.theme.textKPIDashboard};
 `
 
-export const SectionReviews = styled.section`
+export const SectionSpecialRequest = styled.section`
     padding: 1em 0;
 `
 
@@ -114,6 +114,6 @@ export const TitleSectionReviewsH5 = styled.h5`
     color: ${props => props.theme.titleReviewsDashboard};
 `
 
-export const DivCtnReviews = styled.div`
+export const CtnReviews = styled.div`
     display: flex;
 `

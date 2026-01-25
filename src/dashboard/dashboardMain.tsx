@@ -1,18 +1,21 @@
 
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import * as dashboardMainStyles from "./dashboardMainStyles"
+import * as styles from "./dashboardMainStyles"
 import { AppDispatch } from '../common/redux/store'
 import { ApiStatus } from "../common/enums/ApiStatus"
 import { BookingStatus } from "../booking/enums/bookingStatus"
 import { formatDateForPrint } from '../common/utils/dateUtils'
 import { checkBookingStatus } from '../common/utils/checkBookingStatus'
+import { customPopupMessage } from '../common/utils/customPopupMessage'
+import { PopupText } from "../common/components/popupText/popupText"
+import { PopupTextInterface } from '../common/interfaces/popupTextInterface'
 import { ArticleReview } from "../common/components/articleReview/articleReview"
-import { getBookingAllData, getBookingAllStatus } from '../booking/features/bookingSlice'
+import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from '../booking/features/bookingSlice'
 import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk'
-import { getClientAllData, getClientAllStatus } from "../client/features/clientSlice"
+import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../client/features/thunks/clientFetchAllThunk"
 import { BookingInterfaceId } from "../booking/interfaces/bookingInterface"
 import { ClientInterfaceId } from "../client/interfaces/clientInterface"
@@ -23,69 +26,75 @@ export const DashboardMain = () => {
     const dispatch = useDispatch<AppDispatch>()
     const bookingAll: BookingInterfaceId[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
+    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const clientAll: ClientInterfaceId[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
+    const clientErrorMessage = useSelector(getClientErrorMessage)
+    const [showPopup, setShowPopup] = useState<boolean>(false)
+    const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected) { alert("Error en la api de dashboard > bookings") }
+        else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
         else if (clientAllLoading === ApiStatus.fulfilled) { }
-        else if (clientAllLoading === ApiStatus.rejected) { alert("Error en la api de dashboard > clients") }
+        else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
     }, [clientAllLoading, clientAll])
 
 
     return (
-        < dashboardMainStyles.SectionPageDashboard >
+        < styles.SectionPageDashboard >
 
-            <dashboardMainStyles.SectionKPIs>
-                <dashboardMainStyles.ArticleKPI>
-                    <dashboardMainStyles.IconBooking />
-                    <dashboardMainStyles.DivCtnInfo>
-                        <dashboardMainStyles.NumberH4>{bookingAll.length}</dashboardMainStyles.NumberH4>
-                        <dashboardMainStyles.TextH5>New Bookings</dashboardMainStyles.TextH5>
-                    </dashboardMainStyles.DivCtnInfo>
-                </dashboardMainStyles.ArticleKPI>
-                <dashboardMainStyles.ArticleKPI>
-                    <dashboardMainStyles.IconLogIn />
-                    <dashboardMainStyles.DivCtnInfo>
-                        <dashboardMainStyles.NumberH4>
+            <styles.SectionKPIs>
+                <styles.ArticleKPI>
+                    <styles.IconBooking />
+                    <styles.CtnInfo>
+                        <styles.NumberH4>{bookingAll.length}</styles.NumberH4>
+                        <styles.TextH5>Total Bookings</styles.TextH5>
+                    </styles.CtnInfo>
+                </styles.ArticleKPI>
+                <styles.ArticleKPI>
+                    <styles.IconLogIn />
+                    <styles.CtnInfo>
+                        <styles.NumberH4>
                             {bookingAll.filter(booking =>
                                 checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkIn
                             ).length}
-                        </dashboardMainStyles.NumberH4>
-                        <dashboardMainStyles.TextH5>Check in</dashboardMainStyles.TextH5>
-                    </dashboardMainStyles.DivCtnInfo>
-                </dashboardMainStyles.ArticleKPI>
-                <dashboardMainStyles.ArticleKPI>
-                    <dashboardMainStyles.IconCalendar />
-                    <dashboardMainStyles.DivCtnInfo>
-                        <dashboardMainStyles.NumberH4>
+                        </styles.NumberH4>
+                        <styles.TextH5>Check in</styles.TextH5>
+                    </styles.CtnInfo>
+                </styles.ArticleKPI>
+                <styles.ArticleKPI>
+                    <styles.IconCalendar />
+                    <styles.CtnInfo>
+                        <styles.NumberH4>
                             {bookingAll.filter(booking =>
                                 checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.inProgress
                             ).length}
-                        </dashboardMainStyles.NumberH4>
-                        <dashboardMainStyles.TextH5>In Progress</dashboardMainStyles.TextH5>
-                    </dashboardMainStyles.DivCtnInfo>
-                </dashboardMainStyles.ArticleKPI>
-                <dashboardMainStyles.ArticleKPI>
-                    <dashboardMainStyles.IconLogOut />
-                    <dashboardMainStyles.DivCtnInfo>
-                        <dashboardMainStyles.NumberH4>
+                        </styles.NumberH4>
+                        <styles.TextH5>In Progress</styles.TextH5>
+                    </styles.CtnInfo>
+                </styles.ArticleKPI>
+                <styles.ArticleKPI>
+                    <styles.IconLogOut />
+                    <styles.CtnInfo>
+                        <styles.NumberH4>
                             {bookingAll.filter(booking =>
                                 checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkOut
                             ).length}
-                        </dashboardMainStyles.NumberH4>
-                        <dashboardMainStyles.TextH5>Check Out</dashboardMainStyles.TextH5>
-                    </dashboardMainStyles.DivCtnInfo>
-                </dashboardMainStyles.ArticleKPI>
-            </dashboardMainStyles.SectionKPIs>
+                        </styles.NumberH4>
+                        <styles.TextH5>Check Out</styles.TextH5>
+                    </styles.CtnInfo>
+                </styles.ArticleKPI>
+            </styles.SectionKPIs>
 
-            <dashboardMainStyles.SectionReviews>
-                <dashboardMainStyles.TitleSectionReviewsH5>Latest Review by Customers</dashboardMainStyles.TitleSectionReviewsH5>
+            {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
+
+            <styles.SectionSpecialRequest>
+                <styles.TitleSectionReviewsH5>Latest reviews by client</styles.TitleSectionReviewsH5>
                 {/* <dashboardJS.SwiperCustom
                         spaceBetween={0}
                         slidesPerView={3}
@@ -104,21 +113,20 @@ export const DashboardMain = () => {
                     pagination={{ clickable: true }}
                     loop={true}
                 >
-                    {/* !!! PONER DATOS RELEVANTES: */}
-                    {clientAll.map((client, index) => {
+                    {bookingAll.map((booking, index) => {
                         return <SwiperSlide key={index}>
                             <ArticleReview
-                                title={client.full_name}
-                                subTittle={`${formatDateForPrint(client.full_name)}`}
-                                content={client.email}
+                                title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
+                                subTittle={`${formatDateForPrint(booking.order_date)}`}
+                                content={booking.special_request}
                             />
                         </SwiperSlide>
                     })}
                 </Swiper>
                 {/* </dashboardJS.SwiperCustom> */}
-            </dashboardMainStyles.SectionReviews>
+            </styles.SectionSpecialRequest>
 
-        </dashboardMainStyles.SectionPageDashboard >
+        </styles.SectionPageDashboard >
     )
 
 }
