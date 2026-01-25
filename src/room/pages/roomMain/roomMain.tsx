@@ -183,7 +183,7 @@ export const RoomMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const toggleArchivedClient = async (id: string, room: RoomInterfaceId, index: number): Promise<void> => {
+    const toggleArchivedRoom = async (id: string, room: RoomInterfaceId, index: number): Promise<void> => {
         const updatedRoom = {
             ...room,
             isArchived: room.isArchived === OptionYesNo.no
@@ -339,7 +339,7 @@ export const RoomMain = () => {
                                 <IconOptions onClick={() => { displayMenuOptions(index) }} />
                                 <CtnOptionsDisplayed display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                     <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
-                                    <ButtonOption onClick={() => toggleArchivedClient(roomData._id, roomData, index)}>
+                                    <ButtonOption onClick={() => toggleArchivedRoom(roomData._id, roomData, index)}>
                                         {roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                                     </ButtonOption>
                                     <ButtonOption

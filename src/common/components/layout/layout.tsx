@@ -67,8 +67,8 @@ export const Layout = () => {
         if (roomByIdLoading === ApiStatus.pending) { ToastifyLoadingData(4, 'Loading room by ID data...') } else { toast.dismiss(4) }
         if (clientAllLoading === ApiStatus.pending) { ToastifyLoadingData(5, 'Loading all client data...') } else { toast.dismiss(5) }
         if (clientByIdLoading === ApiStatus.pending) { ToastifyLoadingData(6, 'Loading client by ID data...') } else { toast.dismiss(6) }
-        if (userAllLoading === ApiStatus.pending) { ToastifyLoadingData(7, 'loading all user data...') } else { toast.dismiss(7) }
-        if (userByIdLoading === ApiStatus.pending) { ToastifyLoadingData(8, 'loading user by ID data...') } else { toast.dismiss(8) }
+        if (userAllLoading === ApiStatus.pending) { ToastifyLoadingData(7, 'Loading all user data...') } else { toast.dismiss(7) }
+        if (userByIdLoading === ApiStatus.pending) { ToastifyLoadingData(8, 'Loading user by ID data...') } else { toast.dismiss(8) }
     }, [bookingAllLoading, bookingByIdLoading, roomAllLoading, roomByIdLoading,
         clientAllLoading, clientByIdLoading, userAllLoading, userByIdLoading])
 
@@ -106,116 +106,120 @@ export const Layout = () => {
     const routeIsActive = (route: string) => {
         return location.pathname.startsWith(route)
     }
-    const navigateToUserUpdate = (id: string) => navigate(`users/user-update/${id}`)
+    // const navigateToUserUpdate = (id: string) => navigate(`users/user-update/${id}`)
 
 
-    return !isAuthenticated ?
-        <Navigate to="" /> :
-        (<>
-            <ThemeProvider theme={selectedTheme}>
-                <headerStyles.Header display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                    <div>
-                        {sidebarCollapsed ?
-                            <headerStyles.IconMenuCollapsed onClick={displaySidebarMenu} /> :
-                            <headerStyles.IconMenuNotCollaped onClick={displaySidebarMenu} />
-                        }
-                        <headerStyles.TitleH2 >{formatRouteTitle(location.pathname)}</headerStyles.TitleH2>
-                    </div>
-                    <div>
-                        {/* <headerStyles.IconMail />
-                        <headerStyles.IconBell /> */}
-                        {
-                            theme === 'light' ?
-                                <headerStyles.Sun onClick={switchDarkTheme} /> :
-                                <headerStyles.Moon onClick={switchDarkTheme} />
-                        }
-                        <headerStyles.IconLogOut onClick={closeSession} />
-                    </div>
-                </headerStyles.Header>
-
-                <sidebarStyles.AsideSideNavigationBar display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                    <div>
-                        <sidebarStyles.IconHotel onClick={() => navigate('/dashboard')} display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} />
-                        <sidebarStyles.DivCtnTitle display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                            <sidebarStyles.TitleH1>travl</sidebarStyles.TitleH1>
-                            <sidebarStyles.PTitleText>Hotel Admin Dashboard</sidebarStyles.PTitleText>
-                        </sidebarStyles.DivCtnTitle>
-                    </div>
-
-                    <div>
-                        <sidebarStyles.DivCtnNavOption
-                            onClick={() => navigate('/dashboard')}
-                            routeIsActive={routeIsActive('/dashboard')}
-                            display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
-                            <sidebarStyles.IconDashboard />
-                            <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                                Dashboard
-                            </sidebarStyles.PNavOptionText>
-                        </sidebarStyles.DivCtnNavOption>
-                        <sidebarStyles.DivCtnNavOption
-                            data-cy="nav-ctn-bookings"
-                            onClick={() => navigate('/bookings')}
-                            routeIsActive={routeIsActive('/bookings')}
-                            display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
-                            <sidebarStyles.IconBooking />
-                            <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                                Bookings
-                            </sidebarStyles.PNavOptionText>
-                        </sidebarStyles.DivCtnNavOption>
-                        <sidebarStyles.DivCtnNavOption
-                            data-cy="nav-ctn-rooms"
-                            onClick={() => navigate('/rooms')}
-                            routeIsActive={routeIsActive('/rooms')}
-                            display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
-                            <sidebarStyles.IconRooms />
-                            <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                                Rooms
-                            </sidebarStyles.PNavOptionText>
-                        </sidebarStyles.DivCtnNavOption>
-                        <sidebarStyles.DivCtnNavOption
-                            onClick={() => navigate('/clients')}
-                            routeIsActive={routeIsActive('/clients')}
-                            display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
-                            <sidebarStyles.IconClient />
-                            <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                                Client
-                            </sidebarStyles.PNavOptionText>
-                        </sidebarStyles.DivCtnNavOption>
-                        <sidebarStyles.DivCtnNavOption
-                            onClick={() => navigate('/users')}
-                            routeIsActive={routeIsActive('/users')}
-                            display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
-                            <sidebarStyles.IconUsers />
-                            <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                                Users
-                            </sidebarStyles.PNavOptionText>
-                        </sidebarStyles.DivCtnNavOption>
-                    </div>
-
-                    <sidebarStyles.DivCtnUser display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                        <sidebarStyles.ImgProfile src={`${userById.photo}`}></sidebarStyles.ImgProfile>
-                        <sidebarStyles.TitleH4>{userById.full_name}</sidebarStyles.TitleH4>
-                        <sidebarStyles.TitleH5>{userById.email}</sidebarStyles.TitleH5>
-                        {/* !!! SI EL USUARIO SE QUIERE EDITAR A SI MISMO (REPLANTEAR CONCEPTO): */}
-                        {/* <sidebarStyles.ButtonEdit onClick={() => { navigateToUserUpdate(userById._id) }}>Edit</sidebarStyles.ButtonEdit> */}
-                    </sidebarStyles.DivCtnUser>
-
-                    <sidebarStyles.DivCtnCredits display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                        <sidebarStyles.TitleMayorCreditH5>Travl Hotel Admin Dashboard</sidebarStyles.TitleMayorCreditH5>
-                        <sidebarStyles.TitleMinorCreditH6>2025 All Rights Reserved</sidebarStyles.TitleMinorCreditH6>
-                    </sidebarStyles.DivCtnCredits>
-                </sidebarStyles.AsideSideNavigationBar>
-
-                <layoutStyles.Main display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
-                    {
-                        bookingAllLoading === ApiStatus.pending || bookingByIdLoading === ApiStatus.pending ||
-                            roomAllLoading === ApiStatus.pending || roomByIdLoading === ApiStatus.pending ||
-                            clientAllLoading === ApiStatus.pending || clientByIdLoading === ApiStatus.pending ||
-                            userAllLoading === ApiStatus.pending || userByIdLoading === ApiStatus.pending ?
-                            <ToastContainer /> :
-                            <Outlet />
+    return !isAuthenticated
+        ? <Navigate to="" />
+        : <ThemeProvider theme={selectedTheme}>
+            <headerStyles.Header display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
+                <div>
+                    {sidebarCollapsed ?
+                        <headerStyles.IconMenuCollapsed onClick={displaySidebarMenu} /> :
+                        <headerStyles.IconMenuNotCollaped onClick={displaySidebarMenu} />
                     }
-                </layoutStyles.Main>
-            </ThemeProvider>
-        </>)
+                    <headerStyles.TitleH2 >{formatRouteTitle(location.pathname)}</headerStyles.TitleH2>
+                </div>
+                <div>
+                    {/* !!! */}
+                    {/* <headerStyles.IconMail />
+                        <headerStyles.IconBell /> */}
+                    {
+                        theme === 'light' ?
+                            <headerStyles.Sun onClick={switchDarkTheme} /> :
+                            <headerStyles.Moon onClick={switchDarkTheme} />
+                    }
+                    <headerStyles.IconLogOut onClick={closeSession} />
+                </div>
+            </headerStyles.Header>
+
+            <sidebarStyles.AsideSideNavigationBar display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
+                <div>
+                    <sidebarStyles.IconHotel onClick={() => navigate('/dashboard')} display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} />
+                    <sidebarStyles.DivCtnTitle display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
+                        <sidebarStyles.TitleH1>travl</sidebarStyles.TitleH1>
+                        <sidebarStyles.PTitleText>Hotel Admin Dashboard</sidebarStyles.PTitleText>
+                    </sidebarStyles.DivCtnTitle>
+                </div>
+
+                <div>
+                    <sidebarStyles.DivCtnNavOption
+                        onClick={() => navigate('/dashboard')}
+                        routeIsActive={routeIsActive('/dashboard')}
+                        display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
+                        <sidebarStyles.IconDashboard />
+                        <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
+                            Dashboard
+                        </sidebarStyles.PNavOptionText>
+                    </sidebarStyles.DivCtnNavOption>
+                    <sidebarStyles.DivCtnNavOption
+                        data-cy="nav-ctn-bookings"
+                        onClick={() => navigate('/bookings')}
+                        routeIsActive={routeIsActive('/bookings')}
+                        display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
+                        <sidebarStyles.IconBooking />
+                        <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
+                            Bookings
+                        </sidebarStyles.PNavOptionText>
+                    </sidebarStyles.DivCtnNavOption>
+                    <sidebarStyles.DivCtnNavOption
+                        data-cy="nav-ctn-rooms"
+                        onClick={() => navigate('/rooms')}
+                        routeIsActive={routeIsActive('/rooms')}
+                        display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
+                        <sidebarStyles.IconRooms />
+                        <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
+                            Rooms
+                        </sidebarStyles.PNavOptionText>
+                    </sidebarStyles.DivCtnNavOption>
+                    <sidebarStyles.DivCtnNavOption
+                        onClick={() => navigate('/clients')}
+                        routeIsActive={routeIsActive('/clients')}
+                        display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
+                        <sidebarStyles.IconClient />
+                        <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
+                            Client
+                        </sidebarStyles.PNavOptionText>
+                    </sidebarStyles.DivCtnNavOption>
+                    <sidebarStyles.DivCtnNavOption
+                        onClick={() => navigate('/users')}
+                        routeIsActive={routeIsActive('/users')}
+                        display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
+                        <sidebarStyles.IconUsers />
+                        <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
+                            Users
+                        </sidebarStyles.PNavOptionText>
+                    </sidebarStyles.DivCtnNavOption>
+                </div>
+
+                <sidebarStyles.DivCtnUser display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
+                    <sidebarStyles.ImgProfile src={`${userById.photo}`}></sidebarStyles.ImgProfile>
+                    <sidebarStyles.TitleH4>{userById.full_name}</sidebarStyles.TitleH4>
+                    <sidebarStyles.TitleH5>{userById.email}</sidebarStyles.TitleH5>
+                    {/* !!! SI EL USUARIO SE QUIERE EDITAR A SI MISMO (REPLANTEAR CONCEPTO): */}
+                    {/* <sidebarStyles.ButtonEdit onClick={() => { navigateToUserUpdate(userById._id) }}>Edit</sidebarStyles.ButtonEdit> */}
+                </sidebarStyles.DivCtnUser>
+
+                <sidebarStyles.DivCtnCredits display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
+                    <sidebarStyles.TitleMayorCreditH5>Travl Hotel Admin Dashboard</sidebarStyles.TitleMayorCreditH5>
+                    <sidebarStyles.TitleMinorCreditH6>2025 All Rights Reserved</sidebarStyles.TitleMinorCreditH6>
+                </sidebarStyles.DivCtnCredits>
+            </sidebarStyles.AsideSideNavigationBar>
+
+            <layoutStyles.Main display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
+                {
+                    bookingAllLoading === ApiStatus.pending
+                        || bookingByIdLoading === ApiStatus.pending
+                        || roomAllLoading === ApiStatus.pending
+                        || roomByIdLoading === ApiStatus.pending
+                        || clientAllLoading === ApiStatus.pending
+                        || clientByIdLoading === ApiStatus.pending
+                        || userAllLoading === ApiStatus.pending
+                        || userByIdLoading === ApiStatus.pending
+                        ? <ToastContainer />
+                        : <Outlet />
+                }
+            </layoutStyles.Main>
+        </ThemeProvider>
+
 }

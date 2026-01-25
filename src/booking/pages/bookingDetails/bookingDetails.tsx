@@ -5,17 +5,28 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 
-import * as bookingDetailsStyles from "./bookingDetailsStyles"
+import * as styles from "./bookingDetailsStyles"
 import { BookingInterfaceId } from "../../interfaces/bookingInterface"
 import { CtnMenuOptions, CtnOptionsDisplayed, ButtonOption } from "../../../common/styles/tableStyles"
 import { AppDispatch } from "../../../common/redux/store"
 import { formatDateForPrint } from "../../../common/utils/dateUtils"
+import { applyDiscount } from '../../../common/utils/tableUtils'
+import { customPopupMessage } from '../../../common/utils/customPopupMessage'
+import { PopupText } from "../../../common/components/popupText/popupText"
+import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
+import { ToastContainer, toast } from 'react-toastify'
+import { ToastifyLoadingData } from "../../../common/components/toastify/loadingDataPopup/toastifyLoadingData"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { RoomAmenities } from "../../../room/enums/roomAmenities"
-import { applyDiscount } from '../../../common/utils/tableUtils'
-import { getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice"
-import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
+import { OptionYesNo } from "../../../common/enums/optionYesNo"
+import { getBookingIdData, getBookingIdStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
+import { BookingFetchByIDThunk } from "../../features/thunks/bookingFetchByIDThunk"
+import { BookingUpdateThunk } from "./../../features/thunks/bookingUpdateThunk"
 import { BookingDeleteByIdThunk } from "../../features/thunks/bookingDeleteByIdThunk"
+import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus, getRoomErrorMessage } from "../../../room/features/roomSlice"
+import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
+import { RoomFetchByIDThunk } from "../../../room/features/thunks/roomFetchByIDThunk"
+import { RoomInterfaceId } from "../../../room/interfaces/roomInterface"
 
 
 export const BookingDetails = () => {
@@ -27,7 +38,19 @@ export const BookingDetails = () => {
     const idParams = id!
     const bookingById: BookingInterfaceId = useSelector(getBookingIdData)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
+    const bookingErrorMessage = useSelector(getBookingErrorMessage)
+    const roomAll = useSelector(getRoomAllData)
+    const roomAllLoading = useSelector(getRoomAllStatus)
+    // const roomById = useSelector(getRoomIdData)
+    // const roomByIdLoading = useSelector(getRoomIdStatus)
+    const roomErrorMessage = useSelector(getRoomErrorMessage)
+    const [showPopup, setShowPopup] = useState<boolean>(false)
+    const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
     const [optionsDisplayed, setOptionsDisplayed] = useState<boolean>(false)
+    const [rooms, setRooms] = useState<RoomInterfaceId[]>([])
+    const isDataLoading = bookingByIdLoading !== ApiStatus.fulfilled || roomAllLoading !== ApiStatus.fulfilled
+
+    // const roomIndex = rooms.length
 
     useEffect(() => {
         if (bookingByIdLoading === ApiStatus.idle) { dispatch(BookingFetchByIDThunk(idParams)) }
@@ -36,100 +59,153 @@ export const BookingDetails = () => {
                 dispatch(BookingFetchByIDThunk(idParams))
             }
         }
-        else if (bookingByIdLoading === ApiStatus.rejected) { alert("Error in API bookings > booking details") }
+        else if (bookingByIdLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingByIdLoading, bookingById, id])
+    useEffect(() => {
+        if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
+        else if (roomAllLoading === ApiStatus.fulfilled) { }
+        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
+    }, [roomAllLoading, roomAll])
+    useEffect(() => {
+        if (!isDataLoading) {
+            const filteredRooms = bookingById.room_id_list
+                .map(roomId => roomAll.find(room => room._id === roomId))
+                .filter((room): room is RoomInterfaceId => !!room)
+            setRooms(filteredRooms)
+        }
+    }, [])
+    useEffect(() => {
+        if (isDataLoading) { ToastifyLoadingData(1, 'Loading rooms data...') }
+        else { toast.dismiss(1) }
+    }, [isDataLoading])
 
-    const switchDisplayMenuOptions = (): void => {
-        setOptionsDisplayed(!optionsDisplayed)
+    // !!! AVERIGUAR COMO OBTENER LAS ROOMS CON EL THUNK INDIVIDUAL EN VEZ DE USAR EL THUNK CON TODAS LAS ROOMS:
+    // useEffect(() => {
+    //     if (roomByIdLoading === ApiStatus.idle || bookingById.room_id_list.length > roomIndex) {
+    //         dispatch(RoomFetchByIDThunk(bookingById.room_id_list[roomIndex]))
+    //     }
+    //     else if (roomByIdLoading === ApiStatus.fulfilled) {
+    //         setRooms(prev => {
+    //             if (prev.some(room => room._id === roomById._id)) return prev
+    //             return [...prev, roomById]
+    //         })
+    //     }
+    //     else if (roomByIdLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
+    //     console.log('======> ', rooms)
+    // }, [bookingByIdLoading, bookingById, id, roomByIdLoading, roomById])
+
+    const toggleArchivedBooking = async (): Promise<void> => {
+        const updatedBooking = {
+            ...bookingById,
+            isArchived: bookingById.isArchived === OptionYesNo.no
+                ? OptionYesNo.yes
+                : OptionYesNo.no
+        }
+        try {
+            await dispatch(BookingUpdateThunk({ idBooking: bookingById._id, updatedBookingData: bookingById })).unwrap()
+            navigateBackToBookings()
+        }
+        catch (error) {
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+        }
     }
-    const deleteThisBooking = (): void => {
-        dispatch(BookingDeleteByIdThunk(bookingById._id))
-        navigateBackToBookings()
+    const deleteThisBooking = async (): Promise<void> => {
+        try {
+            await dispatch(BookingDeleteByIdThunk(bookingById._id)).unwrap()
+            navigateBackToBookings()
+        }
+        catch (error) {
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+        }
     }
 
 
-    return (
-        <bookingDetailsStyles.SectionPageBookingDetails>
-            <bookingDetailsStyles.DivSection padding='2em'>
-                <bookingDetailsStyles.DivCtnImgAndMainData>
-                    {/* !!! TENDRÁ QUE SER LA FOTOS/FOTOS DE LA ROOM ASOCIADA: */}
-                    {/* <bookingDetailsStyles.ImgProfile src={bookingById.photo} /> */}
-                    <bookingDetailsStyles.DivCtnMainData>
-                        <bookingDetailsStyles.DivCtnNameId>
+    return isDataLoading
+        ? <ToastContainer />
+        : <styles.SectionPageBookingDetails>
+
+            {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
+
+            <styles.DivSection padding='2em'>
+                <styles.DivCtnImgAndMainData>
+                    {/* <styles.ImgProfile src={rooms[0].photos[0]} /> */}
+
+                    <styles.DivCtnMainData>
+                        <styles.DivCtnNameId>
                             {/* !!! TENDRÁ QUE SER EL NOMBRE DEL CLIENTE ASOCIADO */}
-                            <bookingDetailsStyles.NameProfileH2>{bookingById.client_id}</bookingDetailsStyles.NameProfileH2>
-                            <bookingDetailsStyles.SubTittleH4 isId={true}>ID Booking: #{bookingById._id}</bookingDetailsStyles.SubTittleH4>
-                        </bookingDetailsStyles.DivCtnNameId>
-                        <bookingDetailsStyles.DivCtnClientMessage>
-                            <bookingDetailsStyles.IconPhone />
-                            <bookingDetailsStyles.ButtonSendMessage>
-                                <bookingDetailsStyles.IconChat />
+                            <styles.NameProfileH2>{bookingById.client_id}</styles.NameProfileH2>
+                            <styles.SubTittleH4 isId={true}>ID Booking: #{bookingById._id}</styles.SubTittleH4>
+                        </styles.DivCtnNameId>
+                        <styles.DivCtnClientMessage>
+                            <styles.IconPhone />
+                            <styles.ButtonSendMessage>
+                                <styles.IconChat />
                                 Send Message
-                            </bookingDetailsStyles.ButtonSendMessage>
-                        </bookingDetailsStyles.DivCtnClientMessage>
-                    </bookingDetailsStyles.DivCtnMainData>
+                            </styles.ButtonSendMessage>
+                        </styles.DivCtnClientMessage>
+                    </styles.DivCtnMainData>
 
 
-                    <bookingDetailsStyles.IconOptions onClick={() => { switchDisplayMenuOptions() }} />
+                    <styles.IconOptions onClick={() => { setOptionsDisplayed(!optionsDisplayed) }} />
                     <CtnOptionsDisplayed display={`${optionsDisplayed ? 'flex' : 'none'}`} isInTable={false}>
                         <ButtonOption onClick={() => { navigateBackToBookings() }}>Go to bookings</ButtonOption>
                         <ButtonOption onClick={() => { deleteThisBooking() }}>Delete</ButtonOption>
                     </CtnOptionsDisplayed>
 
 
-                </bookingDetailsStyles.DivCtnImgAndMainData>
+                </styles.DivCtnImgAndMainData>
 
-                <bookingDetailsStyles.DivCheckInOut>
-                    <bookingDetailsStyles.Div50PercentageSection>
-                        <bookingDetailsStyles.SubTittleH4 isId={true}>
+                <styles.DivCheckInOut>
+                    <styles.Div50PercentageSection>
+                        <styles.SubTittleH4 isId={true}>
                             Check In
-                        </bookingDetailsStyles.SubTittleH4>
-                        <bookingDetailsStyles.SubTittleH4 paddingtop='1em'>
+                        </styles.SubTittleH4>
+                        <styles.SubTittleH4 paddingtop='1em'>
                             {formatDateForPrint(bookingById.check_in_date)}
-                        </bookingDetailsStyles.SubTittleH4>
-                    </bookingDetailsStyles.Div50PercentageSection>
-                    <bookingDetailsStyles.Div50PercentageSection>
-                        <bookingDetailsStyles.SubTittleH4 isId={true}>
+                        </styles.SubTittleH4>
+                    </styles.Div50PercentageSection>
+                    <styles.Div50PercentageSection>
+                        <styles.SubTittleH4 isId={true}>
                             Check Out
-                        </bookingDetailsStyles.SubTittleH4>
-                        <bookingDetailsStyles.SubTittleH4 paddingtop='1em'>
+                        </styles.SubTittleH4>
+                        <styles.SubTittleH4 paddingtop='1em'>
                             {formatDateForPrint(bookingById.check_out_date)}
-                        </bookingDetailsStyles.SubTittleH4>
-                    </bookingDetailsStyles.Div50PercentageSection>
-                </bookingDetailsStyles.DivCheckInOut>
+                        </styles.SubTittleH4>
+                    </styles.Div50PercentageSection>
+                </styles.DivCheckInOut>
 
-                <bookingDetailsStyles.DivCtnInfo>
-                    <bookingDetailsStyles.Div50PercentageSection>
-                        <bookingDetailsStyles.SubTittleH4 isId={true}>
+                <styles.DivCtnInfo>
+                    <styles.Div50PercentageSection>
+                        <styles.SubTittleH4 isId={true}>
                             Room Info
-                        </bookingDetailsStyles.SubTittleH4>
-                        <bookingDetailsStyles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em'>
+                        </styles.SubTittleH4>
+                        <styles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em'>
                             {/* !!! TENDRÁ QUE SER LOS NÚMEROS DE LAS ROOMS ASOCIADAS */}
                             {/* Room Nº {bookingById.room_data?.number} */}
                             <br />
                             {/* !!! TENDRÁ QUE SER LOS TIPOS DE LAS ROOMS ASOCIADAS */}
                             {/* {bookingById.room_data?.type} */}
-                        </bookingDetailsStyles.SubTittleH4>
-                    </bookingDetailsStyles.Div50PercentageSection>
-                    <bookingDetailsStyles.Div50PercentageSection>
-                        <bookingDetailsStyles.SubTittleH4 isId={true}>
+                        </styles.SubTittleH4>
+                    </styles.Div50PercentageSection>
+                    <styles.Div50PercentageSection>
+                        <styles.SubTittleH4 isId={true}>
                             Price
-                        </bookingDetailsStyles.SubTittleH4>
-                        <bookingDetailsStyles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em'>
+                        </styles.SubTittleH4>
+                        <styles.SubTittleH4 paddingtop='0.5em' fontsize='1.25em'>
                             <del>${bookingById.price} /night</del>
                             <br />
                             {/* !!! TENDRÁ QUE SER LOS DESCUENTOS DE LAS ROOMS ASOCIADAS */}
                             {/* ${applyDiscount(bookingById.price, bookingById.room_data?.discount)} /night (-{bookingById.room_data?.discount}%) */}
-                        </bookingDetailsStyles.SubTittleH4>
-                    </bookingDetailsStyles.Div50PercentageSection>
-                </bookingDetailsStyles.DivCtnInfo>
+                        </styles.SubTittleH4>
+                    </styles.Div50PercentageSection>
+                </styles.DivCtnInfo>
 
-                <bookingDetailsStyles.PTextInfo>
+                <styles.PTextInfo>
                     {bookingById.special_request}
-                </bookingDetailsStyles.PTextInfo>
+                </styles.PTextInfo>
 
-                <bookingDetailsStyles.DivCtnFacilities>
-                    <bookingDetailsStyles.SubTittleH4 isId={true} fontsize='1em'>Facilities</bookingDetailsStyles.SubTittleH4>
+                <styles.DivCtnFacilities>
+                    <styles.SubTittleH4 isId={true} fontsize='1em'>Facilities</styles.SubTittleH4>
                     {/* !!! */}
                     {/* {Array.isArray(bookingById.room_data?.amenities) ? (
                         bookingById.room_data?.amenities.map((amenity, index) => {
@@ -168,13 +244,13 @@ export const BookingDetails = () => {
                             No amenities available
                         </bookingDetailsStyles.SubTittleH4>)
                     } */}
-                </bookingDetailsStyles.DivCtnFacilities>
-            </bookingDetailsStyles.DivSection>
+                </styles.DivCtnFacilities>
+            </styles.DivSection>
 
-            <bookingDetailsStyles.DivSection>
+            <styles.DivSection>
                 {/* !!! LA FOTO PRINCIPAL DE CADA ROOM ASOCIADA: */}
                 {/* <bookingDetailsStyles.ImgRoom src={bookingById.room_data_list[0].photos[0]} /> */}
-            </bookingDetailsStyles.DivSection>
-        </bookingDetailsStyles.SectionPageBookingDetails>
-    )
+            </styles.DivSection>
+        </styles.SectionPageBookingDetails>
+
 }

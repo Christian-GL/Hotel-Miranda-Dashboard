@@ -174,7 +174,7 @@ export const UserMain = () => {
             setTableOptionsDisplayed(index)
     }
     // !!! ESTA FUNCIÓN PUEDE SER COMÚN (DELETE TAMBIÉN)
-    const toggleArchivedClient = async (id: string, user: UserInterfaceId, index: number): Promise<void> => {
+    const toggleArchivedUser = async (id: string, user: UserInterfaceId, index: number): Promise<void> => {
         const updatedUser = {
             ...user,
             isArchived: user.isArchived === OptionYesNo.no
@@ -331,7 +331,7 @@ export const UserMain = () => {
                                     </ButtonOption>
                                     <ButtonOption
                                         onClick={getRole() === Role.admin
-                                            ? () => { toggleArchivedClient(userData._id, userData, index) }
+                                            ? () => { toggleArchivedUser(userData._id, userData, index) }
                                             : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                                         disabledClick={getRole() !== Role.admin}
                                     >{userData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}

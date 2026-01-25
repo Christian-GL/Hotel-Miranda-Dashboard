@@ -18,7 +18,7 @@ import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { customPopupMessage } from 'common/utils/customPopupMessage'
 import { ArrowType } from "../../../common/enums/ArrowType"
-import { OptionYesNo } from "common/enums/optionYesNo"
+import { OptionYesNo } from "../../../common/enums/optionYesNo"
 import { BookingNameColumn } from "../../enums/bookingNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
 import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
@@ -199,7 +199,7 @@ export const BookingMain = () => {
             setTableOptionsDisplayed(-1) :
             setTableOptionsDisplayed(index)
     }
-    const toggleArchivedClient = async (id: string, booking: BookingInterfaceId, index: number): Promise<void> => {
+    const toggleArchivedBooking = async (id: string, booking: BookingInterfaceId, index: number): Promise<void> => {
         const updatedBooking = {
             ...booking,
             isArchived: booking.isArchived === OptionYesNo.no
@@ -293,7 +293,7 @@ export const BookingMain = () => {
                         </PTable>,
 
                         <PTable key={index + '-2'}>
-                            <ButtonView onClick={() => () => navigate(`booking-details/${bookingData._id}`)}>View Details</ButtonView>
+                            <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View Details</ButtonView>
                         </PTable>,
 
                         <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center' >
@@ -310,9 +310,8 @@ export const BookingMain = () => {
 
                         <PTable key={index + '-6'}>
                             <ButtonView onClick={() => {
-                                // !!! ACTUALIZAR:
                                 setInfoPopup({
-                                    title: `Special request #${bookingData._id} by ${bookingData.special_request}`,
+                                    title: `${clientAll.find(client => client._id === bookingData.client_id)?.full_name} special request:`,
                                     text: bookingData.special_request
                                 })
                                 setShowPopup(true)
@@ -370,7 +369,7 @@ export const BookingMain = () => {
                                 <IconOptions onClick={() => { displayMenuOptions(index) }} />
                                 <CtnOptionsDisplayed display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                     <ButtonOption onClick={() => { navigate(`booking-update/${bookingData._id}`) }}>Update</ButtonOption>
-                                    <ButtonOption onClick={() => toggleArchivedClient(bookingData._id, bookingData, index)}>
+                                    <ButtonOption onClick={() => toggleArchivedBooking(bookingData._id, bookingData, index)}>
                                         {bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                                     </ButtonOption>
                                     <ButtonOption
