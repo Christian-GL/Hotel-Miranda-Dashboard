@@ -5,7 +5,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
-import * as userUpdateStyles from "./userUpdateStyles"
+import userDefaultImg from '../../../assets/img/userDefault.png'
+import * as styles from "./userUpdateStyles"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
@@ -15,7 +16,6 @@ import { JobPosition } from "../../enums/jobPosition"
 import { Role } from "../../enums/role"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
 import { UserInterfaceId } from "../../interfaces/userInterface"
-import userDefault from '../../../assets/img/userDefault.png'
 import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { formatDateForInput } from "../../../common/utils/dateUtils"
@@ -148,7 +148,7 @@ export const UserUpdate = () => {
 
         <GlobalDateTimeStyles />
 
-        <userUpdateStyles.SectionPageUserUpdate>
+        <styles.SectionPageUserUpdate>
             <CtnForm>
                 <CtnPrimaryIcon>
                     <CtnSecondaryIcon>
@@ -163,9 +163,9 @@ export const UserUpdate = () => {
                         <Text>Photo</Text>
                         <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
                         <ImgUser src={
-                            userUpdated.photo ?
-                                userUpdated.photo :
-                                userDefault
+                            userUpdated.photo
+                                ? userUpdated.photo
+                                : userDefaultImg
                         } />
                     </CtnEntry>
 
@@ -228,7 +228,7 @@ export const UserUpdate = () => {
                     </DivButtonCreateUser>
                 </Form>
             </CtnForm>
-        </userUpdateStyles.SectionPageUserUpdate>
+        </styles.SectionPageUserUpdate>
 
     </>)
 }

@@ -158,7 +158,7 @@ export const RoomCreate = () => {
                         <Text>Number</Text>
                         <InputText name="number" onChange={handleStringChange} />
 
-                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Room Type</Text>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Type</Text>
                         <Select name="type" onChange={handleSelectChange}>
                             {Object.values(RoomType).map((roomType, index) => (
                                 index === 0

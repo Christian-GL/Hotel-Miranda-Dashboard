@@ -28,7 +28,7 @@ export const RoomFetchByIDThunk = createAsyncThunk<
                 const json = await request.json()
                 let room: RoomInterfaceId = {
                     _id: json._id,
-                    photos: json.photo,
+                    photos: json.photos,
                     number: json.number,
                     type: json.type,
                     amenities: json.amenities,

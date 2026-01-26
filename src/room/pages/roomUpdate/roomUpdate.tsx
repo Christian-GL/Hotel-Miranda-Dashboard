@@ -5,7 +5,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 
-import * as roomUpdateStyles from "./roomUpdateStyles"
+import roomDefaultImg from '../../../assets/img/roomDefault.jpg'
+import * as styles from "./roomUpdateStyles"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
@@ -26,7 +27,6 @@ import {
     ImgRoom, CtnEntry, Text, CtnEntryBookings, LabelBookings, TextBookingStatus,
     TextInfoBooking, InputText, InputTextPhoto, Select, Option, SelectMultipleOptions, DivButtonCreateUser
 } from "../../../common/styles/form"
-import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus, getRoomErrorMessage } from "../../features/roomSlice"
 import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
@@ -158,8 +158,10 @@ export const RoomUpdate = () => {
 
     return (<>
         <ToastContainer />
-
-        <roomUpdateStyles.SectionPageRoomUpdate>
+        {
+            console.log('==>', roomUpdated)
+        }
+        <styles.SectionPageRoomUpdate>
             <CtnForm>
                 <CtnPrimaryIcon>
                     <CtnSecondaryIcon>
@@ -172,35 +174,35 @@ export const RoomUpdate = () => {
                 <Form onSubmit={handleSubmit}>
                     <CtnEntry>
                         <Text>Photo 1 (Main)</Text>
-                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(0, "photos")} />
-                        <ImgRoom src={roomUpdated.photos[0]} />
+                        <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(0, "photos")} />
+                        <ImgRoom src={roomUpdated.photos[0] ? roomUpdated.photos[0] : roomDefaultImg} />
                     </CtnEntry>
                     <CtnEntry>
                         <Text>Photo 2</Text>
-                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(1, "photos")} />
-                        <ImgRoom src={roomUpdated.photos[1]} />
+                        <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(1, "photos")} />
+                        <ImgRoom src={roomUpdated.photos[1] ? roomUpdated.photos[1] : roomDefaultImg} />
                     </CtnEntry>
                     <CtnEntry>
                         <Text>Photo 3</Text>
-                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(2, "photos")} />
-                        <ImgRoom src={roomUpdated.photos[2]} />
+                        <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(2, "photos")} />
+                        <ImgRoom src={roomUpdated.photos[2] ? roomUpdated.photos[2] : roomDefaultImg} />
                     </CtnEntry>
                     <CtnEntry>
                         <Text>Photo 4</Text>
-                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(3, "photos")} />
-                        <ImgRoom src={roomUpdated.photos[3]} />
+                        <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(3, "photos")} />
+                        <ImgRoom src={roomUpdated.photos[3] ? roomUpdated.photos[3] : roomDefaultImg} />
                     </CtnEntry>
                     <CtnEntry>
                         <Text>Photo 5</Text>
-                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(4, "photos")} />
-                        <ImgRoom src={roomUpdated.photos[4]} />
+                        <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(4, "photos")} />
+                        <ImgRoom src={roomUpdated.photos[4] ? roomUpdated.photos[4] : roomDefaultImg} />
                     </CtnEntry>
 
                     <CtnEntry>
                         <Text>Number</Text>
                         <InputText name="number" value={roomUpdated.number} onChange={handleStringChange} />
 
-                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Room Type</Text>
+                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Type</Text>
                         <Select name="type" value={roomUpdated.type} onChange={handleSelectChange}>
                             {Object.values(RoomType).map((type, index) => (
                                 <option key={index} value={type}>
@@ -257,6 +259,6 @@ export const RoomUpdate = () => {
                     </DivButtonCreateUser>
                 </Form>
             </CtnForm>
-        </roomUpdateStyles.SectionPageRoomUpdate>
+        </styles.SectionPageRoomUpdate>
     </>)
 }
