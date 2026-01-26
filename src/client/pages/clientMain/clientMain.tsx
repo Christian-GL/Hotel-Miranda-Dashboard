@@ -31,7 +31,7 @@ import { TablePagination } from "../../../common/components/tablePagination/tabl
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, TriangleUp, DivNameTable, TriangleRight, TriangleDown, PTable, PStatusAvailableUsers,
-    IconPhone, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
+    IconPhone, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../features/clientSlice"
@@ -301,7 +301,7 @@ export const ClientMain = () => {
                         <PTable key={index + '-4'} justifycontent="flex-end">
                             <CtnMenuOptions>
                                 <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                <CtnOptionsDisplayed display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                     <ButtonOption onClick={() => navigate(`client-update/${clientData._id}`)}>Update</ButtonOption>
                                     <ButtonOption onClick={() => toggleArchivedClient(clientData._id, clientData, index)}>
                                         {clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
@@ -313,7 +313,7 @@ export const ClientMain = () => {
                                         disabledClick={getRole() !== Role.admin}
                                     >Delete
                                     </ButtonOption>
-                                </CtnOptionsDisplayed>
+                                </CtnOptions>
                             </CtnMenuOptions>
                         </PTable>
                     ]

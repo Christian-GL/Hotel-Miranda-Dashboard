@@ -31,7 +31,7 @@ import { applyDiscount } from "../../../common/utils/tableUtils"
 import { usePagination } from "../../../common/hooks/usePagination"
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, PStatusAvailableUsers,
-    ImgTableRoom, PTable, PStatusRoomList, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
+    ImgTableRoom, PTable, PStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "./../../features/roomSlice"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
@@ -337,7 +337,7 @@ export const RoomMain = () => {
                         <PTable key={index + '-9'} justifycontent="flex-end">
                             <CtnMenuOptions>
                                 <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                <CtnOptionsDisplayed display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                     <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
                                     <ButtonOption onClick={() => toggleArchivedRoom(roomData._id, roomData, index)}>
                                         {roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
@@ -349,7 +349,7 @@ export const RoomMain = () => {
                                         disabledClick={getRole() !== Role.admin}
                                     >Delete
                                     </ButtonOption>
-                                </CtnOptionsDisplayed>
+                                </CtnOptions>
                             </CtnMenuOptions>
                         </PTable>
                     ]

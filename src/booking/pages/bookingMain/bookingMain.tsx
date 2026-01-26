@@ -29,7 +29,7 @@ import { TablePagination } from "../../../common/components/tablePagination/tabl
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
-    PStatusAvailableUsers, IconPhone, ButtonView, PStatusBooking, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
+    PStatusAvailableUsers, IconPhone, ButtonView, PStatusBooking, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "./../../features/bookingSlice"
@@ -367,7 +367,7 @@ export const BookingMain = () => {
                         <PTable key={index + '-10'} justifycontent="flex-end">
                             <CtnMenuOptions>
                                 <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                <CtnOptionsDisplayed display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                     <ButtonOption onClick={() => { navigate(`booking-update/${bookingData._id}`) }}>Update</ButtonOption>
                                     <ButtonOption onClick={() => toggleArchivedBooking(bookingData._id, bookingData, index)}>
                                         {bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
@@ -379,7 +379,7 @@ export const BookingMain = () => {
                                         disabledClick={getRole() !== Role.admin}
                                     >Delete
                                     </ButtonOption>
-                                </CtnOptionsDisplayed>
+                                </CtnOptions>
                             </CtnMenuOptions>
                         </PTable>
                     ]

@@ -131,7 +131,6 @@ export const CtnMenuOptions = styled.div`
 `
 
 export const IconOptions = styled(SlOptionsVertical)`
-    position: relative;
     padding: 0.5em;
     width: 1.75rem;
     height: 1.75rem;
@@ -141,7 +140,7 @@ export const IconOptions = styled(SlOptionsVertical)`
     background-color: ${props => props.theme.iconBackgroundTable};
 `
 
-export const CtnOptionsDisplayed = styled.div<{ display: string, isInTable: boolean }>`
+export const CtnOptions = styled.div<{ display: string, isInTable: boolean }>`
     z-index: 1;
     position: absolute;
     top: calc(100% + 0.5rem);

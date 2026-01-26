@@ -27,20 +27,23 @@ export const DivSection = styled.div<{ padding?: string }>`
     height: auto;
 `
 
-export const DivCtnImgAndMainData = styled.div`
+export const CtnMainData = styled.div`
     position: relative;
     width: 100%;
-    max-width: 35rem;
+`
+
+export const CtnMenuOptions = styled.div`
+    display: flex;
+    align-items: center;
 `
 
 export const IconOptions = styled(SlOptionsVertical)`
     position: absolute;
     top: 1rem;
-    left: 30rem;
-    transform: translate(-50%, -50%);
-    padding: 0.75em;
-    width: 2.5rem;
-    height: auto;
+    right: 1rem;
+    padding: 0.3em;
+    width: 1.75rem;
+    height: 1.75rem;
     cursor: pointer;
     color: ${props => props.theme.iconOptionsBookingDetails};
 `
@@ -54,13 +57,13 @@ export const ImgProfile = styled.img`
     border-radius: 1rem;
 `
 
-export const DivCtnMainData = styled.div`
+export const SubCtnMainData = styled.div`
     display: inline-block;
     vertical-align: middle;
     width: 65%;
 `
 
-export const DivCtnNameId = styled.div`
+export const CtnNameId = styled.div`
     display: flex;
     flex-direction: column;
 `
@@ -81,7 +84,7 @@ export const SubTittleH4 = styled.h4<{ isId?: boolean, paddingtop?: string, font
     color: ${props => props.isId ? props.theme.idBookingDetails : props.theme.textBookingDetails};
 `
 
-export const DivCtnClientMessage = styled.div`
+export const CtnClientMessage = styled.div`
     margin-top: 1.25rem;
 `
 
@@ -123,30 +126,37 @@ export const IconChat = styled(BsChatDots)`
     color: ${props => props.theme.textButtonBookingDetails};
 `
 
-export const DivCheckInOut = styled.div`
+export const CtnCheckInOut = styled.div`
+    display: flex;
     padding: 2em 0;
     border-bottom: 1px solid ${props => props.theme.iconPhoneBorderBookingDetails};
 `
 
-export const Div50PercentageSection = styled.div`
-    display: inline-block;
+// export const Ctn33PercentageSection = styled.div<{ percentage?: string }>`
+//     display: inline-block;
+//     vertical-align: top;
+//     width: ${({ percentage }) => percentage ?? '100%'};
+// `
+
+export const CtnEcualSection = styled.div`
+    flex: auto;
     vertical-align: top;
-    width: 50%;
 `
 
 export const PTextInfo = styled.p`
-    padding: 1em 0;
+    padding: 0 0 1em;
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
     font-weight: 400;
     color: ${props => props.theme.textInfoBookingDetails};
 `
 
-export const DivCtnInfo = styled.div`
+export const CtnInfo = styled.div`
+    display: flex;
     padding: 2em 0;
 `
 
-export const DivCtnFacilities = styled.div`
+export const CtnFacilities = styled.div`
     padding: 1em 0;
 `
 

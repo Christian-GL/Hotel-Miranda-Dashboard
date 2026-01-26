@@ -30,7 +30,7 @@ import { TablePagination } from "../../../common/components/tablePagination/tabl
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     Table, THTable, DivNameTable, DivImgTable, ImgTableUser, PTable,
-    PStatusAvailableUsers, IconPhone, CtnMenuOptions, IconOptions, CtnOptionsDisplayed, ButtonOption
+    PStatusAvailableUsers, IconPhone, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getUserAllData, getUserAllStatus, getUserErrorMessage } from "./../../features/userSlice"
@@ -318,7 +318,7 @@ export const UserMain = () => {
                         <PTable key={index + '-10'} justifycontent="flex-end">
                             <CtnMenuOptions>
                                 <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                <CtnOptionsDisplayed display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
                                     <ButtonOption
                                         // !!! SI EL USUARIO SE QUIERE EDITAR A SI MISMO (REPLANTEAR CONCEPTO):
                                         // onClick={getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID')
@@ -343,7 +343,7 @@ export const UserMain = () => {
                                         disabledClick={getRole() !== Role.admin}
                                     >Delete
                                     </ButtonOption>
-                                </CtnOptionsDisplayed>
+                                </CtnOptions>
                             </CtnMenuOptions>
                         </PTable>
                     ]
