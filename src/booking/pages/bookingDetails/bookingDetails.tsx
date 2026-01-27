@@ -1,9 +1,10 @@
 
-import React, { useState } from "react"
+import { useState } from "react"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 import * as styles from "./bookingDetailsStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
@@ -136,11 +137,11 @@ export const BookingDetails = () => {
 
     return isDataLoading
         ? <ToastContainer />
-        : <styles.SectionPageBookingDetails>
+        : <styles.PageBookingDetails>
 
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
-            <styles.DivSection padding='2em'>
+            <styles.Section padding='2em'>
                 <styles.CtnMainData>
                     <styles.SubCtnMainData>
                         <styles.CtnNameId>
@@ -159,9 +160,8 @@ export const BookingDetails = () => {
                     <styles.CtnMenuOptions>
                         <styles.IconOptions onClick={() => { setOptionsDisplayed(!optionsDisplayed) }} />
                         <CtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} isInTable={false}>
-                            <ButtonOption onClick={() => { navigateBackToBookings() }}>
-                                Go back to bookings
-                            </ButtonOption>
+                            <ButtonOption onClick={() => { navigateBackToBookings() }}>Go back to bookings</ButtonOption>
+                            <ButtonOption onClick={() => { navigate(`../booking-update/${bookingById._id}`) }}>Update</ButtonOption>
                             <ButtonOption onClick={() => {
                                 toggleArchivedBooking()
                                 navigateBackToBookings()
@@ -272,12 +272,27 @@ export const BookingDetails = () => {
                         </>)
                     })}
                 </styles.CtnFacilities>
-            </styles.DivSection>
+            </styles.Section>
 
-            <styles.DivSection>
-                {/* !!! LA FOTO PRINCIPAL DE CADA ROOM ASOCIADA: */}
-                {/* <styles.ImgRoom src={bookingById.room_data_list[0].photos[0]} /> */}
-            </styles.DivSection>
-        </styles.SectionPageBookingDetails>
+            <styles.Section>
+                <Swiper
+                    spaceBetween={0}
+                    slidesPerView={1}
+                    navigation={false}
+                    pagination={{ clickable: false }}
+                    loop={true}
+                    style={{ height: '100%' }}      // Importante para dimensionar las imágnes
+                >
+                    {roomsOfBooking.map(room =>
+                        // <styles.NameProfileH2>{clientById.full_name}</styles.NameProfileH2>
+                        room.photos.map((photo, index) => (
+                            <SwiperSlide key={`${room._id}-photo-${index}`}>
+                                <styles.ImgRoom src={photo} />
+                            </SwiperSlide>
+                        ))
+                    )}
+                </Swiper>
+            </styles.Section>
+        </styles.PageBookingDetails>
 
 }

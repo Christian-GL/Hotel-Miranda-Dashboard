@@ -11,7 +11,7 @@ import { GoShieldCheck } from "react-icons/go";
 import * as globalConstStyles from '../../../common/styles/globalConstStyles'
 
 
-export const SectionPageBookingDetails = styled.section`
+export const PageBookingDetails = styled.section`
     display: flex;
     flex-direction: row;
     padding: 2em;
@@ -20,7 +20,7 @@ export const SectionPageBookingDetails = styled.section`
     background-color: ${props => props.theme.backgroundBookingDetails};
 `
 
-export const DivSection = styled.div<{ padding?: string }>`
+export const Section = styled.div<{ padding?: string }>`
     padding: ${props => props.padding};
     width: 50%;
     min-width: 35rem;
@@ -209,8 +209,9 @@ export const IconWiFi = styled(FaWifi)`
 `
 
 export const ImgRoom = styled.img`
+    display: block;
     width: 100%;
-    height: auto;
-    border-top-right-radius: 7.5%;
-    border-bottom-right-radius: 7.5%;
+    height: 100%;
+    // object-fit: contain;    // Mantiene proporciones originales a cambio de no ocupar todo el espacio
+    border-radius: 5%;
 `
