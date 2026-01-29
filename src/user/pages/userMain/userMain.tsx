@@ -29,7 +29,7 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    Table, THTable, DivNameTable, DivImgTable, ImgTableUser, PTable,
+    EmptyTableMessage, Table, THTable, DivNameTable, DivImgTable, ImgTableUser, PTable,
     PStatusAvailableUsers, IconPhone, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
@@ -242,114 +242,117 @@ export const UserMain = () => {
 
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
-            <Table rowlistlength={filteredUsers.length + 1} columnlistlength={Object.values(UserNameColumn).length + 2}>
-                <THTable>{''}</THTable>
-                {Object.values(UserNameColumn).map(entry => {
-                    if (sortableColumns.includes(entry)) {
-                        return (
-                            <THTable
-                                key={entry}
-                                onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayEmployee())}
-                                cursorPointer="yes"
-                            >
-                                {entry}
-                                {getArrowIcon(arrowStates[entry])}
-                            </THTable>
-                        )
+            {currentPageItems.length === 0
+                ? <EmptyTableMessage>No records found</EmptyTableMessage>
+                : <Table rowlistlength={filteredUsers.length + 1} columnlistlength={Object.values(UserNameColumn).length + 2}>
+                    <THTable>{''}</THTable>
+                    {Object.values(UserNameColumn).map(entry => {
+                        if (sortableColumns.includes(entry)) {
+                            return (
+                                <THTable
+                                    key={entry}
+                                    onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayEmployee())}
+                                    cursorPointer="yes"
+                                >
+                                    {entry}
+                                    {getArrowIcon(arrowStates[entry])}
+                                </THTable>
+                            )
+                        }
+                        else {
+                            return (
+                                <THTable key={entry}>
+                                    {entry}
+                                </THTable>
+                            )
+                        }
+                    })}
+                    <THTable>{''}</THTable>
+                    {currentPageItems.map((userData: UserInterfaceId, index: number) => {
+                        return [
+                            <DivImgTable key={index + '-1'}>
+                                <ImgTableUser src={`${userData.photo}`} />
+                            </DivImgTable>,
+
+                            <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                                <DivNameTable>
+                                    <b>{userData.full_name}</b>
+                                </DivNameTable>
+                                <div>{userData.email}</div>
+                                <div>#<b>{userData._id}</b></div>
+                            </PTable>,
+
+                            <PTable key={index + '-3'}>
+                                <IconPhone />
+                                {userData.phone_number}
+                            </PTable>,
+
+                            <PTable key={index + '-4'}>
+                                {capitalizeFirstLetter(userData.role)}
+                            </PTable>,
+
+                            <PTable key={index + '-5'}>
+                                {userData.job_position}
+                            </PTable>,
+
+                            <PTable key={index + '-6'}>
+                                {formatDateForPrint(userData.start_date)}
+                            </PTable>,
+
+                            <PTable key={index + '-7'}>
+                                {formatDateForPrint(userData.end_date)}
+                            </PTable>,
+
+                            <PTable key={index + '-8'}>
+                                {new Date(userData.start_date) < new Date() && new Date(userData.end_date) > new Date()
+                                    ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
+                                    : <PStatusAvailableUsers active={false}>Inactive</PStatusAvailableUsers>
+                                }
+                            </PTable>,
+
+                            <PTable key={index + '9'}>
+                                {userData.isArchived === OptionYesNo.no
+                                    ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
+                                    : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
+                                }
+                            </PTable>,
+
+                            <PTable key={index + '-10'} justifycontent="flex-end">
+                                <CtnMenuOptions>
+                                    <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                                    <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                        <ButtonOption
+                                            // !!! SI EL USUARIO SE QUIERE EDITAR A SI MISMO (REPLANTEAR CONCEPTO):
+                                            // onClick={getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID')
+                                            onClick={getRole() === Role.admin
+                                                ? () => { navigate(`user-update/${userData._id}`) }
+                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                            // disabledClick={!(getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID'))}
+                                            disabledClick={getRole() !== Role.admin}
+                                        >Update
+                                        </ButtonOption>
+                                        <ButtonOption
+                                            onClick={getRole() === Role.admin
+                                                ? () => { toggleArchivedUser(userData._id, userData, index) }
+                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                            disabledClick={getRole() !== Role.admin}
+                                        >{userData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                        </ButtonOption>
+                                        <ButtonOption
+                                            onClick={getRole() === Role.admin
+                                                ? () => { deleteUserById(userData._id, index) }
+                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                            disabledClick={getRole() !== Role.admin}
+                                        >Delete
+                                        </ButtonOption>
+                                    </CtnOptions>
+                                </CtnMenuOptions>
+                            </PTable>
+                        ]
                     }
-                    else {
-                        return (
-                            <THTable key={entry}>
-                                {entry}
-                            </THTable>
-                        )
-                    }
-                })}
-                <THTable>{''}</THTable>
-                {currentPageItems.map((userData: UserInterfaceId, index: number) => {
-                    return [
-                        <DivImgTable key={index + '-1'}>
-                            <ImgTableUser src={`${userData.photo}`} />
-                        </DivImgTable>,
-
-                        <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <DivNameTable>
-                                <b>{userData.full_name}</b>
-                            </DivNameTable>
-                            <div>{userData.email}</div>
-                            <div>#<b>{userData._id}</b></div>
-                        </PTable>,
-
-                        <PTable key={index + '-3'}>
-                            <IconPhone />
-                            {userData.phone_number}
-                        </PTable>,
-
-                        <PTable key={index + '-4'}>
-                            {capitalizeFirstLetter(userData.role)}
-                        </PTable>,
-
-                        <PTable key={index + '-5'}>
-                            {userData.job_position}
-                        </PTable>,
-
-                        <PTable key={index + '-6'}>
-                            {formatDateForPrint(userData.start_date)}
-                        </PTable>,
-
-                        <PTable key={index + '-7'}>
-                            {formatDateForPrint(userData.end_date)}
-                        </PTable>,
-
-                        <PTable key={index + '-8'}>
-                            {new Date(userData.start_date) < new Date() && new Date(userData.end_date) > new Date()
-                                ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
-                                : <PStatusAvailableUsers active={false}>Inactive</PStatusAvailableUsers>
-                            }
-                        </PTable>,
-
-                        <PTable key={index + '9'}>
-                            {userData.isArchived === OptionYesNo.no
-                                ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
-                                : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
-                            }
-                        </PTable>,
-
-                        <PTable key={index + '-10'} justifycontent="flex-end">
-                            <CtnMenuOptions>
-                                <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                    <ButtonOption
-                                        // !!! SI EL USUARIO SE QUIERE EDITAR A SI MISMO (REPLANTEAR CONCEPTO):
-                                        // onClick={getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID')
-                                        onClick={getRole() === Role.admin
-                                            ? () => { navigate(`user-update/${userData._id}`) }
-                                            : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                                        // disabledClick={!(getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID'))}
-                                        disabledClick={getRole() !== Role.admin}
-                                    >Update
-                                    </ButtonOption>
-                                    <ButtonOption
-                                        onClick={getRole() === Role.admin
-                                            ? () => { toggleArchivedUser(userData._id, userData, index) }
-                                            : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                                        disabledClick={getRole() !== Role.admin}
-                                    >{userData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
-                                    </ButtonOption>
-                                    <ButtonOption
-                                        onClick={getRole() === Role.admin
-                                            ? () => { deleteUserById(userData._id, index) }
-                                            : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                                        disabledClick={getRole() !== Role.admin}
-                                    >Delete
-                                    </ButtonOption>
-                                </CtnOptions>
-                            </CtnMenuOptions>
-                        </PTable>
-                    ]
-                }
-                )}
-            </Table>
+                    )}
+                </Table>
+            }
 
             <TablePagination
                 currentPage={currentPage}

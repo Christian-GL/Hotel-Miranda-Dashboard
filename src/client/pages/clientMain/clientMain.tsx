@@ -30,7 +30,7 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    Table, THTable, TriangleUp, DivNameTable, TriangleRight, TriangleDown, PTable, PStatusAvailableUsers,
+    EmptyTableMessage, Table, THTable, TriangleUp, DivNameTable, TriangleRight, TriangleDown, PTable, PStatusAvailableUsers,
     IconPhone, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
@@ -238,87 +238,90 @@ export const ClientMain = () => {
 
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
-            <Table rowlistlength={filteredClients.length + 1} columnlistlength={Object.values(ClientNameColumn).length + 1} >
-                {Object.values(ClientNameColumn).map(entry => {
-                    if (sortableColumns.includes(entry)) {
-                        return (
-                            <THTable
-                                key={entry}
-                                onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayClients())}
-                                cursorPointer="yes"
-                            >
-                                {entry}
-                                {getArrowIcon(arrowStates[entry])}
-                            </THTable>
-                        )
-                    }
-                    else {
-                        return (
-                            <THTable key={entry}>
-                                {entry}
-                            </THTable>
-                        )
-                    }
-                })}
-                <THTable>{''}</THTable>
-                {currentPageItems.map((clientData, index) => {
-                    const clientBookingsByRoom = getClientBookingsByRoom(clientData, bookingAll, roomAll)
-                    return [
-                        <PTable key={index + '-1'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <DivNameTable>
-                                <b>{clientData.full_name}</b>
-                            </DivNameTable>
-                            <div>{clientData.email}</div>
-                            <div>#<b>{clientData._id}</b></div>
-                        </PTable>,
+            {currentPageItems.length === 0
+                ? <EmptyTableMessage>No records found</EmptyTableMessage>
+                : <Table rowlistlength={filteredClients.length + 1} columnlistlength={Object.values(ClientNameColumn).length + 1} >
+                    {Object.values(ClientNameColumn).map(entry => {
+                        if (sortableColumns.includes(entry)) {
+                            return (
+                                <THTable
+                                    key={entry}
+                                    onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayClients())}
+                                    cursorPointer="yes"
+                                >
+                                    {entry}
+                                    {getArrowIcon(arrowStates[entry])}
+                                </THTable>
+                            )
+                        }
+                        else {
+                            return (
+                                <THTable key={entry}>
+                                    {entry}
+                                </THTable>
+                            )
+                        }
+                    })}
+                    <THTable>{''}</THTable>
+                    {currentPageItems.map((clientData, index) => {
+                        const clientBookingsByRoom = getClientBookingsByRoom(clientData, bookingAll, roomAll)
+                        return [
+                            <PTable key={index + '-1'} flexdirection='column' alignitems='left' justifycontent='center'>
+                                <DivNameTable>
+                                    <b>{clientData.full_name}</b>
+                                </DivNameTable>
+                                <div>{clientData.email}</div>
+                                <div>#<b>{clientData._id}</b></div>
+                            </PTable>,
 
-                        <PTable key={index + '-2'} >
-                            <IconPhone />
-                            {clientData.phone_number}
-                        </PTable>,
+                            <PTable key={index + '-2'} >
+                                <IconPhone />
+                                {clientData.phone_number}
+                            </PTable>,
 
-                        <PTable>
-                            {
-                                clientBookingsByRoom.length > 0 ? (
-                                    clientBookingsByRoom.map(booking => (
-                                        <p key={booking.bookingId}>
-                                            {booking.roomNumbers.join(', ')}
-                                        </p>
-                                    ))
-                                ) : (
-                                    <p>No bookings yet</p>
-                                )
-                            }
-                        </PTable>,
+                            <PTable>
+                                {
+                                    clientBookingsByRoom.length > 0 ? (
+                                        clientBookingsByRoom.map(booking => (
+                                            <p key={booking.bookingId}>
+                                                {booking.roomNumbers.join(', ')}
+                                            </p>
+                                        ))
+                                    ) : (
+                                        <p>No bookings yet</p>
+                                    )
+                                }
+                            </PTable>,
 
-                        <PTable key={index + '3'}>
-                            {clientData.isArchived === OptionYesNo.no
-                                ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
-                                : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
-                            }
-                        </PTable>,
+                            <PTable key={index + '3'}>
+                                {clientData.isArchived === OptionYesNo.no
+                                    ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
+                                    : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
+                                }
+                            </PTable>,
 
-                        <PTable key={index + '-4'} justifycontent="flex-end">
-                            <CtnMenuOptions>
-                                <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                    <ButtonOption onClick={() => navigate(`client-update/${clientData._id}`)}>Update</ButtonOption>
-                                    <ButtonOption onClick={() => toggleArchivedClient(clientData._id, clientData, index)}>
-                                        {clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
-                                    </ButtonOption>
-                                    <ButtonOption
-                                        onClick={getRole() === Role.admin
-                                            ? () => { deleteClientById(clientData._id, index) }
-                                            : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                                        disabledClick={getRole() !== Role.admin}
-                                    >Delete
-                                    </ButtonOption>
-                                </CtnOptions>
-                            </CtnMenuOptions>
-                        </PTable>
-                    ]
-                })}
-            </Table>
+                            <PTable key={index + '-4'} justifycontent="flex-end">
+                                <CtnMenuOptions>
+                                    <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                                    <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                        <ButtonOption onClick={() => navigate(`client-update/${clientData._id}`)}>Update</ButtonOption>
+                                        <ButtonOption onClick={() => toggleArchivedClient(clientData._id, clientData, index)}>
+                                            {clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                        </ButtonOption>
+                                        <ButtonOption
+                                            onClick={getRole() === Role.admin
+                                                ? () => { deleteClientById(clientData._id, index) }
+                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                            disabledClick={getRole() !== Role.admin}
+                                        >Delete
+                                        </ButtonOption>
+                                    </CtnOptions>
+                                </CtnMenuOptions>
+                            </PTable>
+                        ]
+                    })}
+                </Table>
+            }
 
             <TablePagination
                 currentPage={currentPage}

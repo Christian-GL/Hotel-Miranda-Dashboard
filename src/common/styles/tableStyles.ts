@@ -11,6 +11,18 @@ import * as globalConstStyles from './globalConstStyles'
 import { BookingStatus } from '../../booking/enums/bookingStatus'
 
 
+export const EmptyTableMessage = styled.p`
+    padding: 1.5em 2em;
+    width: 100%;
+    text-align: center;
+    font-family: ${globalConstStyles.fontPoppins};
+    font-size: 1em;
+    font-weight: 700;
+    border-radius: 2.5rem;
+    color: ${props => props.theme.textTable};
+    background-color: ${props => props.theme.backgroundTable};
+`
+
 export const Table = styled.table<{ rowlistlength: number, columnlistlength: number }>`
     display: grid;
     grid-template-rows: repeat(${props => props.rowlistlength}, auto);

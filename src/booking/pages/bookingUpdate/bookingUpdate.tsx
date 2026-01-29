@@ -175,7 +175,7 @@ export const BookingUpdate = () => {
         try {
             await dispatch(BookingUpdateThunk({ idBooking: bookingUpdated._id, updatedBookingData: bookingUpdated }))
                 .unwrap()
-                .then(() => ToastifySuccess('Room created', () => navigate('../')))
+                .then(() => ToastifySuccess('Booking updated', () => navigate('../')))
         }
         catch (error) {
             ToastifyError(String(error))

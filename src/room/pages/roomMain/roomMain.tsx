@@ -30,7 +30,7 @@ import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCrea
 import { applyDiscount } from "../../../common/utils/tableUtils"
 import { usePagination } from "../../../common/hooks/usePagination"
 import {
-    Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, PStatusAvailableUsers,
+    EmptyTableMessage, Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, PStatusAvailableUsers,
     ImgTableRoom, PTable, PStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "./../../features/roomSlice"
@@ -265,97 +265,100 @@ export const RoomMain = () => {
 
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
-            <Table rowlistlength={filteredRooms.length + 1} columnlistlength={Object.values(RoomNameColumn).length + 2} >
-                <THTable>{''}</THTable>
-                {Object.values(RoomNameColumn).map(entry => {
-                    if (sortableColumns.includes(entry)) {
-                        return (
-                            <THTable
-                                key={entry}
-                                onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayRooms())}
-                                cursorPointer="yes"
-                            >
-                                {entry}
-                                {getArrowIcon(arrowStates[entry])}
-                            </THTable>
-                        )
+            {currentPageItems.length === 0
+                ? <EmptyTableMessage>No records found</EmptyTableMessage>
+                : <Table rowlistlength={filteredRooms.length + 1} columnlistlength={Object.values(RoomNameColumn).length + 2} >
+                    <THTable>{''}</THTable>
+                    {Object.values(RoomNameColumn).map(entry => {
+                        if (sortableColumns.includes(entry)) {
+                            return (
+                                <THTable
+                                    key={entry}
+                                    onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayRooms())}
+                                    cursorPointer="yes"
+                                >
+                                    {entry}
+                                    {getArrowIcon(arrowStates[entry])}
+                                </THTable>
+                            )
+                        }
+                        else {
+                            return (
+                                <THTable key={entry}>
+                                    {entry}
+                                </THTable>
+                            )
+                        }
+                    })}
+                    <THTable>{''}</THTable>
+                    {currentPageItems.map((roomData, index) => {
+                        return [
+                            <DivImgTable key={index + '-1'}>
+                                <ImgTableRoom src={`${roomData.photos[0]}`} />
+                            </DivImgTable>,
+
+                            <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                                <div>Nº {roomData.number}</div>
+                                <div>#<b>{roomData._id}</b></div>
+                            </PTable>,
+
+                            <PTable key={index + '-3'}>
+                                {roomData.type}
+                            </PTable>,
+
+                            <PTable key={index + '-4'}>
+                                <p>{roomData.amenities.join(', ')}</p>
+                            </PTable>,
+
+                            <PTable key={index + '-5'}>
+                                <b>${roomData.price}</b>&nbsp;/night
+                            </PTable>,
+
+                            <PTable key={index + '-6'}>
+                                {roomData.discount === 0 ?
+                                    <>No Discount</> :
+                                    <><b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;(-{roomData.discount}%)</>
+                                }
+                            </PTable>,
+
+                            <PTable key={index + '-7'}>
+                                {
+                                    isAvailable(roomData) ?
+                                        <PStatusRoomList status='Available'>Available</PStatusRoomList> :
+                                        <PStatusRoomList status='Booking'>Booking</PStatusRoomList>
+                                }
+                            </PTable>,
+
+                            <PTable key={index + '8'}>
+                                {roomData.isArchived === OptionYesNo.no
+                                    ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
+                                    : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
+                                }
+                            </PTable>,
+
+                            <PTable key={index + '-9'} justifycontent="flex-end">
+                                <CtnMenuOptions>
+                                    <IconOptions onClick={() => { displayMenuOptions(index) }} />
+                                    <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                        <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
+                                        <ButtonOption onClick={() => toggleArchivedRoom(roomData._id, roomData, index)}>
+                                            {roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                        </ButtonOption>
+                                        <ButtonOption
+                                            onClick={getRole() === Role.admin
+                                                ? () => { deleteRoomById(roomData._id, index) }
+                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                            disabledClick={getRole() !== Role.admin}
+                                        >Delete
+                                        </ButtonOption>
+                                    </CtnOptions>
+                                </CtnMenuOptions>
+                            </PTable>
+                        ]
                     }
-                    else {
-                        return (
-                            <THTable key={entry}>
-                                {entry}
-                            </THTable>
-                        )
-                    }
-                })}
-                <THTable>{''}</THTable>
-                {currentPageItems.map((roomData, index) => {
-                    return [
-                        <DivImgTable key={index + '-1'}>
-                            <ImgTableRoom src={`${roomData.photos[0]}`} />
-                        </DivImgTable>,
-
-                        <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                            <div>Nº {roomData.number}</div>
-                            <div>#<b>{roomData._id}</b></div>
-                        </PTable>,
-
-                        <PTable key={index + '-3'}>
-                            {roomData.type}
-                        </PTable>,
-
-                        <PTable key={index + '-4'}>
-                            <p>{roomData.amenities.join(', ')}</p>
-                        </PTable>,
-
-                        <PTable key={index + '-5'}>
-                            <b>${roomData.price}</b>&nbsp;/night
-                        </PTable>,
-
-                        <PTable key={index + '-6'}>
-                            {roomData.discount === 0 ?
-                                <>No Discount</> :
-                                <><b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;(-{roomData.discount}%)</>
-                            }
-                        </PTable>,
-
-                        <PTable key={index + '-7'}>
-                            {
-                                isAvailable(roomData) ?
-                                    <PStatusRoomList status='Available'>Available</PStatusRoomList> :
-                                    <PStatusRoomList status='Booking'>Booking</PStatusRoomList>
-                            }
-                        </PTable>,
-
-                        <PTable key={index + '8'}>
-                            {roomData.isArchived === OptionYesNo.no
-                                ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
-                                : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
-                            }
-                        </PTable>,
-
-                        <PTable key={index + '-9'} justifycontent="flex-end">
-                            <CtnMenuOptions>
-                                <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                    <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
-                                    <ButtonOption onClick={() => toggleArchivedRoom(roomData._id, roomData, index)}>
-                                        {roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
-                                    </ButtonOption>
-                                    <ButtonOption
-                                        onClick={getRole() === Role.admin
-                                            ? () => { deleteRoomById(roomData._id, index) }
-                                            : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                                        disabledClick={getRole() !== Role.admin}
-                                    >Delete
-                                    </ButtonOption>
-                                </CtnOptions>
-                            </CtnMenuOptions>
-                        </PTable>
-                    ]
-                }
-                )}
-            </Table>
+                    )}
+                </Table>
+            }
 
             <TablePagination
                 currentPage={currentPage}
