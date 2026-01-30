@@ -30,8 +30,8 @@ import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCrea
 import { applyDiscount } from "../../../common/utils/tableUtils"
 import { usePagination } from "../../../common/hooks/usePagination"
 import {
-    EmptyTableMessage, Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivImgTable, PStatusAvailableUsers,
-    ImgTableRoom, PTable, PStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
+    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, CtnImgTable, TextStatusAvailableUsers,
+    ImgTableRoom, CtnCell, TextStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "./../../features/roomSlice"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
@@ -268,75 +268,75 @@ export const RoomMain = () => {
             {currentPageItems.length === 0
                 ? <EmptyTableMessage>No rooms found</EmptyTableMessage>
                 : <Table rowlistlength={filteredRooms.length + 1} columnlistlength={Object.values(RoomNameColumn).length + 2} >
-                    <THTable>{''}</THTable>
+                    <TitleColumn>{''}</TitleColumn>
                     {Object.values(RoomNameColumn).map(entry => {
                         if (sortableColumns.includes(entry)) {
                             return (
-                                <THTable
+                                <TitleColumn
                                     key={entry}
                                     onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayRooms())}
                                     cursorPointer="yes"
                                 >
                                     {entry}
                                     {getArrowIcon(arrowStates[entry])}
-                                </THTable>
+                                </TitleColumn>
                             )
                         }
                         else {
                             return (
-                                <THTable key={entry}>
+                                <TitleColumn key={entry}>
                                     {entry}
-                                </THTable>
+                                </TitleColumn>
                             )
                         }
                     })}
-                    <THTable>{''}</THTable>
+                    <TitleColumn>{''}</TitleColumn>
                     {currentPageItems.map((roomData, index) => {
                         return [
-                            <DivImgTable key={index + '-1'}>
+                            <CtnImgTable key={index + '-1'}>
                                 <ImgTableRoom src={`${roomData.photos[0]}`} />
-                            </DivImgTable>,
+                            </CtnImgTable>,
 
-                            <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <CtnCell key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
                                 <div>Nº {roomData.number}</div>
                                 <div>#<b>{roomData._id}</b></div>
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-3'}>
+                            <CtnCell key={index + '-3'}>
                                 {roomData.type}
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-4'}>
+                            <CtnCell key={index + '-4'}>
                                 <p>{roomData.amenities.join(', ')}</p>
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-5'}>
+                            <CtnCell key={index + '-5'}>
                                 <b>${roomData.price}</b>&nbsp;/night
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-6'}>
+                            <CtnCell key={index + '-6'}>
                                 {roomData.discount === 0 ?
                                     <>No Discount</> :
                                     <><b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;(-{roomData.discount}%)</>
                                 }
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-7'}>
+                            <CtnCell key={index + '-7'}>
                                 {
                                     isAvailable(roomData) ?
-                                        <PStatusRoomList status='Available'>Available</PStatusRoomList> :
-                                        <PStatusRoomList status='Booking'>Booking</PStatusRoomList>
+                                        <TextStatusRoomList status='Available'>Available</TextStatusRoomList> :
+                                        <TextStatusRoomList status='Booking'>Booking</TextStatusRoomList>
                                 }
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '8'}>
+                            <CtnCell key={index + '8'}>
                                 {roomData.isArchived === OptionYesNo.no
-                                    ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
-                                    : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
+                                    ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
+                                    : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
                                 }
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-9'} justifycontent="flex-end">
+                            <CtnCell key={index + '-9'} justifycontent="flex-end">
                                 <CtnMenuOptions>
                                     <IconOptions onClick={() => { displayMenuOptions(index) }} />
                                     <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
@@ -353,7 +353,7 @@ export const RoomMain = () => {
                                         </ButtonOption>
                                     </CtnOptions>
                                 </CtnMenuOptions>
-                            </PTable>
+                            </CtnCell>
                         ]
                     }
                     )}

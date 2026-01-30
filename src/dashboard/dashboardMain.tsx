@@ -125,14 +125,16 @@ export const DashboardMain = () => {
                     loop={true}
                 >
                     {bookingAll.map((booking, index) => {
-                        return <SwiperSlide key={index}>
-                            <ArticleReview
-                                title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
-                                firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
-                                secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
-                                content={booking.special_request}
-                            />
-                        </SwiperSlide>
+                        return (
+                            <SwiperSlide key={index}>
+                                <ArticleReview
+                                    title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
+                                    firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
+                                    secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
+                                    content={booking.special_request}
+                                />
+                            </SwiperSlide>
+                        )
                     })}
                 </Swiper>
                 {/* </dashboardJS.SwiperCustom> */}

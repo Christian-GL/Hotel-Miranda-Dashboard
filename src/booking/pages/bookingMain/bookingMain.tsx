@@ -28,8 +28,8 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    EmptyTableMessage, Table, THTable, TriangleUp, TriangleRight, TriangleDown, DivNameTable, DivImgTable, ImgTableUser, PTable,
-    PStatusAvailableUsers, IconPhone, ButtonView, PStatusBooking, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
+    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, CtnNameTable, CtnImgTable, ImgTableUser, CtnCell,
+    TextStatusAvailableUsers, IconPhone, ButtonView, TextStatusBooking, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "./../../features/bookingSlice"
@@ -269,59 +269,59 @@ export const BookingMain = () => {
                     {Object.values(BookingNameColumn).map(entry => {
                         if (sortableColumns.includes(entry)) {
                             return (
-                                <THTable
+                                <TitleColumn
                                     key={entry}
                                     onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayBookings())}
                                     cursorPointer="yes"
                                 >
                                     {entry}
                                     {getArrowIcon(arrowStates[entry])}
-                                </THTable>
+                                </TitleColumn>
                             )
                         }
                         else {
                             return (
-                                <THTable key={entry}>
+                                <TitleColumn key={entry}>
                                     {entry}
-                                </THTable>
+                                </TitleColumn>
                             )
                         }
                     })}
-                    <THTable>{''}</THTable>
+                    <TitleColumn>{''}</TitleColumn>
                     {currentPageItems.map((bookingData, index) => {
                         return [
-                            <PTable key={index + '-1'}>
+                            <CtnCell key={index + '-1'}>
                                 #<b>{bookingData._id}</b>
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-2'}>
-                                <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View Details</ButtonView>
-                            </PTable>,
+                            <CtnCell key={index + '-2'}>
+                                <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View details</ButtonView>
+                            </CtnCell>,
 
-                            <PTable key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center' >
+                            <CtnCell key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center' >
                                 {formatDateForPrint(bookingData.order_date)}
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <CtnCell key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center'>
                                 {formatDateForPrint(bookingData.check_in_date)}
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <CtnCell key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
                                 {formatDateForPrint(bookingData.check_out_date)}
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-6'}>
+                            <CtnCell key={index + '-6'}>
                                 <ButtonView onClick={() => {
                                     setInfoPopup({
                                         title: `${clientAll.find(client => client._id === bookingData.client_id)?.full_name} special request:`,
                                         text: bookingData.special_request
                                     })
                                     setShowPopup(true)
-                                }
-                                }>View Notes</ButtonView>
-                            </PTable>,
+                                }}
+                                >View details</ButtonView>
+                            </CtnCell>,
 
-                            <PTable key={index + '-7'} flexdirection="column" alignitems="left" justifycontent="center"   >
+                            <CtnCell key={index + '-7'} flexdirection="column" alignitems="left" justifycontent="center"   >
                                 {
                                     (() => {
                                         const rooms = bookingData.room_id_list
@@ -338,16 +338,16 @@ export const BookingMain = () => {
                                         }
                                     })()
                                 }
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-8'} flexdirection="column" alignitems="left" justifycontent="center"  >
+                            <CtnCell key={index + '-8'} flexdirection="column" alignitems="left" justifycontent="center"  >
                                 {
                                     (() => {
                                         const client = clientAll.find(client => client._id === bookingData.client_id)
                                         if (client) {
                                             return (<>
                                                 <div>#<b>{client._id}</b></div>
-                                                <div><DivNameTable><b>{client.full_name}</b></DivNameTable></div>
+                                                <div><CtnNameTable><b>{client.full_name}</b></CtnNameTable></div>
                                                 <div>{client.email}</div>
                                                 <div><IconPhone width="1.25rem" />{client.phone_number}</div>
                                             </>)
@@ -357,16 +357,16 @@ export const BookingMain = () => {
                                         }
                                     })()
                                 }
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '9'}>
+                            <CtnCell key={index + '9'}>
                                 {bookingData.isArchived === OptionYesNo.no
-                                    ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
-                                    : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
+                                    ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
+                                    : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
                                 }
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-10'} justifycontent="flex-end">
+                            <CtnCell key={index + '-10'} justifycontent="flex-end">
                                 <CtnMenuOptions>
                                     <IconOptions onClick={() => { displayMenuOptions(index) }} />
                                     <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
@@ -383,7 +383,7 @@ export const BookingMain = () => {
                                         </ButtonOption>
                                     </CtnOptions>
                                 </CtnMenuOptions>
-                            </PTable>
+                            </CtnCell>
                         ]
                     }
                     )}

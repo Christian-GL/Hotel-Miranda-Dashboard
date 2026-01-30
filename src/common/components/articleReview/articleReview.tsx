@@ -41,10 +41,11 @@ export const ArticleReview: React.FC<ArticleReviewInterface> = ({
                     </styles.DivCtnInfoDetails>
                 </styles.DivCtnReviewDetails>
 
-                <styles.DivCtnIcons>
+                {/* !!! DARLE USO O ELIMINARLO DEFINITIVAMENTE: */}
+                {/* <styles.DivCtnIcons>
                     <styles.IconCheckConfirm />
                     <styles.IconCheckCross />
-                </styles.DivCtnIcons>
+                </styles.DivCtnIcons> */}
 
             </styles.DivCtnDetails>
         </styles.ArticleReview>

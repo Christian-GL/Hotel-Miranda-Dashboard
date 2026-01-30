@@ -29,8 +29,8 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    EmptyTableMessage, Table, THTable, DivNameTable, DivImgTable, ImgTableUser, PTable,
-    PStatusAvailableUsers, IconPhone, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
+    EmptyTableMessage, Table, TitleColumn, CtnNameTable, CtnImgTable, ImgTableUser, CtnCell,
+    TextStatusAvailableUsers, IconPhone, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getUserAllData, getUserAllStatus, getUserErrorMessage } from "./../../features/userSlice"
@@ -245,79 +245,79 @@ export const UserMain = () => {
             {currentPageItems.length === 0
                 ? <EmptyTableMessage>No users found</EmptyTableMessage>
                 : <Table rowlistlength={filteredUsers.length + 1} columnlistlength={Object.values(UserNameColumn).length + 2}>
-                    <THTable>{''}</THTable>
+                    <TitleColumn>{''}</TitleColumn>
                     {Object.values(UserNameColumn).map(entry => {
                         if (sortableColumns.includes(entry)) {
                             return (
-                                <THTable
+                                <TitleColumn
                                     key={entry}
                                     onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayEmployee())}
                                     cursorPointer="yes"
                                 >
                                     {entry}
                                     {getArrowIcon(arrowStates[entry])}
-                                </THTable>
+                                </TitleColumn>
                             )
                         }
                         else {
                             return (
-                                <THTable key={entry}>
+                                <TitleColumn key={entry}>
                                     {entry}
-                                </THTable>
+                                </TitleColumn>
                             )
                         }
                     })}
-                    <THTable>{''}</THTable>
+                    <TitleColumn>{''}</TitleColumn>
                     {currentPageItems.map((userData: UserInterfaceId, index: number) => {
                         return [
-                            <DivImgTable key={index + '-1'}>
+                            <CtnImgTable key={index + '-1'}>
                                 <ImgTableUser src={`${userData.photo}`} />
-                            </DivImgTable>,
+                            </CtnImgTable>,
 
-                            <PTable key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
-                                <DivNameTable>
+                            <CtnCell key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                                <CtnNameTable>
                                     <b>{userData.full_name}</b>
-                                </DivNameTable>
+                                </CtnNameTable>
                                 <div>{userData.email}</div>
                                 <div>#<b>{userData._id}</b></div>
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-3'}>
+                            <CtnCell key={index + '-3'}>
                                 <IconPhone />
                                 {userData.phone_number}
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-4'}>
+                            <CtnCell key={index + '-4'}>
                                 {capitalizeFirstLetter(userData.role)}
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-5'}>
+                            <CtnCell key={index + '-5'}>
                                 {userData.job_position}
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-6'}>
+                            <CtnCell key={index + '-6'}>
                                 {formatDateForPrint(userData.start_date)}
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-7'}>
+                            <CtnCell key={index + '-7'}>
                                 {formatDateForPrint(userData.end_date)}
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-8'}>
+                            <CtnCell key={index + '-8'}>
                                 {new Date(userData.start_date) < new Date() && new Date(userData.end_date) > new Date()
-                                    ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
-                                    : <PStatusAvailableUsers active={false}>Inactive</PStatusAvailableUsers>
+                                    ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
+                                    : <TextStatusAvailableUsers active={false}>Inactive</TextStatusAvailableUsers>
                                 }
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '9'}>
+                            <CtnCell key={index + '9'}>
                                 {userData.isArchived === OptionYesNo.no
-                                    ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
-                                    : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
+                                    ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
+                                    : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
                                 }
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-10'} justifycontent="flex-end">
+                            <CtnCell key={index + '-10'} justifycontent="flex-end">
                                 <CtnMenuOptions>
                                     <IconOptions onClick={() => { displayMenuOptions(index) }} />
                                     <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
@@ -347,7 +347,7 @@ export const UserMain = () => {
                                         </ButtonOption>
                                     </CtnOptions>
                                 </CtnMenuOptions>
-                            </PTable>
+                            </CtnCell>
                         ]
                     }
                     )}

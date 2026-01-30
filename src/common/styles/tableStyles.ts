@@ -32,7 +32,7 @@ export const Table = styled.table<{ rowlistlength: number, columnlistlength: num
     background-color: ${props => props.theme.backgroundTable};
 `
 
-export const THTable = styled.th<{ cursorPointer?: 'yes' | 'no' }>`
+export const TitleColumn = styled.th<{ cursorPointer?: 'yes' | 'no' }>`
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -43,6 +43,25 @@ export const THTable = styled.th<{ cursorPointer?: 'yes' | 'no' }>`
     cursor: ${props => props.cursorPointer === 'yes' ? `pointer` : ``};
     border-bottom: 1px solid ${props => props.theme.borderTable};
     color: ${props => props.theme.textTable};
+`
+
+const allowedValues = ['flex-start', 'center', 'flex-end', 'space-between', 'space-around'] as const
+export const CtnCell = styled.div<{ justifycontent?: string; alignitems?: string; flexdirection?: string }>`
+    display: flex;
+    justify-content: ${({ justifycontent }) => allowedValues.includes(justifycontent as any) ? justifycontent : 'flex-start'};
+    align-items: ${props => props.alignitems === 'left' ? 'left' : 'center'};
+    flex-direction: ${props => props.flexdirection === 'column' ? 'column' : 'row'};
+    padding: 1em;
+    font-family: ${globalConstStyles.fontPoppins};
+    font-size: 0.75em;
+    font-weight: 500;
+    border-bottom: 1px solid ${props => props.theme.borderTable};
+    color: ${props => props.theme.textTable};
+`
+
+export const TextCell = styled.p`
+    font-family: ${globalConstStyles.fontPoppins};
+    font-weight: 500;
 `
 
 export const TriangleUp = styled(GoTriangleUp)`
@@ -66,25 +85,11 @@ export const TriangleDown = styled(GoTriangleDown)`
     background-color: ${props => props.theme.iconBackgroundTable};
 `
 
-const allowedValues = ['flex-start', 'center', 'flex-end', 'space-between', 'space-around'] as const
-export const PTable = styled.p<{ justifycontent?: string; alignitems?: string; flexdirection?: string }>`
-    display: flex;
-    justify-content: ${({ justifycontent }) => allowedValues.includes(justifycontent as any) ? justifycontent : 'flex-start'};
-    align-items: ${props => props.alignitems === 'left' ? 'left' : 'center'};
-    flex-direction: ${props => props.flexdirection === 'column' ? 'column' : 'row'};
-    padding: 1em;
-    font-family: ${globalConstStyles.fontPoppins};
-    font-size: 0.75em;
-    font-weight: 500;
-    border-bottom: 1px solid ${props => props.theme.borderTable};
-    color: ${props => props.theme.textTable};
-`
-
-export const DivNameTable = styled.div`
+export const CtnNameTable = styled.div`
     color: ${props => props.theme.nameTable};
 `
 
-export const DivImgTable = styled.div`
+export const CtnImgTable = styled.div`
     display: flex;
     align-items: center;
     padding: 1em;
@@ -117,7 +122,7 @@ export const IconPhone = styled(ImPhone) <{ width?: string }>`
     background-color: ${props => props.theme.iconBackgroundTable};
 `
 
-export const PStatusRoomList = styled.p<{ status: string }>`
+export const TextStatusRoomList = styled.p<{ status: string }>`
     padding: 1em 0;
     text-align: center;
     width: 6.5rem;
@@ -126,7 +131,7 @@ export const PStatusRoomList = styled.p<{ status: string }>`
     background-color: ${props => props.status === 'Available' ? props.theme.availableTable : props.theme.notAvailableTable};
 `
 
-export const PStatusAvailableUsers = styled.p<{ active: boolean }>`
+export const TextStatusAvailableUsers = styled.p<{ active: boolean }>`
     position: relative;
     padding: 1em;
     font-family: ${globalConstStyles.fontPoppins};
@@ -191,7 +196,7 @@ export const ButtonOption = styled.button<{ disabledClick?: boolean }>`
     }
 `
 
-export const PStatusBooking = styled.p<{ status: BookingStatus }>`
+export const TextStatusBooking = styled.p<{ status: BookingStatus }>`
     padding: 1em 0;
     text-align: center;
     width: 6.5rem;
@@ -222,7 +227,7 @@ export const PStatusBooking = styled.p<{ status: BookingStatus }>`
             `
         }
     }}
-    `
+`
 
 export const ButtonView = styled.button`
     padding: 1em 2em;

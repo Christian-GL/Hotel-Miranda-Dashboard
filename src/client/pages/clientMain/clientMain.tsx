@@ -13,6 +13,7 @@ import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
 import { ClientInterfaceId } from '../../interfaces/clientInterface'
+import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
@@ -30,8 +31,8 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    EmptyTableMessage, Table, THTable, TriangleUp, DivNameTable, TriangleRight, TriangleDown, PTable, PStatusAvailableUsers,
-    IconPhone, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
+    EmptyTableMessage, Table, TitleColumn, TriangleUp, CtnNameTable, TriangleRight, TriangleDown, CtnCell, TextStatusAvailableUsers,
+    TextCell, IconPhone, ButtonView, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption,
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../features/clientSlice"
@@ -73,6 +74,8 @@ export const ClientMain = () => {
     })
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
+    const [showSliderRequests, setShowSliderRequests] = useState<boolean>(false)
+    const [clientSelected, setClientSelected] = useState<ClientInterfaceId>()
     const {
         currentPageItems,
         currentPage,
@@ -189,28 +192,37 @@ export const ClientMain = () => {
 
     return (
         <SectionPage>
-            {/* !!! ACTUALIZAR Y REUTILIZAR: */}
-            <clientMainStyles.SectionReviews>
-                {/* <clientMainStyles.DivCtnReviews>
-                    <Swiper
-                        spaceBetween={0}
-                        slidesPerView={filteredClients.length === 1 ? 1 : filteredClients.length === 2 ? 2 : 3}
-                        navigation={false}
-                        pagination={{ clickable: true }}
-                        loop={true}
-                    >
-                        {currentPageItems.map((client: ClientInterface, index: number) => {
-                            return <SwiperSlide key={index}>
-                                <ArticleReview
-                                    title={client.full_name}
-                                    subTittle={client.email}
-                                    content={client.phone_number}
-                                />
-                            </SwiperSlide>
-                        })}
-                    </Swiper>
-                </clientMainStyles.DivCtnReviews> */}
-            </clientMainStyles.SectionReviews>
+            {
+                showSliderRequests
+                    ? <clientMainStyles.SectionReviews>
+                        <clientMainStyles.DivCtnReviews>
+                            <Swiper
+                                spaceBetween={0}
+                                slidesPerView={clientSelected?.booking_id_list.length === 1 ? 1 : clientSelected?.booking_id_list.length === 2 ? 2 : 3}
+                                navigation={false}
+                                pagination={{ clickable: true }}
+                                loop={true}
+                            >
+                                {clientSelected?.booking_id_list.map(bookingId => {
+                                    const booking = bookingAll.find(b => b._id === bookingId)
+                                    if (!booking) return null
+
+                                    return (
+                                        <SwiperSlide key={booking._id}>
+                                            <ArticleReview
+                                                title={clientSelected.full_name}
+                                                firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
+                                                secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
+                                                content={booking.special_request}
+                                            />
+                                        </SwiperSlide>
+                                    )
+                                })}
+                            </Swiper>
+                        </clientMainStyles.DivCtnReviews>
+                    </clientMainStyles.SectionReviews>
+                    : <></>
+            }
 
             <CtnFuncionality>
                 <CtnAllDisplayFilter>
@@ -244,63 +256,75 @@ export const ClientMain = () => {
                     {Object.values(ClientNameColumn).map(entry => {
                         if (sortableColumns.includes(entry)) {
                             return (
-                                <THTable
+                                <TitleColumn
                                     key={entry}
                                     onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayClients())}
                                     cursorPointer="yes"
                                 >
                                     {entry}
                                     {getArrowIcon(arrowStates[entry])}
-                                </THTable>
+                                </TitleColumn>
                             )
                         }
                         else {
                             return (
-                                <THTable key={entry}>
+                                <TitleColumn key={entry}>
                                     {entry}
-                                </THTable>
+                                </TitleColumn>
                             )
                         }
                     })}
-                    <THTable>{''}</THTable>
+                    <TitleColumn>{''}</TitleColumn>
                     {currentPageItems.map((clientData, index) => {
                         const clientBookingsByRoom = getClientBookingsByRoom(clientData, bookingAll, roomAll)
                         return [
-                            <PTable key={index + '-1'} flexdirection='column' alignitems='left' justifycontent='center'>
-                                <DivNameTable>
+                            <CtnCell key={index + '-1'} flexdirection='column' alignitems='left' justifycontent='center'>
+                                <CtnNameTable>
                                     <b>{clientData.full_name}</b>
-                                </DivNameTable>
+                                </CtnNameTable>
                                 <div>{clientData.email}</div>
                                 <div>#<b>{clientData._id}</b></div>
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-2'} >
+                            <CtnCell key={index + '-2'} >
                                 <IconPhone />
-                                {clientData.phone_number}
-                            </PTable>,
+                                <TextCell>{clientData.phone_number}</TextCell>
+                            </CtnCell>,
 
-                            <PTable>
+                            <CtnCell>
                                 {
                                     clientBookingsByRoom.length > 0 ? (
                                         clientBookingsByRoom.map(booking => (
-                                            <p key={booking.bookingId}>
+                                            <TextCell key={booking.bookingId}>
                                                 {booking.roomNumbers.join(', ')}
-                                            </p>
+                                            </TextCell>
                                         ))
                                     ) : (
-                                        <p>No bookings yet</p>
+                                        <TextCell>No bookings</TextCell>
                                     )
                                 }
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '3'}>
-                                {clientData.isArchived === OptionYesNo.no
-                                    ? <PStatusAvailableUsers active={true}>Active</PStatusAvailableUsers>
-                                    : <PStatusAvailableUsers active={false}>Archived</PStatusAvailableUsers>
+                            <CtnCell key={index + '-6'}>
+                                {
+                                    bookingAll.some(booking => clientData.booking_id_list.includes(booking._id))
+                                        ? <ButtonView onClick={() => {
+                                            setShowSliderRequests(!showSliderRequests)
+                                            setClientSelected(clientData)
+                                        }}
+                                        >{clientData._id === clientSelected?._id && showSliderRequests ? 'Hide request' : 'View request'}</ButtonView>
+                                        : <TextCell>No special request</TextCell>
                                 }
-                            </PTable>,
+                            </CtnCell>,
 
-                            <PTable key={index + '-4'} justifycontent="flex-end">
+                            <CtnCell key={index + '3'}>
+                                {clientData.isArchived === OptionYesNo.no
+                                    ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
+                                    : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
+                                }
+                            </CtnCell>,
+
+                            <CtnCell key={index + '-4'} justifycontent="flex-end">
                                 <CtnMenuOptions>
                                     <IconOptions onClick={() => { displayMenuOptions(index) }} />
                                     <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
@@ -317,7 +341,7 @@ export const ClientMain = () => {
                                         </ButtonOption>
                                     </CtnOptions>
                                 </CtnMenuOptions>
-                            </PTable>
+                            </CtnCell>
                         ]
                     })}
                 </Table>
