@@ -156,7 +156,11 @@ export const Layout = () => {
 
             <sidebarStyles.AsideSideNavigationBar display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                 <div>
-                    <sidebarStyles.IconHotel onClick={() => navigate('/dashboard')} display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} />
+                    <sidebarStyles.IconHotel
+                        onClick={() => navigate('/dashboard')}
+                        display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}
+                        isCursorPointer={true}
+                    />
                     <sidebarStyles.DivCtnTitle display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                         <sidebarStyles.TitleH1>travl</sidebarStyles.TitleH1>
                         <sidebarStyles.PTitleText>Hotel Admin Dashboard</sidebarStyles.PTitleText>

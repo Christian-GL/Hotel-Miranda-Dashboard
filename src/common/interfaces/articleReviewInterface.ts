@@ -1,6 +1,7 @@
 
 export interface ArticleReviewInterface extends React.HTMLAttributes<HTMLElement> {
     title: string
-    subTittle: string
+    firstSubtitle: string
+    secondSubtitle: string
     content: string
 }

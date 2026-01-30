@@ -19,6 +19,9 @@ import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../
 import { ClientFetchAllThunk } from "../client/features/thunks/clientFetchAllThunk"
 import { BookingInterfaceId } from "../booking/interfaces/bookingInterface"
 import { ClientInterfaceId } from "../client/interfaces/clientInterface"
+import { RoomInterfaceId } from "../room/interfaces/roomInterface"
+import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../room/features/roomSlice"
+import { RoomFetchAllThunk } from "../room/features/thunks/roomFetchAllThunk"
 
 
 export const DashboardMain = () => {
@@ -30,6 +33,9 @@ export const DashboardMain = () => {
     const clientAll: ClientInterfaceId[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const clientErrorMessage = useSelector(getClientErrorMessage)
+    const roomAll: RoomInterfaceId[] = useSelector(getRoomAllData)
+    const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
+    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
 
@@ -43,6 +49,11 @@ export const DashboardMain = () => {
         else if (clientAllLoading === ApiStatus.fulfilled) { }
         else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
     }, [clientAllLoading, clientAll])
+    useEffect(() => {
+        if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
+        else if (roomAllLoading === ApiStatus.fulfilled) { }
+        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
+    }, [roomAllLoading, roomAll])
 
 
     return (
@@ -94,7 +105,7 @@ export const DashboardMain = () => {
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             <styles.SectionSpecialRequest>
-                <styles.TitleSectionReviewsH5>Latest reviews by client</styles.TitleSectionReviewsH5>
+                <styles.TitleSectionReviewsH5>Latest special requests by client</styles.TitleSectionReviewsH5>
                 {/* <dashboardJS.SwiperCustom
                         spaceBetween={0}
                         slidesPerView={3}
@@ -117,7 +128,8 @@ export const DashboardMain = () => {
                         return <SwiperSlide key={index}>
                             <ArticleReview
                                 title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
-                                subTittle={`${formatDateForPrint(booking.order_date)}`}
+                                firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
+                                secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
                                 content={booking.special_request}
                             />
                         </SwiperSlide>

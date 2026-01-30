@@ -2,13 +2,18 @@
 import React from 'react'
 import { useState } from "react"
 
-import * as articleReviewStyles from "./articleReviewStyles"
+import * as styles from "./articleReviewStyles"
 import { ArticleReviewInterface } from "../../interfaces/articleReviewInterface"
 import { IconHotel } from '../layout/sidebarMenuStyles'
 import { PopupText } from "../popupText/popupText"
 
 
-export const ArticleReview: React.FC<ArticleReviewInterface> = ({ title, subTittle, content }) => {
+export const ArticleReview: React.FC<ArticleReviewInterface> = ({
+    title,
+    firstSubtitle,
+    secondSubtitle,
+    content
+}) => {
 
     const [showPopup, setShowPopup] = useState<boolean>(false)
 
@@ -21,28 +26,28 @@ export const ArticleReview: React.FC<ArticleReviewInterface> = ({ title, subTitt
         {showPopup && <PopupText isSlider={true} title={title} text={content} onClose={() => setShowPopup(false)} />}
 
         {/* !!! REPASAR PROPORCIONES PARA QUE NO SE DESCUADREN LOS DATOS */}
-        <articleReviewStyles.ArticleReview>
-            <articleReviewStyles.PTextReview onClick={openPopup}>
+        <styles.ArticleReview>
+            <styles.PTextReview onClick={openPopup}>
                 {content}
-            </articleReviewStyles.PTextReview>
+            </styles.PTextReview>
 
-            <articleReviewStyles.DivCtnDetails>
+            <styles.DivCtnDetails>
+                <styles.DivCtnReviewDetails>
+                    <IconHotel isCursorPointer={false} />
+                    <styles.DivCtnInfoDetails>
+                        <styles.TitleNameProfile>{title}</styles.TitleNameProfile>
+                        <styles.TextH5>{firstSubtitle}</styles.TextH5>
+                        <styles.TextH5>{secondSubtitle}</styles.TextH5>
+                    </styles.DivCtnInfoDetails>
+                </styles.DivCtnReviewDetails>
 
-                <articleReviewStyles.DivCtnReviewDetails>
-                    <IconHotel />
-                    <articleReviewStyles.DivCtnInfoDetails>
-                        <articleReviewStyles.TitleNameProfile>{title}</articleReviewStyles.TitleNameProfile>
-                        <articleReviewStyles.TextH5>{subTittle}</articleReviewStyles.TextH5>
-                    </articleReviewStyles.DivCtnInfoDetails>
-                </articleReviewStyles.DivCtnReviewDetails>
+                <styles.DivCtnIcons>
+                    <styles.IconCheckConfirm />
+                    <styles.IconCheckCross />
+                </styles.DivCtnIcons>
 
-                <articleReviewStyles.DivCtnIcons>
-                    <articleReviewStyles.IconCheckConfirm />
-                    <articleReviewStyles.IconCheckCross />
-                </articleReviewStyles.DivCtnIcons>
-
-            </articleReviewStyles.DivCtnDetails>
-        </articleReviewStyles.ArticleReview>
+            </styles.DivCtnDetails>
+        </styles.ArticleReview>
 
     </>)
 }

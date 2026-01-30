@@ -26,14 +26,14 @@ export const AsideSideNavigationBar = styled.aside<{ display?: string }>`
     background-color: ${props => props.theme.backgroundLayout};
 `
 
-export const IconHotel = styled(RiHotelFill) <{ display?: string }>`
+export const IconHotel = styled(RiHotelFill) <{ display?: string, isCursorPointer?: boolean }>`
     display: inline-block;
     vertical-align: middle;
     margin-bottom: ${props => props.display === 'collapsed' ? '2rem' : '0'};
     width: 3.5rem;
     height: auto;
     text-align: center;
-    cursor: pointer;
+    cursor: ${props => props.isCursorPointer ? 'pointer' : 'auto'};
     transition: 0.25s ease;
     color: ${props => props.theme.iconSidebar};
 
