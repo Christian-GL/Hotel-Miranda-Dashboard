@@ -243,7 +243,7 @@ export const UserMain = () => {
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             {currentPageItems.length === 0
-                ? <EmptyTableMessage>No records found</EmptyTableMessage>
+                ? <EmptyTableMessage>No users found</EmptyTableMessage>
                 : <Table rowlistlength={filteredUsers.length + 1} columnlistlength={Object.values(UserNameColumn).length + 2}>
                     <THTable>{''}</THTable>
                     {Object.values(UserNameColumn).map(entry => {

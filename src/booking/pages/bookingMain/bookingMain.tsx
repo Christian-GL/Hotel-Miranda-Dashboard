@@ -264,7 +264,7 @@ export const BookingMain = () => {
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             {currentPageItems.length === 0
-                ? <EmptyTableMessage>No records found</EmptyTableMessage>
+                ? <EmptyTableMessage>No bookings found</EmptyTableMessage>
                 : <Table rowlistlength={filteredBookings.length + 1} columnlistlength={Object.values(BookingNameColumn).length + 1} >
                     {Object.values(BookingNameColumn).map(entry => {
                         if (sortableColumns.includes(entry)) {

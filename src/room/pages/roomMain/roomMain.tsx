@@ -266,7 +266,7 @@ export const RoomMain = () => {
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             {currentPageItems.length === 0
-                ? <EmptyTableMessage>No records found</EmptyTableMessage>
+                ? <EmptyTableMessage>No rooms found</EmptyTableMessage>
                 : <Table rowlistlength={filteredRooms.length + 1} columnlistlength={Object.values(RoomNameColumn).length + 2} >
                     <THTable>{''}</THTable>
                     {Object.values(RoomNameColumn).map(entry => {

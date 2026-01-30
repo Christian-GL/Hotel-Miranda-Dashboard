@@ -239,7 +239,7 @@ export const ClientMain = () => {
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             {currentPageItems.length === 0
-                ? <EmptyTableMessage>No records found</EmptyTableMessage>
+                ? <EmptyTableMessage>No clients found</EmptyTableMessage>
                 : <Table rowlistlength={filteredClients.length + 1} columnlistlength={Object.values(ClientNameColumn).length + 1} >
                     {Object.values(ClientNameColumn).map(entry => {
                         if (sortableColumns.includes(entry)) {
