@@ -10,66 +10,72 @@ import * as globalConstStyles from '../common/styles/globalConstStyles'
 
 
 export const CtnSwiperCustom = styled.div`
-    .swiper-button-next,
-    .swiper-button-prev {
-        color: ${props => props.theme.iconSidebar};
-        width: 40px;
-        height: 40px;
-        background: ${props => props.theme.backgroundTable};
-        border-radius: 50%;
-        box-shadow: 0 0 10px rgba(0,0,0,.25);
-        transition: 0.25s ease;
-    }
+    .swiper {
+        margin: 0 5em;
+    }    
 
-    .swiper-button-next:hover,
-    .swiper-button-prev:hover {
-        color: ${props => props.theme.textHoverSidebar};
-        transform: scale(1.1);
-    }
+    // .swiper-button-next,
+    // .swiper-button-prev {
+    //     z-index: 1000;
+    //     color: ${props => props.theme.iconSidebar};
+    //     width: 40px;
+    //     height: 40px;
+    //     background: ${props => props.theme.backgroundTable};
+    //     border-radius: 50%;
+    //     box-shadow: 0 0 10px rgba(0,0,0,.25);
+    //     transition: 0.25s ease;
+    // }
 
-    .swiper-button-next::after,
-    .swiper-button-prev::after {
-        font-size: 18px;
-        font-weight: bold;
-    }
+    // .swiper-button-next:hover,
+    // .swiper-button-prev:hover {
+    //     color: ${props => props.theme.textHoverSidebar};
+    //     transform: scale(1.1);
+    // }
 
-    .swiper-button-prev {
-        left: 10rem;
-    }
-    .swiper-button-next {
-        right: 1rem;
-    }
+    // .swiper-button-next::after,
+    // .swiper-button-prev::after {
+    //     font-size: 18px;
+    //     font-weight: bold;
+    // }
+
+    // .swiper-button-prev {
+    //     left: 2rem;
+    // }
+    // .swiper-button-next {
+    //     right: 2rem;
+    // }
 `
 
-export const ButtonSwiperCustom = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: ${props => props.theme.backgroundTable};
-  color: ${props => props.theme.iconSidebar};
-  box-shadow: 0 0 10px rgba(0,0,0,0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.25s ease;
+const ButtonSwiperCustom = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
 
-  &:hover {
-    color: ${props => props.theme.textHoverSidebar};
-    transform: translateY(-50%) scale(1.1);
-  }
+    background: ${props => props.theme.backgroundTable};
+    color: ${props => props.theme.iconSidebar};
+
+    box-shadow: 0 0 10px rgba(0,0,0,0.25);
+    transition: 0.25s ease;
+
+    &:hover {
+        color: ${props => props.theme.textHoverSidebar};
+        transform: translateY(-50%) scale(1.1);
+    }
 `
 export const ButtonPrev = styled(ButtonSwiperCustom)`
-  left: 1rem;
+    left: 8.5rem;
 `
 export const ButtonNext = styled(ButtonSwiperCustom)`
-  right: 1rem;
+    right: 3.5rem;
 `
-
 
 export const SectionPageDashboard = styled.section`
     padding: 2em;

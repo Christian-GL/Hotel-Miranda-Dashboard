@@ -1,8 +1,9 @@
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules';
+import { NavigationOptions } from "swiper/types"
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -42,6 +43,8 @@ export const DashboardMain = () => {
     const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
+    const prevRef = useRef<HTMLButtonElement>(null)
+    const nextRef = useRef<HTMLButtonElement>(null)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -114,14 +117,13 @@ export const DashboardMain = () => {
                     <Swiper
                         modules={[Navigation, Pagination]}
                         spaceBetween={0}
-                        slidesPerView={clientAll.length === 1 ? 1 : clientAll.length === 2 ? 2 : 3}
-                        // slidesPerView={clientAll.length >= 3 ? 3 : clientAll.length}
-                        // centeredSlides={true}
-                        navigation={{
-                            nextEl: '.custom-next',
-                            prevEl: '.custom-prev',
-                        }}
-                        pagination={{ clickable: true }}
+                        slidesPerView={clientAll.length >= 3 ? 3 : clientAll.length}
+                        navigation={false}
+                        // navigation={{
+                        //     nextEl: '.custom-next',
+                        //     prevEl: '.custom-prev',
+                        // }}
+                        // pagination={{ clickable: true }}
                         loop={false}
                     >
                         {/* ORIGINAL, DESCOMENTAR AL ACABAR LAS PRUEBAS */}
@@ -152,8 +154,8 @@ export const DashboardMain = () => {
                             )
                         })}
                     </Swiper>
-                    <button className="custom-prev">◀</button>
-                    <button className="custom-next">▶</button>
+                    <styles.ButtonPrev ref={prevRef}>◀</styles.ButtonPrev>
+                    <styles.ButtonNext ref={nextRef}>▶</styles.ButtonNext>
                 </styles.CtnSwiperCustom>
             </styles.SectionSpecialRequest>
 
