@@ -2,6 +2,10 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 import * as styles from "./dashboardMainStyles"
 import { AppDispatch } from '../common/redux/store'
@@ -106,38 +110,51 @@ export const DashboardMain = () => {
 
             <styles.SectionSpecialRequest>
                 <styles.TitleSectionReviewsH5>Latest special requests by client</styles.TitleSectionReviewsH5>
-                {/* <dashboardJS.SwiperCustom
+                <styles.CtnSwiperCustom>
+                    <Swiper
+                        modules={[Navigation, Pagination]}
                         spaceBetween={0}
-                        slidesPerView={3}
+                        slidesPerView={clientAll.length === 1 ? 1 : clientAll.length === 2 ? 2 : 3}
+                        // slidesPerView={clientAll.length >= 3 ? 3 : clientAll.length}
+                        // centeredSlides={true}
                         navigation={{
-                            nextEl: '.swiper-button-next',
-                            prevEl: '.swiper-button-prev'
+                            nextEl: '.custom-next',
+                            prevEl: '.custom-prev',
                         }}
                         pagination={{ clickable: true }}
-                        loop={true}
-                        grabCursor={true}
-                    > */}
-                <Swiper
-                    spaceBetween={0}
-                    slidesPerView={clientAll.length === 1 ? 1 : clientAll.length === 2 ? 2 : 3}
-                    navigation={false}
-                    pagination={{ clickable: true }}
-                    loop={true}
-                >
-                    {bookingAll.map((booking, index) => {
-                        return (
-                            <SwiperSlide key={index}>
-                                <ArticleReview
-                                    title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
-                                    firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
-                                    secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
-                                    content={booking.special_request}
-                                />
-                            </SwiperSlide>
-                        )
-                    })}
-                </Swiper>
-                {/* </dashboardJS.SwiperCustom> */}
+                        loop={false}
+                    >
+                        {/* ORIGINAL, DESCOMENTAR AL ACABAR LAS PRUEBAS */}
+                        {/* {bookingAll.map((booking, index) => {
+                            return (
+                                <SwiperSlide key={index}>
+                                    <ArticleReview
+                                        title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
+                                        firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
+                                        secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
+                                        content={booking.special_request}
+                                    />
+                                </SwiperSlide>
+                            )
+                        })} */}
+                        {Array.from({ length: 5 }).map((_, index) => {
+                            const booking = bookingAll[0]
+                            if (!booking) return null
+                            return (
+                                <SwiperSlide key={`${booking._id}-${index}`}>
+                                    <ArticleReview
+                                        title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
+                                        firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
+                                        secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
+                                        content={booking.special_request}
+                                    />
+                                </SwiperSlide>
+                            )
+                        })}
+                    </Swiper>
+                    <button className="custom-prev">◀</button>
+                    <button className="custom-next">▶</button>
+                </styles.CtnSwiperCustom>
             </styles.SectionSpecialRequest>
 
         </styles.SectionPageDashboard >
