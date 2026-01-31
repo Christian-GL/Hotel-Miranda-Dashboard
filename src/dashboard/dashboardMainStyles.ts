@@ -12,38 +12,11 @@ import * as globalConstStyles from '../common/styles/globalConstStyles'
 export const CtnSwiperCustom = styled.div`
     .swiper {
         margin: 0 5em;
-    }    
-
-    // .swiper-button-next,
-    // .swiper-button-prev {
-    //     z-index: 1000;
-    //     color: ${props => props.theme.iconSidebar};
-    //     width: 40px;
-    //     height: 40px;
-    //     background: ${props => props.theme.backgroundTable};
-    //     border-radius: 50%;
-    //     box-shadow: 0 0 10px rgba(0,0,0,.25);
-    //     transition: 0.25s ease;
-    // }
-
-    // .swiper-button-next:hover,
-    // .swiper-button-prev:hover {
-    //     color: ${props => props.theme.textHoverSidebar};
-    //     transform: scale(1.1);
-    // }
-
-    // .swiper-button-next::after,
-    // .swiper-button-prev::after {
-    //     font-size: 18px;
-    //     font-weight: bold;
-    // }
-
-    // .swiper-button-prev {
-    //     left: 2rem;
-    // }
-    // .swiper-button-next {
-    //     right: 2rem;
-    // }
+    }
+    .swiper-button-disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
 `
 
 const ButtonSwiperCustom = styled.button`
@@ -52,29 +25,31 @@ const ButtonSwiperCustom = styled.button`
     justify-content: center;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
     border: none;
     cursor: pointer;
-
-    background: ${props => props.theme.backgroundTable};
-    color: ${props => props.theme.iconSidebar};
-
     box-shadow: 0 0 10px rgba(0,0,0,0.25);
     transition: 0.25s ease;
+    color: ${props => props.theme.textHoverSidebar};
+    background: ${props => props.theme.backgroundTable};
+    
 
     &:hover {
-        color: ${props => props.theme.textHoverSidebar};
-        transform: translateY(-50%) scale(1.1);
+        color: ${props => props.theme.iconSidebar};
+        transform: scale(1.15);
     }
 `
-export const ButtonPrev = styled(ButtonSwiperCustom)`
-    left: 8.5rem;
+export const ButtonPrev = styled(ButtonSwiperCustom).attrs({
+    className: 'swiper-button-prev-custom'
+})`
+  left: 8.5rem;
 `
-export const ButtonNext = styled(ButtonSwiperCustom)`
-    right: 3.5rem;
+export const ButtonNext = styled(ButtonSwiperCustom).attrs({
+    className: 'swiper-button-next-custom'
+})`
+  right: 3.5rem;
 `
 
 export const SectionPageDashboard = styled.section`
@@ -169,6 +144,14 @@ export const TextH5 = styled.h5`
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     color: ${props => props.theme.textKPIDashboard};
+`
+
+export const TextH4 = styled.h5`
+    padding: 1em;
+    font-family: ${globalConstStyles.fontPoppins};
+    font-size: 0.85em;
+    font-weight: 400;
+    color: ${props => props.theme.backgroundKPIDashboard};  // !!! PERSONALIZAR COLOR
 `
 
 export const SectionSpecialRequest = styled.section`

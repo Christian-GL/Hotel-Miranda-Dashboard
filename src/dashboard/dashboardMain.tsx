@@ -2,13 +2,13 @@
 import { useState, useEffect, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination } from 'swiper/modules';
-import { NavigationOptions } from "swiper/types"
+import { Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
 import * as styles from "./dashboardMainStyles"
+import { TextCell } from "../common/styles/tableStyles"
 import { AppDispatch } from '../common/redux/store'
 import { ApiStatus } from "../common/enums/ApiStatus"
 import { BookingStatus } from "../booking/enums/bookingStatus"
@@ -43,8 +43,8 @@ export const DashboardMain = () => {
     const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
-    const prevRef = useRef<HTMLButtonElement>(null)
-    const nextRef = useRef<HTMLButtonElement>(null)
+    const prevRef = useRef<HTMLButtonElement | null>(null)
+    const nextRef = useRef<HTMLButtonElement | null>(null)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -113,50 +113,54 @@ export const DashboardMain = () => {
 
             <styles.SectionSpecialRequest>
                 <styles.TitleSectionReviewsH5>Latest special requests by client</styles.TitleSectionReviewsH5>
-                <styles.CtnSwiperCustom>
-                    <Swiper
-                        modules={[Navigation, Pagination]}
-                        spaceBetween={0}
-                        slidesPerView={clientAll.length >= 3 ? 3 : clientAll.length}
-                        navigation={false}
-                        // navigation={{
-                        //     nextEl: '.custom-next',
-                        //     prevEl: '.custom-prev',
-                        // }}
-                        // pagination={{ clickable: true }}
-                        loop={false}
-                    >
-                        {/* ORIGINAL, DESCOMENTAR AL ACABAR LAS PRUEBAS */}
-                        {/* {bookingAll.map((booking, index) => {
-                            return (
-                                <SwiperSlide key={index}>
-                                    <ArticleReview
-                                        title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
-                                        firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
-                                        secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
-                                        content={booking.special_request}
-                                    />
-                                </SwiperSlide>
-                            )
-                        })} */}
-                        {Array.from({ length: 5 }).map((_, index) => {
-                            const booking = bookingAll[0]
-                            if (!booking) return null
-                            return (
-                                <SwiperSlide key={`${booking._id}-${index}`}>
-                                    <ArticleReview
-                                        title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
-                                        firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
-                                        secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
-                                        content={booking.special_request}
-                                    />
-                                </SwiperSlide>
-                            )
-                        })}
-                    </Swiper>
-                    <styles.ButtonPrev ref={prevRef}>◀</styles.ButtonPrev>
-                    <styles.ButtonNext ref={nextRef}>▶</styles.ButtonNext>
-                </styles.CtnSwiperCustom>
+                {
+                    clientAll.length > 0
+                        ? (<>
+                            <styles.CtnSwiperCustom>
+                                <Swiper
+                                    modules={[Navigation, Pagination]}
+                                    spaceBetween={0}
+                                    slidesPerView={clientAll.length >= 3 ? 3 : clientAll.length}
+                                    navigation={{
+                                        prevEl: '.swiper-button-prev-custom',
+                                        nextEl: '.swiper-button-next-custom',
+                                    }}
+                                    loop={false}
+                                >
+                                    {bookingAll.map((booking, index) => {
+                                        return (
+                                            <SwiperSlide key={index}>
+                                                <ArticleReview
+                                                    title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
+                                                    firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
+                                                    secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
+                                                    content={booking.special_request}
+                                                />
+                                            </SwiperSlide>
+                                        )
+                                    })}
+                                    {/* PARA PRUEBAS PRUEBAS */}
+                                    {/* {Array.from({ length: 5 }).map((_, index) => {
+                                        const booking = bookingAll[0]
+                                        if (!booking) return null
+                                        return (
+                                            <SwiperSlide key={`${booking._id}-${index}`}>
+                                                <ArticleReview
+                                                    title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
+                                                    firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
+                                                    secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
+                                                    content={booking.special_request}
+                                                />
+                                            </SwiperSlide>
+                                        )
+                                    })} */}
+                                </Swiper>
+                                <styles.ButtonPrev ref={prevRef}>◀</styles.ButtonPrev>
+                                <styles.ButtonNext ref={nextRef}>▶</styles.ButtonNext>
+                            </styles.CtnSwiperCustom>
+                        </>)
+                        : <styles.TextH4>No special requests from clients</styles.TextH4>
+                }
             </styles.SectionSpecialRequest>
 
         </styles.SectionPageDashboard >
