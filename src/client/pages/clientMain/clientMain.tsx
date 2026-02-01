@@ -62,7 +62,7 @@ export const ClientMain = () => {
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [inputText, setInputText] = useState<string>('')
-    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<string>('')
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
     const [filteredClients, setFilteredClients] = useState<ClientInterfaceId[]>([])
     const sortableColumns: ClientNameColumn[] = [
@@ -157,12 +157,12 @@ export const ClientMain = () => {
 
         return sortedData
     }
-    const displayMenuOptions = (index: number): void => {
-        tableOptionsDisplayed === index ?
-            setTableOptionsDisplayed(-1) :
-            setTableOptionsDisplayed(index)
+    const displayMenuOptions = (id: string): void => {
+        tableOptionsDisplayed === id
+            ? setTableOptionsDisplayed('')
+            : setTableOptionsDisplayed(id)
     }
-    const toggleArchivedClient = async (id: string, client: ClientInterfaceId, index: number): Promise<void> => {
+    const toggleArchivedClient = async (client: ClientInterfaceId): Promise<void> => {
         const updatedClient = {
             ...client,
             isArchived: client.isArchived === OptionYesNo.no
@@ -170,18 +170,18 @@ export const ClientMain = () => {
                 : OptionYesNo.no
         }
         try {
-            await dispatch(ClientUpdateThunk({ idClient: id, updatedClientData: updatedClient })).unwrap()
-            displayMenuOptions(index)
+            await dispatch(ClientUpdateThunk({ idClient: client._id, updatedClientData: updatedClient })).unwrap()
+            displayMenuOptions(client._id)
             resetPage()
         }
         catch (error) {
             customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
         }
     }
-    const deleteClientById = async (id: string, index: number): Promise<void> => {
+    const deleteClientById = async (id: string): Promise<void> => {
         try {
             await dispatch(ClientDeleteByIdThunk(id)).unwrap()
-            displayMenuOptions(index)
+            displayMenuOptions(id)
             resetPage()
         }
         catch (error) {
@@ -275,74 +275,76 @@ export const ClientMain = () => {
                         }
                     })}
                     <TitleColumn>{''}</TitleColumn>
-                    {currentPageItems.map((clientData, index) => {
+                    {currentPageItems.map(clientData => {
                         const clientBookingsByRoom = getClientBookingsByRoom(clientData, bookingAll, roomAll)
-                        return [
-                            <CtnCell key={index + '-1'} flexdirection='column' alignitems='left' justifycontent='center'>
-                                <CtnNameTable>
-                                    <b>{clientData.full_name}</b>
-                                </CtnNameTable>
-                                <div>{clientData.email}</div>
-                                <div>#<b>{clientData._id}</b></div>
-                            </CtnCell>,
+                        return (
+                            <React.Fragment key={clientData._id}>
+                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
+                                    <CtnNameTable>
+                                        <b>{clientData.full_name}</b>
+                                    </CtnNameTable>
+                                    <div>{clientData.email}</div>
+                                    <div>#<b>{clientData._id}</b></div>
+                                </CtnCell>
 
-                            <CtnCell key={index + '-2'} >
-                                <IconPhone />
-                                <TextCell>{clientData.phone_number}</TextCell>
-                            </CtnCell>,
+                                <CtnCell>
+                                    <IconPhone />
+                                    <TextCell>{clientData.phone_number}</TextCell>
+                                </CtnCell>
 
-                            <CtnCell>
-                                {
-                                    clientBookingsByRoom.length > 0 ? (
-                                        clientBookingsByRoom.map(booking => (
-                                            <TextCell key={booking.bookingId}>
-                                                {booking.roomNumbers.join(', ')}
-                                            </TextCell>
-                                        ))
-                                    ) : (
-                                        <TextCell>No bookings</TextCell>
-                                    )
-                                }
-                            </CtnCell>,
+                                <CtnCell>
+                                    {
+                                        clientBookingsByRoom.length > 0 ? (
+                                            clientBookingsByRoom.map(booking => (
+                                                <TextCell key={booking.bookingId}>
+                                                    {booking.roomNumbers.join(', ')}
+                                                </TextCell>
+                                            ))
+                                        ) : (
+                                            <TextCell>No bookings</TextCell>
+                                        )
+                                    }
+                                </CtnCell>
 
-                            <CtnCell key={index + '-6'}>
-                                {
-                                    bookingAll.some(booking => clientData.booking_id_list.includes(booking._id))
-                                        ? <ButtonView onClick={() => {
-                                            setShowSliderRequests(!showSliderRequests)
-                                            setClientSelected(clientData)
-                                        }}
-                                        >{clientData._id === clientSelected?._id && showSliderRequests ? 'Hide request' : 'View request'}</ButtonView>
-                                        : <TextCell>No special request</TextCell>
-                                }
-                            </CtnCell>,
+                                <CtnCell>
+                                    {
+                                        bookingAll.some(booking => clientData.booking_id_list.includes(booking._id))
+                                            ? <ButtonView onClick={() => {
+                                                setShowSliderRequests(!showSliderRequests)
+                                                setClientSelected(clientData)
+                                            }}
+                                            >{clientData._id === clientSelected?._id && showSliderRequests ? 'Hide request' : 'View request'}</ButtonView>
+                                            : <TextCell>No special request</TextCell>
+                                    }
+                                </CtnCell>
 
-                            <CtnCell key={index + '3'}>
-                                {clientData.isArchived === OptionYesNo.no
-                                    ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
-                                    : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
-                                }
-                            </CtnCell>,
+                                <CtnCell>
+                                    {clientData.isArchived === OptionYesNo.no
+                                        ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
+                                        : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
+                                    }
+                                </CtnCell>
 
-                            <CtnCell key={index + '-4'} justifycontent="flex-end">
-                                <CtnMenuOptions>
-                                    <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                    <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
-                                        <ButtonOption onClick={() => navigate(`client-update/${clientData._id}`)}>Update</ButtonOption>
-                                        <ButtonOption onClick={() => toggleArchivedClient(clientData._id, clientData, index)}>
-                                            {clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
-                                        </ButtonOption>
-                                        <ButtonOption
-                                            onClick={getRole() === Role.admin
-                                                ? () => { deleteClientById(clientData._id, index) }
-                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                                            disabledClick={getRole() !== Role.admin}
-                                        >Delete
-                                        </ButtonOption>
-                                    </CtnOptions>
-                                </CtnMenuOptions>
-                            </CtnCell>
-                        ]
+                                <CtnCell justifycontent="flex-end">
+                                    <CtnMenuOptions>
+                                        <IconOptions onClick={() => { displayMenuOptions(clientData._id) }} />
+                                        <CtnOptions display={`${tableOptionsDisplayed === clientData._id ? 'flex' : 'none'}`} isInTable={true} >
+                                            <ButtonOption onClick={() => navigate(`client-update/${clientData._id}`)}>Update</ButtonOption>
+                                            <ButtonOption onClick={() => toggleArchivedClient(clientData)}>
+                                                {clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                            </ButtonOption>
+                                            <ButtonOption
+                                                onClick={getRole() === Role.admin
+                                                    ? () => { deleteClientById(clientData._id) }
+                                                    : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                                disabledClick={getRole() !== Role.admin}
+                                            >Delete
+                                            </ButtonOption>
+                                        </CtnOptions>
+                                    </CtnMenuOptions>
+                                </CtnCell>
+                            </React.Fragment>
+                        )
                     })}
                 </Table>
             }

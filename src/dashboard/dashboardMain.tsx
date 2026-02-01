@@ -43,8 +43,6 @@ export const DashboardMain = () => {
     const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
-    const prevRef = useRef<HTMLButtonElement | null>(null)
-    const nextRef = useRef<HTMLButtonElement | null>(null)
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -139,7 +137,7 @@ export const DashboardMain = () => {
                                             </SwiperSlide>
                                         )
                                     })}
-                                    {/* PARA PRUEBAS PRUEBAS */}
+                                    {/* PARA PRUEBAS: */}
                                     {/* {Array.from({ length: 5 }).map((_, index) => {
                                         const booking = bookingAll[0]
                                         if (!booking) return null
@@ -155,8 +153,8 @@ export const DashboardMain = () => {
                                         )
                                     })} */}
                                 </Swiper>
-                                <styles.ButtonPrev ref={prevRef}>◀</styles.ButtonPrev>
-                                <styles.ButtonNext ref={nextRef}>▶</styles.ButtonNext>
+                                <styles.ButtonPrev>◀</styles.ButtonPrev>
+                                <styles.ButtonNext>▶</styles.ButtonNext>
                             </styles.CtnSwiperCustom>
                         </>)
                         : <styles.TextH4>No special requests from clients</styles.TextH4>

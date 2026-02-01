@@ -59,7 +59,7 @@ export const BookingMain = () => {
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const clientErrorMessage = useSelector(getClientErrorMessage)
     const [inputText, setInputText] = useState<string>('')
-    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<string>('')
     const [bookingStatusButton, setBookingStatusButton] = useState<BookingButtonType>(BookingButtonType.all)
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
     const [filteredBookings, setFilteredBookings] = useState<BookingInterfaceId[]>([])
@@ -194,12 +194,12 @@ export const BookingMain = () => {
 
         return sortedData
     }
-    const displayMenuOptions = (index: number): void => {
-        tableOptionsDisplayed === index ?
-            setTableOptionsDisplayed(-1) :
-            setTableOptionsDisplayed(index)
+    const displayMenuOptions = (id: string): void => {
+        tableOptionsDisplayed === id
+            ? setTableOptionsDisplayed('')
+            : setTableOptionsDisplayed(id)
     }
-    const toggleArchivedBooking = async (id: string, booking: BookingInterfaceId, index: number): Promise<void> => {
+    const toggleArchivedBooking = async (booking: BookingInterfaceId): Promise<void> => {
         const updatedBooking = {
             ...booking,
             isArchived: booking.isArchived === OptionYesNo.no
@@ -207,18 +207,18 @@ export const BookingMain = () => {
                 : OptionYesNo.no
         }
         try {
-            await dispatch(BookingUpdateThunk({ idBooking: id, updatedBookingData: updatedBooking })).unwrap()
-            displayMenuOptions(index)
+            await dispatch(BookingUpdateThunk({ idBooking: booking._id, updatedBookingData: updatedBooking })).unwrap()
+            displayMenuOptions(booking._id)
             resetPage()
         }
         catch (error) {
             customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
         }
     }
-    const deleteBookingById = async (id: string, index: number): Promise<void> => {
+    const deleteBookingById = async (id: string): Promise<void> => {
         try {
             await dispatch(BookingDeleteByIdThunk(id)).unwrap()
-            displayMenuOptions(index)
+            displayMenuOptions(id)
             resetPage()
         }
         catch (error) {
@@ -288,29 +288,29 @@ export const BookingMain = () => {
                         }
                     })}
                     <TitleColumn>{''}</TitleColumn>
-                    {currentPageItems.map((bookingData, index) => {
-                        return [
-                            <CtnCell key={index + '-1'}>
+                    {currentPageItems.map(bookingData => (
+                        <React.Fragment key={bookingData._id}>
+                            <CtnCell>
                                 #<b>{bookingData._id}</b>
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-2'}>
+                            <CtnCell>
                                 <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View details</ButtonView>
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-3'} flexdirection='column' alignitems='left' justifycontent='center' >
+                            <CtnCell flexdirection='column' alignitems='left' justifycontent='center' >
                                 {formatDateForPrint(bookingData.order_date)}
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-4'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
                                 {formatDateForPrint(bookingData.check_in_date)}
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-5'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
                                 {formatDateForPrint(bookingData.check_out_date)}
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-6'}>
+                            <CtnCell>
                                 <ButtonView onClick={() => {
                                     setInfoPopup({
                                         title: `${clientAll.find(client => client._id === bookingData.client_id)?.full_name} special request:`,
@@ -318,10 +318,10 @@ export const BookingMain = () => {
                                     })
                                     setShowPopup(true)
                                 }}
-                                >View details</ButtonView>
-                            </CtnCell>,
+                                >View request</ButtonView>
+                            </CtnCell>
 
-                            <CtnCell key={index + '-7'} flexdirection="column" alignitems="left" justifycontent="center"   >
+                            <CtnCell flexdirection="column" alignitems="left" justifycontent="center"   >
                                 {
                                     (() => {
                                         const rooms = bookingData.room_id_list
@@ -338,9 +338,9 @@ export const BookingMain = () => {
                                         }
                                     })()
                                 }
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-8'} flexdirection="column" alignitems="left" justifycontent="center"  >
+                            <CtnCell flexdirection="column" alignitems="left" justifycontent="center"  >
                                 {
                                     (() => {
                                         const client = clientAll.find(client => client._id === bookingData.client_id)
@@ -357,26 +357,26 @@ export const BookingMain = () => {
                                         }
                                     })()
                                 }
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '9'}>
+                            <CtnCell>
                                 {bookingData.isArchived === OptionYesNo.no
                                     ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
                                     : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
                                 }
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-10'} justifycontent="flex-end">
+                            <CtnCell justifycontent="flex-end">
                                 <CtnMenuOptions>
-                                    <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                    <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                    <IconOptions onClick={() => { displayMenuOptions(bookingData._id) }} />
+                                    <CtnOptions display={`${tableOptionsDisplayed === bookingData._id ? 'flex' : 'none'}`} isInTable={true} >
                                         <ButtonOption onClick={() => { navigate(`booking-update/${bookingData._id}`) }}>Update</ButtonOption>
-                                        <ButtonOption onClick={() => toggleArchivedBooking(bookingData._id, bookingData, index)}>
+                                        <ButtonOption onClick={() => toggleArchivedBooking(bookingData)}>
                                             {bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                                         </ButtonOption>
                                         <ButtonOption
                                             onClick={getRole() === Role.admin
-                                                ? () => { deleteBookingById(bookingData._id, index) }
+                                                ? () => { deleteBookingById(bookingData._id) }
                                                 : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                                             disabledClick={getRole() !== Role.admin}
                                         >Delete
@@ -384,9 +384,8 @@ export const BookingMain = () => {
                                     </CtnOptions>
                                 </CtnMenuOptions>
                             </CtnCell>
-                        ]
-                    }
-                    )}
+                        </React.Fragment>
+                    ))}
                 </Table>
             }
 
@@ -399,6 +398,6 @@ export const BookingMain = () => {
                 onLast={lastPage}
             />
 
-        </SectionPage>
+        </SectionPage >
     )
 }

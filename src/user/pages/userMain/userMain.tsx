@@ -48,7 +48,7 @@ export const UserMain = () => {
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const userErrorMessage = useSelector(getUserErrorMessage)
     const [inputText, setInputText] = useState<string>('')
-    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<string>('')
     const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.active)
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
     const [filteredUsers, setFilteredUsers] = useState<UserInterfaceId[]>([])
@@ -168,13 +168,13 @@ export const UserMain = () => {
 
         return sortedData
     }
-    const displayMenuOptions = (index: number): void => {
-        tableOptionsDisplayed === index ?
-            setTableOptionsDisplayed(-1) :
-            setTableOptionsDisplayed(index)
+    const displayMenuOptions = (id: string): void => {
+        tableOptionsDisplayed === id
+            ? setTableOptionsDisplayed('')
+            : setTableOptionsDisplayed(id)
     }
     // !!! ESTA FUNCIÓN PUEDE SER COMÚN (DELETE TAMBIÉN)
-    const toggleArchivedUser = async (id: string, user: UserInterfaceId, index: number): Promise<void> => {
+    const toggleArchivedUser = async (user: UserInterfaceId): Promise<void> => {
         const updatedUser = {
             ...user,
             isArchived: user.isArchived === OptionYesNo.no
@@ -182,18 +182,18 @@ export const UserMain = () => {
                 : OptionYesNo.no
         }
         try {
-            await dispatch(UserUpdateThunk({ idUser: id, updatedUserData: updatedUser })).unwrap()
-            displayMenuOptions(index)
+            await dispatch(UserUpdateThunk({ idUser: user._id, updatedUserData: updatedUser })).unwrap()
+            displayMenuOptions(user._id)
             resetPage()
         }
         catch (error) {
             customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
         }
     }
-    const deleteUserById = async (id: string, index: number): Promise<void> => {
+    const deleteUserById = async (id: string): Promise<void> => {
         try {
             await dispatch(UserDeleteByIdThunk(id)).unwrap()
-            displayMenuOptions(index)
+            displayMenuOptions(id)
             resetPage()
         }
         catch (error) {
@@ -268,59 +268,59 @@ export const UserMain = () => {
                         }
                     })}
                     <TitleColumn>{''}</TitleColumn>
-                    {currentPageItems.map((userData: UserInterfaceId, index: number) => {
-                        return [
-                            <CtnImgTable key={index + '-1'}>
+                    {currentPageItems.map(userData => (
+                        <React.Fragment key={userData._id}>
+                            <CtnImgTable>
                                 <ImgTableUser src={`${userData.photo}`} />
-                            </CtnImgTable>,
+                            </CtnImgTable>
 
-                            <CtnCell key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
                                 <CtnNameTable>
                                     <b>{userData.full_name}</b>
                                 </CtnNameTable>
                                 <div>{userData.email}</div>
                                 <div>#<b>{userData._id}</b></div>
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-3'}>
+                            <CtnCell>
                                 <IconPhone />
                                 {userData.phone_number}
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-4'}>
+                            <CtnCell>
                                 {capitalizeFirstLetter(userData.role)}
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-5'}>
+                            <CtnCell>
                                 {userData.job_position}
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-6'}>
+                            <CtnCell>
                                 {formatDateForPrint(userData.start_date)}
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-7'}>
+                            <CtnCell>
                                 {formatDateForPrint(userData.end_date)}
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-8'}>
+                            <CtnCell>
                                 {new Date(userData.start_date) < new Date() && new Date(userData.end_date) > new Date()
                                     ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
                                     : <TextStatusAvailableUsers active={false}>Inactive</TextStatusAvailableUsers>
                                 }
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '9'}>
+                            <CtnCell>
                                 {userData.isArchived === OptionYesNo.no
                                     ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
                                     : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
                                 }
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-10'} justifycontent="flex-end">
+                            <CtnCell justifycontent="flex-end">
                                 <CtnMenuOptions>
-                                    <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                    <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                    <IconOptions onClick={() => { displayMenuOptions(userData._id) }} />
+                                    <CtnOptions display={`${tableOptionsDisplayed === userData._id ? 'flex' : 'none'}`} isInTable={true} >
                                         <ButtonOption
                                             // !!! SI EL USUARIO SE QUIERE EDITAR A SI MISMO (REPLANTEAR CONCEPTO):
                                             // onClick={getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID')
@@ -333,14 +333,14 @@ export const UserMain = () => {
                                         </ButtonOption>
                                         <ButtonOption
                                             onClick={getRole() === Role.admin
-                                                ? () => { toggleArchivedUser(userData._id, userData, index) }
+                                                ? () => { toggleArchivedUser(userData) }
                                                 : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                                             disabledClick={getRole() !== Role.admin}
                                         >{userData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                                         </ButtonOption>
                                         <ButtonOption
                                             onClick={getRole() === Role.admin
-                                                ? () => { deleteUserById(userData._id, index) }
+                                                ? () => { deleteUserById(userData._id) }
                                                 : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                                             disabledClick={getRole() !== Role.admin}
                                         >Delete
@@ -348,9 +348,8 @@ export const UserMain = () => {
                                     </CtnOptions>
                                 </CtnMenuOptions>
                             </CtnCell>
-                        ]
-                    }
-                    )}
+                        </React.Fragment>
+                    ))}
                 </Table>
             }
 

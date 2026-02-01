@@ -54,7 +54,7 @@ export const RoomMain = () => {
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const [inputText, setInputText] = useState<string>('')
-    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<number>(-1)
+    const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<string>('')
     const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.active)
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
     const [filteredRooms, setFilteredRooms] = useState<RoomInterfaceId[]>([])
@@ -178,12 +178,12 @@ export const RoomMain = () => {
 
         return sortedData
     }
-    const displayMenuOptions = (index: number): void => {
-        tableOptionsDisplayed === index ?
-            setTableOptionsDisplayed(-1) :
-            setTableOptionsDisplayed(index)
+    const displayMenuOptions = (id: string): void => {
+        tableOptionsDisplayed === id
+            ? setTableOptionsDisplayed('')
+            : setTableOptionsDisplayed(id)
     }
-    const toggleArchivedRoom = async (id: string, room: RoomInterfaceId, index: number): Promise<void> => {
+    const toggleArchivedRoom = async (room: RoomInterfaceId): Promise<void> => {
         const updatedRoom = {
             ...room,
             isArchived: room.isArchived === OptionYesNo.no
@@ -191,18 +191,18 @@ export const RoomMain = () => {
                 : OptionYesNo.no
         }
         try {
-            await dispatch(RoomUpdateThunk({ idRoom: id, updatedRoomData: updatedRoom })).unwrap()
-            displayMenuOptions(index)
+            await dispatch(RoomUpdateThunk({ idRoom: room._id, updatedRoomData: updatedRoom })).unwrap()
+            displayMenuOptions(room._id)
             resetPage()
         }
         catch (error) {
             customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
         }
     }
-    const deleteRoomById = async (id: string, index: number): Promise<void> => {
+    const deleteRoomById = async (id: string): Promise<void> => {
         try {
             await dispatch(RoomDeleteByIdThunk(id)).unwrap()
-            displayMenuOptions(index)
+            displayMenuOptions(id)
             resetPage()
         }
         catch (error) {
@@ -291,62 +291,62 @@ export const RoomMain = () => {
                         }
                     })}
                     <TitleColumn>{''}</TitleColumn>
-                    {currentPageItems.map((roomData, index) => {
-                        return [
-                            <CtnImgTable key={index + '-1'}>
+                    {currentPageItems.map(roomData => (
+                        <React.Fragment key={roomData._id}>
+                            <CtnImgTable>
                                 <ImgTableRoom src={`${roomData.photos[0]}`} />
-                            </CtnImgTable>,
+                            </CtnImgTable>
 
-                            <CtnCell key={index + '-2'} flexdirection='column' alignitems='left' justifycontent='center'>
+                            <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
                                 <div>Nº {roomData.number}</div>
                                 <div>#<b>{roomData._id}</b></div>
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-3'}>
+                            <CtnCell>
                                 {roomData.type}
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-4'}>
+                            <CtnCell>
                                 <p>{roomData.amenities.join(', ')}</p>
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-5'}>
+                            <CtnCell>
                                 <b>${roomData.price}</b>&nbsp;/night
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-6'}>
+                            <CtnCell>
                                 {roomData.discount === 0 ?
                                     <>No Discount</> :
                                     <><b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;(-{roomData.discount}%)</>
                                 }
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-7'}>
+                            <CtnCell>
                                 {
                                     isAvailable(roomData) ?
                                         <TextStatusRoomList status='Available'>Available</TextStatusRoomList> :
                                         <TextStatusRoomList status='Booking'>Booking</TextStatusRoomList>
                                 }
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '8'}>
+                            <CtnCell>
                                 {roomData.isArchived === OptionYesNo.no
                                     ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
                                     : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
                                 }
-                            </CtnCell>,
+                            </CtnCell>
 
-                            <CtnCell key={index + '-9'} justifycontent="flex-end">
+                            <CtnCell justifycontent="flex-end">
                                 <CtnMenuOptions>
-                                    <IconOptions onClick={() => { displayMenuOptions(index) }} />
-                                    <CtnOptions display={`${tableOptionsDisplayed === index ? 'flex' : 'none'}`} isInTable={true} >
+                                    <IconOptions onClick={() => { displayMenuOptions(roomData._id) }} />
+                                    <CtnOptions display={`${tableOptionsDisplayed === roomData._id ? 'flex' : 'none'}`} isInTable={true} >
                                         <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
-                                        <ButtonOption onClick={() => toggleArchivedRoom(roomData._id, roomData, index)}>
+                                        <ButtonOption onClick={() => toggleArchivedRoom(roomData)}>
                                             {roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                                         </ButtonOption>
                                         <ButtonOption
                                             onClick={getRole() === Role.admin
-                                                ? () => { deleteRoomById(roomData._id, index) }
+                                                ? () => { deleteRoomById(roomData._id) }
                                                 : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                                             disabledClick={getRole() !== Role.admin}
                                         >Delete
@@ -354,9 +354,8 @@ export const RoomMain = () => {
                                     </CtnOptions>
                                 </CtnMenuOptions>
                             </CtnCell>
-                        ]
-                    }
-                    )}
+                        </React.Fragment>
+                    ))}
                 </Table>
             }
 
