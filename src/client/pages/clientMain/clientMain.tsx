@@ -4,8 +4,9 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination } from 'swiper/modules'
 
-import * as clientMainStyles from "./clientMainStyles"
+import { CtnSwiperCustom, ButtonPrev, ButtonNext } from "../../../common/styles/customSwiperStyles"
 import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
@@ -190,40 +191,9 @@ export const ClientMain = () => {
     }
 
 
-    return (
+    return (<>
+
         <SectionPage>
-            {
-                showSliderRequests
-                    ? <clientMainStyles.SectionReviews>
-                        <clientMainStyles.DivCtnReviews>
-                            <Swiper
-                                spaceBetween={0}
-                                slidesPerView={clientSelected?.booking_id_list.length === 1 ? 1 : clientSelected?.booking_id_list.length === 2 ? 2 : 3}
-                                navigation={false}
-                                pagination={{ clickable: true }}
-                                loop={true}
-                            >
-                                {clientSelected?.booking_id_list.map(bookingId => {
-                                    const booking = bookingAll.find(b => b._id === bookingId)
-                                    if (!booking) return null
-
-                                    return (
-                                        <SwiperSlide key={booking._id}>
-                                            <ArticleReview
-                                                title={clientSelected.full_name}
-                                                firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
-                                                secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
-                                                content={booking.special_request}
-                                            />
-                                        </SwiperSlide>
-                                    )
-                                })}
-                            </Swiper>
-                        </clientMainStyles.DivCtnReviews>
-                    </clientMainStyles.SectionReviews>
-                    : <></>
-            }
-
             <CtnFuncionality>
                 <CtnAllDisplayFilter>
                     <CtnTableDisplayFilter>
@@ -249,6 +219,61 @@ export const ClientMain = () => {
             </CtnFuncionality>
 
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
+
+            {showSliderRequests
+                ? (<>
+                    <CtnSwiperCustom margin="0 0 3rem">
+                        <Swiper
+                            modules={[Navigation, Pagination]}
+                            spaceBetween={0}
+                            // slidesPerView={clientSelected?.booking_id_list.length === 1 ? 1 : clientSelected?.booking_id_list.length === 2 ? 2 : 3}
+                            slidesPerView={3}
+                            navigation={{
+                                prevEl: '.swiper-button-prev-custom',
+                                nextEl: '.swiper-button-next-custom',
+                            }}
+                            loop={false}
+                        >
+                            {clientSelected?.booking_id_list.map(bookingId => {
+                                const booking = bookingAll.find(b => b._id === bookingId)
+                                if (!booking) return null
+                                return (
+                                    <SwiperSlide key={booking._id}>
+                                        <ArticleReview
+                                            title={clientSelected.full_name}
+                                            firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
+                                            secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
+                                            content={booking.special_request}
+                                        />
+                                    </SwiperSlide>
+                                )
+                            })}
+                            {/* !!! PARA PRUEBAS */}
+                            {/* {Array.from({ length: 5 }).map((_, index) => {
+                                    const bookingId = clientSelected?.booking_id_list[0];
+                                    if (!bookingId) return null;
+                                    const booking = bookingAll.find(b => b._id === bookingId);
+                                    if (!booking) return null;
+                                    return (
+                                        <SwiperSlide key={`${booking._id}-${index}`}>
+                                            <ArticleReview
+                                                title={clientSelected.full_name}
+                                                firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId =>
+                                                    roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')
+                                                    }`}
+                                                secondSubtitle={formatDateForPrint(booking.order_date)}
+                                                content={booking.special_request}
+                                            />
+                                        </SwiperSlide>
+                                    )
+                                })} */}
+                        </Swiper>
+                        <ButtonPrev>◀</ButtonPrev>
+                        <ButtonNext>▶</ButtonNext>
+                    </CtnSwiperCustom>
+                </>)
+                : <></>
+            }
 
             {currentPageItems.length === 0
                 ? <EmptyTableMessage>No clients found</EmptyTableMessage>
@@ -313,7 +338,7 @@ export const ClientMain = () => {
                                                 setShowSliderRequests(!showSliderRequests)
                                                 setClientSelected(clientData)
                                             }}
-                                            >{clientData._id === clientSelected?._id && showSliderRequests ? 'Hide request' : 'View request'}</ButtonView>
+                                            >{clientData._id === clientSelected?._id && showSliderRequests ? 'Hide requests' : 'View requests'}</ButtonView>
                                             : <TextCell>No special request</TextCell>
                                     }
                                 </CtnCell>
@@ -357,7 +382,7 @@ export const ClientMain = () => {
                 onNext={goToNextPage}
                 onLast={lastPage}
             />
-
         </SectionPage >
-    )
+
+    </>)
 }

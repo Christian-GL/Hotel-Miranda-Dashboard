@@ -8,7 +8,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
 import * as styles from "./dashboardMainStyles"
-import { TextCell } from "../common/styles/tableStyles"
+import { CtnSwiperCustom, ButtonPrev, ButtonNext } from "../common/styles/customSwiperStyles"
 import { AppDispatch } from '../common/redux/store'
 import { ApiStatus } from "../common/enums/ApiStatus"
 import { BookingStatus } from "../booking/enums/bookingStatus"
@@ -114,11 +114,12 @@ export const DashboardMain = () => {
                 {
                     clientAll.length > 0
                         ? (<>
-                            <styles.CtnSwiperCustom>
+                            <CtnSwiperCustom>
                                 <Swiper
                                     modules={[Navigation, Pagination]}
                                     spaceBetween={0}
-                                    slidesPerView={clientAll.length >= 3 ? 3 : clientAll.length}
+                                    // slidesPerView={clientAll.length >= 3 ? 3 : clientAll.length}
+                                    slidesPerView={3}
                                     navigation={{
                                         prevEl: '.swiper-button-prev-custom',
                                         nextEl: '.swiper-button-next-custom',
@@ -137,7 +138,7 @@ export const DashboardMain = () => {
                                             </SwiperSlide>
                                         )
                                     })}
-                                    {/* PARA PRUEBAS: */}
+                                    {/* !!! PARA PRUEBAS: */}
                                     {/* {Array.from({ length: 5 }).map((_, index) => {
                                         const booking = bookingAll[0]
                                         if (!booking) return null
@@ -153,9 +154,9 @@ export const DashboardMain = () => {
                                         )
                                     })} */}
                                 </Swiper>
-                                <styles.ButtonPrev>◀</styles.ButtonPrev>
-                                <styles.ButtonNext>▶</styles.ButtonNext>
-                            </styles.CtnSwiperCustom>
+                                <ButtonPrev>◀</ButtonPrev>
+                                <ButtonNext>▶</ButtonNext>
+                            </CtnSwiperCustom>
                         </>)
                         : <styles.TextH4>No special requests from clients</styles.TextH4>
                 }

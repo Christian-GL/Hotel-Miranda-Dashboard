@@ -9,49 +9,6 @@ import { IoLogOutOutline } from "react-icons/io5"
 import * as globalConstStyles from '../common/styles/globalConstStyles'
 
 
-export const CtnSwiperCustom = styled.div`
-    .swiper {
-        margin: 0 5em;
-    }
-    .swiper-button-disabled {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-`
-
-const ButtonSwiperCustom = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0,0,0,0.25);
-    transition: 0.25s ease;
-    color: ${props => props.theme.textHoverSidebar};
-    background: ${props => props.theme.backgroundTable};
-    
-
-    &:hover {
-        color: ${props => props.theme.iconSidebar};
-        transform: scale(1.15);
-    }
-`
-export const ButtonPrev = styled(ButtonSwiperCustom).attrs({
-    className: 'swiper-button-prev-custom'
-})`
-  left: 8.5rem;
-`
-export const ButtonNext = styled(ButtonSwiperCustom).attrs({
-    className: 'swiper-button-next-custom'
-})`
-  right: 3.5rem;
-`
-
 export const SectionPageDashboard = styled.section`
     padding: 2em;
     height: 100%;
