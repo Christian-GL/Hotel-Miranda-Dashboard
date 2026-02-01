@@ -3,12 +3,15 @@ import { BookingStatus } from "../../booking/enums/bookingStatus"
 
 
 export const checkBookingStatus = (checkInDate: Date, checkOutDate: Date): BookingStatus => {
-    const actualDate = new Date()
-    if (actualDate < checkInDate) {
+    const now = Date.now()
+    const checkIn = new Date(checkInDate).getTime()
+    const checkOut = new Date(checkOutDate).getTime()
+
+    if (now < checkIn) {
         return BookingStatus.checkIn
     }
-    else if (actualDate > checkInDate && actualDate < checkOutDate) {
+    if (now >= checkIn && now < checkOut) {
         return BookingStatus.inProgress
     }
-    else return BookingStatus.checkOut
+    return BookingStatus.checkOut
 }

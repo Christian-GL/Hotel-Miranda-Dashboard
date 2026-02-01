@@ -13,6 +13,7 @@ import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
+import { BookingStatus } from "../../../booking/enums/bookingStatus"
 import { ClientInterfaceId } from '../../interfaces/clientInterface'
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
@@ -21,6 +22,7 @@ import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { customPopupMessage } from 'common/utils/customPopupMessage'
 import { getClientBookingsByRoom } from "../../../common/utils/clientBookingsByRoom"
+import { checkBookingStatus } from "../../../common/utils/checkBookingStatus"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { ClientNameColumn } from "../../enums/ClientNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
@@ -33,7 +35,7 @@ import { TablePagination } from "../../../common/components/tablePagination/tabl
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     EmptyTableMessage, Table, TitleColumn, TriangleUp, CtnNameTable, TriangleRight, TriangleDown, CtnCell, TextStatusAvailableUsers,
-    TextCell, IconPhone, ButtonView, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption,
+    TextCell, TotalBookingStatus, IconPhone, ButtonView, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption,
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../features/clientSlice"
@@ -75,7 +77,7 @@ export const ClientMain = () => {
     })
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
-    const [showSliderRequests, setShowSliderRequests] = useState<boolean>(false)
+    const [showSliderBookings, setShowSliderBookings] = useState<boolean>(false)
     const [clientSelected, setClientSelected] = useState<ClientInterfaceId>()
     const {
         currentPageItems,
@@ -190,6 +192,45 @@ export const ClientMain = () => {
         }
     }
 
+    // !!! OPTIMIZAR:
+    type BookingStatusTotals = {
+        checkIn: number
+        inProgress: number
+        checkOut: number
+    }
+    const getBookingStatusTotals = (clientBookingsByRoom: any[], bookingAll: BookingInterfaceId[]): BookingStatusTotals => {
+        return clientBookingsByRoom.reduce(
+            (acc, booking) => {
+                const bookingData = bookingAll.find(
+                    b => b._id === booking.bookingId
+                )
+                if (!bookingData) return acc
+
+                const status = checkBookingStatus(
+                    bookingData.check_in_date,
+                    bookingData.check_out_date
+                )
+
+                switch (status) {
+                    case BookingStatus.checkIn:
+                        acc.checkIn++
+                        break
+                    case BookingStatus.inProgress:
+                        acc.inProgress++
+                        break
+                    case BookingStatus.checkOut:
+                        acc.checkOut++
+                        break
+                }
+
+                return acc
+            },
+            { checkIn: 0, inProgress: 0, checkOut: 0 }
+        )
+    }
+
+
+
 
     return (<>
 
@@ -220,7 +261,7 @@ export const ClientMain = () => {
 
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
-            {showSliderRequests
+            {showSliderBookings
                 ? (<>
                     <CtnSwiperCustom margin="0 0 3rem">
                         <Swiper
@@ -241,7 +282,7 @@ export const ClientMain = () => {
                                     <SwiperSlide key={booking._id}>
                                         <ArticleReview
                                             title={clientSelected.full_name}
-                                            firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
+                                            firstSubtitle={`Room numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
                                             secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
                                             content={booking.special_request}
                                         />
@@ -284,7 +325,7 @@ export const ClientMain = () => {
                                 <TitleColumn
                                     key={entry}
                                     onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayClients())}
-                                    cursorPointer="yes"
+                                    isCursorPointer={true}
                                 >
                                     {entry}
                                     {getArrowIcon(arrowStates[entry])}
@@ -302,6 +343,7 @@ export const ClientMain = () => {
                     <TitleColumn>{''}</TitleColumn>
                     {currentPageItems.map(clientData => {
                         const clientBookingsByRoom = getClientBookingsByRoom(clientData, bookingAll, roomAll)
+                        const bookingStatusTotals = getBookingStatusTotals(clientBookingsByRoom, bookingAll)
                         return (
                             <React.Fragment key={clientData._id}>
                                 <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
@@ -318,28 +360,33 @@ export const ClientMain = () => {
                                 </CtnCell>
 
                                 <CtnCell>
-                                    {
-                                        clientBookingsByRoom.length > 0 ? (
-                                            clientBookingsByRoom.map(booking => (
-                                                <TextCell key={booking.bookingId}>
-                                                    {booking.roomNumbers.join(', ')}
-                                                </TextCell>
-                                            ))
-                                        ) : (
-                                            <TextCell>No bookings</TextCell>
-                                        )
-                                    }
+                                    <TotalBookingStatus status={BookingStatus.checkIn}>
+                                        {bookingStatusTotals.checkIn}
+                                    </TotalBookingStatus>
                                 </CtnCell>
 
                                 <CtnCell>
-                                    {
-                                        bookingAll.some(booking => clientData.booking_id_list.includes(booking._id))
-                                            ? <ButtonView onClick={() => {
-                                                setShowSliderRequests(!showSliderRequests)
-                                                setClientSelected(clientData)
-                                            }}
-                                            >{clientData._id === clientSelected?._id && showSliderRequests ? 'Hide requests' : 'View requests'}</ButtonView>
-                                            : <TextCell>No special request</TextCell>
+                                    <TotalBookingStatus status={BookingStatus.inProgress}>
+                                        {bookingStatusTotals.inProgress}
+                                    </TotalBookingStatus>
+                                </CtnCell>
+
+                                <CtnCell>
+                                    <TotalBookingStatus status={BookingStatus.checkOut}>
+                                        {bookingStatusTotals.checkOut}
+                                    </TotalBookingStatus>
+                                </CtnCell>
+
+                                <CtnCell>
+                                    {bookingAll.some(booking => clientData.booking_id_list.includes(booking._id))
+                                        ? <ButtonView onClick={() => {
+                                            setShowSliderBookings(!showSliderBookings)
+                                            setClientSelected(clientData)
+                                        }}
+                                        >
+                                            {clientData._id === clientSelected?._id && showSliderBookings ? 'Hide slider' : 'View slider'}
+                                        </ButtonView>
+                                        : <TextCell>No bookings registered</TextCell>
                                     }
                                 </CtnCell>
 

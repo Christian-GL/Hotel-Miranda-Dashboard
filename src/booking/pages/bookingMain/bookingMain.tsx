@@ -29,7 +29,7 @@ import { TablePagination } from "../../../common/components/tablePagination/tabl
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
     EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, CtnNameTable, CtnImgTable, ImgTableUser, CtnCell,
-    TextStatusAvailableUsers, IconPhone, ButtonView, TextStatusBooking, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
+    TextStatusAvailableUsers, IconPhone, ButtonView, TotalBookingStatus, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "./../../features/bookingSlice"
@@ -272,7 +272,7 @@ export const BookingMain = () => {
                                 <TitleColumn
                                     key={entry}
                                     onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayBookings())}
-                                    cursorPointer="yes"
+                                    isCursorPointer={true}
                                 >
                                     {entry}
                                     {getArrowIcon(arrowStates[entry])}

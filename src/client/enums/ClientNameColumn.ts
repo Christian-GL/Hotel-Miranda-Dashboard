@@ -3,7 +3,9 @@
 export enum ClientNameColumn {
     customerInfo = 'Customer info',
     phoneNumber = 'Phone number',
-    bookingList = 'Booking list',
-    specialRequests = 'Special requests',
+    bookingsCheckedIn = 'Bookings checked In',
+    bookingsInProgress = 'Bookings in progress',
+    bookingsCheckedOut = 'Bookings checked out',
+    sliderBookings = 'Slider bookings',
     isArchived = 'Is archived'
 }

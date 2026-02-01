@@ -32,7 +32,7 @@ export const Table = styled.table<{ rowlistlength: number, columnlistlength: num
     background-color: ${props => props.theme.backgroundTable};
 `
 
-export const TitleColumn = styled.th<{ cursorPointer?: 'yes' | 'no' }>`
+export const TitleColumn = styled.th<{ isCursorPointer?: boolean }>`
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -40,17 +40,16 @@ export const TitleColumn = styled.th<{ cursorPointer?: 'yes' | 'no' }>`
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
     font-weight: 700;
-    cursor: ${props => props.cursorPointer === 'yes' ? `pointer` : ``};
+    cursor: ${props => props.isCursorPointer ? 'pointer' : 'auto'};
     border-bottom: 1px solid ${props => props.theme.borderTable};
     color: ${props => props.theme.textTable};
 `
 
-const allowedValues = ['flex-start', 'center', 'flex-end', 'space-between', 'space-around'] as const
 export const CtnCell = styled.div<{ justifycontent?: string; alignitems?: string; flexdirection?: string }>`
     display: flex;
-    justify-content: ${({ justifycontent }) => allowedValues.includes(justifycontent as any) ? justifycontent : 'flex-start'};
-    align-items: ${props => props.alignitems === 'left' ? 'left' : 'center'};
-    flex-direction: ${props => props.flexdirection === 'column' ? 'column' : 'row'};
+    justify-content: ${props => props.justifycontent || 'flex-start'};
+    align-items: ${props => props.alignitems || 'center'};
+    flex-direction: ${props => props.flexdirection || 'row'};
     padding: 1em;
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.75em;
@@ -63,6 +62,19 @@ export const TextCell = styled.p`
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 500;
 `
+
+// export const NumberResult = styled.span`
+//     display: inline-flex;
+//     align-items: center;
+//     justify-content: center;
+//     width: 2rem;
+//     height: 2rem;
+//     font-family: ${globalConstStyles.fontPoppins};
+//     font-weight: 500;
+//     border-radius: 50%;
+//     color: ${props => props.theme.iconTable};
+//     background-color: ${props => props.theme.iconBackgroundTable};
+// `
 
 export const TriangleUp = styled(GoTriangleUp)`
     width: 2rem;
@@ -196,13 +208,17 @@ export const ButtonOption = styled.button<{ disabledClick?: boolean }>`
     }
 `
 
-export const TextStatusBooking = styled.p<{ status: BookingStatus }>`
-    padding: 1em 0;
-    text-align: center;
-    width: 6.5rem;
-    border-radius: 0.75rem;
+export const TotalBookingStatus = styled.p<{ status: BookingStatus }>`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
     font-family: ${globalConstStyles.fontPoppins};
+    font-size: 1.25em;
     font-weight: 700;
+    
     ${({ status, theme }) => {
         switch (status) {
             case BookingStatus.checkIn:

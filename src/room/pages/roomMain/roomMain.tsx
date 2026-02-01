@@ -275,7 +275,7 @@ export const RoomMain = () => {
                                 <TitleColumn
                                     key={entry}
                                     onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayRooms())}
-                                    cursorPointer="yes"
+                                    isCursorPointer={true}
                                 >
                                     {entry}
                                     {getArrowIcon(arrowStates[entry])}

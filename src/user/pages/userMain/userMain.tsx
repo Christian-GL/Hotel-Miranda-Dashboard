@@ -252,7 +252,7 @@ export const UserMain = () => {
                                 <TitleColumn
                                     key={entry}
                                     onClick={() => handleColumnClick(entry, sortableColumns, setArrowStates, () => displayEmployee())}
-                                    cursorPointer="yes"
+                                    isCursorPointer={true}
                                 >
                                     {entry}
                                     {getArrowIcon(arrowStates[entry])}
