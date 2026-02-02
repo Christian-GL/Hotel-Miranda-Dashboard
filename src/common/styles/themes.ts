@@ -27,6 +27,9 @@ export const themeLight = {
     iconBackgroundDashboard: color.redSmoothX2,
     iconHoverDashboard: color.white,
     iconHoverBackgroundDashboard: color.red,
+    swiperNavigationButton: color.white,
+    swiperPaginationButton: color.white,
+    swiperPaginationButtonSelected: color.white,
 
     backgroundBookingDetails: color.white,
     textBookingDetails: color.blackSmooth,
@@ -133,6 +136,9 @@ export const themeDark = {
     iconBackgroundDashboard: color.redSmoothX2,
     iconHoverDashboard: color.whiteSmooth,
     iconHoverBackgroundDashboard: color.red,
+    swiperNavigationButton: color.whiteSmooth,
+    swiperPaginationButton: color.whiteSmooth,
+    swiperPaginationButtonSelected: color.whiteSmooth,
 
     backgroundBookingDetails: color.graySmoothX2,
     textBookingDetails: color.blackSmooth,

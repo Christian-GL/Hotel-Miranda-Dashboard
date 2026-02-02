@@ -79,6 +79,6 @@ export const ButtonSignIn = styled.button`
     background-color: ${red};
 
     &:hover {
-        transform: scale(1.1)
+        transform: scale(1.15)
     }
 `

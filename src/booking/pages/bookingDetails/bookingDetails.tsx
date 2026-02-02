@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination } from 'swiper/modules'
 
 import * as styles from "./bookingDetailsStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
@@ -109,7 +110,7 @@ export const BookingDetails = () => {
     //     console.log('======> ', rooms)
     // }, [bookingByIdLoading, bookingById, id, roomByIdLoading, roomById])
 
-    const toggleArchivedBooking = async (): Promise<void> => {
+    const toggleArchivedThisBooking = async (): Promise<void> => {
         const updatedBooking = {
             ...bookingById,
             isArchived: bookingById.isArchived === OptionYesNo.no
@@ -163,7 +164,7 @@ export const BookingDetails = () => {
                             <ButtonOption onClick={() => { navigateBackToBookings() }}>Go back to bookings</ButtonOption>
                             <ButtonOption onClick={() => { navigate(`../booking-update/${bookingById._id}`) }}>Update</ButtonOption>
                             <ButtonOption onClick={() => {
-                                toggleArchivedBooking()
+                                toggleArchivedThisBooking()
                                 navigateBackToBookings()
                             }}> {bookingById.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                             </ButtonOption>
@@ -275,23 +276,25 @@ export const BookingDetails = () => {
             </styles.Section>
 
             <styles.Section>
-                <Swiper
-                    spaceBetween={0}
-                    slidesPerView={1}
-                    navigation={false}
-                    pagination={{ clickable: false }}
-                    loop={true}
-                    style={{ height: '100%' }}      // Importante para dimensionar las imágnes
-                >
-                    {roomsOfBooking.map(room =>
-                        // <styles.NameProfileH2>{clientById.full_name}</styles.NameProfileH2>
-                        room.photos.map((photo, index) => (
-                            <SwiperSlide key={`${room._id}-photo-${index}`}>
-                                <styles.ImgRoom src={photo} />
-                            </SwiperSlide>
-                        ))
-                    )}
-                </Swiper>
+                <styles.SwiperCustom>
+                    <Swiper
+                        modules={[Navigation, Pagination]}
+                        spaceBetween={48}
+                        slidesPerView={1}
+                        navigation={true}
+                        pagination={{ clickable: true }}
+                        loop={false}
+                    >
+                        {roomsOfBooking.map(room =>
+                            room.photos.map((photo, index) => (
+                                <SwiperSlide key={`${room._id}-photo-${index}`}>
+                                    <styles.ImgRoom src={photo} />
+                                    {/* <styles.NameProfileH2>{clientById.full_name}</styles.NameProfileH2> */}
+                                </SwiperSlide>
+                            ))
+                        )}
+                    </Swiper>
+                </styles.SwiperCustom>
             </styles.Section>
         </styles.PageBookingDetails>
 

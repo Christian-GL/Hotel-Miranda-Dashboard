@@ -80,7 +80,7 @@ export const DashboardMain = () => {
                                 checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkIn
                             ).length}
                         </styles.NumberH4>
-                        <styles.TextH5>Check in</styles.TextH5>
+                        <styles.TextH5>Checked in</styles.TextH5>
                     </styles.CtnInfo>
                 </styles.ArticleKPI>
                 <styles.ArticleKPI>
@@ -102,7 +102,7 @@ export const DashboardMain = () => {
                                 checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkOut
                             ).length}
                         </styles.NumberH4>
-                        <styles.TextH5>Check Out</styles.TextH5>
+                        <styles.TextH5>Checked Out</styles.TextH5>
                     </styles.CtnInfo>
                 </styles.ArticleKPI>
             </styles.SectionKPIs>

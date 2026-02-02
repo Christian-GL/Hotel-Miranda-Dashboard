@@ -208,6 +208,60 @@ export const IconWiFi = styled(FaWifi)`
     color: ${props => props.theme.iconPhoneBookingDetails};
 `
 
+export const SwiperCustom = styled.div`
+    position: relative;
+    height: 100%;
+
+    .swiper {
+        height: 100%;
+    }
+
+    // NAVIGATION BUTTONS:
+    .swiper-button-prev,
+    .swiper-button-next {
+        width: 3rem;
+        height: 3rem;
+        padding: 1em;
+        border-radius: 50%;
+        color: ${props => props.theme.swiperNavigationButton};
+    }
+    .swiper-button-prev::after,
+    .swiper-button-next::after {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    .swiper-button-prev:hover::after,
+    .swiper-button-next:hover::after {
+        transition: transform 0.25s ease;
+        transform: scale(1.15);
+    }
+    .swiper-button-disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    // PAGINATION BUTTONS
+    .swiper-pagination {
+        bottom: 1rem;
+    }
+    .swiper-pagination-bullet {
+        margin: 0 0.5rem !important;    // "!important" necesario al tocar librería importada
+        width: 1rem;
+        height: 1rem;
+        opacity: 0.5;
+        border-radius: 50%;
+        background: ${props => props.theme.swiperPaginationButton};
+    }
+    .swiper-pagination-bullet:hover {
+        transition: transform 0.25s ease;
+        transform: scale(1.15);
+    }
+    .swiper-pagination-bullet-active {
+        opacity: 1;
+        background: ${props => props.theme.swiperPaginationButtonSelected};
+    }
+`
+
 export const ImgRoom = styled.img`
     display: block;
     width: 100%;
