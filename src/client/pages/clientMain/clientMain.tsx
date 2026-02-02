@@ -77,8 +77,7 @@ export const ClientMain = () => {
     })
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
-    const [showSliderBookings, setShowSliderBookings] = useState<boolean>(false)
-    const [clientSelected, setClientSelected] = useState<ClientInterfaceId>()
+    const [sliderClientSelected, setSliderClientSelected] = useState<ClientInterfaceId | null>(null)
     const {
         currentPageItems,
         currentPage,
@@ -261,7 +260,7 @@ export const ClientMain = () => {
 
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
-            {showSliderBookings
+            {sliderClientSelected
                 ? (<>
                     <CtnSwiperCustom margin="0 0 3rem">
                         <Swiper
@@ -275,13 +274,13 @@ export const ClientMain = () => {
                             }}
                             loop={false}
                         >
-                            {clientSelected?.booking_id_list.map(bookingId => {
+                            {sliderClientSelected?.booking_id_list.map(bookingId => {
                                 const booking = bookingAll.find(b => b._id === bookingId)
                                 if (!booking) return null
                                 return (
                                     <SwiperSlide key={booking._id}>
                                         <ArticleReview
-                                            title={clientSelected.full_name}
+                                            title={sliderClientSelected.full_name}
                                             firstSubtitle={`Room numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
                                             secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
                                             content={booking.special_request}
@@ -380,11 +379,12 @@ export const ClientMain = () => {
                                 <CtnCell>
                                     {bookingAll.some(booking => clientData.booking_id_list.includes(booking._id))
                                         ? <ButtonView onClick={() => {
-                                            setShowSliderBookings(!showSliderBookings)
-                                            setClientSelected(clientData)
+                                            clientData._id === sliderClientSelected?._id && sliderClientSelected
+                                                ? setSliderClientSelected(null)
+                                                : setSliderClientSelected(clientData)
                                         }}
                                         >
-                                            {clientData._id === clientSelected?._id && showSliderBookings ? 'Hide slider' : 'View slider'}
+                                            {clientData._id === sliderClientSelected?._id && sliderClientSelected ? 'Hide slider' : 'View slider'}
                                         </ButtonView>
                                         : <TextCell>No bookings registered</TextCell>
                                     }
