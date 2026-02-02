@@ -14,6 +14,7 @@ import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
 import { BookingStatus } from "../../../booking/enums/bookingStatus"
+import { BookingStatusTotals } from "../../../booking/interfaces/bookingStatusTotals"
 import { ClientInterfaceId } from '../../interfaces/clientInterface'
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
@@ -104,6 +105,36 @@ export const ClientMain = () => {
         else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
 
+    const getBookingStatusTotals = (clientBookingIdList: string[]): BookingStatusTotals => {
+        const allBookingData = bookingAll.filter(booking =>
+            clientBookingIdList.includes(booking._id)
+        )
+        let totalCheckIn = 0
+        let totalInProgress = 0
+        let totalCheckOut = 0
+        allBookingData.forEach(booking => {
+            const bookingStatus = checkBookingStatus(
+                booking.check_in_date,
+                booking.check_out_date
+            )
+            switch (bookingStatus) {
+                case BookingStatus.checkIn:
+                    totalCheckIn++
+                    break
+                case BookingStatus.inProgress:
+                    totalInProgress++
+                    break
+                case BookingStatus.checkOut:
+                    totalCheckOut++
+                    break
+            }
+        })
+        return {
+            totalCheckIn,
+            totalInProgress,
+            totalCheckOut
+        }
+    }
     const filterByIdOrNameOrEmail = (clients: ClientInterfaceId[], searchText: string): ClientInterfaceId[] => {
         const normalizedText = searchText.toLowerCase()
         return clients.filter(client =>
@@ -190,45 +221,6 @@ export const ClientMain = () => {
             customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
         }
     }
-
-    // !!! OPTIMIZAR:
-    type BookingStatusTotals = {
-        checkIn: number
-        inProgress: number
-        checkOut: number
-    }
-    const getBookingStatusTotals = (clientBookingsByRoom: any[], bookingAll: BookingInterfaceId[]): BookingStatusTotals => {
-        return clientBookingsByRoom.reduce(
-            (acc, booking) => {
-                const bookingData = bookingAll.find(
-                    b => b._id === booking.bookingId
-                )
-                if (!bookingData) return acc
-
-                const status = checkBookingStatus(
-                    bookingData.check_in_date,
-                    bookingData.check_out_date
-                )
-
-                switch (status) {
-                    case BookingStatus.checkIn:
-                        acc.checkIn++
-                        break
-                    case BookingStatus.inProgress:
-                        acc.inProgress++
-                        break
-                    case BookingStatus.checkOut:
-                        acc.checkOut++
-                        break
-                }
-
-                return acc
-            },
-            { checkIn: 0, inProgress: 0, checkOut: 0 }
-        )
-    }
-
-
 
 
     return (<>
@@ -341,8 +333,7 @@ export const ClientMain = () => {
                     })}
                     <TitleColumn>{''}</TitleColumn>
                     {currentPageItems.map(clientData => {
-                        const clientBookingsByRoom = getClientBookingsByRoom(clientData, bookingAll, roomAll)
-                        const bookingStatusTotals = getBookingStatusTotals(clientBookingsByRoom, bookingAll)
+                        const bookingStatusTotals = getBookingStatusTotals(clientData.booking_id_list)
                         return (
                             <React.Fragment key={clientData._id}>
                                 <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
@@ -360,19 +351,19 @@ export const ClientMain = () => {
 
                                 <CtnCell>
                                     <TotalBookingStatus status={BookingStatus.checkIn}>
-                                        {bookingStatusTotals.checkIn}
+                                        {bookingStatusTotals.totalCheckIn}
                                     </TotalBookingStatus>
                                 </CtnCell>
 
                                 <CtnCell>
                                     <TotalBookingStatus status={BookingStatus.inProgress}>
-                                        {bookingStatusTotals.inProgress}
+                                        {bookingStatusTotals.totalInProgress}
                                     </TotalBookingStatus>
                                 </CtnCell>
 
                                 <CtnCell>
                                     <TotalBookingStatus status={BookingStatus.checkOut}>
-                                        {bookingStatusTotals.checkOut}
+                                        {bookingStatusTotals.totalCheckOut}
                                     </TotalBookingStatus>
                                 </CtnCell>
 
