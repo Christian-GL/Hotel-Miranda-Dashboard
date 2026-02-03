@@ -62,8 +62,9 @@ export const CtnCell = styled.div<{ justifycontent?: string; alignitems?: string
     color: ${props => props.theme.textTable};
 `
 
-export const TextCell = styled.p`
+export const TextCell = styled.p<{ fontSize?: string }>`
     font-family: ${globalConstStyles.fontPoppins};
+    font-size: ${props => props.fontSize || 'auto'};
     font-weight: 500;
 `
 

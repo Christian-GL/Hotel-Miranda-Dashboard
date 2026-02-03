@@ -5,6 +5,7 @@ export enum RoomNameColumn {
     amenities = 'Amenities',
     price = 'Price',
     discount = 'Discount',
-    active = 'Active',
+    status = 'Status',
+    isActive = 'Is active',
     isArchived = 'Is archived'
 }

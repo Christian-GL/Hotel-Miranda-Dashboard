@@ -31,7 +31,7 @@ import { applyDiscount } from "../../../common/utils/tableUtils"
 import { usePagination } from "../../../common/hooks/usePagination"
 import {
     EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, TextStatusAvailableUsers,
-    ImgTableRoom, CtnCell, TextStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
+    ImgTableRoom, CtnCell, TextCell, TextStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "./../../features/roomSlice"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
@@ -58,7 +58,6 @@ export const RoomMain = () => {
     const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.active)
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
     const [filteredRooms, setFilteredRooms] = useState<RoomInterfaceId[]>([])
-    const [selectedButton, setSelectedButton] = useState<RoomButtonType>(RoomButtonType.all)
     const sortableColumns: RoomNameColumn[] = [
         RoomNameColumn.number,
         RoomNameColumn.type,
@@ -88,7 +87,7 @@ export const RoomMain = () => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { displayRooms() }
         else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
-    }, [roomAllLoading, roomAll, inputText, selectedButton, activeFilterButton, archivedFilterButton, arrowStates])
+    }, [roomAllLoading, roomAll, inputText, activeFilterButton, archivedFilterButton, arrowStates])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
         else if (bookingAllLoading === ApiStatus.fulfilled) { }
@@ -209,17 +208,17 @@ export const RoomMain = () => {
             customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
         }
     }
-    const isAvailable = (room: RoomInterfaceId): boolean => {
-        // !!! USAR DATOS ASOCIADOS DE LAS BOOKINGS
-        // return !Array.isArray(room.booking_id_list) ||
-        //     room.booking_id_list.length === 0 ||
-        //     !room.booking_id_list.some(booking => {
-        //         const actualDate = new Date()
-        //         const checkIn = new Date(booking.check_in_date)
-        //         const checkOut = new Date(booking.check_out_date)
-        //         return actualDate >= checkIn && actualDate <= checkOut
-        //     })
-        return false
+    const isAvailableNow = (room: RoomInterfaceId): boolean => {
+        const now = new Date()
+        const relevantBookings = bookingAll.filter(booking =>
+            booking.room_id_list?.includes(room._id)
+        )
+        const isAvailable = !relevantBookings.some(booking => {
+            const checkIn = new Date(booking.check_in_date)
+            const checkOut = new Date(booking.check_out_date)
+            return checkIn <= now && now < checkOut
+        })
+        return isAvailable
     }
 
 
@@ -298,16 +297,18 @@ export const RoomMain = () => {
                             </CtnCell>
 
                             <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
-                                <div>Nº {roomData.number}</div>
-                                <div>#<b>{roomData._id}</b></div>
+                                <TextCell fontSize="1.5em">Nº {roomData.number}</TextCell>
+                                <TextCell>#<b>{roomData._id}</b></TextCell>
                             </CtnCell>
 
                             <CtnCell>
                                 {roomData.type}
                             </CtnCell>
 
-                            <CtnCell>
-                                <p>{roomData.amenities.join(', ')}</p>
+                            <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
+                                {roomData.amenities.map(amenity => (
+                                    <TextCell>• {amenity}</TextCell>
+                                ))}
                             </CtnCell>
 
                             <CtnCell>
@@ -322,10 +323,16 @@ export const RoomMain = () => {
                             </CtnCell>
 
                             <CtnCell>
-                                {
-                                    isAvailable(roomData) ?
-                                        <TextStatusRoomList status='Available'>Available</TextStatusRoomList> :
-                                        <TextStatusRoomList status='Booking'>Booking</TextStatusRoomList>
+                                {isAvailableNow(roomData)
+                                    ? <TextStatusRoomList status='Available'>Available</TextStatusRoomList>
+                                    : <TextStatusRoomList status='Booking'>Booking</TextStatusRoomList>
+                                }
+                            </CtnCell>
+
+                            <CtnCell>
+                                {roomData.isActive === OptionYesNo.yes
+                                    ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
+                                    : <TextStatusAvailableUsers active={false}>Not active</TextStatusAvailableUsers>
                                 }
                             </CtnCell>
 
