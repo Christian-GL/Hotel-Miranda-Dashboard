@@ -45,10 +45,6 @@ export const TitleColumn = styled.th<{ isCursorPointer?: boolean }>`
     color: ${props => props.theme.textTable};
 `
 
-export const CtnNameTable = styled.div`
-    color: ${props => props.theme.nameTable};
-`
-
 export const CtnCell = styled.div<{ justifycontent?: string; alignitems?: string; flexdirection?: string }>`
     display: flex;
     justify-content: ${props => props.justifycontent || 'flex-start'};
@@ -62,10 +58,21 @@ export const CtnCell = styled.div<{ justifycontent?: string; alignitems?: string
     color: ${props => props.theme.textTable};
 `
 
-export const TextCell = styled.p<{ fontSize?: string }>`
+export const TextCell = styled.p<{ fontSize?: string, minWidth?: string, isName?: boolean, isTextBreakable?: boolean }>`
+    min-width: ${props => props.minWidth || 'auto'};;
     font-family: ${globalConstStyles.fontPoppins};
     font-size: ${props => props.fontSize || 'auto'};
-    font-weight: 500;
+    font-weight: ${props => props.isName ? '700' : '500'};
+    white-space: ${props => props.isTextBreakable ? 'normal' : 'nowrap'};
+    color: ${props => props.isName ? props.theme.nameTable : props.theme.textTable};
+`
+
+export const TextId = styled.p`
+    min-width: 4rem;
+    font-family: ${globalConstStyles.fontPoppins};
+    font-weight: 700;
+    overflow-wrap: break-word;
+    word-break: break-word;
 `
 
 export const TriangleUp = styled(GoTriangleUp)`
@@ -91,8 +98,8 @@ export const TriangleDown = styled(GoTriangleDown)`
 
 export const ImgTableRoom = styled.img`
     width: 100%;
-    min-width: 15rem;
-    max-width: 20rem;
+    min-width: 12.5rem;
+    max-width: 17.5rem;
     border-radius: 5%;
     aspect-ratio: 1.5 / 1;
 `

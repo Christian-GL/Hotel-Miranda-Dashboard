@@ -35,8 +35,8 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    EmptyTableMessage, Table, TitleColumn, TriangleUp, CtnNameTable, TriangleRight, TriangleDown, CtnCell, TextStatusAvailableUsers,
-    TextCell, TotalBookingStatus, IconPhone, ButtonView, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption,
+    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, CtnCell, TextStatusAvailableUsers,
+    TextCell, TextId, TotalBookingStatus, IconPhone, ButtonView, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption,
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../features/clientSlice"
@@ -336,11 +336,9 @@ export const ClientMain = () => {
                         return (
                             <React.Fragment key={clientData._id}>
                                 <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
-                                    <CtnNameTable>
-                                        <b>{clientData.full_name}</b>
-                                    </CtnNameTable>
-                                    <div>{clientData.email}</div>
-                                    <div>#<b>{clientData._id}</b></div>
+                                    <TextCell isName={true}>{clientData.full_name}</TextCell>
+                                    <TextCell>{clientData.email}</TextCell>
+                                    <TextId>#{clientData._id}</TextId>
                                 </CtnCell>
 
                                 <CtnCell>

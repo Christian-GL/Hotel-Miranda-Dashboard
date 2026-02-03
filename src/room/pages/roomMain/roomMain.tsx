@@ -31,7 +31,7 @@ import { applyDiscount } from "../../../common/utils/tableUtils"
 import { usePagination } from "../../../common/hooks/usePagination"
 import {
     EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, TextStatusAvailableUsers,
-    ImgTableRoom, CtnCell, TextCell, TextStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
+    ImgTableRoom, CtnCell, TextCell, TextId, TextStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "./../../features/roomSlice"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
@@ -61,14 +61,15 @@ export const RoomMain = () => {
     const sortableColumns: RoomNameColumn[] = [
         RoomNameColumn.number,
         RoomNameColumn.type,
-        RoomNameColumn.price,
-        RoomNameColumn.discount
+        RoomNameColumn.originalPrice,
+        RoomNameColumn.discount,
+        RoomNameColumn.finalPrice
     ]
     type ArrowStates = Partial<Record<RoomNameColumn, ArrowType>>
     const [arrowStates, setArrowStates] = useState<ArrowStates>({
         [RoomNameColumn.number]: ArrowType.down,
         [RoomNameColumn.type]: ArrowType.right,
-        [RoomNameColumn.price]: ArrowType.right,
+        [RoomNameColumn.originalPrice]: ArrowType.right,
         [RoomNameColumn.discount]: ArrowType.right
     })
     const [showPopup, setShowPopup] = useState<boolean>(false)
@@ -160,13 +161,17 @@ export const RoomMain = () => {
                     valueA = a.type.toLowerCase()
                     valueB = b.type.toLowerCase()
                     break
-                case RoomNameColumn.price:
+                case RoomNameColumn.originalPrice:
                     valueA = a.price
                     valueB = b.price
                     break
                 case RoomNameColumn.discount:
                     valueA = a.discount
                     valueB = b.discount
+                    break
+                case RoomNameColumn.finalPrice:
+                    valueA = applyDiscount(a.price, a.discount)
+                    valueB = applyDiscount(b.price, b.discount)
                     break
                 default:
                     return 0
@@ -290,79 +295,86 @@ export const RoomMain = () => {
                         }
                     })}
                     <TitleColumn>{''}</TitleColumn>
-                    {currentPageItems.map(roomData => (
-                        <React.Fragment key={roomData._id}>
-                            <CtnCell>
-                                <ImgTableRoom src={`${roomData.photos[0]}`} />
-                            </CtnCell>
+                    {currentPageItems.map(roomData => {
+                        const priceWithDiscount = applyDiscount(roomData.price, roomData.discount)
+                        return (
+                            <React.Fragment key={roomData._id}>
+                                <CtnCell>
+                                    <ImgTableRoom src={`${roomData.photos[0]}`} />
+                                </CtnCell>
 
-                            <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
-                                <TextCell fontSize="1.5em">Nº {roomData.number}</TextCell>
-                                <TextCell>#<b>{roomData._id}</b></TextCell>
-                            </CtnCell>
+                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
+                                    <TextCell fontSize="1.5em">Nº {roomData.number}</TextCell>
+                                    <TextId>#{roomData._id}</TextId>
+                                </CtnCell>
 
-                            <CtnCell>
-                                {roomData.type}
-                            </CtnCell>
+                                <CtnCell>
+                                    <TextCell>{roomData.type}</TextCell>
+                                </CtnCell>
 
-                            <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
-                                {roomData.amenities.map(amenity => (
-                                    <TextCell>• {amenity}</TextCell>
-                                ))}
-                            </CtnCell>
+                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
+                                    {roomData.amenities.map(amenity => (
+                                        <TextCell>• {amenity}</TextCell>
+                                    ))}
+                                </CtnCell>
 
-                            <CtnCell>
-                                <b>${roomData.price}</b>&nbsp;/night
-                            </CtnCell>
+                                <CtnCell>
+                                    <TextCell><b>${roomData.price}</b></TextCell>
+                                </CtnCell>
 
-                            <CtnCell>
-                                {roomData.discount === 0 ?
-                                    <>No Discount</> :
-                                    <><b>${applyDiscount(roomData.price, roomData.discount)}</b>&nbsp;/night&nbsp;(-{roomData.discount}%)</>
-                                }
-                            </CtnCell>
+                                <CtnCell>
+                                    {roomData.discount === 0
+                                        ? <TextCell>No Discount</TextCell>
+                                        : <TextCell><b>${roomData.price - priceWithDiscount}</b> ({roomData.discount}%)</TextCell>
+                                    }
+                                </CtnCell>
 
-                            <CtnCell>
-                                {isAvailableNow(roomData)
-                                    ? <TextStatusRoomList status='Available'>Available</TextStatusRoomList>
-                                    : <TextStatusRoomList status='Booking'>Booking</TextStatusRoomList>
-                                }
-                            </CtnCell>
+                                <CtnCell>
+                                    <TextCell><b>${priceWithDiscount}</b></TextCell>
+                                </CtnCell>
 
-                            <CtnCell>
-                                {roomData.isActive === OptionYesNo.yes
-                                    ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
-                                    : <TextStatusAvailableUsers active={false}>Not active</TextStatusAvailableUsers>
-                                }
-                            </CtnCell>
+                                <CtnCell>
+                                    {isAvailableNow(roomData)
+                                        ? <TextStatusRoomList status='Available'>Available</TextStatusRoomList>
+                                        : <TextStatusRoomList status='Booking'>Booking</TextStatusRoomList>
+                                    }
+                                </CtnCell>
 
-                            <CtnCell>
-                                {roomData.isArchived === OptionYesNo.no
-                                    ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
-                                    : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
-                                }
-                            </CtnCell>
+                                <CtnCell>
+                                    {roomData.isActive === OptionYesNo.yes
+                                        ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
+                                        : <TextStatusAvailableUsers active={false}>Not active</TextStatusAvailableUsers>
+                                    }
+                                </CtnCell>
 
-                            <CtnCell justifycontent="flex-end">
-                                <CtnMenuOptions>
-                                    <IconOptions onClick={() => { displayMenuOptions(roomData._id) }} />
-                                    <CtnOptions display={`${tableOptionsDisplayed === roomData._id ? 'flex' : 'none'}`} isInTable={true} >
-                                        <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
-                                        <ButtonOption onClick={() => toggleArchivedRoom(roomData)}>
-                                            {roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
-                                        </ButtonOption>
-                                        <ButtonOption
-                                            onClick={getRole() === Role.admin
-                                                ? () => { deleteRoomById(roomData._id) }
-                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                                            disabledClick={getRole() !== Role.admin}
-                                        >Delete
-                                        </ButtonOption>
-                                    </CtnOptions>
-                                </CtnMenuOptions>
-                            </CtnCell>
-                        </React.Fragment>
-                    ))}
+                                <CtnCell>
+                                    {roomData.isArchived === OptionYesNo.no
+                                        ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
+                                        : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
+                                    }
+                                </CtnCell>
+
+                                <CtnCell justifycontent="flex-end">
+                                    <CtnMenuOptions>
+                                        <IconOptions onClick={() => { displayMenuOptions(roomData._id) }} />
+                                        <CtnOptions display={`${tableOptionsDisplayed === roomData._id ? 'flex' : 'none'}`} isInTable={true} >
+                                            <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
+                                            <ButtonOption onClick={() => toggleArchivedRoom(roomData)}>
+                                                {roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                            </ButtonOption>
+                                            <ButtonOption
+                                                onClick={getRole() === Role.admin
+                                                    ? () => { deleteRoomById(roomData._id) }
+                                                    : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                                disabledClick={getRole() !== Role.admin}
+                                            >Delete
+                                            </ButtonOption>
+                                        </CtnOptions>
+                                    </CtnMenuOptions>
+                                </CtnCell>
+                            </React.Fragment>
+                        )
+                    })}
                 </Table>
             }
 

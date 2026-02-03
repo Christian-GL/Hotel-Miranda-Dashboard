@@ -3,8 +3,9 @@ export enum RoomNameColumn {
     number = 'Number',
     type = 'Type',
     amenities = 'Amenities',
-    price = 'Price',
+    originalPrice = 'Original price',
     discount = 'Discount',
+    finalPrice = 'Final price',
     status = 'Status',
     isActive = 'Is active',
     isArchived = 'Is archived'

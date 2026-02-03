@@ -28,8 +28,9 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, CtnNameTable, CtnImgTable, ImgTableUser, CtnCell,
-    TextStatusAvailableUsers, IconPhone, ButtonView, TotalBookingStatus, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
+    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, ImgTableUser, CtnCell, TextId,
+    TextStatusAvailableUsers, IconPhone, ButtonView, TotalBookingStatus, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption,
+    TextCell
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "./../../features/bookingSlice"
@@ -291,23 +292,24 @@ export const BookingMain = () => {
                     {currentPageItems.map(bookingData => (
                         <React.Fragment key={bookingData._id}>
                             <CtnCell>
-                                #<b>{bookingData._id}</b>
+                                <TextId>#{bookingData._id}</TextId>
                             </CtnCell>
 
                             <CtnCell>
                                 <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View details</ButtonView>
                             </CtnCell>
 
+                            {/* !!! DEVOLVER DIA Y HORA POR SEPARADO */}
                             <CtnCell flexdirection='column' alignitems='left' justifycontent='center' >
-                                {formatDateForPrint(bookingData.order_date)}
+                                <TextCell>{formatDateForPrint(bookingData.order_date)}</TextCell>
                             </CtnCell>
 
                             <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
-                                {formatDateForPrint(bookingData.check_in_date)}
+                                <TextCell>{formatDateForPrint(bookingData.check_in_date)}</TextCell>
                             </CtnCell>
 
                             <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
-                                {formatDateForPrint(bookingData.check_out_date)}
+                                <TextCell>{formatDateForPrint(bookingData.check_out_date)}</TextCell>
                             </CtnCell>
 
                             <CtnCell>
@@ -322,40 +324,39 @@ export const BookingMain = () => {
                             </CtnCell>
 
                             <CtnCell flexdirection="column" alignitems="left" justifycontent="center"   >
-                                {
-                                    (() => {
-                                        const rooms = bookingData.room_id_list
-                                            .map(roomId => roomAll.find(room => room._id === roomId)?.number)
-                                            .filter((number): number is string => Boolean(number))
+                                {(() => {
+                                    const rooms = bookingData.room_id_list
+                                        .map(roomId => roomAll.find(room => room._id === roomId)?.number)
+                                        .filter((number): number is string => Boolean(number))
 
-                                        if (rooms.length > 0) {
-                                            return rooms.map((roomNumber, i) => (
-                                                <div key={i}>Room Nº {roomNumber}</div>
-                                            ))
-                                        }
-                                        else {
-                                            return <div>No rooms assigned</div>
-                                        }
-                                    })()
+                                    if (rooms.length > 0) {
+                                        return rooms.map((roomNumber, i) => (
+                                            <TextCell key={i}>Room Nº {roomNumber}</TextCell>
+                                        ))
+                                    }
+                                    else {
+                                        return <TextCell>No rooms assigned</TextCell>
+                                    }
+                                })()
                                 }
                             </CtnCell>
 
+                            {/* !!! OPTIMIZAR: */}
                             <CtnCell flexdirection="column" alignitems="left" justifycontent="center"  >
-                                {
-                                    (() => {
-                                        const client = clientAll.find(client => client._id === bookingData.client_id)
-                                        if (client) {
-                                            return (<>
-                                                <div>#<b>{client._id}</b></div>
-                                                <div><CtnNameTable><b>{client.full_name}</b></CtnNameTable></div>
-                                                <div>{client.email}</div>
-                                                <div><IconPhone width="1.25rem" />{client.phone_number}</div>
-                                            </>)
-                                        }
-                                        else {
-                                            return <div>No client data</div>
-                                        }
-                                    })()
+                                {(() => {
+                                    const client = clientAll.find(client => client._id === bookingData.client_id)
+                                    if (client) {
+                                        return (<>
+                                            <TextCell>#<b>{client._id}</b></TextCell>
+                                            <TextCell isName={true}>{client.full_name}</TextCell>
+                                            <TextCell>{client.email}</TextCell>
+                                            <TextCell><IconPhone width="1.25rem" />{client.phone_number}</TextCell>
+                                        </>)
+                                    }
+                                    else {
+                                        return <TextCell>No client data</TextCell>
+                                    }
+                                })()
                                 }
                             </CtnCell>
 

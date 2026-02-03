@@ -29,7 +29,7 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    EmptyTableMessage, Table, TitleColumn, CtnNameTable, ImgTableUser, CtnCell,
+    EmptyTableMessage, Table, TitleColumn, ImgTableUser, CtnCell, TextCell, TextId,
     TextStatusAvailableUsers, IconPhone, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
@@ -275,32 +275,30 @@ export const UserMain = () => {
                             </CtnCell>
 
                             <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
-                                <CtnNameTable>
-                                    <b>{userData.full_name}</b>
-                                </CtnNameTable>
-                                <div>{userData.email}</div>
-                                <div>#<b>{userData._id}</b></div>
+                                <TextCell isName={true}>{userData.full_name}</TextCell>
+                                <TextCell>{userData.email}</TextCell>
+                                <TextId>#{userData._id}</TextId>
                             </CtnCell>
 
                             <CtnCell>
                                 <IconPhone />
-                                {userData.phone_number}
+                                <TextCell>{userData.phone_number}</TextCell>
                             </CtnCell>
 
                             <CtnCell>
-                                {capitalizeFirstLetter(userData.role)}
+                                <TextCell>{capitalizeFirstLetter(userData.role)}</TextCell>
                             </CtnCell>
 
                             <CtnCell>
-                                {userData.job_position}
+                                <TextCell isTextBreakable={true} minWidth="15rem">{userData.job_position}</TextCell>
                             </CtnCell>
 
                             <CtnCell>
-                                {formatDateForPrint(userData.start_date)}
+                                <TextCell>{formatDateForPrint(userData.start_date)}</TextCell>
                             </CtnCell>
 
                             <CtnCell>
-                                {formatDateForPrint(userData.end_date)}
+                                <TextCell>{formatDateForPrint(userData.end_date)}</TextCell>
                             </CtnCell>
 
                             <CtnCell>
