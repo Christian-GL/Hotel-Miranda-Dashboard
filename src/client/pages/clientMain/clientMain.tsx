@@ -258,7 +258,6 @@ export const ClientMain = () => {
                         <Swiper
                             modules={[Navigation, Pagination]}
                             spaceBetween={0}
-                            // slidesPerView={clientSelected?.booking_id_list.length === 1 ? 1 : clientSelected?.booking_id_list.length === 2 ? 2 : 3}
                             slidesPerView={3}
                             navigation={{
                                 prevEl: '.swiper-button-prev-custom',

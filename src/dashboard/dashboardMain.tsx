@@ -110,7 +110,7 @@ export const DashboardMain = () => {
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             <styles.SectionSpecialRequest>
-                <styles.TitleSectionReviewsH5>Latest special requests by client</styles.TitleSectionReviewsH5>
+                <styles.TitleSectionReviewsH5>Latest special bookings by client</styles.TitleSectionReviewsH5>
                 {
                     clientAll.length > 0
                         ? (<>
@@ -118,7 +118,6 @@ export const DashboardMain = () => {
                                 <Swiper
                                     modules={[Navigation, Pagination]}
                                     spaceBetween={0}
-                                    // slidesPerView={clientAll.length >= 3 ? 3 : clientAll.length}
                                     slidesPerView={3}
                                     navigation={{
                                         prevEl: '.swiper-button-prev-custom',

@@ -203,7 +203,7 @@ export const Layout = () => {
                         display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
                         <sidebarStyles.IconClient />
                         <sidebarStyles.PNavOptionText display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
-                            Client
+                            Clients
                         </sidebarStyles.PNavOptionText>
                     </sidebarStyles.DivCtnNavOption>
                     <sidebarStyles.DivCtnNavOption

@@ -11,9 +11,12 @@ import { useLoginOptionsContext } from "./features/loginProvider"
 
 export const SignIn = () => {
 
+    const adminDefaultValueTesting = 'admindefault@gmail.com'   // Valor por defecto para logeo rápido en testeos
+    const userDefaultValueTesting = 'userdefault@gmail.com'     // Valor por defecto para logeo rápido en testeos
+    const passwordDefaultValueTesting = 'Abcd1234.'             // Valor por defecto para logeo rápido en testeos.
     const navigate = useNavigate()
-    const [email, setEmail] = useState<string>('admindefault@gmail.com')            // Valor por defecto para logeo rápido en testeos
-    const [password, setPassword] = useState<string>('Abcd1234.')                   // Valor por defecto para logeo rápido en testeos
+    const [email, setEmail] = useState<string>(adminDefaultValueTesting)
+    const [password, setPassword] = useState<string>(passwordDefaultValueTesting)
     const { tryLogin } = useLoginOptionsContext()
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -35,14 +38,14 @@ export const SignIn = () => {
             <signInStyles.Form onSubmit={handleSubmit}>
                 <signInStyles.LabelText>Email
                     <signInStyles.InputText
-                        placeholder="email@gmail.com"
+                        placeholder={`${adminDefaultValueTesting} // ${userDefaultValueTesting}`}
                         onChange={(e) => setEmail(e.currentTarget.value)}
                         data-cy="email-input"
                     />
                 </signInStyles.LabelText>
                 <signInStyles.LabelText>Password
                     <signInStyles.InputText type="password"
-                        placeholder="Password"
+                        placeholder={passwordDefaultValueTesting}
                         onChange={(e) => setPassword(e.currentTarget.value)}
                         data-cy="password-input"
                     />
