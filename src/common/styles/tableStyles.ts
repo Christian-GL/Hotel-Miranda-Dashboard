@@ -45,6 +45,10 @@ export const TitleColumn = styled.th<{ isCursorPointer?: boolean }>`
     color: ${props => props.theme.textTable};
 `
 
+export const CtnNameTable = styled.div`
+    color: ${props => props.theme.nameTable};
+`
+
 export const CtnCell = styled.div<{ justifycontent?: string; alignitems?: string; flexdirection?: string }>`
     display: flex;
     justify-content: ${props => props.justifycontent || 'flex-start'};
@@ -62,19 +66,6 @@ export const TextCell = styled.p`
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 500;
 `
-
-// export const NumberResult = styled.span`
-//     display: inline-flex;
-//     align-items: center;
-//     justify-content: center;
-//     width: 2rem;
-//     height: 2rem;
-//     font-family: ${globalConstStyles.fontPoppins};
-//     font-weight: 500;
-//     border-radius: 50%;
-//     color: ${props => props.theme.iconTable};
-//     background-color: ${props => props.theme.iconBackgroundTable};
-// `
 
 export const TriangleUp = styled(GoTriangleUp)`
     width: 2rem;
@@ -97,31 +88,18 @@ export const TriangleDown = styled(GoTriangleDown)`
     background-color: ${props => props.theme.iconBackgroundTable};
 `
 
-export const CtnNameTable = styled.div`
-    color: ${props => props.theme.nameTable};
-`
-
-export const CtnImgTable = styled.div`
-    display: flex;
-    align-items: center;
-    padding: 1em;
-    text-align: right;
-    border-bottom: 1px solid ${props => props.theme.borderTable};
-`
-
 export const ImgTableRoom = styled.img`
     width: 100%;
-    height: auto;
-    min-width: 10rem;
-    min-height: 7.5rem;
-    max-width: 20rem;  
-    max-height: 15rem;
+    min-width: 15rem;
+    max-width: 20rem;
+    border-radius: 5%;
+    aspect-ratio: 1.5 / 1;
 `
 
 export const ImgTableUser = styled.img`
     width: 100%;
     min-width: 4rem;
-    max-width: 6rem;
+    max-width: 8rem;
     aspect-ratio: 1 / 1;
 `
 

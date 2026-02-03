@@ -30,7 +30,7 @@ import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCrea
 import { applyDiscount } from "../../../common/utils/tableUtils"
 import { usePagination } from "../../../common/hooks/usePagination"
 import {
-    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, CtnImgTable, TextStatusAvailableUsers,
+    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, TextStatusAvailableUsers,
     ImgTableRoom, CtnCell, TextStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "./../../features/roomSlice"
@@ -293,9 +293,9 @@ export const RoomMain = () => {
                     <TitleColumn>{''}</TitleColumn>
                     {currentPageItems.map(roomData => (
                         <React.Fragment key={roomData._id}>
-                            <CtnImgTable>
+                            <CtnCell>
                                 <ImgTableRoom src={`${roomData.photos[0]}`} />
-                            </CtnImgTable>
+                            </CtnCell>
 
                             <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
                                 <div>Nº {roomData.number}</div>

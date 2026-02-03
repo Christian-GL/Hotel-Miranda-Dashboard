@@ -29,7 +29,7 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    EmptyTableMessage, Table, TitleColumn, CtnNameTable, CtnImgTable, ImgTableUser, CtnCell,
+    EmptyTableMessage, Table, TitleColumn, CtnNameTable, ImgTableUser, CtnCell,
     TextStatusAvailableUsers, IconPhone, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
@@ -270,9 +270,9 @@ export const UserMain = () => {
                     <TitleColumn>{''}</TitleColumn>
                     {currentPageItems.map(userData => (
                         <React.Fragment key={userData._id}>
-                            <CtnImgTable>
+                            <CtnCell>
                                 <ImgTableUser src={`${userData.photo}`} />
-                            </CtnImgTable>
+                            </CtnCell>
 
                             <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
                                 <CtnNameTable>
