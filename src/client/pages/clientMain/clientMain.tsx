@@ -29,7 +29,7 @@ import { ClientNameColumn } from "../../enums/ClientNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
 import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
 import { OptionYesNo } from "common/enums/optionYesNo"
-import { ArticleReview } from "../../../common/components/articleReview/articleReview"
+import { BookingArticle } from "../../../common/components/bookingArticle/bookingArticle"
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
@@ -270,11 +270,13 @@ export const ClientMain = () => {
                                 if (!booking) return null
                                 return (
                                     <SwiperSlide key={booking._id}>
-                                        <ArticleReview
-                                            title={sliderClientSelected.full_name}
-                                            firstSubtitle={`Room numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
-                                            secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
-                                            content={booking.special_request}
+                                        <BookingArticle
+                                            bookingStatus={checkBookingStatus(booking.check_in_date, booking.check_out_date)}
+                                            nameClient={sliderClientSelected.full_name}
+                                            roomNumbersText={`Room numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
+                                            orderDateText={`Order date: ${formatDateForPrint(booking.order_date)}`}
+                                            specialRequest={booking.special_request}
+                                            navigationRoute={`../bookings/booking-details/${booking._id}`}
                                         />
                                     </SwiperSlide>
                                 )
@@ -287,7 +289,7 @@ export const ClientMain = () => {
                                     if (!booking) return null;
                                     return (
                                         <SwiperSlide key={`${booking._id}-${index}`}>
-                                            <ArticleReview
+                                            <BookingArticle
                                                 title={clientSelected.full_name}
                                                 firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId =>
                                                     roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')
