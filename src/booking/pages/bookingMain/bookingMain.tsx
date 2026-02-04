@@ -28,7 +28,7 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, ImgTableUser, CtnCell, TextId,
+    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, ImgUser, CtnCell, TextId,
     TextStatusAvailableUsers, IconPhone, ButtonView, TotalBookingStatus, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption,
     TextCell
 } from "../../../common/styles/tableStyles"

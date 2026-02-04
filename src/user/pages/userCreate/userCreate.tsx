@@ -14,7 +14,6 @@ import { JobPosition } from "../../enums/jobPosition"
 import { Role } from "../../enums/role"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
 import { UserInterface } from "../../interfaces/userInterface"
-import userDefault from '../../../assets/img/userDefault.png'
 import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
@@ -138,11 +137,7 @@ export const UserCreate = () => {
                     <CtnEntry>
                         <Text>Photo</Text>
                         <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
-                        <ImgUser src={
-                            newUser.photo ?
-                                newUser.photo :
-                                userDefault
-                        } />
+                        <ImgUser src={newUser.photo ? newUser.photo : ''} />
                     </CtnEntry>
 
                     <CtnEntry>

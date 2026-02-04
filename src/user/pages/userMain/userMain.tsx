@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
+import userDefaultImg from '../../../assets/img/userDefault.png'
 import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { ActiveButtonType } from "../../../common/enums/activeButtonType"
@@ -29,7 +30,7 @@ import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tabl
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    EmptyTableMessage, Table, TitleColumn, ImgTableUser, CtnCell, TextCell, TextId,
+    EmptyTableMessage, Table, TitleColumn, ImgUser, CtnCell, TextCell, TextId,
     TextStatusAvailableUsers, IconPhone, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
@@ -271,7 +272,10 @@ export const UserMain = () => {
                     {currentPageItems.map(userData => (
                         <React.Fragment key={userData._id}>
                             <CtnCell>
-                                <ImgTableUser src={`${userData.photo}`} />
+                                <ImgUser
+                                    src={userData.photo || userDefaultImg}
+                                    onError={(e) => { e.currentTarget.src = userDefaultImg }}
+                                />
                             </CtnCell>
 
                             <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>

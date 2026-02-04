@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
+import roomDefaultImg from '../../../assets/img/roomDefault.jpg'
 import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { ActiveButtonType } from "../../../common/enums/activeButtonType"
@@ -31,7 +32,7 @@ import { applyDiscount } from "../../../common/utils/tableUtils"
 import { usePagination } from "../../../common/hooks/usePagination"
 import {
     EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, TextStatusAvailableUsers,
-    ImgTableRoom, CtnCell, TextCell, TextId, TextStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
+    ImgRoom, CtnCell, TextCell, TextId, TextStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "./../../features/roomSlice"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
@@ -296,11 +297,15 @@ export const RoomMain = () => {
                     })}
                     <TitleColumn>{''}</TitleColumn>
                     {currentPageItems.map(roomData => {
-                        const priceWithDiscount = applyDiscount(roomData.price, roomData.discount)
+                        const priceDiscounted = applyDiscount(roomData.price, roomData.discount)
+                        const discountAmount = roomData.price - priceDiscounted
                         return (
                             <React.Fragment key={roomData._id}>
                                 <CtnCell>
-                                    <ImgTableRoom src={`${roomData.photos[0]}`} />
+                                    <ImgRoom
+                                        src={roomData.photos?.[0] || roomDefaultImg}
+                                        onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                                    />
                                 </CtnCell>
 
                                 <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
@@ -325,12 +330,12 @@ export const RoomMain = () => {
                                 <CtnCell>
                                     {roomData.discount === 0
                                         ? <TextCell>No Discount</TextCell>
-                                        : <TextCell><b>${roomData.price - priceWithDiscount}</b> ({roomData.discount}%)</TextCell>
+                                        : <TextCell><b>${discountAmount.toFixed(2)}</b> ({roomData.discount}%)</TextCell>
                                     }
                                 </CtnCell>
 
                                 <CtnCell>
-                                    <TextCell><b>${priceWithDiscount}</b></TextCell>
+                                    <TextCell><b>${priceDiscounted}</b></TextCell>
                                 </CtnCell>
 
                                 <CtnCell>

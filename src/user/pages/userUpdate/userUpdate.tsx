@@ -162,11 +162,10 @@ export const UserUpdate = () => {
                     <CtnEntry>
                         <Text>Photo</Text>
                         <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
-                        <ImgUser src={
-                            userUpdated.photo
-                                ? userUpdated.photo
-                                : userDefaultImg
-                        } />
+                        <ImgUser
+                            src={userUpdated.photo || userDefaultImg}
+                            onError={(e) => { e.currentTarget.src = userDefaultImg }}
+                        />
                     </CtnEntry>
 
                     <CtnEntry>

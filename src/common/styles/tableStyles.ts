@@ -96,7 +96,7 @@ export const TriangleDown = styled(GoTriangleDown)`
     background-color: ${props => props.theme.iconBackgroundTable};
 `
 
-export const ImgTableRoom = styled.img`
+export const ImgRoom = styled.img`
     width: 100%;
     min-width: 12.5rem;
     max-width: 17.5rem;
@@ -104,10 +104,11 @@ export const ImgTableRoom = styled.img`
     aspect-ratio: 1.5 / 1;
 `
 
-export const ImgTableUser = styled.img`
+export const ImgUser = styled.img`
     width: 100%;
-    min-width: 4rem;
-    max-width: 8rem;
+    min-width: 5rem;
+    max-width: 7.5rem;
+    border-radius: 5%;
     aspect-ratio: 1 / 1;
 `
 

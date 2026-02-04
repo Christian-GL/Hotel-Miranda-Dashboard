@@ -175,27 +175,42 @@ export const RoomUpdate = () => {
                     <CtnEntry>
                         <Text>Photo 1 (Main)</Text>
                         <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(0, "photos")} />
-                        <ImgRoom src={roomUpdated.photos[0] ? roomUpdated.photos[0] : roomDefaultImg} />
+                        <ImgRoom
+                            src={roomUpdated.photos?.[0] || roomDefaultImg}
+                            onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                        />
                     </CtnEntry>
                     <CtnEntry>
                         <Text>Photo 2</Text>
                         <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(1, "photos")} />
-                        <ImgRoom src={roomUpdated.photos[1] ? roomUpdated.photos[1] : roomDefaultImg} />
+                        <ImgRoom
+                            src={roomUpdated.photos?.[1] || roomDefaultImg}
+                            onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                        />
                     </CtnEntry>
                     <CtnEntry>
                         <Text>Photo 3</Text>
                         <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(2, "photos")} />
-                        <ImgRoom src={roomUpdated.photos[2] ? roomUpdated.photos[2] : roomDefaultImg} />
+                        <ImgRoom
+                            src={roomUpdated.photos?.[2] || roomDefaultImg}
+                            onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                        />
                     </CtnEntry>
                     <CtnEntry>
                         <Text>Photo 4</Text>
                         <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(3, "photos")} />
-                        <ImgRoom src={roomUpdated.photos[3] ? roomUpdated.photos[3] : roomDefaultImg} />
+                        <ImgRoom
+                            src={roomUpdated.photos?.[3] || roomDefaultImg}
+                            onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                        />
                     </CtnEntry>
                     <CtnEntry>
                         <Text>Photo 5</Text>
                         <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(4, "photos")} />
-                        <ImgRoom src={roomUpdated.photos[4] ? roomUpdated.photos[4] : roomDefaultImg} />
+                        <ImgRoom
+                            src={roomUpdated.photos?.[4] || roomDefaultImg}
+                            onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                        />
                     </CtnEntry>
 
                     <CtnEntry>
