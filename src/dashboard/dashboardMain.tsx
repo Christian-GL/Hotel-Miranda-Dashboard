@@ -139,21 +139,6 @@ export const DashboardMain = () => {
                                             </SwiperSlide>
                                         )
                                     })}
-                                    {/* !!! PARA PRUEBAS: */}
-                                    {/* {Array.from({ length: 5 }).map((_, index) => {
-                                        const booking = bookingAll[0]
-                                        if (!booking) return null
-                                        return (
-                                            <SwiperSlide key={`${booking._id}-${index}`}>
-                                                <BookingArticle
-                                                    title={clientAll.find(client => client._id === booking.client_id)?.full_name || 'No client name found'}
-                                                    firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
-                                                    secondSubtitle={`${formatDateForPrint(booking.order_date)}`}
-                                                    content={booking.special_request}
-                                                />
-                                            </SwiperSlide>
-                                        )
-                                    })} */}
                                 </Swiper>
                                 <ButtonPrev>◀</ButtonPrev>
                                 <ButtonNext>▶</ButtonNext>

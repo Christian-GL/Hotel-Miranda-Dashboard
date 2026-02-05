@@ -3,6 +3,7 @@ import { styled } from 'styled-components'
 
 
 export const CtnSwiperCustom = styled.div<{ margin?: string }>`
+    z-index: 0;
     position: relative;
     margin: ${props => props.margin || '0'};
 
@@ -38,11 +39,13 @@ const ButtonSwiperCustom = styled.button`
         transform: scale(1.15);
     }
 `
+
 export const ButtonPrev = styled(ButtonSwiperCustom).attrs({
     className: 'swiper-button-prev-custom'
 })`
   left: 1rem;
 `
+
 export const ButtonNext = styled(ButtonSwiperCustom).attrs({
     className: 'swiper-button-next-custom'
 })`

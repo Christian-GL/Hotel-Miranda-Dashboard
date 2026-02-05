@@ -288,25 +288,6 @@ export const ClientMain = () => {
                                     </SwiperSlide>
                                 )
                             })}
-                            {/* !!! PARA PRUEBAS */}
-                            {/* {Array.from({ length: 5 }).map((_, index) => {
-                                    const bookingId = clientSelected?.booking_id_list[0];
-                                    if (!bookingId) return null;
-                                    const booking = bookingAll.find(b => b._id === bookingId);
-                                    if (!booking) return null;
-                                    return (
-                                        <SwiperSlide key={`${booking._id}-${index}`}>
-                                            <BookingArticle
-                                                title={clientSelected.full_name}
-                                                firstSubtitle={`Rooms numbers: ${booking.room_id_list.map(roomId =>
-                                                    roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')
-                                                    }`}
-                                                secondSubtitle={formatDateForPrint(booking.order_date)}
-                                                content={booking.special_request}
-                                            />
-                                        </SwiperSlide>
-                                    )
-                                })} */}
                         </Swiper>
                         <ButtonPrev>◀</ButtonPrev>
                         <ButtonNext>▶</ButtonNext>
