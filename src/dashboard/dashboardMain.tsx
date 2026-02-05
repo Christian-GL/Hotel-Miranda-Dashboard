@@ -110,7 +110,7 @@ export const DashboardMain = () => {
             {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             <styles.SectionSpecialRequest>
-                <styles.TitleSectionReviewsH5>Latest special bookings by client</styles.TitleSectionReviewsH5>
+                <styles.TitleSectionReviewsH5>Latest bookings by client</styles.TitleSectionReviewsH5>
                 {
                     clientAll.length > 0
                         ? (<>

@@ -58,7 +58,7 @@ export const TextSpecialRequest = styled.p`
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 6;
+    -webkit-line-clamp: 5;          // Línea en la cual se añadirán puntos suspensivos en caso de ser necesarios.
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
     line-height: 1.6rem;
