@@ -1,5 +1,5 @@
 
-import { PopupTextInterface } from "common/interfaces/popupTextInterface"
+import { PopupTextInterface } from "../interfaces/popupTextInterface"
 
 
 // !!! CONVINAR CON customPopupMessage ???
@@ -7,6 +7,7 @@ export const handleNonAdminClick = (
     setInfoPopup: React.Dispatch<React.SetStateAction<PopupTextInterface>>,
     setShowPopup: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
+
     setInfoPopup({
         title: 'Access denied',
         text: 'You need administrator privileges to perform this operation'

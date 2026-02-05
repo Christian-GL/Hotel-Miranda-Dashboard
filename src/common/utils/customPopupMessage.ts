@@ -8,6 +8,7 @@ export const customPopupMessage = (
     title: string,
     text: string
 ) => {
+
     setInfoPopup({ title, text })
     setShowPopup(true)
 }

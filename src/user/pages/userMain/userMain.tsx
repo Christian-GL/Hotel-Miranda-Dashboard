@@ -18,6 +18,7 @@ import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
+import { handleSelectionPopupMessage } from 'common/utils/selectionPopupMessage'
 import { customPopupMessage } from 'common/utils/customPopupMessage'
 import { capitalizeFirstLetter } from "common/utils/capitalizeFirstLetter"
 import { ArrowType } from "../../../common/enums/ArrowType"
@@ -232,16 +233,23 @@ export const UserMain = () => {
 
                 <CtnButton>
                     <ButtonCreate
-                        disabledClick={getRole() !== Role.admin}
-                        onClick={getRole() === Role.admin ? () => navigate('user-create') : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                    >
-                        + New Employee
+                        isClickDisabled={getRole() !== Role.admin}
+                        onClick={getRole() === Role.admin
+                            ? () => navigate('user-create')
+                            : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                    >+ New Employee
                     </ButtonCreate>
                 </CtnButton>
 
             </CtnFuncionality>
 
-            {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
+            {showPopup && <PopupText
+                title={infoPopup.title}
+                text={infoPopup.text}
+                onConfirm={infoPopup.onConfirm}
+                onCancel={infoPopup.onCancel}
+                onClose={() => { setShowPopup(false); setTableOptionsDisplayed('') }}
+            />}
 
             {currentPageItems.length === 0
                 ? <EmptyTableMessage>No users found</EmptyTableMessage>
@@ -324,12 +332,9 @@ export const UserMain = () => {
                                     <IconOptions onClick={() => { displayMenuOptions(userData._id) }} />
                                     <CtnOptions display={`${tableOptionsDisplayed === userData._id ? 'flex' : 'none'}`} isInTable={true} >
                                         <ButtonOption
-                                            // !!! SI EL USUARIO SE QUIERE EDITAR A SI MISMO (REPLANTEAR CONCEPTO):
-                                            // onClick={getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID')
                                             onClick={getRole() === Role.admin
                                                 ? () => { navigate(`user-update/${userData._id}`) }
                                                 : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
-                                            // disabledClick={!(getRole() === Role.admin || userData._id === localStorage.getItem('loggedUserID'))}
                                             disabledClick={getRole() !== Role.admin}
                                         >Update
                                         </ButtonOption>
@@ -342,8 +347,15 @@ export const UserMain = () => {
                                         </ButtonOption>
                                         <ButtonOption
                                             onClick={getRole() === Role.admin
-                                                ? () => { deleteUserById(userData._id) }
-                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                                ? () => handleSelectionPopupMessage(
+                                                    setInfoPopup,
+                                                    setShowPopup,
+                                                    () => { deleteUserById(userData._id); displayMenuOptions('') },
+                                                    // () => { console.log('FUNCIONA'); setTableOptionsDisplayed('') },
+                                                    () => setTableOptionsDisplayed('')
+                                                )
+                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)
+                                            }
                                             disabledClick={getRole() !== Role.admin}
                                         >Delete
                                         </ButtonOption>

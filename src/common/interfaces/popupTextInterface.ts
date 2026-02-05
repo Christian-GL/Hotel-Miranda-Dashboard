@@ -1,7 +1,9 @@
 
 export interface PopupTextInterface {
-    isSlider?: boolean
     title: string
     text: string
+    isSlider?: boolean
+    onConfirm?: () => void
+    onCancel?: () => void
     onClose?: () => void
 }

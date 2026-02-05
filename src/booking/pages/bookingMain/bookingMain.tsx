@@ -16,6 +16,7 @@ import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
+import { handleSelectionPopupMessage } from 'common/utils/selectionPopupMessage'
 import { customPopupMessage } from 'common/utils/customPopupMessage'
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
@@ -262,7 +263,13 @@ export const BookingMain = () => {
                 </CtnButton>
             </CtnFuncionality>
 
-            {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
+            {showPopup && <PopupText
+                title={infoPopup.title}
+                text={infoPopup.text}
+                onConfirm={infoPopup.onConfirm}
+                onCancel={infoPopup.onCancel}
+                onClose={() => { setShowPopup(false); setTableOptionsDisplayed('') }}
+            />}
 
             {currentPageItems.length === 0
                 ? <EmptyTableMessage>No bookings found</EmptyTableMessage>
@@ -377,8 +384,15 @@ export const BookingMain = () => {
                                         </ButtonOption>
                                         <ButtonOption
                                             onClick={getRole() === Role.admin
-                                                ? () => { deleteBookingById(bookingData._id) }
-                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                                ? () => handleSelectionPopupMessage(
+                                                    setInfoPopup,
+                                                    setShowPopup,
+                                                    () => {deleteBookingById(bookingData._id); displayMenuOptions('')},
+                                                    // () => { console.log('FUNCIONA'); setTableOptionsDisplayed('') },
+                                                    () => setTableOptionsDisplayed('')
+                                                )
+                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)
+                                            }
                                             disabledClick={getRole() !== Role.admin}
                                         >Delete
                                         </ButtonOption>

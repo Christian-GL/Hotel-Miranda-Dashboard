@@ -36,11 +36,34 @@ export const TitleH2 = styled.h2`
     color: ${props => props.theme.textPopup};
 `
 
-export const PText = styled.p`
+export const Text = styled.p`
     margin-top: 1rem;
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
     color: ${props => props.theme.textPopup};
+`
+
+export const CtnButtonChoice = styled.div`
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+`
+
+export const ButtonChoice = styled.button<{ isYes: boolean }>`
+    padding: 1em 4em;
+    font-family: ${globalConstStyles.fontPoppins};
+    font-size: 1em;
+    font-weight: 700;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    color: ${props => props.theme.buttonPopup};
+    background-color: ${({ isYes, theme }) =>
+        isYes
+            ? theme.buttonYesBackgroundPopup
+            : theme.buttonNoBackgroundPopup};
 `
 
 export const IconClose = styled(RiCloseCircleLine)`

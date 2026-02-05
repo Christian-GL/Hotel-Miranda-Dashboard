@@ -98,6 +98,9 @@ export const themeLight = {
 
     backgroundPopup: color.whiteSmooth,
     textPopup: color.blackSmooth,
+    buttonPopup: color.white,
+    buttonYesBackgroundPopup: color.green,
+    buttonNoBackgroundPopup: color.red,
     iconPopup: color.blackSmooth,
 
     textButtonCreate: color.white,
@@ -211,6 +214,9 @@ export const themeDark = {
 
     backgroundPopup: color.graySmoothX4,
     textPopup: color.blackSmooth,
+    buttonPopup: color.whiteSmooth,
+    buttonYesBackgroundPopup: color.green,
+    buttonNoBackgroundPopup: color.red,
     iconPopup: color.blackSmooth,
 
     textButtonCreate: color.whiteSmooth,
