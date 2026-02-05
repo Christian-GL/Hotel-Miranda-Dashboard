@@ -62,8 +62,8 @@ export const themeLight = {
     iconBackgroundTable: color.white,
     buttonOptionText: color.white,
     buttonOptionTextDisabled: color.white,
-    buttonOptionBackground: color.graySmoothX2,
-    buttonOptionBackgroundDisabled: color.graySmooth,
+    buttonOptionBackground: color.graySmooth,
+    buttonOptionBackgroundDisabled: color.graySmoothX2,
     iconOptionsTable: color.blackSmooth,
     containerOptionsTable: color.graySmoothX3,
     containerOptionsNotInTable: color.graySmoothX3,
@@ -99,7 +99,7 @@ export const themeLight = {
     backgroundPopup: color.whiteSmooth,
     textPopup: color.blackSmooth,
     buttonPopup: color.white,
-    buttonYesBackgroundPopup: color.green,
+    buttonYesBackgroundPopup: color.greenSmoothX4,
     buttonNoBackgroundPopup: color.red,
     iconPopup: color.blackSmooth,
 
@@ -215,7 +215,7 @@ export const themeDark = {
     backgroundPopup: color.graySmoothX4,
     textPopup: color.blackSmooth,
     buttonPopup: color.whiteSmooth,
-    buttonYesBackgroundPopup: color.green,
+    buttonYesBackgroundPopup: color.greenSmoothX4,
     buttonNoBackgroundPopup: color.red,
     iconPopup: color.blackSmooth,
 

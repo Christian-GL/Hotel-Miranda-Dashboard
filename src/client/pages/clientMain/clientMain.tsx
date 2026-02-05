@@ -398,17 +398,29 @@ export const ClientMain = () => {
                                     <CtnMenuOptions>
                                         <IconOptions onClick={() => { displayMenuOptions(clientData._id) }} />
                                         <CtnOptions display={`${tableOptionsDisplayed === clientData._id ? 'flex' : 'none'}`} isInTable={true} >
-                                            <ButtonOption onClick={() => navigate(`client-update/${clientData._id}`)}>Update</ButtonOption>
-                                            <ButtonOption onClick={() => toggleArchivedClient(clientData)}>
-                                                {clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                            <ButtonOption
+                                                onClick={() => navigate(`client-update/${clientData._id}`)}
+                                            >Update
+                                            </ButtonOption>
+                                            <ButtonOption
+                                                onClick={() => handleSelectionPopupMessage(
+                                                    setInfoPopup,
+                                                    setShowPopup,
+                                                    `${clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'} client #${clientData._id}`,
+                                                    `Are you sure you want to ${clientData.isArchived === OptionYesNo.no ? 'archive' : 'unarchive'} this client?`,
+                                                    () => { toggleArchivedClient(clientData); displayMenuOptions('') },
+                                                    () => setTableOptionsDisplayed('')
+                                                )}
+                                            >{clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                                             </ButtonOption>
                                             <ButtonOption
                                                 onClick={getRole() === Role.admin
                                                     ? () => handleSelectionPopupMessage(
                                                         setInfoPopup,
                                                         setShowPopup,
+                                                        `Delete client #${clientData._id}`,
+                                                        'Are you sure you want to delete this client? This action cannot be undone.',
                                                         () => { deleteClientById(clientData._id); displayMenuOptions('') },
-                                                        // () => { console.log('FUNCIONA'); setTableOptionsDisplayed('') },
                                                         () => setTableOptionsDisplayed('')
                                                     )
                                                     : () => handleNonAdminClick(setInfoPopup, setShowPopup)

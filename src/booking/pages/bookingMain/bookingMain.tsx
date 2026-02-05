@@ -378,17 +378,29 @@ export const BookingMain = () => {
                                 <CtnMenuOptions>
                                     <IconOptions onClick={() => { displayMenuOptions(bookingData._id) }} />
                                     <CtnOptions display={`${tableOptionsDisplayed === bookingData._id ? 'flex' : 'none'}`} isInTable={true} >
-                                        <ButtonOption onClick={() => { navigate(`booking-update/${bookingData._id}`) }}>Update</ButtonOption>
-                                        <ButtonOption onClick={() => toggleArchivedBooking(bookingData)}>
-                                            {bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                        <ButtonOption
+                                            onClick={() => { navigate(`booking-update/${bookingData._id}`) }}
+                                        >Update
+                                        </ButtonOption>
+                                        <ButtonOption
+                                            onClick={() => handleSelectionPopupMessage(
+                                                setInfoPopup,
+                                                setShowPopup,
+                                                `${bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'} booking #${bookingData._id}`,
+                                                `Are you sure you want to ${bookingData.isArchived === OptionYesNo.no ? 'archive' : 'unarchive'} this booking?`,
+                                                () => { toggleArchivedBooking(bookingData); displayMenuOptions('') },
+                                                () => setTableOptionsDisplayed('')
+                                            )}
+                                        >{bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                                         </ButtonOption>
                                         <ButtonOption
                                             onClick={getRole() === Role.admin
                                                 ? () => handleSelectionPopupMessage(
                                                     setInfoPopup,
                                                     setShowPopup,
-                                                    () => {deleteBookingById(bookingData._id); displayMenuOptions('')},
-                                                    // () => { console.log('FUNCIONA'); setTableOptionsDisplayed('') },
+                                                    `Delete booking #${bookingData._id}`,
+                                                    'Are you sure you want to delete this booking? This action cannot be undone.',
+                                                    () => { deleteBookingById(bookingData._id); displayMenuOptions('') },
                                                     () => setTableOptionsDisplayed('')
                                                 )
                                                 : () => handleNonAdminClick(setInfoPopup, setShowPopup)

@@ -48,13 +48,13 @@ export const CtnButtonChoice = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5rem;
+    gap: 4rem;
 `
 
 export const ButtonChoice = styled.button<{ isYes: boolean }>`
     padding: 1em 4em;
     font-family: ${globalConstStyles.fontPoppins};
-    font-size: 1em;
+    font-size: 0.9em;
     font-weight: 700;
     border: none;
     border-radius: 1rem;
@@ -64,6 +64,11 @@ export const ButtonChoice = styled.button<{ isYes: boolean }>`
         isYes
             ? theme.buttonYesBackgroundPopup
             : theme.buttonNoBackgroundPopup};
+
+    &:hover {
+        transition: 0.25s;
+        transform: scale(1.05);
+    }
 `
 
 export const IconClose = styled(RiCloseCircleLine)`

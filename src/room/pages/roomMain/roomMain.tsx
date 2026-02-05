@@ -370,17 +370,29 @@ export const RoomMain = () => {
                                     <CtnMenuOptions>
                                         <IconOptions onClick={() => { displayMenuOptions(roomData._id) }} />
                                         <CtnOptions display={`${tableOptionsDisplayed === roomData._id ? 'flex' : 'none'}`} isInTable={true} >
-                                            <ButtonOption onClick={() => { navigate(`room-update/${roomData._id}`) }}>Update</ButtonOption>
-                                            <ButtonOption onClick={() => toggleArchivedRoom(roomData)}>
-                                                {roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                            <ButtonOption
+                                                onClick={() => { navigate(`room-update/${roomData._id}`) }}
+                                            >Update
+                                            </ButtonOption>
+                                            <ButtonOption
+                                                onClick={() => handleSelectionPopupMessage(
+                                                    setInfoPopup,
+                                                    setShowPopup,
+                                                    `${roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'} room #${roomData._id}`,
+                                                    `Are you sure you want to ${roomData.isArchived === OptionYesNo.no ? 'archive' : 'unarchive'} this room?`,
+                                                    () => { toggleArchivedRoom(roomData); displayMenuOptions('') },
+                                                    () => setTableOptionsDisplayed('')
+                                                )}
+                                            >{roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                                             </ButtonOption>
                                             <ButtonOption
                                                 onClick={getRole() === Role.admin
                                                     ? () => handleSelectionPopupMessage(
                                                         setInfoPopup,
                                                         setShowPopup,
+                                                        `Delete room #${roomData._id}`,
+                                                        'Are you sure you want to delete this room? This action cannot be undone.',
                                                         () => { deleteRoomById(roomData._id); displayMenuOptions('') },
-                                                        // () => { console.log('FUNCIONA'); setTableOptionsDisplayed('') },
                                                         () => setTableOptionsDisplayed('')
                                                     )
                                                     : () => handleNonAdminClick(setInfoPopup, setShowPopup)

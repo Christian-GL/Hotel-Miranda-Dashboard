@@ -5,13 +5,15 @@ import { PopupTextInterface } from '../interfaces/popupTextInterface'
 export const handleSelectionPopupMessage = (
     setInfoPopup: React.Dispatch<React.SetStateAction<PopupTextInterface>>,
     setShowPopup: React.Dispatch<React.SetStateAction<boolean>>,
+    title: string,
+    text: string,
     onConfirm: () => void,
     onCancel: () => void
 ): void => {
 
     setInfoPopup({
-        title: 'Delete confirmation',
-        text: 'Are you sure you want to delete this element?',
+        title: title,
+        text: text,
         onConfirm: () => {
             onConfirm()
             setShowPopup(false)

@@ -340,7 +340,16 @@ export const UserMain = () => {
                                         </ButtonOption>
                                         <ButtonOption
                                             onClick={getRole() === Role.admin
-                                                ? () => { toggleArchivedUser(userData) }
+                                                ? () => {
+                                                    handleSelectionPopupMessage(
+                                                        setInfoPopup,
+                                                        setShowPopup,
+                                                        `${userData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'} user #${userData._id}`,
+                                                        `Are you sure you want to ${userData.isArchived === OptionYesNo.no ? 'archive' : 'unarchive'} this user?`,
+                                                        () => { toggleArchivedUser(userData); displayMenuOptions('') },
+                                                        () => setTableOptionsDisplayed('')
+                                                    )
+                                                }
                                                 : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                                             disabledClick={getRole() !== Role.admin}
                                         >{userData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
@@ -350,8 +359,9 @@ export const UserMain = () => {
                                                 ? () => handleSelectionPopupMessage(
                                                     setInfoPopup,
                                                     setShowPopup,
+                                                    `Delete user #${userData._id}`,
+                                                    'Are you sure you want to delete this user? This action cannot be undone.',
                                                     () => { deleteUserById(userData._id); displayMenuOptions('') },
-                                                    // () => { console.log('FUNCIONA'); setTableOptionsDisplayed('') },
                                                     () => setTableOptionsDisplayed('')
                                                 )
                                                 : () => handleNonAdminClick(setInfoPopup, setShowPopup)
