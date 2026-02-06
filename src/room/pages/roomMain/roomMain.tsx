@@ -306,6 +306,7 @@ export const RoomMain = () => {
                     {currentPageItems.map(roomData => {
                         const priceDiscounted = applyDiscount(roomData.price, roomData.discount)
                         const discountAmount = roomData.price - priceDiscounted
+
                         return (
                             <React.Fragment key={roomData._id}>
                                 <CtnCell>

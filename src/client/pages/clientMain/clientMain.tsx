@@ -292,6 +292,7 @@ export const ClientMain = () => {
                     <TitleColumn>{''}</TitleColumn>
                     {currentPageItems.map(clientData => {
                         const bookingStatusTotals = getBookingStatusTotals(clientData.booking_id_list, bookingAll)
+
                         return (
                             <React.Fragment key={clientData._id}>
                                 <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>

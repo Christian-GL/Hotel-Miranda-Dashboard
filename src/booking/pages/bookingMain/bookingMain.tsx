@@ -296,123 +296,117 @@ export const BookingMain = () => {
                         }
                     })}
                     <TitleColumn>{''}</TitleColumn>
-                    {currentPageItems.map(bookingData => (
-                        <React.Fragment key={bookingData._id}>
-                            <CtnCell>
-                                <TextId>#{bookingData._id}</TextId>
-                            </CtnCell>
+                    {currentPageItems.map(bookingData => {
+                        const client = clientAll.find(client => client._id === bookingData.client_id)
+                        const rooms = bookingData.room_id_list
+                            .map(roomId => roomAll.find(room => room._id === roomId)?.number)
+                            .filter((number): number is string => Boolean(number))
 
-                            <CtnCell>
-                                <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View details</ButtonView>
-                            </CtnCell>
+                        return (
+                            <React.Fragment key={bookingData._id}>
+                                <CtnCell>
+                                    <TextId>#{bookingData._id}</TextId>
+                                </CtnCell>
 
-                            {/* !!! DEVOLVER DIA Y HORA POR SEPARADO */}
-                            <CtnCell flexdirection='column' alignitems='left' justifycontent='center' >
-                                <TextCell>{formatDateForPrint(bookingData.order_date)}</TextCell>
-                            </CtnCell>
-
-                            <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
-                                <TextCell>{formatDateForPrint(bookingData.check_in_date)}</TextCell>
-                            </CtnCell>
-
-                            <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
-                                <TextCell>{formatDateForPrint(bookingData.check_out_date)}</TextCell>
-                            </CtnCell>
-
-                            <CtnCell>
-                                <ButtonView onClick={() => {
-                                    setInfoPopup({
-                                        title: `${clientAll.find(client => client._id === bookingData.client_id)?.full_name} special request:`,
-                                        text: bookingData.special_request
-                                    })
-                                    setShowPopup(true)
-                                }}
-                                >View request</ButtonView>
-                            </CtnCell>
-
-                            <CtnCell flexdirection="column" alignitems="left" justifycontent="center"   >
-                                {(() => {
-                                    const rooms = bookingData.room_id_list
-                                        .map(roomId => roomAll.find(room => room._id === roomId)?.number)
-                                        .filter((number): number is string => Boolean(number))
-
-                                    if (rooms.length > 0) {
-                                        return rooms.map((roomNumber, i) => (
-                                            <TextCell key={i}>Room Nº {roomNumber}</TextCell>
+                                <CtnCell flexdirection="column" alignitems="left" justifycontent="center">
+                                    {rooms.length > 0
+                                        ? rooms.map((roomNumber, i) => (
+                                            <TextCell key={i} fontSize="1.5em">Nº {roomNumber}</TextCell>
                                         ))
+                                        : <TextCell>No rooms assigned</TextCell>
                                     }
-                                    else {
-                                        return <TextCell>No rooms assigned</TextCell>
-                                    }
-                                })()
-                                }
-                            </CtnCell>
+                                </CtnCell>
 
-                            {/* !!! OPTIMIZAR: */}
-                            <CtnCell flexdirection="column" alignitems="left" justifycontent="center"  >
-                                {(() => {
-                                    const client = clientAll.find(client => client._id === bookingData.client_id)
-                                    if (client) {
-                                        return (<>
+                                <CtnCell flexdirection="column" alignitems="left" justifycontent="center">
+                                    {client
+                                        ? <>
                                             <TextCell>#<b>{client._id}</b></TextCell>
-                                            <TextCell isName={true}>{client.full_name}</TextCell>
+                                            <TextCell isName>{client.full_name}</TextCell>
                                             <TextCell>{client.email}</TextCell>
-                                            <TextCell><IconPhone width="1.25rem" />{client.phone_number}</TextCell>
-                                        </>)
+                                            <TextCell>
+                                                <IconPhone width="1.25rem" />
+                                                {client.phone_number}
+                                            </TextCell>
+                                        </>
+                                        : <TextCell>No client data</TextCell>
                                     }
-                                    else {
-                                        return <TextCell>No client data</TextCell>
+                                </CtnCell>
+
+                                <CtnCell>
+                                    <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View details</ButtonView>
+                                </CtnCell>
+
+                                {/* !!! DEVOLVER DIA Y HORA POR SEPARADO */}
+                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center' >
+                                    <TextCell>{formatDateForPrint(bookingData.order_date)}</TextCell>
+                                </CtnCell>
+
+                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
+                                    <TextCell>{formatDateForPrint(bookingData.check_in_date)}</TextCell>
+                                </CtnCell>
+
+                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
+                                    <TextCell>{formatDateForPrint(bookingData.check_out_date)}</TextCell>
+                                </CtnCell>
+
+                                <CtnCell>
+                                    <ButtonView onClick={() => {
+                                        setInfoPopup({
+                                            title: `${clientAll.find(client => client._id === bookingData.client_id)?.full_name} special request:`,
+                                            text: bookingData.special_request
+                                        })
+                                        setShowPopup(true)
+                                    }}
+                                    >View request</ButtonView>
+                                </CtnCell>
+
+                                <CtnCell>
+                                    {bookingData.isArchived === OptionYesNo.no
+                                        ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
+                                        : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
                                     }
-                                })()
-                                }
-                            </CtnCell>
+                                </CtnCell>
 
-                            <CtnCell>
-                                {bookingData.isArchived === OptionYesNo.no
-                                    ? <TextStatusAvailableUsers active={true}>Active</TextStatusAvailableUsers>
-                                    : <TextStatusAvailableUsers active={false}>Archived</TextStatusAvailableUsers>
-                                }
-                            </CtnCell>
-
-                            <CtnCell justifycontent="flex-end">
-                                <CtnMenuOptions>
-                                    <IconOptions onClick={() => { displayMenuOptions(bookingData._id) }} />
-                                    <CtnOptions display={`${tableOptionsDisplayed === bookingData._id ? 'flex' : 'none'}`} isInTable={true} >
-                                        <ButtonOption
-                                            onClick={() => { navigate(`booking-update/${bookingData._id}`) }}
-                                        >Update
-                                        </ButtonOption>
-                                        <ButtonOption
-                                            onClick={() => handleSelectionPopupMessage(
-                                                setInfoPopup,
-                                                setShowPopup,
-                                                `${bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'} booking #${bookingData._id}`,
-                                                `Are you sure you want to ${bookingData.isArchived === OptionYesNo.no ? 'archive' : 'unarchive'} this booking?`,
-                                                () => { toggleArchivedBooking(bookingData); displayMenuOptions('') },
-                                                () => setTableOptionsDisplayed('')
-                                            )}
-                                        >{bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
-                                        </ButtonOption>
-                                        <ButtonOption
-                                            onClick={getRole() === Role.admin
-                                                ? () => handleSelectionPopupMessage(
+                                <CtnCell justifycontent="flex-end">
+                                    <CtnMenuOptions>
+                                        <IconOptions onClick={() => { displayMenuOptions(bookingData._id) }} />
+                                        <CtnOptions display={`${tableOptionsDisplayed === bookingData._id ? 'flex' : 'none'}`} isInTable={true} >
+                                            <ButtonOption
+                                                onClick={() => { navigate(`booking-update/${bookingData._id}`) }}
+                                            >Update
+                                            </ButtonOption>
+                                            <ButtonOption
+                                                onClick={() => handleSelectionPopupMessage(
                                                     setInfoPopup,
                                                     setShowPopup,
-                                                    `Delete booking #${bookingData._id}`,
-                                                    'Are you sure you want to delete this booking? This action cannot be undone.',
-                                                    () => { deleteBookingById(bookingData._id); displayMenuOptions('') },
+                                                    `${bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'} booking #${bookingData._id}`,
+                                                    `Are you sure you want to ${bookingData.isArchived === OptionYesNo.no ? 'archive' : 'unarchive'} this booking?`,
+                                                    () => { toggleArchivedBooking(bookingData); displayMenuOptions('') },
                                                     () => setTableOptionsDisplayed('')
-                                                )
-                                                : () => handleNonAdminClick(setInfoPopup, setShowPopup)
-                                            }
-                                            disabledClick={getRole() !== Role.admin}
-                                        >Delete
-                                        </ButtonOption>
-                                    </CtnOptions>
-                                </CtnMenuOptions>
-                            </CtnCell>
-                        </React.Fragment>
-                    ))}
+                                                )}
+                                            >{bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                                            </ButtonOption>
+                                            <ButtonOption
+                                                onClick={getRole() === Role.admin
+                                                    ? () => handleSelectionPopupMessage(
+                                                        setInfoPopup,
+                                                        setShowPopup,
+                                                        `Delete booking #${bookingData._id}`,
+                                                        'Are you sure you want to delete this booking? This action cannot be undone.',
+                                                        () => { deleteBookingById(bookingData._id); displayMenuOptions('') },
+                                                        () => setTableOptionsDisplayed('')
+                                                    )
+                                                    : () => handleNonAdminClick(setInfoPopup, setShowPopup)
+                                                }
+                                                disabledClick={getRole() !== Role.admin}
+                                            >Delete
+                                            </ButtonOption>
+                                        </CtnOptions>
+                                    </CtnMenuOptions>
+                                </CtnCell>
+                            </React.Fragment>
+                        )
+                    })}
                 </Table>
             }
 
