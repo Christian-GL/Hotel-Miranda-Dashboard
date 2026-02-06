@@ -28,6 +28,8 @@ export const Table = styled.table<{ rowlistlength: number, columnlistlength: num
     grid-template-rows: repeat(${props => props.rowlistlength}, auto);
     grid-template-columns: repeat(${props => props.columnlistlength}, auto);
     padding: 1em 2em;
+    width: min-content;
+    min-width: 100%;
     border-radius: 2.5rem;
     background-color: ${props => props.theme.backgroundTable};
 `
@@ -68,7 +70,7 @@ export const TextCell = styled.p<{ fontSize?: string, minWidth?: string, isName?
 `
 
 export const TextId = styled.p`
-    min-width: 4rem;
+    min-width: 4.25rem;
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 700;
     overflow-wrap: break-word;
