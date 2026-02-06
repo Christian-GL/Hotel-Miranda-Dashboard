@@ -7,7 +7,6 @@ import * as styles from "./bookingArticleStyles"
 import { BookingArticleInterface } from "../../interfaces/bookingArticleInterface"
 import { IconHotel } from '../layout/sidebarMenuStyles'
 import { PopupText } from "../popupText/popupText"
-import { BookingStatus } from '../../../booking/enums/bookingStatus'
 
 
 export const BookingArticle: React.FC<BookingArticleInterface> = ({

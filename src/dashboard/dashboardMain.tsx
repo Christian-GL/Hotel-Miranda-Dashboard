@@ -15,6 +15,7 @@ import { BookingStatus } from "../booking/enums/bookingStatus"
 import { formatDateForPrint } from '../common/utils/dateUtils'
 import { checkBookingStatus } from '../common/utils/checkBookingStatus'
 import { customPopupMessage } from '../common/utils/customPopupMessage'
+import { getBookingStatusTotals } from "../common/utils/getBookingStatusTotals"
 import { PopupText } from "../common/components/popupText/popupText"
 import { PopupTextInterface } from '../common/interfaces/popupTextInterface'
 import { BookingArticle } from "../common/components/bookingArticle/bookingArticle"
@@ -23,6 +24,7 @@ import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAll
 import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../client/features/thunks/clientFetchAllThunk"
 import { BookingInterfaceId } from "../booking/interfaces/bookingInterface"
+import { BookingStatusTotals } from "../booking/interfaces/bookingStatusTotals"
 import { ClientInterfaceId } from "../client/interfaces/clientInterface"
 import { RoomInterfaceId } from "../room/interfaces/roomInterface"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../room/features/roomSlice"
@@ -60,8 +62,10 @@ export const DashboardMain = () => {
         else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
     }, [roomAllLoading, roomAll])
 
+    const bookingIdsAllClients: string[] = clientAll.flatMap(client => client.booking_id_list ?? [])
+    const bookingStatusTotals = getBookingStatusTotals(bookingIdsAllClients, bookingAll)
 
-    return (
+    return (<>
         < styles.SectionPageDashboard >
 
             <styles.SectionKPIs>
@@ -75,33 +79,21 @@ export const DashboardMain = () => {
                 <styles.ArticleKPI>
                     <styles.IconLogIn />
                     <styles.CtnInfo>
-                        <styles.NumberH4>
-                            {bookingAll.filter(booking =>
-                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkIn
-                            ).length}
-                        </styles.NumberH4>
+                        <styles.NumberH4>{bookingStatusTotals.totalCheckIn}</styles.NumberH4>
                         <styles.TextH5>Checked in</styles.TextH5>
                     </styles.CtnInfo>
                 </styles.ArticleKPI>
                 <styles.ArticleKPI>
                     <styles.IconCalendar />
                     <styles.CtnInfo>
-                        <styles.NumberH4>
-                            {bookingAll.filter(booking =>
-                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.inProgress
-                            ).length}
-                        </styles.NumberH4>
+                        <styles.NumberH4>{bookingStatusTotals.totalInProgress}</styles.NumberH4>
                         <styles.TextH5>In Progress</styles.TextH5>
                     </styles.CtnInfo>
                 </styles.ArticleKPI>
                 <styles.ArticleKPI>
                     <styles.IconLogOut />
                     <styles.CtnInfo>
-                        <styles.NumberH4>
-                            {bookingAll.filter(booking =>
-                                checkBookingStatus(booking.check_in_date, booking.check_out_date) === BookingStatus.checkOut
-                            ).length}
-                        </styles.NumberH4>
+                        <styles.NumberH4>{bookingStatusTotals.totalCheckOut}</styles.NumberH4>
                         <styles.TextH5>Checked Out</styles.TextH5>
                     </styles.CtnInfo>
                 </styles.ArticleKPI>
@@ -125,6 +117,7 @@ export const DashboardMain = () => {
                                     }}
                                     loop={false}
                                 >
+                                    {/* !!! ORDENAR POR FECHA DE ENTRADA (CHECK IN) */}
                                     {bookingAll.map((booking, index) => {
                                         return (
                                             <SwiperSlide key={index}>
@@ -149,6 +142,6 @@ export const DashboardMain = () => {
             </styles.SectionSpecialRequest>
 
         </styles.SectionPageDashboard >
-    )
+    </>)
 
 }

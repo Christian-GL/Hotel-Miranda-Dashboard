@@ -14,7 +14,6 @@ import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
 import { BookingStatus } from "../../../booking/enums/bookingStatus"
-import { BookingStatusTotals } from "../../../booking/interfaces/bookingStatusTotals"
 import { ClientInterfaceId } from '../../interfaces/clientInterface'
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
@@ -23,8 +22,8 @@ import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { handleSelectionPopupMessage } from 'common/utils/selectionPopupMessage'
 import { customPopupMessage } from 'common/utils/customPopupMessage'
-import { getClientBookingsByRoom } from "../../../common/utils/clientBookingsByRoom"
 import { checkBookingStatus } from "../../../common/utils/checkBookingStatus"
+import { getBookingStatusTotals } from "../../../common/utils/getBookingStatusTotals"
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { ClientNameColumn } from "../../enums/ClientNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
@@ -106,36 +105,6 @@ export const ClientMain = () => {
         else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
 
-    const getBookingStatusTotals = (clientBookingIdList: string[]): BookingStatusTotals => {
-        const allBookingData = bookingAll.filter(booking =>
-            clientBookingIdList.includes(booking._id)
-        )
-        let totalCheckIn = 0
-        let totalInProgress = 0
-        let totalCheckOut = 0
-        allBookingData.forEach(booking => {
-            const bookingStatus = checkBookingStatus(
-                booking.check_in_date,
-                booking.check_out_date
-            )
-            switch (bookingStatus) {
-                case BookingStatus.checkIn:
-                    totalCheckIn++
-                    break
-                case BookingStatus.inProgress:
-                    totalInProgress++
-                    break
-                case BookingStatus.checkOut:
-                    totalCheckOut++
-                    break
-            }
-        })
-        return {
-            totalCheckIn,
-            totalInProgress,
-            totalCheckOut
-        }
-    }
     const filterByIdOrNameOrEmail = (clients: ClientInterfaceId[], searchText: string): ClientInterfaceId[] => {
         const normalizedText = searchText.toLowerCase()
         return clients.filter(client =>
@@ -322,7 +291,7 @@ export const ClientMain = () => {
                     })}
                     <TitleColumn>{''}</TitleColumn>
                     {currentPageItems.map(clientData => {
-                        const bookingStatusTotals = getBookingStatusTotals(clientData.booking_id_list)
+                        const bookingStatusTotals = getBookingStatusTotals(clientData.booking_id_list, bookingAll)
                         return (
                             <React.Fragment key={clientData._id}>
                                 <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
