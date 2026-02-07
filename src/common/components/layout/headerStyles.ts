@@ -12,16 +12,16 @@ import { MdKeyboardDoubleArrowLeft } from "react-icons/md"
 import * as globalConstStyles from '../../styles/globalConstStyles'
 
 
-export const Header = styled.header<{ display?: string }>`
+export const Header = styled.header<{ isSidebarCollapsed?: boolean }>`
     position: fixed;
     z-index: 2;
-    left: ${props => props.display === 'collapsed' ? `${globalConstStyles.widthSidebarMenuCollapsed}` : `${globalConstStyles.widthSidebarMenuNotCollapsed}`};
+    left: ${props => props.isSidebarCollapsed ? `${globalConstStyles.widthSidebarMenuCollapsed}` : `${globalConstStyles.widthSidebarMenuNotCollapsed}`};
     transition: ${globalConstStyles.transitionSidebarMenu};
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 2em;
-    width: ${props => props.display === 'collapsed' ? `calc(100% - ${globalConstStyles.widthSidebarMenuCollapsed})` : `calc(100% - ${globalConstStyles.widthSidebarMenuNotCollapsed})`};
+    width: ${props => props.isSidebarCollapsed ? `calc(100% - ${globalConstStyles.widthSidebarMenuCollapsed})` : `calc(100% - ${globalConstStyles.widthSidebarMenuNotCollapsed})`};
     height: ${globalConstStyles.heightHeader};
     box-shadow: 5px 0px 15px 0px rgba(254,209,209,0.45);
     background-color: ${props => props.theme.backgroundLayout};
@@ -75,7 +75,7 @@ export const IconBell = styled(FaRegBell)`
     color: ${props => props.theme.iconHeader};
 `
 
-export const Moon = styled(FaMoon)`
+export const IconMoon = styled(FaMoon)`
     margin: 0 0.75rem;
     padding: 0.5em;
     vertical-align: middle;
@@ -92,7 +92,7 @@ export const Moon = styled(FaMoon)`
     }
 `
 
-export const Sun = styled(FiSun)`
+export const IconSun = styled(FiSun)`
     margin: 0 0.75rem;
     padding: 0.5em;
     vertical-align: middle;

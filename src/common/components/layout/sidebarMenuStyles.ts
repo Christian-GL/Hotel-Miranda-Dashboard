@@ -11,25 +11,25 @@ import { FaUser } from "react-icons/fa"
 import * as globalConstStyles from '../../styles/globalConstStyles'
 
 
-export const AsideSideNavigationBar = styled.aside<{ display?: string }>`
+export const SideNavigationBar = styled.aside<{ isSidebarCollapsed?: boolean }>`
     position: fixed;
     z-index: 1;
     display: flex;
     flex-direction: column;
-    align-items: ${props => props.display === 'collapsed' ? 'center' : 'left'};
-    justify-content: ${props => props.display === 'collapsed' ? 'flex-start' : 'space-between'};
-    padding: ${props => props.display === 'collapsed' ? '1em' : '1em 2.5em'};
-    width: ${props => props.display === 'collapsed' ? `${globalConstStyles.widthSidebarMenuCollapsed}` : `${globalConstStyles.widthSidebarMenuNotCollapsed}`};
+    align-items: ${props => props.isSidebarCollapsed ? 'center' : 'left'};
+    justify-content: ${props => props.isSidebarCollapsed ? 'flex-start' : 'space-between'};
+    padding: ${props => props.isSidebarCollapsed ? '1em' : '1em 2.5em'};
+    width: ${props => props.isSidebarCollapsed ? `${globalConstStyles.widthSidebarMenuCollapsed}` : `${globalConstStyles.widthSidebarMenuNotCollapsed}`};
     height: 100vh;
     text-align: left;
     transition: ${globalConstStyles.transitionSidebarMenu};
     background-color: ${props => props.theme.backgroundLayout};
 `
 
-export const IconHotel = styled(RiHotelFill) <{ display?: string, isCursorPointer?: boolean }>`
+export const IconHotel = styled(RiHotelFill) <{ isSidebarCollapsed?: boolean, isCursorPointer?: boolean }>`
     display: inline-block;
     vertical-align: middle;
-    margin-bottom: ${props => props.display === 'collapsed' ? '2rem' : '0'};
+    margin-bottom: ${props => props.isSidebarCollapsed ? '2rem' : '0'};
     width: 3.5rem;
     height: auto;
     text-align: center;
@@ -42,8 +42,8 @@ export const IconHotel = styled(RiHotelFill) <{ display?: string, isCursorPointe
     }
 `
 
-export const DivCtnTitle = styled.div<{ display?: string }>`
-    display: ${props => props.display === 'collapsed' ? 'none' : 'inline-block'};
+export const CtnTitle = styled.div<{ isSidebarCollapsed?: boolean }>`
+    display: ${props => props.isSidebarCollapsed ? 'none' : 'inline-block'};
     vertical-align: middle;
     margin-left: 1rem;
     transition: ${globalConstStyles.transitionSidebarMenu};
@@ -55,7 +55,7 @@ export const TitleH1 = styled.h1`
     color: ${props => props.theme.titleSidebar};
 `
 
-export const PTitleText = styled.p`
+export const TitleText = styled.p`
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 0.6em;
     color: ${props => props.theme.textSidebar};
@@ -116,8 +116,8 @@ export const IconUsers = styled(FaUserGear)`
     color: ${props => props.theme.iconSidebar};
 `
 
-export const PNavOptionText = styled.p<{ display?: string }>`
-    display: ${props => props.display === 'collapsed' ? 'none' : 'inline-block'};
+export const NavOptionText = styled.p<{ isSidebarCollapsed?: boolean }>`
+    display: ${props => props.isSidebarCollapsed ? 'none' : 'inline-block'};
     vertical-align: middle;
     margin-left: 1.5rem;
     font-family: ${globalConstStyles.fontPoppins};
@@ -126,8 +126,8 @@ export const PNavOptionText = styled.p<{ display?: string }>`
     color: ${props => props.theme.textSidebar};
 `
 
-export const DivCtnNavOption = styled.div<{ display?: string, routeIsActive: boolean }>`
-    text-align: ${props => props.display === 'collapsed' ? 'center' : 'left'};
+export const CtnNavOption = styled.div<{ isSidebarCollapsed?: boolean, routeIsActive: boolean }>`
+    text-align: ${props => props.isSidebarCollapsed ? 'center' : 'left'};
     padding: 1em 0;
     cursor: pointer;
 
@@ -135,7 +135,7 @@ export const DivCtnNavOption = styled.div<{ display?: string, routeIsActive: boo
         ${IconDashboard}, ${IconBooking}, ${IconRooms}, ${IconClient}, ${IconUsers} {
             color: ${props => (props.routeIsActive ? props.theme.textHoverActiveSidebar2 : props.theme.textHoverSidebar)};
         }
-        ${PNavOptionText} {
+        ${NavOptionText} {
             font-weight: 700;
             color: ${props => props.theme.textHoverSidebar};
         }
@@ -145,15 +145,15 @@ export const DivCtnNavOption = styled.div<{ display?: string, routeIsActive: boo
         color: ${props => (props.routeIsActive ? props.theme.textHoverActiveSidebar2 : props.theme.iconSidebar)};
         background-color: ${props => (props.routeIsActive ? props.theme.textHoverSidebar : props.theme.textHoverActiveSidebar)};
     }
-    ${PNavOptionText} {
+    ${NavOptionText} {
         font-size: ${props => (props.routeIsActive ? '1.1em' : '0.9rem')};
         font-weight: ${props => (props.routeIsActive ? '700' : '400')};
         color: ${props => (props.routeIsActive ? props.theme.textHoverSidebar : props.theme.iconSidebar)};
     }
 `
 
-export const DivCtnUser = styled.div<{ display?: string }>`
-    display: ${props => props.display === 'collapsed' ? 'none' : 'block'};
+export const CtnUser = styled.div<{ isSidebarCollapsed?: boolean }>`
+    display: ${props => props.isSidebarCollapsed ? 'none' : 'block'};
     position: relative;
     margin-top: 2rem;
     padding: 6em 1em 1em;
@@ -196,8 +196,8 @@ export const ButtonEdit = styled.button`
     background-color: ${props => props.theme.buttonSidebar};
 `
 
-export const DivCtnCredits = styled.div<{ display?: string }>`
-    display: ${props => props.display === 'collapsed' ? 'none' : 'block'};
+export const CtnCredits = styled.div<{ isSidebarCollapsed?: boolean }>`
+    display: ${props => props.isSidebarCollapsed ? 'none' : 'block'};
 `
 
 export const TitleMayorCreditH5 = styled.h5`
