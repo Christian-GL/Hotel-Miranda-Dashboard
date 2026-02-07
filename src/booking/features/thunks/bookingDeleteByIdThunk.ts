@@ -6,14 +6,17 @@ import { BookingDeleteResponseInterface } from '../../../common/interfaces/apiRe
 export const BookingDeleteByIdThunk = createAsyncThunk<
     BookingDeleteResponseInterface,
     string,
-    { rejectValue: string }
+    { rejectValue: { status: number; message: string } }
 >(
     "booking/deleteById",
     async (bookingId, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) {
-            return rejectWithValue('No authentication token found')
+            return rejectWithValue({
+                status: 401,
+                message: 'No authentication token found',
+            })
         }
 
         try {
@@ -29,13 +32,14 @@ export const BookingDeleteByIdThunk = createAsyncThunk<
             }
             else {
                 const errorData = await request.json().catch(() => null)
-                return rejectWithValue(
-                    errorData?.message ?? request.statusText ?? 'Error deleting booking'
-                )
+                return rejectWithValue({
+                    status: request.status,
+                    message: errorData?.message ?? 'Error fetching booking',
+                })
             }
         }
         catch (error) {
-            return rejectWithValue('Network or server error')
+            return rejectWithValue({ status: 500, message: 'Network or server error' })
         }
 
     })

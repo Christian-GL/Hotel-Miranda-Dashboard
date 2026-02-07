@@ -7,14 +7,17 @@ import { ClientUpdateResponseInterface } from '../../../common/interfaces/apiRes
 export const ClientUpdateThunk = createAsyncThunk<
     ClientUpdateResponseInterface,
     { idClient: string; updatedClientData: ClientInterface },
-    { rejectValue: string }
+    { rejectValue: { status: number; message: string } }
 >(
     "client/update",
     async ({ idClient, updatedClientData }, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) {
-            return rejectWithValue('No authentication token found')
+            return rejectWithValue({
+                status: 401,
+                message: 'No authentication token found',
+            })
         }
 
         try {
@@ -31,13 +34,14 @@ export const ClientUpdateThunk = createAsyncThunk<
             }
             else {
                 const errorData = await request.json().catch(() => null)
-                return rejectWithValue(
-                    errorData?.message ?? request.statusText ?? 'Error updating client'
-                )
+                return rejectWithValue({
+                    status: request.status,
+                    message: errorData?.message ?? 'Error fetching client',
+                })
             }
         }
         catch (error) {
-            return rejectWithValue('Network or server error')
+            return rejectWithValue({ status: 500, message: 'Network or server error' })
         }
 
     })

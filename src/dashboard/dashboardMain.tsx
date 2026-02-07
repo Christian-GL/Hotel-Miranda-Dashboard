@@ -3,15 +3,11 @@ import { useState, useEffect, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
 
 import * as styles from "./dashboardMainStyles"
 import { CtnSwiperCustom, ButtonPrev, ButtonNext } from "../common/styles/customSwiperStyles"
 import { AppDispatch } from '../common/redux/store'
 import { ApiStatus } from "../common/enums/ApiStatus"
-import { BookingStatus } from "../booking/enums/bookingStatus"
 import { formatDateForPrint } from '../common/utils/dateUtils'
 import { checkBookingStatus } from '../common/utils/checkBookingStatus'
 import { customPopupMessage } from '../common/utils/customPopupMessage'
@@ -24,7 +20,6 @@ import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAll
 import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../client/features/thunks/clientFetchAllThunk"
 import { BookingInterfaceId } from "../booking/interfaces/bookingInterface"
-import { BookingStatusTotals } from "../booking/interfaces/bookingStatusTotals"
 import { ClientInterfaceId } from "../client/interfaces/clientInterface"
 import { RoomInterfaceId } from "../room/interfaces/roomInterface"
 import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../room/features/roomSlice"

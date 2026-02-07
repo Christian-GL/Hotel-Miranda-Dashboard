@@ -6,14 +6,17 @@ import { UserInterfaceId } from '../../interfaces/userInterface'
 export const UserFetchAllThunk = createAsyncThunk<
     UserInterfaceId[],
     void,
-    { rejectValue: string }
+    { rejectValue: { status: number; message: string } }
 >(
     "user/fetchAll",
     async (_, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) {
-            return rejectWithValue('No authentication token found')
+            return rejectWithValue({
+                status: 401,
+                message: 'No authentication token found',
+            })
         }
 
         try {
@@ -46,11 +49,14 @@ export const UserFetchAllThunk = createAsyncThunk<
             }
             else {
                 const errorData = await request.json()
-                return rejectWithValue(errorData.message || 'Failed to fetch users')
+                return rejectWithValue({
+                    status: request.status,
+                    message: errorData?.message ?? 'Error fetching user',
+                })
             }
         }
         catch (error) {
-            return rejectWithValue('Network or server error')
+            return rejectWithValue({ status: 500, message: 'Network or server error' })
         }
 
     })

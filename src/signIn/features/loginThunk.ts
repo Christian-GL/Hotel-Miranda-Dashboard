@@ -6,7 +6,7 @@ import { LoginResponse } from "../interfaces/loginResponse"
 export const LoginThunk = createAsyncThunk<
     LoginResponse,
     { email: string; password: string },
-    { rejectValue: string }
+    { rejectValue: { status: number; message: string } }
 >
     ('login', async (loginData, { rejectWithValue }) => {
 
@@ -24,11 +24,11 @@ export const LoginThunk = createAsyncThunk<
             }
             else {
                 const errorData = await request.json()
-                return rejectWithValue(errorData.message || 'Error: email or password wrong')
+                return rejectWithValue({ status: request.status, message: errorData.message || 'Error: email or password wrong' })
             }
         }
         catch (error) {
-            return rejectWithValue('Error: email or password wrong')
+            return rejectWithValue({ status: 500, message: 'Error: email or password wrong' })
         }
 
     })

@@ -41,7 +41,7 @@ export const RoomSlice = createSlice({
             })
             .addCase(RoomFetchAllThunk.rejected, (state, action) => {
                 state.allStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(RoomFetchByIDThunk.pending, (state) => {
@@ -55,7 +55,7 @@ export const RoomSlice = createSlice({
             })
             .addCase(RoomFetchByIDThunk.rejected, (state, action) => {
                 state.idStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(RoomCreateThunk.pending, (state) => {
@@ -69,7 +69,7 @@ export const RoomSlice = createSlice({
             })
             .addCase(RoomCreateThunk.rejected, (state, action) => {
                 state.createStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(RoomUpdateThunk.pending, (state) => {
@@ -91,7 +91,7 @@ export const RoomSlice = createSlice({
             })
             .addCase(RoomUpdateThunk.rejected, (state, action) => {
                 state.updateStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(RoomDeleteByIdThunk.pending, (state) => {
@@ -109,7 +109,7 @@ export const RoomSlice = createSlice({
             )
             .addCase(RoomDeleteByIdThunk.rejected, (state, action) => {
                 state.deleteStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             // BOOKING

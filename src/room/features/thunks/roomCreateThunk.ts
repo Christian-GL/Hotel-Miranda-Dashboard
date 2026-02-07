@@ -6,14 +6,17 @@ import { RoomInterfaceId, RoomInterface } from '../../interfaces/roomInterface'
 export const RoomCreateThunk = createAsyncThunk<
     RoomInterfaceId,
     RoomInterface,
-    { rejectValue: string }
+    { rejectValue: { status: number; message: string } }
 >(
     "room/create",
     async (newRoomData, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem("token")
         if (!apiToken) {
-            return rejectWithValue("No authentication token found")
+            return rejectWithValue({
+                status: 401,
+                message: 'No authentication token found',
+            })
         }
 
         try {
@@ -31,13 +34,14 @@ export const RoomCreateThunk = createAsyncThunk<
             }
             else {
                 const errorData = await request.json().catch(() => null)
-                return rejectWithValue(
-                    errorData?.message ?? request.statusText ?? 'Error fetching room'
-                )
+                return rejectWithValue({
+                    status: request.status,
+                    message: errorData?.message ?? 'Error fetching room',
+                })
             }
         }
         catch (error) {
-            return rejectWithValue('Network or server error')
+            return rejectWithValue({ status: 500, message: 'Network or server error' })
         }
 
     })

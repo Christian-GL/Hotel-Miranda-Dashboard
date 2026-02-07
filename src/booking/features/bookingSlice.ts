@@ -42,7 +42,7 @@ export const BookingSlice = createSlice({
             })
             .addCase(BookingFetchAllThunk.rejected, (state, action) => {
                 state.allStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(BookingFetchByIDThunk.pending, (state) => {
@@ -56,7 +56,7 @@ export const BookingSlice = createSlice({
             })
             .addCase(BookingFetchByIDThunk.rejected, (state, action) => {
                 state.idStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(BookingCreateThunk.pending, (state) => {
@@ -73,7 +73,7 @@ export const BookingSlice = createSlice({
             )
             .addCase(BookingCreateThunk.rejected, (state, action) => {
                 state.createStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(BookingUpdateThunk.pending, (state) => {
@@ -95,7 +95,7 @@ export const BookingSlice = createSlice({
             })
             .addCase(BookingUpdateThunk.rejected, (state, action) => {
                 state.updateStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(BookingDeleteByIdThunk.pending, (state) => {
@@ -110,7 +110,7 @@ export const BookingSlice = createSlice({
             })
             .addCase(BookingDeleteByIdThunk.rejected, (state, action) => {
                 state.deleteStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             // ROOM:

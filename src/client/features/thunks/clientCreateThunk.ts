@@ -6,14 +6,17 @@ import { ClientInterfaceId, ClientInterface } from "../../interfaces/clientInter
 export const ClientCreateThunk = createAsyncThunk<
     ClientInterfaceId,
     ClientInterface,
-    { rejectValue: string }
+    { rejectValue: { status: number; message: string } }
 >(
     "client/create",
     async (newClientData, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) {
-            return rejectWithValue('No authentication token found')
+            return rejectWithValue({
+                status: 401,
+                message: 'No authentication token found',
+            })
         }
 
         try {
@@ -31,13 +34,14 @@ export const ClientCreateThunk = createAsyncThunk<
             }
             else {
                 const errorData = await request.json().catch(() => null)
-                return rejectWithValue(
-                    errorData?.message ?? request.statusText ?? 'Error creating client'
-                )
+                return rejectWithValue({
+                    status: request.status,
+                    message: errorData?.message ?? 'Error fetching client',
+                })
             }
         }
         catch (error) {
-            return rejectWithValue('Network or server error')
+            return rejectWithValue({ status: 500, message: 'Network or server error' })
         }
 
     })

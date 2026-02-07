@@ -22,7 +22,7 @@ export const LoginProvider = ({ children }: LoginProviderInterface) => {
 
     const dispatchRedux = useDispatch<AppDispatch>()
 
-    const tryLogin = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    const tryLogin = async (email: string, password: string): Promise<{ success: boolean; message?: string }> => {
         const result = await dispatchRedux(LoginThunk({ email, password }))
         if (LoginThunk.fulfilled.match(result)) {
             localStorage.setItem('token', result.payload.token)
@@ -33,10 +33,10 @@ export const LoginProvider = ({ children }: LoginProviderInterface) => {
         if (LoginThunk.rejected.match(result)) {
             return {
                 success: false,
-                error: result.payload
+                message: result.payload?.message
             }
         }
-        return { success: false, error: 'Unknown error' }
+        return { success: false, message: 'Unknown login error' }
     }
     const logout = (): void => {
         localStorage.removeItem('token')

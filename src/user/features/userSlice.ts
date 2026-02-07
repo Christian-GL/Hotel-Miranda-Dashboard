@@ -38,7 +38,7 @@ export const UserSlice = createSlice({
             })
             .addCase(UserFetchAllThunk.rejected, (state, action) => {
                 state.allStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(UserFetchByIDThunk.pending, (state) => {
@@ -52,7 +52,7 @@ export const UserSlice = createSlice({
             })
             .addCase(UserFetchByIDThunk.rejected, (state, action) => {
                 state.idStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(UserCreateThunk.pending, (state) => {
@@ -66,7 +66,7 @@ export const UserSlice = createSlice({
             })
             .addCase(UserCreateThunk.rejected, (state, action) => {
                 state.createStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(UserUpdateThunk.pending, (state) => {
@@ -87,7 +87,7 @@ export const UserSlice = createSlice({
             })
             .addCase(UserUpdateThunk.rejected, (state, action) => {
                 state.updateStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(UserDeleteByIdThunk.pending, (state) => {
@@ -102,7 +102,7 @@ export const UserSlice = createSlice({
             })
             .addCase(UserDeleteByIdThunk.rejected, (state, action) => {
                 state.deleteStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
     }
 })

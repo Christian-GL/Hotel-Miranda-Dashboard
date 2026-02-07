@@ -43,7 +43,7 @@ export const ClientSlice = createSlice({
             })
             .addCase(ClientFetchAllThunk.rejected, (state, action) => {
                 state.allStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(ClientFetchByIDThunk.pending, (state) => {
@@ -57,7 +57,7 @@ export const ClientSlice = createSlice({
             })
             .addCase(ClientFetchByIDThunk.rejected, (state, action) => {
                 state.idStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(ClientCreateThunk.pending, (state) => {
@@ -71,7 +71,7 @@ export const ClientSlice = createSlice({
             })
             .addCase(ClientCreateThunk.rejected, (state, action) => {
                 state.createStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(ClientUpdateThunk.pending, (state) => {
@@ -93,7 +93,7 @@ export const ClientSlice = createSlice({
             })
             .addCase(ClientUpdateThunk.rejected, (state, action) => {
                 state.updateStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             .addCase(ClientDeleteByIdThunk.pending, (state) => {
@@ -108,7 +108,7 @@ export const ClientSlice = createSlice({
             })
             .addCase(ClientDeleteByIdThunk.rejected, (state, action) => {
                 state.deleteStatus = ApiStatus.rejected
-                state.errorMessage = action.payload ?? 'Unknown error'
+                state.errorMessage = action.payload?.message ?? 'Unknown error'
             })
 
             // BOOKING:

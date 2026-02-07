@@ -69,27 +69,27 @@ export const Layout = () => {
         }
         else if (userByIdLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
     }, [userByIdLoading, userById, loggedUserID])
-    useEffect(() => {
-        if (bookingAllLoading === ApiStatus.pending) { ToastifyLoadingData(1, 'Loading all booking data...') } else { toast.dismiss(1) }
-        if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
-        if (bookingByIdLoading === ApiStatus.pending) { ToastifyLoadingData(2, 'Loading booking by ID data...') } else { toast.dismiss(2) }
-        if (bookingByIdLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
+    // useEffect(() => {
+    //     if (bookingAllLoading === ApiStatus.pending) { ToastifyLoadingData(1, 'Loading all booking data...') } else { toast.dismiss(1) }
+    //     if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
+    //     if (bookingByIdLoading === ApiStatus.pending) { ToastifyLoadingData(2, 'Loading booking by ID data...') } else { toast.dismiss(2) }
+    //     if (bookingByIdLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
 
-        if (roomAllLoading === ApiStatus.pending) { ToastifyLoadingData(3, 'Loading all room data...') } else { toast.dismiss(3) }
-        if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
-        if (roomByIdLoading === ApiStatus.pending) { ToastifyLoadingData(4, 'Loading room by ID data...') } else { toast.dismiss(4) }
-        if (roomByIdLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
+    //     if (roomAllLoading === ApiStatus.pending) { ToastifyLoadingData(3, 'Loading all room data...') } else { toast.dismiss(3) }
+    //     if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
+    //     if (roomByIdLoading === ApiStatus.pending) { ToastifyLoadingData(4, 'Loading room by ID data...') } else { toast.dismiss(4) }
+    //     if (roomByIdLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
 
-        if (clientAllLoading === ApiStatus.pending) { ToastifyLoadingData(5, 'Loading all client data...') } else { toast.dismiss(5) }
-        if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
-        if (clientByIdLoading === ApiStatus.pending) { ToastifyLoadingData(6, 'Loading client by ID data...') } else { toast.dismiss(6) }
-        if (clientByIdLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
+    //     if (clientAllLoading === ApiStatus.pending) { ToastifyLoadingData(5, 'Loading all client data...') } else { toast.dismiss(5) }
+    //     if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
+    //     if (clientByIdLoading === ApiStatus.pending) { ToastifyLoadingData(6, 'Loading client by ID data...') } else { toast.dismiss(6) }
+    //     if (clientByIdLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
 
-        if (userAllLoading === ApiStatus.pending) { ToastifyLoadingData(7, 'Loading all user data...') } else { toast.dismiss(7) }
-        if (userAllLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
-        if (userByIdLoading === ApiStatus.pending) { ToastifyLoadingData(8, 'Loading user by ID data...') } else { toast.dismiss(8) }
-        if (userByIdLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
-    }, [bookingAllLoading, bookingByIdLoading, roomAllLoading, roomByIdLoading, clientAllLoading, clientByIdLoading, userAllLoading, userByIdLoading])
+    //     if (userAllLoading === ApiStatus.pending) { ToastifyLoadingData(7, 'Loading all user data...') } else { toast.dismiss(7) }
+    //     if (userAllLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
+    //     if (userByIdLoading === ApiStatus.pending) { ToastifyLoadingData(8, 'Loading user by ID data...') } else { toast.dismiss(8) }
+    //     if (userByIdLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
+    // }, [bookingAllLoading, bookingByIdLoading, roomAllLoading, roomByIdLoading, clientAllLoading, clientByIdLoading, userAllLoading, userByIdLoading])
 
     const switchDarkTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light'
@@ -99,9 +99,6 @@ export const Layout = () => {
     const closeSession = () => {
         logout()
         navigate('')
-    }
-    const displaySidebarMenu = () => {
-        setSidebarCollapsed(!sidebarCollapsed)
     }
     const formatRouteTitle = (pathname: string) => {
         const formattedTitle = pathname
@@ -125,17 +122,17 @@ export const Layout = () => {
     const routeIsActive = (route: string) => {
         return location.pathname.startsWith(route)
     }
-    // const navigateToUserUpdate = (id: string) => navigate(`users/user-update/${id}`)
 
 
+    // !!! REPASAR <div> Y CÓDIGO EN GENERAL
     return !isAuthenticated
         ? <Navigate to="" />
         : <ThemeProvider theme={selectedTheme}>
             <headerStyles.Header display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`} >
                 <div>
-                    {sidebarCollapsed ?
-                        <headerStyles.IconMenuCollapsed onClick={displaySidebarMenu} /> :
-                        <headerStyles.IconMenuNotCollaped onClick={displaySidebarMenu} />
+                    {sidebarCollapsed
+                        ? <headerStyles.IconMenuCollapsed onClick={() => setSidebarCollapsed(!sidebarCollapsed)} />
+                        : <headerStyles.IconMenuNotCollaped onClick={() => setSidebarCollapsed(!sidebarCollapsed)} />
                     }
                     <headerStyles.TitleH2 >{formatRouteTitle(location.pathname)}</headerStyles.TitleH2>
                 </div>

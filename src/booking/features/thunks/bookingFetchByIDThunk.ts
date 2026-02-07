@@ -6,14 +6,17 @@ import { BookingInterfaceId } from '../../interfaces/bookingInterface'
 export const BookingFetchByIDThunk = createAsyncThunk<
     BookingInterfaceId,
     string,
-    { rejectValue: string }
+    { rejectValue: { status: number; message: string } }
 >(
     "booking/fetchById",
     async (bookingId, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) {
-            return rejectWithValue('No authentication token found')
+            return rejectWithValue({
+                status: 401,
+                message: 'No authentication token found',
+            })
         }
 
         try {
@@ -41,13 +44,14 @@ export const BookingFetchByIDThunk = createAsyncThunk<
             }
             else {
                 const errorData = await request.json().catch(() => null)
-                return rejectWithValue(
-                    errorData?.message ?? request.statusText ?? 'Error fetching booking'
-                )
+                return rejectWithValue({
+                    status: request.status,
+                    message: errorData?.message ?? 'Error fetching booking',
+                })
             }
         }
         catch (error) {
-            return rejectWithValue('Network or server error')
+            return rejectWithValue({ status: 500, message: 'Network or server error' })
         }
 
     })
