@@ -17,12 +17,12 @@ import { PopupText } from "../../../common/components/popupText/popupText"
 import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
 import { AppDispatch } from "../../redux/store"
 import { useLoginOptionsContext } from '../../../signIn/features/loginProvider'
-import { getBookingAllStatus, getBookingIdStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
-import { getRoomAllStatus, getRoomIdStatus, getRoomErrorMessage } from "../../../room/features/roomSlice"
-import { getClientAllStatus, getClientIdStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
+import { ApiStatus } from "../../enums/ApiStatus"
+import { getBookingAllStatus, getBookingIdStatus } from "../../../booking/features/bookingSlice"
+import { getRoomAllStatus, getRoomIdStatus } from "../../../room/features/roomSlice"
+import { getClientAllStatus, getClientIdStatus } from "../../../client/features/clientSlice"
 import { getUserAllStatus, getUserIdStatus, getUserIdData, getUserErrorMessage } from "../../../user/features/userSlice"
 import { UserFetchByIDThunk } from "../../../user/features/thunks/userFetchByIDThunk"
-import { ApiStatus } from "../../enums/ApiStatus"
 
 
 export const Layout = () => {
@@ -36,13 +36,10 @@ export const Layout = () => {
     const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(true)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
-    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const roomByIdLoading: ApiStatus = useSelector(getRoomIdStatus)
-    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const clientByIdLoading: ApiStatus = useSelector(getClientIdStatus)
-    const clientErrorMessage = useSelector(getClientErrorMessage)
     const userById = useSelector(getUserIdData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const userByIdLoading: ApiStatus = useSelector(getUserIdStatus)
@@ -52,13 +49,11 @@ export const Layout = () => {
     const loggedUserID = localStorage.getItem('loggedUserID') || null
 
     useEffect(() => {
-        if (!isAuthenticated()) {
-            navigate('/')
-        }
+        if (!isAuthenticated()) { navigate('/') }
         const savedTheme = localStorage.getItem("theme")
-        savedTheme === null ?
-            setTheme('light') :
-            setTheme(JSON.parse(savedTheme))
+        savedTheme === null
+            ? setTheme('light')
+            : setTheme(JSON.parse(savedTheme))
     }, [navigate, isAuthenticated, theme])
     useEffect(() => {
         if (loggedUserID && userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(loggedUserID)) }
@@ -69,27 +64,16 @@ export const Layout = () => {
         }
         else if (userByIdLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
     }, [userByIdLoading, userById, loggedUserID])
-    // useEffect(() => {
-    //     if (bookingAllLoading === ApiStatus.pending) { ToastifyLoadingData(1, 'Loading all booking data...') } else { toast.dismiss(1) }
-    //     if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
-    //     if (bookingByIdLoading === ApiStatus.pending) { ToastifyLoadingData(2, 'Loading booking by ID data...') } else { toast.dismiss(2) }
-    //     if (bookingByIdLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
-
-    //     if (roomAllLoading === ApiStatus.pending) { ToastifyLoadingData(3, 'Loading all room data...') } else { toast.dismiss(3) }
-    //     if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
-    //     if (roomByIdLoading === ApiStatus.pending) { ToastifyLoadingData(4, 'Loading room by ID data...') } else { toast.dismiss(4) }
-    //     if (roomByIdLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
-
-    //     if (clientAllLoading === ApiStatus.pending) { ToastifyLoadingData(5, 'Loading all client data...') } else { toast.dismiss(5) }
-    //     if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
-    //     if (clientByIdLoading === ApiStatus.pending) { ToastifyLoadingData(6, 'Loading client by ID data...') } else { toast.dismiss(6) }
-    //     if (clientByIdLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
-
-    //     if (userAllLoading === ApiStatus.pending) { ToastifyLoadingData(7, 'Loading all user data...') } else { toast.dismiss(7) }
-    //     if (userAllLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
-    //     if (userByIdLoading === ApiStatus.pending) { ToastifyLoadingData(8, 'Loading user by ID data...') } else { toast.dismiss(8) }
-    //     if (userByIdLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
-    // }, [bookingAllLoading, bookingByIdLoading, roomAllLoading, roomByIdLoading, clientAllLoading, clientByIdLoading, userAllLoading, userByIdLoading])
+    useEffect(() => {
+        if (bookingAllLoading === ApiStatus.pending) { ToastifyLoadingData(1, 'Loading all booking data...') } else { toast.dismiss(1) }
+        if (bookingByIdLoading === ApiStatus.pending) { ToastifyLoadingData(2, 'Loading booking data...') } else { toast.dismiss(2) }
+        if (roomAllLoading === ApiStatus.pending) { ToastifyLoadingData(3, 'Loading all room data...') } else { toast.dismiss(3) }
+        if (roomByIdLoading === ApiStatus.pending) { ToastifyLoadingData(4, 'Loading room data...') } else { toast.dismiss(4) }
+        if (clientAllLoading === ApiStatus.pending) { ToastifyLoadingData(5, 'Loading all client data...') } else { toast.dismiss(5) }
+        if (clientByIdLoading === ApiStatus.pending) { ToastifyLoadingData(6, 'Loading client data...') } else { toast.dismiss(6) }
+        if (userAllLoading === ApiStatus.pending) { ToastifyLoadingData(7, 'Loading all user data...') } else { toast.dismiss(7) }
+        if (userByIdLoading === ApiStatus.pending) { ToastifyLoadingData(8, 'Loading user data...') } else { toast.dismiss(8) }
+    }, [bookingAllLoading, bookingByIdLoading, roomAllLoading, roomByIdLoading, clientAllLoading, clientByIdLoading, userAllLoading, userByIdLoading])
 
     const switchDarkTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light'
@@ -229,17 +213,16 @@ export const Layout = () => {
             </sidebarStyles.AsideSideNavigationBar>
 
             <layoutStyles.Main display={`${sidebarCollapsed ? 'collapsed' : 'notCollapsed'}`}>
-                {
-                    bookingAllLoading === ApiStatus.pending
-                        || bookingByIdLoading === ApiStatus.pending
-                        || roomAllLoading === ApiStatus.pending
-                        || roomByIdLoading === ApiStatus.pending
-                        || clientAllLoading === ApiStatus.pending
-                        || clientByIdLoading === ApiStatus.pending
-                        || userAllLoading === ApiStatus.pending
-                        || userByIdLoading === ApiStatus.pending
-                        ? <ToastContainer />
-                        : <Outlet />
+                {bookingAllLoading === ApiStatus.pending
+                    || bookingByIdLoading === ApiStatus.pending
+                    || roomAllLoading === ApiStatus.pending
+                    || roomByIdLoading === ApiStatus.pending
+                    || clientAllLoading === ApiStatus.pending
+                    || clientByIdLoading === ApiStatus.pending
+                    || userAllLoading === ApiStatus.pending
+                    || userByIdLoading === ApiStatus.pending
+                    ? <ToastContainer />
+                    : <Outlet />
                 }
             </layoutStyles.Main>
         </ThemeProvider>
