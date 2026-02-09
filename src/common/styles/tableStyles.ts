@@ -125,8 +125,8 @@ export const IconPhone = styled(ImPhone) <{ width?: string }>`
 
 export const TextStatusRoomList = styled.p<{ status: string }>`
     padding: 1em 0;
-    text-align: center;
     width: 6.5rem;
+    text-align: center;
     border-radius: 1.25rem;
     color: ${props => props.theme.textTable2};
     background-color: ${props => props.status === 'Available' ? props.theme.availableTable : props.theme.notAvailableTable};
@@ -197,6 +197,40 @@ export const ButtonOption = styled.button<{ disabledClick?: boolean }>`
     }
 `
 
+export const BookingStatusInfo = styled.p<{ status: BookingStatus }>`
+    padding: 1em;
+    width: 6.5rem;
+    text-align: center;
+    font-family: ${globalConstStyles.fontPoppins};
+    border-radius: 1.25em;
+    font-weight: 700;
+    
+    ${({ status, theme }) => {
+        switch (status) {
+            case BookingStatus.checkIn:
+                return `
+              color: ${theme.checkInTextTable};
+              background-color: ${theme.checkInBackgroundTable};
+            `
+            case BookingStatus.inProgress:
+                return `
+              color: ${theme.inProgressTextTable};
+              background-color: ${theme.inProgressBackgroundTable};
+            `
+            case BookingStatus.checkOut:
+                return `
+              color: ${theme.checkOutTextTable};
+              background-color: ${theme.checkOutBackgroundTable};
+            `
+            default:
+                return `
+              color: gray;
+              background-color: lightgray;
+            `
+        }
+    }}
+`
+
 export const TotalBookingStatus = styled.p<{ status: BookingStatus }>`
     display: inline-flex;
     align-items: center;
@@ -235,7 +269,7 @@ export const TotalBookingStatus = styled.p<{ status: BookingStatus }>`
 `
 
 export const ButtonView = styled.button`
-    padding: 1em 2em;
+    padding: 1em;
     font-family: ${globalConstStyles.fontPoppins};
     border: none;
     border-radius: 1rem;

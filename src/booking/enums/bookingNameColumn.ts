@@ -2,11 +2,12 @@
 export enum BookingNameColumn {
     id = 'ID',
     roomNumbers = 'Room numbers',
-    clientInfo = 'Client info',
     details = 'Details',
-    orderDate = 'Order date',
+    status = 'Status',
     checkIn = 'Check in',
     checkOut = 'Check Out',
+    clientInfo = 'Client info',
     specialRequest = 'Special request',
+    orderDate = 'Order date',
     isArchived = 'Is archived'
 }

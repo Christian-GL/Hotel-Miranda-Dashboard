@@ -11,25 +11,27 @@ import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
+import { BookingStatus } from "../../enums/bookingStatus"
 import { BookingInterfaceId } from "./../../interfaces/bookingInterface"
-import { getArrowIcon } from "common/utils/getArrowIcon"
-import { sortValues } from "common/utils/sortValues"
-import { handleColumnClick } from "common/utils/handleColumnClick"
-import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
-import { handleSelectionPopupMessage } from 'common/utils/selectionPopupMessage'
-import { customPopupMessage } from 'common/utils/customPopupMessage'
+import { getArrowIcon } from "../../../common/utils/getArrowIcon"
+import { sortValues } from "../../../common/utils/sortValues"
+import { handleColumnClick } from "../../../common/utils/handleColumnClick"
+import { handleNonAdminClick } from '../../../common/utils/nonAdminPopupMessage'
+import { handleSelectionPopupMessage } from '../../../common/utils/selectionPopupMessage'
+import { customPopupMessage } from '../../../common/utils/customPopupMessage'
+import { checkBookingStatus } from "../../../common/utils/checkBookingStatus"
+import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { ArrowType } from "../../../common/enums/ArrowType"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
 import { BookingNameColumn } from "../../enums/bookingNameColumn"
 import { PopupText } from "../../../common/components/popupText/popupText"
 import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
-import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
 import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
 import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
 import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
 import {
-    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, ImgUser, CtnCell, TextId,
+    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, ImgUser, CtnCell, TextId, BookingStatusInfo,
     TextStatusAvailableUsers, IconPhone, ButtonView, TotalBookingStatus, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption,
     TextCell
 } from "../../../common/styles/tableStyles"
@@ -227,6 +229,18 @@ export const BookingMain = () => {
             customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
         }
     }
+    const renderBookingStatus = (status: BookingStatus) => {
+        switch (status) {
+            case BookingStatus.checkIn:
+                return <BookingStatusInfo status={status}>Check-in</BookingStatusInfo>
+            case BookingStatus.inProgress:
+                return <BookingStatusInfo status={status}>In progress</BookingStatusInfo>
+            case BookingStatus.checkOut:
+                return <BookingStatusInfo status={status}>Check-out</BookingStatusInfo>
+            default:
+                return <TextCell>Status error</TextCell>
+        }
+    }
 
 
     return (
@@ -302,6 +316,7 @@ export const BookingMain = () => {
                             .map(roomId => roomAll.find(room => room._id === roomId)?.number)
                             .filter((number): number is string => Boolean(number))
 
+
                         return (
                             <React.Fragment key={bookingData._id}>
                                 <CtnCell>
@@ -313,8 +328,24 @@ export const BookingMain = () => {
                                         ? rooms.map((roomNumber, i) => (
                                             <TextCell key={i} fontSize="1.5em">Nº {roomNumber}</TextCell>
                                         ))
-                                        : <TextCell>No rooms assigned</TextCell>
+                                        : <TextCell>Rooms assigned error</TextCell>
                                     }
+                                </CtnCell>
+
+                                <CtnCell>
+                                    <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View details</ButtonView>
+                                </CtnCell>
+
+                                <CtnCell>
+                                    {renderBookingStatus(checkBookingStatus(bookingData.check_in_date, bookingData.check_out_date))}
+                                </CtnCell>
+
+                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
+                                    <TextCell>{formatDateForPrint(bookingData.check_in_date)}</TextCell>
+                                </CtnCell>
+
+                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
+                                    <TextCell>{formatDateForPrint(bookingData.check_out_date)}</TextCell>
                                 </CtnCell>
 
                                 <CtnCell flexdirection="column" alignitems="left" justifycontent="center">
@@ -333,23 +364,6 @@ export const BookingMain = () => {
                                 </CtnCell>
 
                                 <CtnCell>
-                                    <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View details</ButtonView>
-                                </CtnCell>
-
-                                {/* !!! DEVOLVER DIA Y HORA POR SEPARADO */}
-                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center' >
-                                    <TextCell>{formatDateForPrint(bookingData.order_date)}</TextCell>
-                                </CtnCell>
-
-                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
-                                    <TextCell>{formatDateForPrint(bookingData.check_in_date)}</TextCell>
-                                </CtnCell>
-
-                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
-                                    <TextCell>{formatDateForPrint(bookingData.check_out_date)}</TextCell>
-                                </CtnCell>
-
-                                <CtnCell>
                                     <ButtonView onClick={() => {
                                         setInfoPopup({
                                             title: `${clientAll.find(client => client._id === bookingData.client_id)?.full_name} special request:`,
@@ -358,6 +372,10 @@ export const BookingMain = () => {
                                         setShowPopup(true)
                                     }}
                                     >View request</ButtonView>
+                                </CtnCell>
+
+                                <CtnCell flexdirection='column' alignitems='left' justifycontent='center' >
+                                    <TextCell>{formatDateForPrint(bookingData.order_date)}</TextCell>
                                 </CtnCell>
 
                                 <CtnCell>
