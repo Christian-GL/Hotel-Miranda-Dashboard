@@ -159,7 +159,7 @@ export const IconOptions = styled(SlOptionsVertical)`
 `
 
 export const CtnOptions = styled.div<{ display: string, isInTable: boolean }>`
-    z-index: 0.1;
+    z-index: ${props => props.isInTable ? '1' : '0.1'};
     position: absolute;
     top: ${props => props.isInTable ? 'calc(100% + 0.5rem)' : 'calc(100% - 4rem)'};
     right: 0;

@@ -216,7 +216,9 @@ export const ClientMain = () => {
                 </CtnSearch>
 
                 <CtnButton>
-                    <ButtonCreate onClick={() => navigate('client-create')} children='+ New Client' />
+                    <ButtonCreate onClick={() => navigate('client-create')}>
+                        + New Client
+                    </ButtonCreate>
                 </CtnButton>
             </CtnFuncionality>
 

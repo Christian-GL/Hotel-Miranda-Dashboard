@@ -271,7 +271,7 @@ export const BookingMain = () => {
                 </CtnSearch>
 
                 <CtnButton>
-                    <ButtonCreate onClick={getRole() === Role.admin ? () => navigate('booking-create') : () => handleNonAdminClick(setInfoPopup, setShowPopup)} >
+                    <ButtonCreate onClick={() => navigate('booking-create')} >
                         + New Booking
                     </ButtonCreate>
                 </CtnButton>
@@ -336,9 +336,7 @@ export const BookingMain = () => {
                                 </CtnCell>
 
                                 <CtnCell>
-                                    {
-                                        renderBookingStatus(checkBookingStatus(bookingData.check_in_date, bookingData.check_out_date))
-                                    }
+                                    {renderBookingStatus(checkBookingStatus(bookingData.check_in_date, bookingData.check_out_date))}
                                 </CtnCell>
 
                                 <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>

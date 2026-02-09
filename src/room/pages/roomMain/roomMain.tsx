@@ -9,7 +9,6 @@ import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilte
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { ActiveButtonType } from "../../../common/enums/activeButtonType"
 import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
-import { RoomButtonType } from "../../enums/roomButtonType"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
@@ -263,7 +262,7 @@ export const RoomMain = () => {
                 </CtnSearch>
 
                 <CtnButton>
-                    <ButtonCreate onClick={getRole() === Role.admin ? () => navigate('room-create') : () => handleNonAdminClick(setInfoPopup, setShowPopup)}>
+                    <ButtonCreate onClick={() => navigate('room-create')}>
                         + New Room
                     </ButtonCreate>
                 </CtnButton>
