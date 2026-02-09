@@ -4,8 +4,6 @@ import { ApiStatus } from "../../common/enums/ApiStatus"
 
 export interface ClientStateInterface {
     allData: ClientInterfaceId[]
-    notArchived: ClientInterfaceId[]
-    archived: ClientInterfaceId[]
     idData: ClientInterfaceId
     allStatus: ApiStatus
     idStatus: ApiStatus

@@ -1,6 +1,7 @@
 
 import { createSlice } from '@reduxjs/toolkit'
 
+import { resetStore } from '../../common/redux/rootActions'
 import { ApiStatus } from '../../common/enums/ApiStatus'
 import { BookingStateInterface } from '../interfaces/bookingStateInterface'
 import { BookingInterfaceId } from '../interfaces/bookingInterface'
@@ -16,21 +17,34 @@ import { ClientUpdateThunk } from '../../client/features/thunks/clientUpdateThun
 import { ClientDeleteByIdThunk } from '../../client/features/thunks/clientDeleteByIdThunk'
 
 
+const initialState: BookingStateInterface = {
+    allData: [] as BookingInterfaceId[],
+    idData: {} as BookingInterfaceId,
+    allStatus: ApiStatus.idle,
+    idStatus: ApiStatus.idle,
+    createStatus: ApiStatus.idle,
+    updateStatus: ApiStatus.idle,
+    deleteStatus: ApiStatus.idle,
+    errorMessage: null
+}
+
 export const BookingSlice = createSlice({
     name: 'booking',
-    initialState: {
-        allData: [] as BookingInterfaceId[],
-        idData: {} as BookingInterfaceId,
-        allStatus: ApiStatus.idle,
-        idStatus: ApiStatus.idle,
-        createStatus: ApiStatus.idle,
-        updateStatus: ApiStatus.idle,
-        deleteStatus: ApiStatus.idle,
-        errorMessage: null
-    } as BookingStateInterface,
-    reducers: {},
+    initialState,
+    reducers: {
+        resetBookingAllStatus(state) {
+            state.allStatus = ApiStatus.idle
+            state.errorMessage = null
+        },
+        resetBookingIdStatus(state) {
+            state.idStatus = ApiStatus.idle
+            state.errorMessage = null
+        }
+    },
     extraReducers: (builder) => {
         builder
+            .addCase(resetStore, () => initialState)
+
             .addCase(BookingFetchAllThunk.pending, (state) => {
                 state.allStatus = ApiStatus.pending
                 state.errorMessage = null
@@ -166,6 +180,7 @@ export const BookingSlice = createSlice({
 
 export const getBookingAllData = (state: RootState): BookingInterfaceId[] => state.bookingSlice.allData
 export const getBookingIdData = (state: RootState): BookingInterfaceId => state.bookingSlice.idData
+export const { resetBookingAllStatus, resetBookingIdStatus } = BookingSlice.actions
 
 export const getBookingAllStatus = (state: RootState) => state.bookingSlice.allStatus
 export const getBookingIdStatus = (state: RootState) => state.bookingSlice.idStatus

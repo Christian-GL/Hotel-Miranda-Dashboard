@@ -6,6 +6,7 @@ import { UserSlice } from "../../user/features/userSlice"
 import { BookingSlice } from "../../booking/features/bookingSlice.js"
 import { authMiddleware } from "./middleware"
 
+
 export const store = configureStore({
     reducer: {
         clientSlice: ClientSlice.reducer,

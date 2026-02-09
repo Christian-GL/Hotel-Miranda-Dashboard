@@ -1,6 +1,7 @@
 
 import { createSlice } from '@reduxjs/toolkit'
 
+import { resetStore } from '../../common/redux/rootActions'
 import { ApiStatus } from '../../common/enums/ApiStatus'
 import { RoomStateInterface } from '../interfaces/roomStateInterface'
 import { RoomInterfaceId } from '../interfaces/roomInterface'
@@ -15,21 +16,34 @@ import { BookingDeleteByIdThunk } from '../../booking/features/thunks/bookingDel
 import { BookingUpdateThunk } from '../../booking/features/thunks/bookingUpdateThunk'
 
 
+const initialState: RoomStateInterface = {
+    allData: [] as RoomInterfaceId[],
+    idData: {} as RoomInterfaceId,
+    allStatus: ApiStatus.idle,
+    idStatus: ApiStatus.idle,
+    createStatus: ApiStatus.idle,
+    updateStatus: ApiStatus.idle,
+    deleteStatus: ApiStatus.idle,
+    errorMessage: null
+}
+
 export const RoomSlice = createSlice({
     name: 'room',
-    initialState: {
-        allData: [] as RoomInterfaceId[],
-        idData: {} as RoomInterfaceId,
-        allStatus: ApiStatus.idle,
-        idStatus: ApiStatus.idle,
-        createStatus: ApiStatus.idle,
-        updateStatus: ApiStatus.idle,
-        deleteStatus: ApiStatus.idle,
-        errorMessage: null
-    } as RoomStateInterface,
-    reducers: {},
+    initialState,
+    reducers: {
+        resetRoomAllStatus(state) {
+            state.allStatus = ApiStatus.idle
+            state.errorMessage = null
+        },
+        resetRoomIdStatus(state) {
+            state.idStatus = ApiStatus.idle
+            state.errorMessage = null
+        }
+    },
     extraReducers: (builder) => {
         builder
+            .addCase(resetStore, () => initialState)
+
             .addCase(RoomFetchAllThunk.pending, (state) => {
                 state.allStatus = ApiStatus.pending
                 state.errorMessage = null
@@ -155,6 +169,7 @@ export const RoomSlice = createSlice({
 
 export const getRoomAllData = (state: RootState): RoomInterfaceId[] => state.roomSlice.allData
 export const getRoomIdData = (state: RootState): RoomInterfaceId => state.roomSlice.idData
+export const { resetRoomAllStatus, resetRoomIdStatus } = RoomSlice.actions
 
 export const getRoomAllStatus = (state: RootState) => state.roomSlice.allStatus
 export const getRoomIdStatus = (state: RootState) => state.roomSlice.idStatus

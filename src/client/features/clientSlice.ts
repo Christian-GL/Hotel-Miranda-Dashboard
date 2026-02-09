@@ -1,6 +1,7 @@
 
 import { createSlice } from '@reduxjs/toolkit'
 
+import { resetStore } from '../../common/redux/rootActions'
 import { ApiStatus } from '../../common/enums/ApiStatus'
 import { ClientStateInterface } from '../interfaces/clientStateInterface'
 import { ClientInterfaceId } from '../interfaces/clientInterface'
@@ -17,21 +18,34 @@ import { RoomUpdateThunk } from '../../room/features/thunks/roomUpdateThunk'
 import { RoomDeleteByIdThunk } from '../../room/features/thunks/roomDeleteByIdThunk'
 
 
+const initialState: ClientStateInterface = {
+    allData: [] as ClientInterfaceId[],
+    idData: {} as ClientInterfaceId,
+    allStatus: ApiStatus.idle,
+    idStatus: ApiStatus.idle,
+    createStatus: ApiStatus.idle,
+    updateStatus: ApiStatus.idle,
+    deleteStatus: ApiStatus.idle,
+    errorMessage: null
+}
+
 export const ClientSlice = createSlice({
     name: 'client',
-    initialState: {
-        allData: [] as ClientInterfaceId[],
-        idData: {} as ClientInterfaceId,
-        allStatus: ApiStatus.idle,
-        idStatus: ApiStatus.idle,
-        createStatus: ApiStatus.idle,
-        updateStatus: ApiStatus.idle,
-        deleteStatus: ApiStatus.idle,
-        errorMessage: null
-    } as ClientStateInterface,
-    reducers: {},
+    initialState,
+    reducers: {
+        resetClientAllStatus(state) {
+            state.allStatus = ApiStatus.idle
+            state.errorMessage = null
+        },
+        resetClientIdStatus(state) {
+            state.idStatus = ApiStatus.idle
+            state.errorMessage = null
+        }
+    },
     extraReducers: (builder) => {
         builder
+            .addCase(resetStore, () => initialState)
+
             .addCase(ClientFetchAllThunk.pending, (state) => {
                 state.allStatus = ApiStatus.pending
                 state.errorMessage = null
@@ -181,6 +195,7 @@ export const ClientSlice = createSlice({
 
 export const getClientAllData = (state: RootState): ClientInterfaceId[] => state.clientSlice.allData
 export const getClientIdData = (state: RootState): ClientInterfaceId => state.clientSlice.idData
+export const { resetClientAllStatus, resetClientIdStatus } = ClientSlice.actions
 
 export const getClientAllStatus = (state: RootState) => state.clientSlice.allStatus
 export const getClientIdStatus = (state: RootState) => state.clientSlice.idStatus

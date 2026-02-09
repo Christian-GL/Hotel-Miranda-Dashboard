@@ -1,6 +1,7 @@
 
 import { createSlice } from '@reduxjs/toolkit'
 
+import { resetStore } from '../../common/redux/rootActions'
 import { ApiStatus } from '../../common/enums/ApiStatus'
 import { UserStateInterface } from '../interfaces/userStateInterface'
 import { UserInterfaceId } from '../interfaces/userInterface'
@@ -12,21 +13,34 @@ import { UserUpdateThunk } from './thunks/userUpdateThunk'
 import { UserDeleteByIdThunk } from './thunks/userDeleteByIdThunk'
 
 
+const initialState: UserStateInterface = {
+    allData: [] as UserInterfaceId[],
+    idData: {} as UserInterfaceId,
+    allStatus: ApiStatus.idle,
+    idStatus: ApiStatus.idle,
+    createStatus: ApiStatus.idle,
+    updateStatus: ApiStatus.idle,
+    deleteStatus: ApiStatus.idle,
+    errorMessage: null
+}
+
 export const UserSlice = createSlice({
     name: 'user',
-    initialState: {
-        allData: [] as UserInterfaceId[],
-        idData: {} as UserInterfaceId,
-        allStatus: ApiStatus.idle,
-        idStatus: ApiStatus.idle,
-        createStatus: ApiStatus.idle,
-        updateStatus: ApiStatus.idle,
-        deleteStatus: ApiStatus.idle,
-        errorMessage: null
-    } as UserStateInterface,
-    reducers: {},
+    initialState,
+    reducers: {
+        resetUserAllStatus(state) {
+            state.allStatus = ApiStatus.idle
+            state.errorMessage = null
+        },
+        resetUserIdStatus(state) {
+            state.idStatus = ApiStatus.idle
+            state.errorMessage = null
+        }
+    },
     extraReducers: (builder) => {
         builder
+            .addCase(resetStore, () => initialState)
+
             .addCase(UserFetchAllThunk.pending, (state) => {
                 state.allStatus = ApiStatus.pending
                 state.errorMessage = null
@@ -109,6 +123,7 @@ export const UserSlice = createSlice({
 
 export const getUserAllData = (state: RootState): UserInterfaceId[] => state.userSlice.allData
 export const getUserIdData = (state: RootState): UserInterfaceId => state.userSlice.idData
+export const { resetUserAllStatus, resetUserIdStatus } = UserSlice.actions
 
 export const getUserAllStatus = (state: RootState) => state.userSlice.allStatus
 export const getUserIdStatus = (state: RootState) => state.userSlice.idStatus
