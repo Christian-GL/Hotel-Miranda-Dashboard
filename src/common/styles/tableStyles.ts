@@ -159,9 +159,9 @@ export const IconOptions = styled(SlOptionsVertical)`
 `
 
 export const CtnOptions = styled.div<{ display: string, isInTable: boolean }>`
-    z-index: 1;
+    z-index: 0.1;
     position: absolute;
-    top: calc(100% + 0.5rem);
+    top: ${props => props.isInTable ? 'calc(100% + 0.5rem)' : 'calc(100% - 4rem)'};
     right: 0;
     display: ${props => props.display};
     flex-direction: column;
@@ -276,6 +276,11 @@ export const ButtonView = styled.button`
     cursor: pointer;
     color: ${props => props.theme.buttonTextTable};
     background-color: ${props => props.theme.buttonBackgroundTable};
+
+    &:hover {
+        transition: 0.25s;
+        transform: scale(1.1);
+    }
 `
 
 export const ButtonPublishArchive = styled.button<{ archived: boolean }>`

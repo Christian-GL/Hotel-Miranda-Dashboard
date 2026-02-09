@@ -16,6 +16,7 @@ import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { formatDateForPrint } from "../../../common/utils/dateUtils"
 import { applyDiscount } from '../../../common/utils/tableUtils'
 import { customPopupMessage } from '../../../common/utils/customPopupMessage'
+import { handleSelectionPopupMessage } from '../../../common/utils/selectionPopupMessage'
 import { PopupText } from "../../../common/components/popupText/popupText"
 import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
 import { ToastContainer, toast } from 'react-toastify'
@@ -140,7 +141,13 @@ export const BookingDetails = () => {
         ? <ToastContainer />
         : <styles.PageBookingDetails>
 
-            {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
+            {showPopup && <PopupText
+                title={infoPopup.title}
+                text={infoPopup.text}
+                onConfirm={infoPopup.onConfirm}
+                onCancel={infoPopup.onCancel}
+                onClose={() => { setShowPopup(false); setOptionsDisplayed(false) }}
+            />}
 
             <styles.Section padding='2em'>
                 <styles.CtnMainData>
@@ -163,15 +170,29 @@ export const BookingDetails = () => {
                         <CtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} isInTable={false}>
                             <ButtonOption onClick={() => { navigateBackToBookings() }}>Go back to bookings</ButtonOption>
                             <ButtonOption onClick={() => { navigate(`../booking-update/${bookingById._id}`) }}>Update</ButtonOption>
-                            <ButtonOption onClick={() => {
-                                toggleArchivedThisBooking()
-                                navigateBackToBookings()
-                            }}> {bookingById.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
+                            <ButtonOption
+                                onClick={() => handleSelectionPopupMessage(
+                                    setInfoPopup,
+                                    setShowPopup,
+                                    `${bookingById.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'} booking #${bookingById._id}`,
+                                    `Are you sure you want to ${bookingById.isArchived === OptionYesNo.no ? 'archive' : 'unarchive'} this booking?`,
+                                    () => { toggleArchivedThisBooking(); navigateBackToBookings() },
+                                    () => setOptionsDisplayed(false)
+                                )}
+                            >{bookingById.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
                             </ButtonOption>
                             <ButtonOption
                                 onClick={getRole() === Role.admin
-                                    ? () => { deleteThisBooking() }
-                                    : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
+                                    ? () => handleSelectionPopupMessage(
+                                        setInfoPopup,
+                                        setShowPopup,
+                                        `Delete booking #${bookingById._id}`,
+                                        'Are you sure you want to delete this booking? This action cannot be undone.',
+                                        () => { deleteThisBooking(); navigateBackToBookings() },
+                                        () => setOptionsDisplayed(false)
+                                    )
+                                    : () => handleNonAdminClick(setInfoPopup, setShowPopup)
+                                }
                                 disabledClick={getRole() !== Role.admin}
                             >Delete
                             </ButtonOption>

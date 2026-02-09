@@ -209,6 +209,7 @@ export const IconWiFi = styled(FaWifi)`
 `
 
 export const SwiperCustom = styled.div`
+    z-index: 0;
     position: relative;
     height: 100%;
 

@@ -238,7 +238,7 @@ export const BookingMain = () => {
             case BookingStatus.checkOut:
                 return <BookingStatusInfo status={status}>Check-out</BookingStatusInfo>
             default:
-                return <TextCell>Status error</TextCell>
+                return <BookingStatusInfo status={status}>Status error</BookingStatusInfo>
         }
     }
 
@@ -316,7 +316,6 @@ export const BookingMain = () => {
                             .map(roomId => roomAll.find(room => room._id === roomId)?.number)
                             .filter((number): number is string => Boolean(number))
 
-
                         return (
                             <React.Fragment key={bookingData._id}>
                                 <CtnCell>
@@ -337,7 +336,9 @@ export const BookingMain = () => {
                                 </CtnCell>
 
                                 <CtnCell>
-                                    {renderBookingStatus(checkBookingStatus(bookingData.check_in_date, bookingData.check_out_date))}
+                                    {
+                                        renderBookingStatus(checkBookingStatus(bookingData.check_in_date, bookingData.check_out_date))
+                                    }
                                 </CtnCell>
 
                                 <CtnCell flexdirection='column' alignitems='left' justifycontent='center'>
