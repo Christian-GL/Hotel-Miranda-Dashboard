@@ -1,6 +1,7 @@
 
 import { BookingInterfaceId } from './bookingInterface'
 import { ApiStatus } from "../../common/enums/ApiStatus"
+import { ApiErrorResponseInterface } from 'common/interfaces/apiResponses/apiErrorResponseInterface'
 
 export interface BookingStateInterface {
     allData: BookingInterfaceId[]
@@ -10,5 +11,5 @@ export interface BookingStateInterface {
     createStatus: ApiStatus
     updateStatus: ApiStatus
     deleteStatus: ApiStatus
-    errorMessage: string | null
+    apiError: ApiErrorResponseInterface | null
 }

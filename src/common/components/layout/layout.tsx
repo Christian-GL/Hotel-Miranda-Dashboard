@@ -18,10 +18,10 @@ import { PopupTextInterface } from '../../../common/interfaces/popupTextInterfac
 import { AppDispatch } from "../../redux/store"
 import { useLoginOptionsContext } from '../../../signIn/features/loginProvider'
 import { ApiStatus } from "../../enums/ApiStatus"
-import { getBookingAllStatus, getBookingIdStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
-import { getRoomAllStatus, getRoomIdStatus, getRoomErrorMessage } from "../../../room/features/roomSlice"
-import { getClientAllStatus, getClientIdStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
-import { getUserAllStatus, getUserIdStatus, getUserIdData, getUserErrorMessage } from "../../../user/features/userSlice"
+import { getBookingAllStatus, getBookingIdStatus, getBookingApIError } from "../../../booking/features/bookingSlice"
+import { getRoomAllStatus, getRoomIdStatus, getRoomApiError } from "../../../room/features/roomSlice"
+import { getClientAllStatus, getClientIdStatus, getClientApiError } from "../../../client/features/clientSlice"
+import { getUserAllStatus, getUserIdStatus, getUserIdData, getUserApiError } from "../../../user/features/userSlice"
 import { UserFetchByIDThunk } from "../../../user/features/thunks/userFetchByIDThunk"
 
 
@@ -36,17 +36,17 @@ export const Layout = () => {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(true)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
-    const bookingErrorMessage = useSelector(getBookingErrorMessage)
+    const bookingApiError = useSelector(getBookingApIError)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const roomByIdLoading: ApiStatus = useSelector(getRoomIdStatus)
-    const roomErrorMessage = useSelector(getRoomErrorMessage)
+    const roomApiError = useSelector(getRoomApiError)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const clientByIdLoading: ApiStatus = useSelector(getClientIdStatus)
-    const clientErrorMessage = useSelector(getClientErrorMessage)
+    const clientApiError = useSelector(getClientApiError)
     const userById = useSelector(getUserIdData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const userByIdLoading: ApiStatus = useSelector(getUserIdStatus)
-    const userErrorMessage = useSelector(getUserErrorMessage)
+    const userApiError = useSelector(getUserApiError)
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
     const loggedUserID = localStorage.getItem('loggedUserID') || null
@@ -65,31 +65,31 @@ export const Layout = () => {
                 dispatch(UserFetchByIDThunk(loggedUserID))
             }
         }
-        else if (userByIdLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
+        else if (userByIdLoading === ApiStatus.rejected && userApiError) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userApiError.message) }
     }, [userByIdLoading, userById, loggedUserID])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.pending) { ToastifyLoadingData(1, 'Loading all booking data...') } else { toast.dismiss(1) }
         if (bookingByIdLoading === ApiStatus.pending) { ToastifyLoadingData(2, 'Loading booking data...') } else { toast.dismiss(2) }
-        if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
-        if (bookingByIdLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
+        if (bookingAllLoading === ApiStatus.rejected && bookingApiError) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingApiError.message) }
+        if (bookingByIdLoading === ApiStatus.rejected && bookingApiError) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingApiError.message) }
     }, [bookingAllLoading, bookingByIdLoading])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.pending) { ToastifyLoadingData(3, 'Loading all room data...') } else { toast.dismiss(3) }
         if (roomByIdLoading === ApiStatus.pending) { ToastifyLoadingData(4, 'Loading room data...') } else { toast.dismiss(4) }
-        if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
-        if (roomByIdLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
+        if (roomAllLoading === ApiStatus.rejected && roomApiError) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomApiError.message) }
+        if (roomByIdLoading === ApiStatus.rejected && roomApiError) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomApiError.message) }
     }, [roomAllLoading, roomByIdLoading])
     useEffect(() => {
         if (clientAllLoading === ApiStatus.pending) { ToastifyLoadingData(5, 'Loading all client data...') } else { toast.dismiss(5) }
         if (clientByIdLoading === ApiStatus.pending) { ToastifyLoadingData(6, 'Loading client data...') } else { toast.dismiss(6) }
-        if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
-        if (clientByIdLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
+        if (clientAllLoading === ApiStatus.rejected && clientApiError) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientApiError.message) }
+        if (clientByIdLoading === ApiStatus.rejected && clientApiError) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientApiError.message) }
     }, [clientAllLoading, clientByIdLoading])
     useEffect(() => {
         if (userAllLoading === ApiStatus.pending) { ToastifyLoadingData(7, 'Loading all user data...') } else { toast.dismiss(7) }
         if (userByIdLoading === ApiStatus.pending) { ToastifyLoadingData(8, 'Loading user data...') } else { toast.dismiss(8) }
-        if (userAllLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
-        if (userByIdLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
+        if (userAllLoading === ApiStatus.rejected && userApiError) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userApiError.message) }
+        if (userByIdLoading === ApiStatus.rejected && userApiError) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userApiError.message) }
     }, [userAllLoading, userByIdLoading])
 
     const switchDarkTheme = () => {
@@ -133,14 +133,14 @@ export const Layout = () => {
         userAllLoading === ApiStatus.pending ||
         userByIdLoading === ApiStatus.pending
     const someApiRequestHasError =
-        (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) ||
-        (bookingByIdLoading === ApiStatus.rejected && bookingErrorMessage) ||
-        (roomAllLoading === ApiStatus.rejected && roomErrorMessage) ||
-        (roomByIdLoading === ApiStatus.rejected && roomErrorMessage) ||
-        (clientAllLoading === ApiStatus.rejected && clientErrorMessage) ||
-        (clientByIdLoading === ApiStatus.rejected && clientErrorMessage) ||
-        (userAllLoading === ApiStatus.rejected && userErrorMessage) ||
-        (userByIdLoading === ApiStatus.rejected && userErrorMessage)
+        (bookingAllLoading === ApiStatus.rejected && bookingApiError) ||
+        (bookingByIdLoading === ApiStatus.rejected && bookingApiError) ||
+        (roomAllLoading === ApiStatus.rejected && roomApiError) ||
+        (roomByIdLoading === ApiStatus.rejected && roomApiError) ||
+        (clientAllLoading === ApiStatus.rejected && clientApiError) ||
+        (clientByIdLoading === ApiStatus.rejected && clientApiError) ||
+        (userAllLoading === ApiStatus.rejected && userApiError) ||
+        (userByIdLoading === ApiStatus.rejected && userApiError)
 
 
     return !isAuthenticated

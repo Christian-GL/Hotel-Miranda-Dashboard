@@ -12,6 +12,7 @@ import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
 import { RoomInterface } from "../../interfaces/roomInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { RoomAmenities } from "../../enums/roomAmenities"
 import { RoomType } from "../../enums/roomType"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
@@ -106,7 +107,10 @@ export const RoomCreate = () => {
                 .then(() => ToastifySuccess('Room created', () => navigate('../')))
         }
         catch (error) {
-            ToastifyError(String(error))
+            const apiError = error as ApiErrorResponseInterface
+            apiError.message
+                ? ToastifyError(apiError.message)
+                : ToastifyError('Unexpected API Error')
         }
     }
 

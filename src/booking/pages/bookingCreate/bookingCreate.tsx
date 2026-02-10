@@ -12,6 +12,7 @@ import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
 import { BookingInterfaceCheckInOut, BookingInterface } from "../../interfaces/bookingInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
     validateCheckInCheckOutNewBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupied
@@ -162,8 +163,11 @@ export const BookingCreate = () => {
                 .unwrap()
                 .then(() => ToastifySuccess('Booking created', () => navigate('../')))
         }
-        catch (error: any) {
-            if (error?.message) { ToastifyError('API Error: ' + error.message) }
+        catch (error) {
+            const apiError = error as ApiErrorResponseInterface
+            apiError.message
+                ? ToastifyError(apiError.message)
+                : ToastifyError('Unexpected API Error')
         }
     }
 

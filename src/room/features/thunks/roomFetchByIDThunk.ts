@@ -1,12 +1,13 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { RoomInterfaceId } from "../../interfaces/roomInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 
 export const RoomFetchByIDThunk = createAsyncThunk<
     RoomInterfaceId,
     string,
-    { rejectValue: { status: number; message: string } }
+    { rejectValue: ApiErrorResponseInterface }
 >(
     "room/fetchById",
     async (roomId, { rejectWithValue }) => {
@@ -52,7 +53,10 @@ export const RoomFetchByIDThunk = createAsyncThunk<
             }
         }
         catch (error) {
-            return rejectWithValue({ status: 500, message: 'Network or server error' })
+            return rejectWithValue({
+                status: 500,
+                message: 'Network or server error'
+            })
         }
 
     })

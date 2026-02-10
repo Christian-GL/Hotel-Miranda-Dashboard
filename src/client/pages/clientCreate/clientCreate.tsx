@@ -12,6 +12,7 @@ import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
 import { ClientInterface } from "../../interfaces/clientInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
 import {
@@ -76,7 +77,10 @@ export const ClientCreate = () => {
                 .then(() => ToastifySuccess('Client created', () => navigate('../')))
         }
         catch (error) {
-            ToastifyError(String(error))
+            const apiError = error as ApiErrorResponseInterface
+            apiError.message
+                ? ToastifyError(apiError.message)
+                : ToastifyError('Unexpected API Error')
         }
     }
 

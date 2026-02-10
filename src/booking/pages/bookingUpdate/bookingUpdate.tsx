@@ -13,6 +13,7 @@ import { AppDispatch } from "../../../common/redux/store"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
 import { BookingInterfaceCheckInOutId, BookingInterfaceId } from "../../interfaces/bookingInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { formatDateForInput } from "../../../common/utils/dateUtils"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
@@ -184,7 +185,10 @@ export const BookingUpdate = () => {
                 .then(() => ToastifySuccess('Booking updated', () => navigate('../')))
         }
         catch (error) {
-            ToastifyError(String(error))
+            const apiError = error as ApiErrorResponseInterface
+            apiError.message
+                ? ToastifyError(apiError.message)
+                : ToastifyError('Unexpected API Error')
         }
     }
 

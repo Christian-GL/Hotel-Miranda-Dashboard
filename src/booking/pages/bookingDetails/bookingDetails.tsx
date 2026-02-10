@@ -30,7 +30,7 @@ import { BookingFetchByIDThunk } from "../../features/thunks/bookingFetchByIDThu
 import { BookingUpdateThunk } from "./../../features/thunks/bookingUpdateThunk"
 import { BookingDeleteByIdThunk } from "../../features/thunks/bookingDeleteByIdThunk"
 import { ClientInterfaceId } from "../../../client/interfaces/clientInterface"
-import { getClientIdData, getClientIdStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
+import { getClientIdData, getClientIdStatus, getClientApiError } from "../../../client/features/clientSlice"
 import { ClientFetchByIDThunk } from "../../../client/features/thunks/clientFetchByIDThunk"
 import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "../../../room/features/roomSlice"
 import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"

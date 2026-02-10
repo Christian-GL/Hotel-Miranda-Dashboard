@@ -16,6 +16,7 @@ import { JobPosition } from "../../enums/jobPosition"
 import { Role } from "../../enums/role"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
 import { UserInterfaceId } from "../../interfaces/userInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { formatDateForInput } from "../../../common/utils/dateUtils"
@@ -137,7 +138,10 @@ export const UserUpdate = () => {
                 .then(() => ToastifySuccess('User updated', () => navigate('../')))
         }
         catch (error) {
-            ToastifyError(String(error))
+            const apiError = error as ApiErrorResponseInterface
+            apiError.message
+                ? ToastifyError(apiError.message)
+                : ToastifyError('Unexpected API Error')
         }
     }
 

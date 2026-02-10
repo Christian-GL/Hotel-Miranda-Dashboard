@@ -1,12 +1,13 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { ClientDeleteResponseInterface } from '../../../common/interfaces/apiResponses/clientDeleteResponseInterface'
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 
 export const ClientDeleteByIdThunk = createAsyncThunk<
     ClientDeleteResponseInterface,
     string,
-    { rejectValue: { status: number; message: string } }
+    { rejectValue: ApiErrorResponseInterface }
 >(
     "client/deleteById",
     async (clientId, { rejectWithValue }) => {
@@ -40,7 +41,10 @@ export const ClientDeleteByIdThunk = createAsyncThunk<
             }
         }
         catch (error) {
-            return rejectWithValue({ status: 500, message: 'Network or server error' })
+            return rejectWithValue({
+                status: 500,
+                message: 'Network or server error'
+            })
         }
 
     })

@@ -1,6 +1,8 @@
 
 import { RoomInterfaceId } from './roomInterface'
 import { ApiStatus } from "../../common/enums/ApiStatus"
+import { ApiErrorResponseInterface } from 'common/interfaces/apiResponses/apiErrorResponseInterface'
+
 
 export interface RoomStateInterface {
     allData: RoomInterfaceId[]
@@ -10,5 +12,5 @@ export interface RoomStateInterface {
     createStatus: ApiStatus
     updateStatus: ApiStatus
     deleteStatus: ApiStatus
-    errorMessage: string | null
+    apiError: ApiErrorResponseInterface | null
 }

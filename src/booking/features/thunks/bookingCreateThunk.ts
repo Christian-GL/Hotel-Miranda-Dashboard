@@ -2,12 +2,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { BookingInterface } from '../../interfaces/bookingInterface'
 import { BookingCreateResponseInterface } from '../../../common/interfaces/apiResponses/bookingCreateResponseInterface'
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 
 export const BookingCreateThunk = createAsyncThunk<
     BookingCreateResponseInterface,
     BookingInterface,
-    { rejectValue: { status: number; message: string } }
+    { rejectValue: ApiErrorResponseInterface }
 >(
     "booking/create",
     async (newBookingData, { rejectWithValue }) => {
@@ -42,7 +43,10 @@ export const BookingCreateThunk = createAsyncThunk<
             }
         }
         catch (error) {
-            return rejectWithValue({ status: 500, message: 'Network or server error' })
+            return rejectWithValue({
+                status: 500,
+                message: 'Network or server error'
+            })
         }
 
     })

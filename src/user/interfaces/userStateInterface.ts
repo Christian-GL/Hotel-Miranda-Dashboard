@@ -1,6 +1,7 @@
 
 import { UserInterfaceId } from "./userInterface"
 import { ApiStatus } from "../../common/enums/ApiStatus"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 export interface UserStateInterface {
     allData: UserInterfaceId[]
@@ -10,5 +11,5 @@ export interface UserStateInterface {
     createStatus: ApiStatus
     updateStatus: ApiStatus
     deleteStatus: ApiStatus
-    errorMessage: string | null
+    apiError: ApiErrorResponseInterface | null
 }

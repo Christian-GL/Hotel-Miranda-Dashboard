@@ -14,6 +14,7 @@ import { JobPosition } from "../../enums/jobPosition"
 import { Role } from "../../enums/role"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
 import { UserInterface } from "../../interfaces/userInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import {
@@ -25,7 +26,7 @@ import {
     Text, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getUserAllData, getUserAllStatus, getUserErrorMessage } from "../../features/userSlice"
+import { getUserAllData, getUserAllStatus, getUserApiError } from "../../features/userSlice"
 import { UserFetchAllThunk } from "../../features/thunks/userFetchAllThunk"
 import { UserCreateThunk } from "../../features/thunks/userCreateThunk"
 
@@ -36,7 +37,7 @@ export const UserCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const userAll = useSelector(getUserAllData)
     const userAllLoading = useSelector(getUserAllStatus)
-    const userErrorMessage = useSelector(getUserErrorMessage)
+    const userErrorMessage = useSelector(getUserApiError)
     const [newUser, setNewUser] = useState<UserInterface>({
         photo: null,
         full_name: '',
@@ -111,7 +112,10 @@ export const UserCreate = () => {
                 .then(() => ToastifySuccess('User created', () => navigate('../')))
         }
         catch (error) {
-            ToastifyError(String(error))
+            const apiError = error as ApiErrorResponseInterface
+            apiError.message
+                ? ToastifyError(apiError.message)
+                : ToastifyError('Unexpected API Error')
         }
     }
 
