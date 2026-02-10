@@ -64,17 +64,22 @@ export const BookingUpdate = () => {
         handleMultiSelectChange
     } = createFormHandlers(setBookingUpdated)
 
-    const roomsAvailable = roomAll.filter(room => {
-        const bookingsOfRoom: BookingInterfaceCheckInOutId[] = bookingAll
-            .filter(booking => booking.room_id_list.includes(room._id))
-            .map(booking => ({
-                _id: booking._id,
-                check_in_date: booking.check_in_date,
-                check_out_date: booking.check_out_date
-            }))
+    const roomsAvailable = roomAll
+        .filter(room => room.isArchived === OptionYesNo.no)
+        .filter(room => {
+            const bookingsOfRoom: BookingInterfaceCheckInOutId[] = bookingAll
+                .filter(booking =>
+                    booking.isArchived === OptionYesNo.no &&
+                    booking.room_id_list.includes(room._id)
+                )
+                .map(booking => ({
+                    _id: booking._id,
+                    check_in_date: booking.check_in_date,
+                    check_out_date: booking.check_out_date
+                }))
 
-        return validateDateIsOccupiedIfBookingExists(bookingUpdated, bookingsOfRoom).length === 0
-    })
+            return validateDateIsOccupiedIfBookingExists(bookingUpdated, bookingsOfRoom).length === 0
+        })
 
     // !!! DEBERÍA SER SUFICIENTE CON 1 DE LOS 2 PRIMEROS useEffects?
     useEffect(() => {
@@ -122,18 +127,6 @@ export const BookingUpdate = () => {
         validateOptionYesNo(bookingUpdated.isArchived, 'Booking isArchived').map(
             error => allErrorMessages.push(error)
         )
-        validateCheckInCheckOutExistingBooking(new Date(bookingUpdated.check_in_date), new Date(bookingUpdated.check_out_date)).map(
-            error => allErrorMessages.push(error)
-        )
-
-        const bookingDates: BookingInterfaceCheckInOutId[] = bookingAll.map(booking => ({
-            _id: booking._id,
-            check_in_date: booking.check_in_date,
-            check_out_date: booking.check_out_date
-        }))
-        validateDateIsOccupiedIfBookingExists(bookingUpdated, bookingDates).map(
-            error => allErrorMessages.push(error)
-        )
 
         // Comprobamos que los IDs de las rooms y el cliente asociados a la booking existan en BD
         const allRoomIdsNotArchived: string[] = roomAll
@@ -150,6 +143,29 @@ export const BookingUpdate = () => {
         if (!allClientIdsNotArchived.includes(bookingUpdated.client_id)) {
             allErrorMessages.push(`Client ID: ${bookingUpdated.client_id} didn't exist in DB or is archived`)
         }
+
+        // Validaciones de booking existente:
+        validateCheckInCheckOutExistingBooking(new Date(bookingUpdated.check_in_date), new Date(bookingUpdated.check_out_date)).map(
+            error => allErrorMessages.push(error)
+        )
+        const allBookingDatesAndIdByRoomsNotArchived: BookingInterfaceCheckInOutId[] =
+            bookingAll
+                .filter(booking =>
+                    booking.isArchived === OptionYesNo.no &&
+                    booking.room_id_list.some(roomId =>
+                        bookingUpdated.room_id_list.includes(roomId)
+                    )
+                )
+                .map(booking => ({
+                    _id: booking._id,
+                    check_in_date: new Date(booking.check_in_date),
+                    check_out_date: new Date(booking.check_out_date)
+                }))
+        validateDateIsOccupiedIfBookingExists(bookingUpdated, allBookingDatesAndIdByRoomsNotArchived).map(
+            error => allErrorMessages.push(error)
+        )
+
+
 
         return allErrorMessages
     }

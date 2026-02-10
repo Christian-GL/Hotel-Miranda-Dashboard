@@ -62,16 +62,21 @@ export const BookingCreate = () => {
     const datesSelected = checkInTouched && checkOutTouched
     const roomsAvailable = !datesSelected
         ? []
-        : roomAll.filter(room => {
-            const bookingsOfRoom: BookingInterfaceCheckInOut[] = bookingAll
-                .filter(booking => booking.room_id_list.includes(room._id))
-                .map(booking => ({
-                    check_in_date: booking.check_in_date,
-                    check_out_date: booking.check_out_date
-                }))
+        : roomAll
+            .filter(room => room.isArchived === OptionYesNo.no)
+            .filter(room => {
+                const bookingsOfRoom: BookingInterfaceCheckInOut[] = bookingAll
+                    .filter(booking =>
+                        booking.isArchived === OptionYesNo.no &&
+                        booking.room_id_list.includes(room._id)
+                    )
+                    .map(booking => ({
+                        check_in_date: booking.check_in_date,
+                        check_out_date: booking.check_out_date
+                    }))
 
-            return validateDateIsOccupied(newBooking, bookingsOfRoom).length === 0
-        })
+                return validateDateIsOccupied(newBooking, bookingsOfRoom).length === 0
+            })
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -99,17 +104,6 @@ export const BookingCreate = () => {
         validateOptionYesNo(newBooking.isArchived, 'Booking isArchived').map(
             error => allErrorMessages.push(error)
         )
-        validateCheckInCheckOutNewBooking(newBooking.check_in_date, newBooking.check_out_date).map(
-            error => allErrorMessages.push(error)
-        )
-
-        const bookingDates: BookingInterfaceCheckInOut[] = bookingAll.map(booking => ({
-            check_in_date: booking.check_in_date,
-            check_out_date: booking.check_out_date
-        }))
-        validateDateIsOccupied(newBooking, bookingDates).map(
-            error => allErrorMessages.push(error)
-        )
 
         // Comprobamos que los IDs de las rooms y el cliente asociados a la booking existan en BD
         const allRoomIdsNotArchived: string[] = roomAll
@@ -126,6 +120,26 @@ export const BookingCreate = () => {
         if (!allClientIdsNotArchived.includes(newBooking.client_id)) {
             allErrorMessages.push(`Client ID: ${newBooking.client_id} didn't exist in DB or is archived`)
         }
+
+        // Validaciones de nueva booking:
+        validateCheckInCheckOutNewBooking(newBooking.check_in_date, newBooking.check_out_date).map(
+            error => allErrorMessages.push(error)
+        )
+        const allBookingDatesByRoomsNotArchived: BookingInterfaceCheckInOut[] =
+            bookingAll
+                .filter(booking =>
+                    booking.isArchived === OptionYesNo.no &&
+                    booking.room_id_list.some(roomId =>
+                        newBooking.room_id_list.includes(roomId)
+                    )
+                )
+                .map(booking => ({
+                    check_in_date: new Date(booking.check_in_date),
+                    check_out_date: new Date(booking.check_out_date)
+                }))
+        validateDateIsOccupied(newBooking, allBookingDatesByRoomsNotArchived).map(
+            error => allErrorMessages.push(error)
+        )
 
         return allErrorMessages
     }
@@ -148,8 +162,8 @@ export const BookingCreate = () => {
                 .unwrap()
                 .then(() => ToastifySuccess('Booking created', () => navigate('../')))
         }
-        catch (error) {
-            ToastifyError(String(error))
+        catch (error: any) {
+            if (error?.message) { ToastifyError('API Error: ' + error.message) }
         }
     }
 
@@ -202,26 +216,8 @@ export const BookingCreate = () => {
                                         </Option>
                                     ))}
                         </SelectMultipleOptions>
-                        {/* <Select
-                            name="room_id_list"
-                            onChange={handleSelectAppendToArray("room_id_list")}
-                            value={newBooking.room_id_list[0]}
-                            disabled={!datesSelected || roomsAvailable.length === 0}
-                        >
-                            {!datesSelected
-                                ? (<Option value="null" disabled>⚠️ Select Check-in date & Check-out date first</Option>)
-                                : roomsAvailable.length === 0
-                                    ? (<Option value="null" disabled>❌ No rooms available for the selected dates</Option>)
-                                    : (<>
-                                        <Option value="null"></Option>
-                                        {roomsAvailable.map(room => (
-                                            <Option value={room._id}>
-                                                {room.number}
-                                            </Option>
-                                        ))}</>
-                                    )}
-                        </Select> */}
 
+                        {/* !!! SOLO LOS NO ARCHIVADOS */}
                         <Text minWidth="10rem" margin="0 0 0 5rem">Client</Text>
                         <Select name="client_id" onChange={handleSelectChange}>
                             <Option value="null"></Option>
@@ -232,24 +228,6 @@ export const BookingCreate = () => {
                             ))}
                         </Select>
                     </CtnEntry>
-
-                    {/* <CtnEntry>
-                        {newBooking.room_id_list.length > 0 && (
-                            <ArrayBox>
-                                {newBooking.room_id_list.map((room, index) => (
-                                    <ArrayItem key={index}>
-                                        {room}
-                                        <ButtonAddDelete
-                                            margin="0 0 0 0.35rem"
-                                            isAdd={false}
-                                        // onClick={() => handleRemoveTelefono(index)}
-                                        > &times;
-                                        </ButtonAddDelete>
-                                    </ArrayItem>
-                                ))}
-                            </ArrayBox>
-                        )}
-                    </CtnEntry> */}
 
                     <CtnEntry>
                         <Text>Special request</Text>
