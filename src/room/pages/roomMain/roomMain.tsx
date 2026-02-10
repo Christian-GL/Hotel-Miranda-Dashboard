@@ -34,11 +34,11 @@ import {
     EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, TextStatusAvailableUsers,
     ImgRoom, CtnCell, TextCell, TextId, TextStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
-import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "./../../features/roomSlice"
+import { getRoomAllData, getRoomAllStatus } from "./../../features/roomSlice"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
 import { RoomUpdateThunk } from "./../../features/thunks/roomUpdateThunk"
 import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk"
-import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
+import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 import { BookingInterfaceId } from "../../../booking/interfaces/bookingInterface"
 
@@ -50,10 +50,8 @@ export const RoomMain = () => {
     const { getRole } = useLoginOptionsContext()
     const roomAll: RoomInterfaceId[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
-    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const bookingAll: BookingInterfaceId[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
-    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<string>('')
     const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.active)
@@ -88,12 +86,9 @@ export const RoomMain = () => {
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
         else if (roomAllLoading === ApiStatus.fulfilled) { displayRooms() }
-        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
     }, [roomAllLoading, roomAll, inputText, activeFilterButton, archivedFilterButton, arrowStates])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
-        else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
 
     const filterByIdOrNumber = (rooms: RoomInterfaceId[], searchText: string): RoomInterfaceId[] => {

@@ -59,8 +59,6 @@ export const UserCreate = () => {
 
     useEffect(() => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
-        else if (userAllLoading === ApiStatus.fulfilled) { }
-        else if (userAllLoading === ApiStatus.rejected && userErrorMessage) { ToastifyError(userErrorMessage) }
     }, [userAllLoading, userAll, userErrorMessage])
 
     const validateAllData = (): string[] => {

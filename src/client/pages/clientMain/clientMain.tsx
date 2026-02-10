@@ -39,15 +39,15 @@ import {
     TextCell, TextId, TotalBookingStatus, IconPhone, ButtonView, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption,
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
-import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../features/clientSlice"
+import { getClientAllData, getClientAllStatus } from "../../features/clientSlice"
 import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
 import { ClientUpdateThunk } from "./../../features/thunks/clientUpdateThunk"
 import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
 import { RoomInterfaceId } from "room/interfaces/roomInterface"
-import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../../../room/features/roomSlice"
+import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
 import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
 import { BookingInterfaceId } from "../../../booking/interfaces/bookingInterface"
-import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
+import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 
 
@@ -58,13 +58,10 @@ export const ClientMain = () => {
     const { getRole } = useLoginOptionsContext()
     const clientAll: ClientInterfaceId[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
-    const clientErrorMessage = useSelector(getClientErrorMessage)
     const bookingAll: BookingInterfaceId[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
-    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const roomAll: RoomInterfaceId[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
-    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<string>('')
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
@@ -92,17 +89,12 @@ export const ClientMain = () => {
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
         else if (clientAllLoading === ApiStatus.fulfilled) { displayClients() }
-        else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
     }, [clientAllLoading, clientAll, inputText, archivedFilterButton, arrowStates])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
-        else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
     }, [roomAllLoading, roomAll])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
-        else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
 
     const filterByIdOrNameOrEmail = (clients: ClientInterfaceId[], searchText: string): ClientInterfaceId[] => {

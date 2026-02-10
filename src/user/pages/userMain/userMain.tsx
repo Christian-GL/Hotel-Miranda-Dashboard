@@ -35,7 +35,7 @@ import {
     TextStatusAvailableUsers, IconPhone, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
 } from "../../../common/styles/tableStyles"
 import { usePagination } from "../../../common/hooks/usePagination"
-import { getUserAllData, getUserAllStatus, getUserErrorMessage } from "./../../features/userSlice"
+import { getUserAllData, getUserAllStatus } from "./../../features/userSlice"
 import { UserFetchAllThunk } from "./../../features/thunks/userFetchAllThunk"
 import { UserUpdateThunk } from "./../../features/thunks/userUpdateThunk"
 import { UserDeleteByIdThunk } from "./../../features/thunks/userDeleteByIdThunk"
@@ -48,7 +48,6 @@ export const UserMain = () => {
     const { getRole } = useLoginOptionsContext()
     const userAll: UserInterfaceId[] = useSelector(getUserAllData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
-    const userErrorMessage = useSelector(getUserErrorMessage)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<string>('')
     const [activeFilterButton, setActiveFilterButton] = useState<ActiveButtonType>(ActiveButtonType.active)
@@ -82,7 +81,6 @@ export const UserMain = () => {
     useEffect(() => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
         else if (userAllLoading === ApiStatus.fulfilled) { displayEmployee() }
-        else if (userAllLoading === ApiStatus.rejected && userErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', userErrorMessage) }
     }, [userAllLoading, userAll, inputText, activeFilterButton, archivedFilterButton, arrowStates])
 
     const filterByIdOrName = (users: UserInterfaceId[], searchText: string): UserInterfaceId[] => {

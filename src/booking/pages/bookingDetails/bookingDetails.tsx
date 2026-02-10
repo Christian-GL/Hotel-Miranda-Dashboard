@@ -25,16 +25,15 @@ import { Role } from "../../../user/enums/role"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { RoomAmenities } from "../../../room/enums/roomAmenities"
 import { OptionYesNo } from "../../../common/enums/optionYesNo"
-import { getBookingIdData, getBookingIdStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
+import { getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice"
 import { BookingFetchByIDThunk } from "../../features/thunks/bookingFetchByIDThunk"
 import { BookingUpdateThunk } from "./../../features/thunks/bookingUpdateThunk"
 import { BookingDeleteByIdThunk } from "../../features/thunks/bookingDeleteByIdThunk"
 import { ClientInterfaceId } from "../../../client/interfaces/clientInterface"
 import { getClientIdData, getClientIdStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
 import { ClientFetchByIDThunk } from "../../../client/features/thunks/clientFetchByIDThunk"
-import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus, getRoomErrorMessage } from "../../../room/features/roomSlice"
+import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "../../../room/features/roomSlice"
 import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
-import { RoomFetchByIDThunk } from "../../../room/features/thunks/roomFetchByIDThunk"
 import { RoomInterfaceId } from "../../../room/interfaces/roomInterface"
 
 
@@ -48,7 +47,6 @@ export const BookingDetails = () => {
     const idParams = id!
     const bookingById: BookingInterfaceId = useSelector(getBookingIdData)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
-    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
     // const roomById = useSelector(getRoomIdData)
@@ -56,8 +54,6 @@ export const BookingDetails = () => {
     // const roomIndex = rooms.length
     const clientById: ClientInterfaceId = useSelector(getClientIdData)
     const clientByIdLoading: ApiStatus = useSelector(getClientIdStatus)
-    const clientErrorMessage = useSelector(getClientErrorMessage)
-    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [showPopup, setShowPopup] = useState<boolean>(false)
     const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
     const [optionsDisplayed, setOptionsDisplayed] = useState<boolean>(false)
@@ -71,17 +67,12 @@ export const BookingDetails = () => {
                 dispatch(BookingFetchByIDThunk(idParams))
             }
         }
-        else if (bookingByIdLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingByIdLoading, bookingById, id])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
-        else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
     }, [roomAllLoading, roomAll])
     useEffect(() => {
         if (clientByIdLoading === ApiStatus.idle && bookingByIdLoading === ApiStatus.fulfilled) { dispatch(ClientFetchByIDThunk(bookingById.client_id)) }
-        else if (clientByIdLoading === ApiStatus.fulfilled) { }
-        else if (clientByIdLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
     }, [clientByIdLoading, clientById, bookingByIdLoading, bookingById, id])
     useEffect(() => {
         if (!isDataLoading) {

@@ -28,7 +28,7 @@ import {
     Text, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getUserIdData, getUserIdStatus, getUserErrorMessage } from "../../features/userSlice"
+import { getUserIdData, getUserIdStatus } from "../../features/userSlice"
 import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk"
 import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk"
 
@@ -41,7 +41,6 @@ export const UserUpdate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const userById = useSelector(getUserIdData)
     const userByIdLoading = useSelector(getUserIdStatus)
-    const userErrorMessage = useSelector(getUserErrorMessage)
     const [userUpdated, setUserUpdated] = useState<UserInterfaceId>({
         _id: '0',
         photo: null,
@@ -85,7 +84,6 @@ export const UserUpdate = () => {
             })
             setOldPassword(userById.password)
         }
-        else if (userByIdLoading === ApiStatus.rejected && userErrorMessage) { ToastifyError(userErrorMessage) }
     }, [userByIdLoading, userById, id])
 
     const validateAllData = (): string[] => {

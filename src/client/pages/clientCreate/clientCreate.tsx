@@ -19,7 +19,7 @@ import {
     Form, CtnEntry, Text, InputText, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
+import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../../../client/features/thunks/clientFetchAllThunk"
 import { ClientCreateThunk } from "../../../client/features/thunks/clientCreateThunk"
 
@@ -30,7 +30,6 @@ export const ClientCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const clientAll = useSelector(getClientAllData)
     const clientAllLoading = useSelector(getClientAllStatus)
-    const clientErrorMessage = useSelector(getClientErrorMessage)
     const [newClient, setNewClient] = useState<ClientInterface>({
         full_name: '',
         email: '',
@@ -42,8 +41,6 @@ export const ClientCreate = () => {
 
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
-        else if (clientAllLoading === ApiStatus.fulfilled) { }
-        else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { ToastifyError(clientErrorMessage) }
     }, [clientAllLoading, clientAll])
 
     const validateAllData = (): string[] => {

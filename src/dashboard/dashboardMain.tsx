@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
@@ -10,19 +10,16 @@ import { AppDispatch } from '../common/redux/store'
 import { ApiStatus } from "../common/enums/ApiStatus"
 import { formatDateForPrint } from '../common/utils/dateUtils'
 import { checkBookingStatus } from '../common/utils/checkBookingStatus'
-import { customPopupMessage } from '../common/utils/customPopupMessage'
 import { getBookingStatusTotals } from "../common/utils/getBookingStatusTotals"
-import { PopupText } from "../common/components/popupText/popupText"
-import { PopupTextInterface } from '../common/interfaces/popupTextInterface'
 import { BookingArticle } from "../common/components/bookingArticle/bookingArticle"
-import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from '../booking/features/bookingSlice'
+import { getBookingAllData, getBookingAllStatus } from '../booking/features/bookingSlice'
 import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk'
-import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../client/features/clientSlice"
+import { getClientAllData, getClientAllStatus } from "../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../client/features/thunks/clientFetchAllThunk"
 import { BookingInterfaceId } from "../booking/interfaces/bookingInterface"
 import { ClientInterfaceId } from "../client/interfaces/clientInterface"
 import { RoomInterfaceId } from "../room/interfaces/roomInterface"
-import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../room/features/roomSlice"
+import { getRoomAllData, getRoomAllStatus } from "../room/features/roomSlice"
 import { RoomFetchAllThunk } from "../room/features/thunks/roomFetchAllThunk"
 
 
@@ -31,30 +28,19 @@ export const DashboardMain = () => {
     const dispatch = useDispatch<AppDispatch>()
     const bookingAll: BookingInterfaceId[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
-    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const clientAll: ClientInterfaceId[] = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
-    const clientErrorMessage = useSelector(getClientErrorMessage)
     const roomAll: RoomInterfaceId[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
-    const roomErrorMessage = useSelector(getRoomErrorMessage)
-    const [showPopup, setShowPopup] = useState<boolean>(false)
-    const [infoPopup, setInfoPopup] = useState<PopupTextInterface>({ title: '', text: '' })
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
-        else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
-        else if (clientAllLoading === ApiStatus.fulfilled) { }
-        else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', clientErrorMessage) }
     }, [clientAllLoading, clientAll])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
-        else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { customPopupMessage(setInfoPopup, setShowPopup, 'API Error', roomErrorMessage) }
     }, [roomAllLoading, roomAll])
 
     const bookingIdsAllClients: string[] = clientAll.flatMap(client => client.booking_id_list ?? [])
@@ -93,8 +79,6 @@ export const DashboardMain = () => {
                     </styles.CtnInfo>
                 </styles.ArticleKPI>
             </styles.SectionKPIs>
-
-            {showPopup && <PopupText isSlider={false} title={infoPopup.title} text={infoPopup.text} onClose={() => setShowPopup(false)} />}
 
             <styles.SectionSpecialRequest>
                 <styles.TitleSectionReviewsH5>Latest bookings by client</styles.TitleSectionReviewsH5>

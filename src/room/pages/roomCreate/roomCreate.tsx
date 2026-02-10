@@ -25,7 +25,7 @@ import {
     Text, InputText, InputTextPhoto, Select, Option, SelectMultipleOptions, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../../features/roomSlice"
+import { getRoomAllData, getRoomAllStatus } from "../../features/roomSlice"
 import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
 import { RoomCreateThunk } from "../../features/thunks/roomCreateThunk"
 
@@ -36,7 +36,6 @@ export const RoomCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
-    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [newRoom, setNewRoom] = useState<RoomInterface>({
         number: '0',
         photos: [],
@@ -57,8 +56,6 @@ export const RoomCreate = () => {
 
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
-        else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { ToastifyError(roomErrorMessage) }
     }, [roomAllLoading, roomAll])
 
     const validateAllData = (): string[] => {

@@ -21,14 +21,14 @@ import {
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getClientBookingsByRoom } from "../../../common/utils/clientBookingsByRoom"
-import { getClientIdData, getClientIdStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
+import { getClientIdData, getClientIdStatus } from "../../../client/features/clientSlice"
 import { ClientFetchByIDThunk } from "../../../client/features/thunks/clientFetchByIDThunk"
 import { ClientUpdateThunk } from '../../../client/features/thunks/clientUpdateThunk'
 import { RoomInterfaceId } from "room/interfaces/roomInterface"
-import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from "../../../room/features/roomSlice"
+import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
 import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
 import { BookingInterfaceId } from "../../../booking/interfaces/bookingInterface"
-import { getBookingAllData, getBookingAllStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
+import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
 
 
@@ -40,13 +40,10 @@ export const ClientUpdate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const clientById = useSelector(getClientIdData)
     const clientByIdLoading = useSelector(getClientIdStatus)
-    const clientErrorMessage = useSelector(getClientErrorMessage)
     const bookingAll: BookingInterfaceId[] = useSelector(getBookingAllData)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
-    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const roomAll: RoomInterfaceId[] = useSelector(getRoomAllData)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
-    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const [clientUpdated, setClientUpdated] = useState<ClientInterfaceId>({
         _id: "0",
         full_name: '',
@@ -73,17 +70,12 @@ export const ClientUpdate = () => {
                 booking_id_list: clientById.booking_id_list || []
             })
         }
-        else if (clientByIdLoading === ApiStatus.rejected && clientErrorMessage) { ToastifyError(clientErrorMessage) }
     }, [clientByIdLoading, clientById, id])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
-        else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { ToastifyError(roomErrorMessage) }
     }, [roomAllLoading, roomAll])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
-        else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { ToastifyError(bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
 
     const validateAllData = (): string[] => {

@@ -25,11 +25,11 @@ import {
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
 import { BookingUpdateThunk } from "../../../booking/features/thunks/bookingUpdateThunk"
-import { getBookingAllData, getBookingAllStatus, getBookingIdData, getBookingIdStatus, getBookingErrorMessage } from "../../../booking/features/bookingSlice"
+import { getBookingAllData, getBookingAllStatus, getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
-import { getRoomAllData, getRoomAllStatus, getRoomErrorMessage } from '../../../room/features/roomSlice'
+import { getRoomAllData, getRoomAllStatus } from '../../../room/features/roomSlice'
 import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk'
-import { getClientAllData, getClientAllStatus, getClientErrorMessage } from "../../../client/features/clientSlice"
+import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
 import { ClientFetchAllThunk } from '../../../client/features/thunks/clientFetchAllThunk'
 
 
@@ -43,13 +43,10 @@ export const BookingUpdate = () => {
     const bookingByIdLoading = useSelector(getBookingIdStatus)
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
-    const bookingErrorMessage = useSelector(getBookingErrorMessage)
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
-    const roomErrorMessage = useSelector(getRoomErrorMessage)
     const clientAll = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
-    const clientErrorMessage = useSelector(getClientErrorMessage)
     const [bookingUpdated, setBookingUpdated] = useState<BookingInterfaceId>({
         _id: '0',
         order_date: new Date(),
@@ -98,22 +95,15 @@ export const BookingUpdate = () => {
                 client_id: bookingById.client_id || '0'
             })
         }
-        else if (bookingByIdLoading === ApiStatus.rejected && bookingErrorMessage) { ToastifyError(bookingErrorMessage) }
     }, [bookingByIdLoading, bookingById, id])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
-        else if (bookingAllLoading === ApiStatus.fulfilled) { }
-        else if (bookingAllLoading === ApiStatus.rejected && bookingErrorMessage) { ToastifyError(bookingErrorMessage) }
     }, [bookingAllLoading, bookingAll])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
-        else if (roomAllLoading === ApiStatus.fulfilled) { }
-        else if (roomAllLoading === ApiStatus.rejected && roomErrorMessage) { ToastifyError(roomErrorMessage) }
     }, [roomAllLoading, roomAll])
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
-        else if (clientAllLoading === ApiStatus.fulfilled) { }
-        else if (clientAllLoading === ApiStatus.rejected && clientErrorMessage) { ToastifyError(clientErrorMessage) }
     }, [clientAllLoading, clientAll])
 
     const validateAllData = (): string[] => {
