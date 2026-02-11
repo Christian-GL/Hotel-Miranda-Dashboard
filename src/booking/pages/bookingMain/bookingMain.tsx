@@ -13,6 +13,7 @@ import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
 import { BookingStatus } from "../../enums/bookingStatus"
 import { BookingInterfaceId } from "./../../interfaces/bookingInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { getArrowIcon } from "../../../common/utils/getArrowIcon"
 import { sortValues } from "../../../common/utils/sortValues"
 import { handleColumnClick } from "../../../common/utils/handleColumnClick"
@@ -208,7 +209,8 @@ export const BookingMain = () => {
             resetPage()
         }
         catch (error) {
-            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+            const apiError = error as ApiErrorResponseInterface
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', apiError.message)
         }
     }
     const deleteBookingById = async (id: string): Promise<void> => {
@@ -218,7 +220,8 @@ export const BookingMain = () => {
             resetPage()
         }
         catch (error) {
-            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+            const apiError = error as ApiErrorResponseInterface
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', apiError.message)
         }
     }
     const renderBookingStatus = (status: BookingStatus) => {
@@ -240,7 +243,7 @@ export const BookingMain = () => {
             <CtnFuncionality>
                 <CtnAllDisplayFilter>
                     <CtnTableDisplayFilter>
-                        <TableDisplaySelector text='All Bookings' onClick={() => setBookingStatusButton(BookingButtonType.all)} isSelected={bookingStatusButton === BookingButtonType.all} />
+                        <TableDisplaySelector text='All Status' onClick={() => setBookingStatusButton(BookingButtonType.all)} isSelected={bookingStatusButton === BookingButtonType.all} />
                         <TableDisplaySelector text='Check In' onClick={() => setBookingStatusButton(BookingButtonType.checkIn)} isSelected={bookingStatusButton === BookingButtonType.checkIn} />
                         <TableDisplaySelector text='In Progress' onClick={() => setBookingStatusButton(BookingButtonType.inProgress)} isSelected={bookingStatusButton === BookingButtonType.inProgress} />
                         <TableDisplaySelector text='Check Out' onClick={() => setBookingStatusButton(BookingButtonType.checkOut)} isSelected={bookingStatusButton === BookingButtonType.checkOut} />
@@ -324,10 +327,6 @@ export const BookingMain = () => {
                                 </CtnCell>
 
                                 <CtnCell>
-                                    <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View details</ButtonView>
-                                </CtnCell>
-
-                                <CtnCell>
                                     {renderBookingStatus(checkBookingStatus(bookingData.check_in_date, bookingData.check_out_date))}
                                 </CtnCell>
 
@@ -363,6 +362,10 @@ export const BookingMain = () => {
                                         setShowPopup(true)
                                     }}
                                     >View request</ButtonView>
+                                </CtnCell>
+
+                                <CtnCell>
+                                    <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View details</ButtonView>
                                 </CtnCell>
 
                                 <CtnCell flexdirection='column' alignitems='left' justifycontent='center' >

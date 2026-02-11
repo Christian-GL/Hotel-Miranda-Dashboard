@@ -10,6 +10,7 @@ import { Navigation, Pagination } from 'swiper/modules'
 import * as styles from "./bookingDetailsStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { BookingInterfaceId } from "../../interfaces/bookingInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { CtnOptions, ButtonOption } from "../../../common/styles/tableStyles"
 import { AppDispatch } from "../../../common/redux/store"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
@@ -114,7 +115,8 @@ export const BookingDetails = () => {
             navigateBackToBookings()
         }
         catch (error) {
-            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+            const apiError = error as ApiErrorResponseInterface
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', apiError.message)
         }
     }
     const deleteThisBooking = async (): Promise<void> => {
@@ -123,7 +125,8 @@ export const BookingDetails = () => {
             navigateBackToBookings()
         }
         catch (error) {
-            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+            const apiError = error as ApiErrorResponseInterface
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', apiError.message)
         }
     }
 

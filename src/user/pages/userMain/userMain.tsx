@@ -13,6 +13,7 @@ import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../enums/role"
 import { UserInterfaceId } from "./../../interfaces/userInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
@@ -187,7 +188,8 @@ export const UserMain = () => {
             resetPage()
         }
         catch (error) {
-            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+            const apiError = error as ApiErrorResponseInterface
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', apiError.message)
         }
     }
     const deleteUserById = async (id: string): Promise<void> => {
@@ -197,7 +199,8 @@ export const UserMain = () => {
             resetPage()
         }
         catch (error) {
-            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+            const apiError = error as ApiErrorResponseInterface
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', apiError.message)
         }
     }
 
@@ -208,7 +211,7 @@ export const UserMain = () => {
             <CtnFuncionality>
                 <CtnAllDisplayFilter>
                     <CtnTableDisplayFilter>
-                        <TableDisplaySelector text='All Employee' onClick={() => setActiveFilterButton(ActiveButtonType.all)} isSelected={activeFilterButton === ActiveButtonType.all} />
+                        <TableDisplaySelector text='All Status' onClick={() => setActiveFilterButton(ActiveButtonType.all)} isSelected={activeFilterButton === ActiveButtonType.all} />
                         <TableDisplaySelector text='Active' onClick={() => setActiveFilterButton(ActiveButtonType.active)} isSelected={activeFilterButton === ActiveButtonType.active} />
                         <TableDisplaySelector text='Inactive' onClick={() => setActiveFilterButton(ActiveButtonType.inactive)} isSelected={activeFilterButton === ActiveButtonType.inactive} />
                     </CtnTableDisplayFilter>

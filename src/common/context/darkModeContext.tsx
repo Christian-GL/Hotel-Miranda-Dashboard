@@ -1,16 +1,16 @@
 
-import React from "react"
-import { createContext, useState } from "react"
+import { createContext, useState, PropsWithChildren } from "react"
 import { DarkModeInterface } from "./darkModeInterface"
+import { ThemeType } from "common/enums/themeType"
 
 
 export const Theme = createContext<DarkModeInterface>({
-    theme: 'light',
+    theme: ThemeType.light,
     setTheme: () => { }
 })
 
-export const DarkModeProvider = ({ children }) => {
-    const [theme, setTheme] = useState<string>('light')
+export const DarkModeProvider = ({ children }: PropsWithChildren) => {
+    const [theme, setTheme] = useState<ThemeType>(ThemeType.light)
 
     return (
         <Theme.Provider value={{ theme, setTheme }}>

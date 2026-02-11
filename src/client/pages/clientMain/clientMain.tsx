@@ -15,6 +15,7 @@ import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
 import { BookingStatus } from "../../../booking/enums/bookingStatus"
 import { ClientInterfaceId } from '../../interfaces/clientInterface'
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { formatDateForPrint } from '../../../common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
 import { sortValues } from "common/utils/sortValues"
@@ -170,7 +171,8 @@ export const ClientMain = () => {
             resetPage()
         }
         catch (error) {
-            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+            const apiError = error as ApiErrorResponseInterface
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', apiError.message)
         }
     }
     const deleteClientById = async (id: string): Promise<void> => {
@@ -180,7 +182,8 @@ export const ClientMain = () => {
             resetPage()
         }
         catch (error) {
-            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', String(error))
+            const apiError = error as ApiErrorResponseInterface
+            customPopupMessage(setInfoPopup, setShowPopup, 'API Error', apiError.message)
         }
     }
 

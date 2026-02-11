@@ -10,6 +10,7 @@ import * as sidebarStyles from "./sidebarMenuStyles"
 import * as layoutStyles from "./layoutStyles"
 import { ThemeProvider } from 'styled-components'
 import { Theme } from "../../context/darkModeContext"
+import { ThemeType } from "common/enums/themeType"
 import { themeLight, themeDark } from "../../styles/themes"
 import { ToastifyLoadingData } from "../toastify/loadingDataPopup/toastifyLoadingData"
 import { customPopupMessage } from '../../utils/customPopupMessage'
@@ -32,7 +33,7 @@ export const Layout = () => {
     const { logout, isAuthenticated } = useLoginOptionsContext()
     const location = useLocation()
     const { theme, setTheme } = useContext(Theme)
-    const selectedTheme = theme === 'light' ? themeLight : themeDark
+    const selectedTheme = theme === ThemeType.light ? themeLight : themeDark
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(true)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
@@ -55,7 +56,7 @@ export const Layout = () => {
         if (!isAuthenticated()) { navigate('/') }
         const savedTheme = localStorage.getItem("theme")
         savedTheme === null
-            ? setTheme('light')
+            ? setTheme(ThemeType.dark)
             : setTheme(JSON.parse(savedTheme))
     }, [navigate, isAuthenticated, theme])
     useEffect(() => {
@@ -93,7 +94,7 @@ export const Layout = () => {
     }, [userAllLoading, userByIdLoading])
 
     const switchDarkTheme = () => {
-        const newTheme = theme === 'light' ? 'dark' : 'light'
+        const newTheme = theme === ThemeType.light ? ThemeType.dark : ThemeType.light
         setTheme(newTheme)
         localStorage.setItem("theme", JSON.stringify(newTheme))
     }
@@ -158,7 +159,7 @@ export const Layout = () => {
                     {/* !!! */}
                     {/* <headerStyles.IconMail />
                         <headerStyles.IconBell /> */}
-                    {theme === 'light'
+                    {theme === ThemeType.light
                         ? <headerStyles.IconSun onClick={switchDarkTheme} />
                         : <headerStyles.IconMoon onClick={switchDarkTheme} />
                     }
