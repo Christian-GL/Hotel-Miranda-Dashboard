@@ -23,7 +23,7 @@ import {
 } from '../../../common/utils/commonValidator'
 import {
     GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntry,
-    Text, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
+    Text, InputText, TextAreaJobDescription, SelectSingle, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getUserAllData, getUserAllStatus, getUserApiError } from "../../features/userSlice"
@@ -155,10 +155,10 @@ export const UserCreate = () => {
                         <InputText name="phone_number" onChange={handleStringChange} />
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">Role</Text>
-                        <Select name="role" onChange={handleSelectChange}>
+                        <SelectSingle name="role" onChange={handleSelectChange}>
                             <Option value={Role.admin}>{capitalizeFirstLetter(Role.admin)}</Option>
                             <Option value={Role.user}>{capitalizeFirstLetter(Role.user)}</Option>
-                        </Select>
+                        </SelectSingle>
                     </CtnEntry>
 
                     <CtnEntry>

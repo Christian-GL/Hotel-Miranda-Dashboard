@@ -26,7 +26,7 @@ import {
 } from '../../../common/utils/commonValidator'
 import {
     GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntry,
-    Text, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
+    Text, InputText, TextAreaJobDescription, SelectSingle, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getUserIdData, getUserIdStatus } from "../../features/userSlice"
@@ -183,10 +183,10 @@ export const UserUpdate = () => {
                         <InputText name="phone_number" value={userUpdated.phone_number} onChange={handleStringChange} />
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">Role</Text>
-                        <Select name="role" value={userUpdated.role} onChange={handleSelectChange}>
+                        <SelectSingle name="role" value={userUpdated.role} onChange={handleSelectChange}>
                             <Option value={Role.admin}>{capitalizeFirstLetter(Role.admin)}</Option>
                             <Option value={Role.user}>{capitalizeFirstLetter(Role.user)}</Option>
-                        </Select>
+                        </SelectSingle>
                     </CtnEntry>
 
                     <CtnEntry>
@@ -218,10 +218,10 @@ export const UserUpdate = () => {
 
                     <CtnEntry>
                         <Text>Archived</Text>
-                        <Select name="isArchived" value={userUpdated.isArchived} onChange={handleSelectChange}>
+                        <SelectSingle name="isArchived" value={userUpdated.isArchived} onChange={handleSelectChange}>
                             <Option value={OptionYesNo.no}>No</Option>
                             <Option value={OptionYesNo.yes}>Yes</Option>
-                        </Select>
+                        </SelectSingle>
                     </CtnEntry>
 
                     <DivButtonCreateUser>

@@ -1,6 +1,7 @@
 
 import { styled } from 'styled-components'
 import { createGlobalStyle } from 'styled-components'
+import Select from "react-select"
 
 import { FaUser } from "react-icons/fa"
 import { FaRegCalendarAlt } from "react-icons/fa"
@@ -181,7 +182,7 @@ export const InputText = styled.input`
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     border: none;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     outline: none;
     color: ${props => props.theme.textForm};
 `
@@ -215,7 +216,7 @@ export const InputDate = styled.input`
     width: 100%;
     font-family: ${globalConstStyles.fontPoppins};
     border: none;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     outline: none;
     color: ${props => props.theme.textForm};
 `
@@ -228,12 +229,29 @@ export const TextAreaJobDescription = styled.textarea`
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
     border: none;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     outline: none;
     color: ${props => props.theme.textForm};
 `
 
-export const SelectMultipleOptions = styled.select<{ width?: string }>`
+export const SelectSingle = styled.select`
+    padding: 1em;
+    width: 100%;
+    min-width: 10rem;
+    max-height: 5rem;
+    font-family: ${globalConstStyles.fontPoppins};
+    font-weight: 500;
+    border: none;
+    border-radius: 0.5rem;
+    color: ${props => props.theme.textForm};
+
+    option[value="null"] {
+        display: none;
+    }
+`
+
+// !!! ELIMINAR SI NO SE USA:
+export const SelectMultiple = styled.select<{ width?: string }>`
     padding: 1em;
     min-width: 10rem;
     width: ${props => props.width || '10rem'};
@@ -243,20 +261,10 @@ export const SelectMultipleOptions = styled.select<{ width?: string }>`
     color: ${props => props.theme.textForm};
 `
 
-export const Select = styled.select`
-    padding: 1em;
-    width: 100%;
-    min-width: 10rem;
-    max-height: 5rem;
+export const SelectMultipleReact = styled(Select) <{ width?: string }>`
+    width: ${props => props.width || '100%'};
     font-family: ${globalConstStyles.fontPoppins};
-    font-weight: 500;
-    border: none;
-    border-radius: 1rem;
     color: ${props => props.theme.textForm};
-
-    option[value="null"] {
-        display: none;
-    }
 `
 
 export const Option = styled.option`

@@ -21,7 +21,7 @@ import {
 } from '../../../common/utils/commonValidator'
 import {
     GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntry,
-    Text, InputText, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser, SelectMultipleOptions
+    Text, InputText, TextAreaJobDescription, SelectSingle, Option, InputDate, DivButtonCreateUser, SelectMultiple
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
@@ -219,7 +219,7 @@ export const BookingUpdate = () => {
 
                     <CtnEntry>
                         <Text>Room number</Text>
-                        <SelectMultipleOptions
+                        <SelectMultiple
                             name="room_id_list"
                             width="100%"
                             value={bookingUpdated.room_id_list}
@@ -233,17 +233,17 @@ export const BookingUpdate = () => {
                                         {room.number}
                                     </Option>
                                 ))}
-                        </SelectMultipleOptions>
+                        </SelectMultiple>
 
                         <Text minWidth="10rem" margin="0 0 0 5rem">Client</Text>
-                        <Select name="client_id" value={bookingUpdated.client_id} onChange={handleSelectChange}>
+                        <SelectSingle name="client_id" value={bookingUpdated.client_id} onChange={handleSelectChange}>
                             <Option value="null"></Option>
                             {Object.values(clientAll).map(client => (
                                 <Option value={client._id}>
                                     {client.full_name}
                                 </Option>
                             ))}
-                        </Select>
+                        </SelectSingle>
                     </CtnEntry>
 
                     <CtnEntry>

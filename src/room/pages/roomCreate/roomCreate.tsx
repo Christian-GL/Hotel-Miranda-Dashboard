@@ -16,6 +16,7 @@ import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErr
 import { RoomAmenities } from "../../enums/roomAmenities"
 import { RoomType } from "../../enums/roomType"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
+import { ReactMultiSelectOption } from "common/types/reactMultiSelectOption"
 import {
     validateRoomNumber, validateRoomPhotoList, validateRoomType,
     validateAmenities, validateRoomPrice, validateRoomDiscount,
@@ -23,12 +24,14 @@ import {
 } from '../../../common/utils/commonValidator'
 import {
     CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconBed, IconPlus, TitleForm, Form, ImgRoom, CtnEntry,
-    Text, InputText, InputTextPhoto, Select, Option, SelectMultipleOptions, DivButtonCreateUser
+    Text, InputText, InputTextPhoto, SelectSingle, SelectMultiple, SelectMultipleReact, Option, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getRoomAllData, getRoomAllStatus } from "../../features/roomSlice"
 import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
 import { RoomCreateThunk } from "../../features/thunks/roomCreateThunk"
+
+
 
 
 export const RoomCreate = () => {
@@ -48,9 +51,14 @@ export const RoomCreate = () => {
         isArchived: OptionYesNo.no,
         booking_id_list: []
     })
+    const amenityReactOptions: ReactMultiSelectOption<RoomAmenities>[] = Object.values(RoomAmenities).map((amenity) => ({
+        value: amenity,
+        label: amenity
+    }))
     const { handleStringChange,
         handleArrayPhotosChange,
         handleMultiSelectChange,
+        handleReactMultiSelectChange,
         handleNumberFloatChange,
         handleSelectChange
     } = createFormHandlers(setNewRoom)
@@ -160,13 +168,13 @@ export const RoomCreate = () => {
                         <InputText name="number" onChange={handleStringChange} />
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">Type</Text>
-                        <Select name="type" onChange={handleSelectChange}>
+                        <SelectSingle name="type" onChange={handleSelectChange}>
                             {Object.values(RoomType).map((roomType, index) => (
                                 index === 0
                                     ? <Option key={index} value={roomType} selected>{roomType}</Option>
                                     : <Option key={index} value={roomType}>{roomType}</Option>
                             ))}
-                        </Select>
+                        </SelectSingle>
                     </CtnEntry>
 
                     <CtnEntry>
@@ -179,13 +187,17 @@ export const RoomCreate = () => {
 
                     <CtnEntry>
                         <Text>Amenities</Text>
-                        <SelectMultipleOptions name="amenities" width="100%" onChange={handleMultiSelectChange} multiple={true}>
-                            {Object.values(RoomAmenities).map((amenity, index) => (
-                                <Option key={index} value={amenity}>
-                                    {amenity}
-                                </Option>
-                            ))}
-                        </SelectMultipleOptions>
+                        <SelectMultipleReact
+                            name="amenities"
+                            width="100%"
+                            menuPlacement="top"
+                            menuPosition="fixed"
+                            isMulti={true}
+                            closeMenuOnSelect={false}
+                            options={amenityReactOptions}
+                            value={amenityReactOptions.filter(option => newRoom.amenities.includes(option.value))}
+                            onChange={handleReactMultiSelectChange("amenities")}
+                        />
                     </CtnEntry>
 
                     <DivButtonCreateUser>

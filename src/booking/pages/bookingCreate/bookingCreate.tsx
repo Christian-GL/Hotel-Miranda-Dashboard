@@ -19,8 +19,8 @@ import {
 } from '../../../common/utils/commonValidator'
 import {
     GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconCalendar, IconPlus, TitleForm, Form, CtnEntry,
-    Text, ArrayBox, ArrayItem, ButtonAddDelete, TextAreaJobDescription, Select, Option, InputDate, DivButtonCreateUser,
-    SelectMultipleOptions
+    Text, ArrayBox, ArrayItem, ButtonAddDelete, TextAreaJobDescription, SelectSingle, Option, InputDate, DivButtonCreateUser,
+    SelectMultiple
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
@@ -204,7 +204,7 @@ export const BookingCreate = () => {
 
                     <CtnEntry>
                         <Text>Room number</Text>
-                        <SelectMultipleOptions
+                        <SelectMultiple
                             name="room_id_list"
                             width="100%"
                             onChange={handleMultiSelectChange}
@@ -219,18 +219,18 @@ export const BookingCreate = () => {
                                             {room.number}
                                         </Option>
                                     ))}
-                        </SelectMultipleOptions>
+                        </SelectMultiple>
 
                         {/* !!! SOLO LOS NO ARCHIVADOS */}
                         <Text minWidth="10rem" margin="0 0 0 5rem">Client</Text>
-                        <Select name="client_id" onChange={handleSelectChange}>
+                        <SelectSingle name="client_id" onChange={handleSelectChange}>
                             <Option value="null"></Option>
                             {Object.values(clientAll).map(client => (
                                 <Option value={client._id}>
                                     {client.full_name}
                                 </Option>
                             ))}
-                        </Select>
+                        </SelectSingle>
                     </CtnEntry>
 
                     <CtnEntry>

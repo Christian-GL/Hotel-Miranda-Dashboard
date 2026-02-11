@@ -26,7 +26,7 @@ import {
 import {
     CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconBed, IconUpdate, TitleForm, Form,
     ImgRoom, CtnEntry, Text, CtnEntryBookings, LabelBookings, TextBookingStatus,
-    TextInfoBooking, InputText, InputTextPhoto, Select, Option, SelectMultipleOptions, DivButtonCreateUser
+    TextInfoBooking, InputText, InputTextPhoto, SelectSingle, Option, SelectMultiple, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "../../features/roomSlice"
@@ -215,13 +215,13 @@ export const RoomUpdate = () => {
                         <InputText name="number" value={roomUpdated.number} onChange={handleStringChange} />
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">Type</Text>
-                        <Select name="type" value={roomUpdated.type} onChange={handleSelectChange}>
+                        <SelectSingle name="type" value={roomUpdated.type} onChange={handleSelectChange}>
                             {Object.values(RoomType).map((type, index) => (
                                 <option key={index} value={type}>
                                     {type}
                                 </option>
                             ))}
-                        </Select>
+                        </SelectSingle>
                     </CtnEntry>
 
                     <CtnEntry>
@@ -234,13 +234,13 @@ export const RoomUpdate = () => {
 
                     <CtnEntry>
                         <Text>Amenities</Text>
-                        <SelectMultipleOptions name="amenities" value={roomUpdated.amenities} onChange={handleMultiSelectChange} multiple={true}>
+                        <SelectMultiple name="amenities" value={roomUpdated.amenities} onChange={handleMultiSelectChange} multiple={true}>
                             {Object.values(RoomAmenities).map((amenity, index) => (
                                 <Option key={index} value={amenity}>
                                     {amenity}
                                 </Option>
                             ))}
-                        </SelectMultipleOptions>
+                        </SelectMultiple>
                     </CtnEntry>
 
                     {/* !!! 

@@ -1,5 +1,6 @@
 
 import React from "react"
+import { MultiValue, ActionMeta } from "react-select"
 
 
 type AnyState = Record<string, any>
@@ -68,6 +69,7 @@ export const createFormHandlers = <T extends AnyState>(setState: SetState<T>) =>
         }
     }
 
+    // !!! ELIMINAR SI NO SE USA:
     const handleMultiSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, options } = e.target
         const selectedValues: string[] = []
@@ -81,6 +83,18 @@ export const createFormHandlers = <T extends AnyState>(setState: SetState<T>) =>
         setState(prev => ({
             ...prev,
             [name]: selectedValues
+        } as T))
+    }
+
+    const handleReactMultiSelectChange = <K extends keyof T>(field: K) => (newValue: unknown, _actionMeta?: ActionMeta<unknown>) => {
+        const selected = (newValue as MultiValue<{ value: any }>) || []
+        const values = selected
+            .map(opt => (opt && (opt as any).value))
+            .filter(v => v !== undefined)
+
+        setState(prev => ({
+            ...prev,
+            [field]: values
         } as T))
     }
 
@@ -102,6 +116,7 @@ export const createFormHandlers = <T extends AnyState>(setState: SetState<T>) =>
         handleSelectAppendToArray,
         handleArrayPhotosChange,
         handleMultiSelectChange,
+        handleReactMultiSelectChange,
         handleNumberFloatChange
     }
 }
