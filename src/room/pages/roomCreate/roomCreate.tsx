@@ -26,13 +26,12 @@ import {
 } from '../../../common/utils/commonValidator'
 import {
     CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconBed, IconPlus, TitleForm, Form, ImgRoom, CtnEntry,
-    Text, InputText, InputTextPhoto, SelectSingle, SelectMultiple, SelectMultipleReact, Option, DivButtonCreateUser
+    Text, InputText, InputTextPhoto, SelectReact, Option, DivButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getRoomAllData, getRoomAllStatus } from "../../features/roomSlice"
 import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
 import { RoomCreateThunk } from "../../features/thunks/roomCreateThunk"
-
 
 
 
@@ -58,12 +57,15 @@ export const RoomCreate = () => {
         value: amenity,
         label: amenity
     }))
+    const roomTypeReactOptions: ReactMultiSelectOption<RoomType>[] = Object.values(RoomType).map((type) => ({
+        value: type,
+        label: type
+    }))
     const { handleStringChange,
         handleArrayPhotosChange,
-        handleMultiSelectChange,
+        handleReactSingleSelectChange,
         handleReactMultiSelectChange,
         handleNumberFloatChange,
-        handleSelectChange
     } = createFormHandlers(setNewRoom)
 
     useEffect(() => {
@@ -171,13 +173,18 @@ export const RoomCreate = () => {
                         <InputText name="number" onChange={handleStringChange} />
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">Type</Text>
-                        <SelectSingle name="type" onChange={handleSelectChange}>
-                            {Object.values(RoomType).map((roomType, index) => (
-                                index === 0
-                                    ? <Option key={index} value={roomType} selected>{roomType}</Option>
-                                    : <Option key={index} value={roomType}>{roomType}</Option>
-                            ))}
-                        </SelectSingle>
+                        <SelectReact
+                            name="type"
+                            menuPlacement="top"
+                            menuPosition="fixed"
+                            placeholder="Select type"
+                            isMulti={false}
+                            styles={reactSelectStyles(theme)}
+                            closeMenuOnSelect={true}
+                            options={roomTypeReactOptions}
+                            value={newRoom.type ? roomTypeReactOptions.find(option => option.value === newRoom.type) : null}
+                            onChange={handleReactSingleSelectChange("type")}
+                        />
                     </CtnEntry>
 
                     <CtnEntry>
@@ -190,9 +197,8 @@ export const RoomCreate = () => {
 
                     <CtnEntry>
                         <Text>Amenities</Text>
-                        <SelectMultipleReact
+                        <SelectReact
                             name="amenities"
-                            width="100%"
                             menuPlacement="top"
                             menuPosition="fixed"
                             placeholder="Select amenities"

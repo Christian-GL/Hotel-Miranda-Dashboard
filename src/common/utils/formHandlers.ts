@@ -33,10 +33,50 @@ export const createFormHandlers = <T extends AnyState>(setState: SetState<T>) =>
         setState(prev => ({ ...prev, [name]: value } as T))
     }
 
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setState(prev => ({ ...prev, [name]: value } as T))
+    const handleArrayPhotosChange = (index: number, field: keyof T) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { files } = e.target
+        if (files && files[0]) {
+            const photoUrl = URL.createObjectURL(files[0])
+
+            setState(prev => {
+                const arr = Array.isArray(prev[field]) ? [...prev[field]] : []
+                arr[index] = photoUrl
+                return { ...prev, [field]: arr } as T
+            })
+        }
     }
+
+    const handleNumberFloatChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+
+        setState(prev => ({
+            ...prev,
+            [name]: value === "" ? 0 : parseFloat(value)
+        } as T))
+    }
+
+    const handleReactSingleSelectChange = <K extends keyof T>(field: K) => (newValue: unknown, _actionMeta?: ActionMeta<unknown>) => {
+        const selected = newValue as { value: any } | null | undefined
+        const value = selected ? (selected as any).value : null
+
+        setState(prev => ({
+            ...prev,
+            [field]: value
+        } as T))
+    }
+
+    const handleReactMultiSelectChange = <K extends keyof T>(field: K) => (newValue: unknown, _actionMeta?: ActionMeta<unknown>) => {
+        const selected = (newValue as MultiValue<{ value: any }>) || []
+        const values = selected
+            .map(opt => (opt && (opt as any).value))
+            .filter(v => v !== undefined)
+
+        setState(prev => ({
+            ...prev,
+            [field]: values
+        } as T))
+    }
+
 
     // !!! ELIMINAR SI NO SE USA:
     const handleSelectAppendToArray = <K extends keyof T>(field: K) => (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -55,20 +95,11 @@ export const createFormHandlers = <T extends AnyState>(setState: SetState<T>) =>
             }
         })
     }
-
-    const handleArrayPhotosChange = (index: number, field: keyof T) => (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { files } = e.target
-        if (files && files[0]) {
-            const photoUrl = URL.createObjectURL(files[0])
-
-            setState(prev => {
-                const arr = Array.isArray(prev[field]) ? [...prev[field]] : []
-                arr[index] = photoUrl
-                return { ...prev, [field]: arr } as T
-            })
-        }
+    /// !!! ELIMINAR SI NO SE USA:
+    const handleSingleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target
+        setState(prev => ({ ...prev, [name]: value } as T))
     }
-
     // !!! ELIMINAR SI NO SE USA:
     const handleMultiSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, options } = e.target
@@ -86,37 +117,18 @@ export const createFormHandlers = <T extends AnyState>(setState: SetState<T>) =>
         } as T))
     }
 
-    const handleReactMultiSelectChange = <K extends keyof T>(field: K) => (newValue: unknown, _actionMeta?: ActionMeta<unknown>) => {
-        const selected = (newValue as MultiValue<{ value: any }>) || []
-        const values = selected
-            .map(opt => (opt && (opt as any).value))
-            .filter(v => v !== undefined)
-
-        setState(prev => ({
-            ...prev,
-            [field]: values
-        } as T))
-    }
-
-    const handleNumberFloatChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-
-        setState(prev => ({
-            ...prev,
-            [name]: value === "" ? 0 : parseFloat(value)
-        } as T))
-    }
-
     return {
         handleStringChange,
         handleDateChange,
         handlePhotoChange,
         handleTextAreaChange,
-        handleSelectChange,
-        handleSelectAppendToArray,
         handleArrayPhotosChange,
-        handleMultiSelectChange,
+        handleNumberFloatChange,
+        handleReactSingleSelectChange,
         handleReactMultiSelectChange,
-        handleNumberFloatChange
+
+        handleSelectAppendToArray,
+        handleSingleSelectChange,
+        handleMultiSelectChange
     }
 }

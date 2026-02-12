@@ -234,6 +234,7 @@ export const TextAreaJobDescription = styled.textarea`
     color: ${props => props.theme.textForm};
 `
 
+// !!! ELIMINAR SI NO SE USA:
 export const SelectSingle = styled.select`
     padding: 1em;
     width: 100%;
@@ -261,7 +262,7 @@ export const SelectMultiple = styled.select<{ width?: string }>`
     color: ${props => props.theme.textForm};
 `
 
-export const SelectMultipleReact = styled(Select) <{ width?: string }>`
+export const SelectReact = styled(Select) <{ width?: string }>`
     width: ${props => props.width || '100%'};
     font-family: ${globalConstStyles.fontPoppins};
     color: ${props => props.theme.textForm};
