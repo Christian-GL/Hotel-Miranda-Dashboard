@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useTheme } from "styled-components"
 
-import * as roomCreateStyles from "./roomCreateStyles"
+import * as styles from "common/styles/form"
 import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
@@ -18,21 +18,15 @@ import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErr
 import { RoomAmenities } from "../../enums/roomAmenities"
 import { RoomType } from "../../enums/roomType"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
-import { ReactMultiSelectOption } from "common/types/reactMultiSelectOption"
+import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import {
-    validateRoomNumber, validateRoomPhotoList, validateRoomType,
-    validateAmenities, validateRoomPrice, validateRoomDiscount,
-    validateOptionYesNo, validateMongoDBObjectIdList
+    validateRoomNumber, validateRoomPhotoList, validateRoomType, validateAmenities,
+    validateRoomPrice, validateRoomDiscount, validateOptionYesNo, validateMongoDBObjectIdList
 } from '../../../common/utils/commonValidator'
-import {
-    CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconBed, IconPlus, TitleForm, Form, ImgRoom, CtnEntry,
-    Text, InputText, InputTextPhoto, SelectReact, Option, DivButtonCreateUser
-} from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getRoomAllData, getRoomAllStatus } from "../../features/roomSlice"
 import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
 import { RoomCreateThunk } from "../../features/thunks/roomCreateThunk"
-
 
 
 export const RoomCreate = () => {
@@ -53,11 +47,11 @@ export const RoomCreate = () => {
         isArchived: OptionYesNo.no,
         booking_id_list: []
     })
-    const amenityReactOptions: ReactMultiSelectOption<RoomAmenities>[] = Object.values(RoomAmenities).map((amenity) => ({
+    const amenityReactOptions: ReactSelectOption<RoomAmenities>[] = Object.values(RoomAmenities).map((amenity) => ({
         value: amenity,
         label: amenity
     }))
-    const roomTypeReactOptions: ReactMultiSelectOption<RoomType>[] = Object.values(RoomType).map((type) => ({
+    const roomTypeReactOptions: ReactSelectOption<RoomType>[] = Object.values(RoomType).map((type) => ({
         value: type,
         label: type
     }))
@@ -127,95 +121,104 @@ export const RoomCreate = () => {
         }
     }
 
-
     return (<>
         <ToastContainer />
 
-        <roomCreateStyles.SectionPageRoomCreate>
-            <CtnForm>
-                <CtnPrimaryIcon>
-                    <CtnSecondaryIcon>
-                        <IconBed />
-                        <IconPlus />
-                    </CtnSecondaryIcon>
-                </CtnPrimaryIcon>
-                <TitleForm>Create Room</TitleForm>
+        <styles.CtnSection>
+            <styles.CtnPrimaryIcons>
+                <styles.CtnSecondaryIcons>
+                    <styles.IconBed />
+                    <styles.IconPlus />
+                </styles.CtnSecondaryIcons>
+            </styles.CtnPrimaryIcons>
+            <styles.TitleForm>Create Room</styles.TitleForm>
 
-                <Form onSubmit={handleSubmit}>
-                    <CtnEntry>
-                        <Text>Photo 1 (Main)</Text>
-                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(0, "photos")} />
-                        <ImgRoom src={newRoom.photos[0]} />
-                    </CtnEntry>
-                    <CtnEntry>
-                        <Text>Photo 2</Text>
-                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(1, "photos")} />
-                        <ImgRoom src={newRoom.photos[1]} />
-                    </CtnEntry>
-                    <CtnEntry>
-                        <Text>Photo 3</Text>
-                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(2, "photos")} />
-                        <ImgRoom src={newRoom.photos[2]} />
-                    </CtnEntry>
-                    <CtnEntry>
-                        <Text>Photo 4</Text>
-                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(3, "photos")} />
-                        <ImgRoom src={newRoom.photos[3]} />
-                    </CtnEntry>
-                    <CtnEntry>
-                        <Text>Photo 5</Text>
-                        <InputTextPhoto type="file" onChange={handleArrayPhotosChange(4, "photos")} />
-                        <ImgRoom src={newRoom.photos[4]} />
-                    </CtnEntry>
+            <styles.CtnForm>
+                <styles.Form onSubmit={handleSubmit}>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Photo 1 (Main)</styles.Text>
+                        <styles.InputTextPhoto type="file" onChange={handleArrayPhotosChange(0, "photos")} />
+                        <styles.ImgRoom src={newRoom.photos[0]} />
+                    </styles.CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Photo 2</styles.Text>
+                        <styles.InputTextPhoto type="file" onChange={handleArrayPhotosChange(1, "photos")} />
+                        <styles.ImgRoom src={newRoom.photos[1]} />
+                    </styles.CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Photo 3</styles.Text>
+                        <styles.InputTextPhoto type="file" onChange={handleArrayPhotosChange(2, "photos")} />
+                        <styles.ImgRoom src={newRoom.photos[2]} />
+                    </styles.CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Photo 4</styles.Text>
+                        <styles.InputTextPhoto type="file" onChange={handleArrayPhotosChange(3, "photos")} />
+                        <styles.ImgRoom src={newRoom.photos[3]} />
+                    </styles.CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Photo 5</styles.Text>
+                        <styles.InputTextPhoto type="file" onChange={handleArrayPhotosChange(4, "photos")} />
+                        <styles.ImgRoom src={newRoom.photos[4]} />
+                    </styles.CtnEntryVertical>
 
-                    <CtnEntry>
-                        <Text>Number</Text>
-                        <InputText name="number" onChange={handleStringChange} />
+                    <styles.CtnEntryVertical>
+                        <styles.CtnEntryHorizontal>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Amenities</styles.Text>
+                                <styles.SelectReact
+                                    name="amenities"
+                                    menuPlacement="top"
+                                    menuPosition="fixed"
+                                    placeholder="Select amenities"
+                                    isMulti={true}
+                                    styles={reactSelectStyles(theme)}
+                                    closeMenuOnSelect={false}
+                                    options={amenityReactOptions}
+                                    value={amenityReactOptions.filter(option => newRoom.amenities.includes(option.value))}
+                                    onChange={handleReactMultiSelectChange("amenities")}
+                                />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Type</styles.Text>
+                                <styles.SelectReact
+                                    name="type"
+                                    menuPlacement="top"
+                                    menuPosition="fixed"
+                                    placeholder="Select type"
+                                    isMulti={false}
+                                    styles={reactSelectStyles(theme)}
+                                    closeMenuOnSelect={true}
+                                    options={roomTypeReactOptions}
+                                    value={roomTypeReactOptions.find(option => option.value === newRoom.type)}
+                                    onChange={handleReactSingleSelectChange("type")}
+                                />
+                            </styles.CtnEntryVertical>
+                        </styles.CtnEntryHorizontal>
+                    </styles.CtnEntryVertical>
 
-                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Type</Text>
-                        <SelectReact
-                            name="type"
-                            menuPlacement="top"
-                            menuPosition="fixed"
-                            placeholder="Select type"
-                            isMulti={false}
-                            styles={reactSelectStyles(theme)}
-                            closeMenuOnSelect={true}
-                            options={roomTypeReactOptions}
-                            value={newRoom.type ? roomTypeReactOptions.find(option => option.value === newRoom.type) : null}
-                            onChange={handleReactSingleSelectChange("type")}
-                        />
-                    </CtnEntry>
+                    <styles.CtnEntryVertical>
+                        <styles.CtnEntryHorizontal>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Number</styles.Text>
+                                <styles.InputText name="number" onChange={handleStringChange} />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Price</styles.Text>
+                                <styles.InputText name="price" onChange={handleNumberFloatChange} />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Discount (%)</styles.Text>
+                                <styles.InputText name="discount" onChange={handleNumberFloatChange} />
+                            </styles.CtnEntryVertical>
+                        </styles.CtnEntryHorizontal>
+                    </styles.CtnEntryVertical>
 
-                    <CtnEntry>
-                        <Text>Price</Text>
-                        <InputText name="price" onChange={handleNumberFloatChange} />
-
-                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</Text>
-                        <InputText name="discount" onChange={handleNumberFloatChange} />
-                    </CtnEntry>
-
-                    <CtnEntry>
-                        <Text>Amenities</Text>
-                        <SelectReact
-                            name="amenities"
-                            menuPlacement="top"
-                            menuPosition="fixed"
-                            placeholder="Select amenities"
-                            isMulti={true}
-                            styles={reactSelectStyles(theme)}
-                            closeMenuOnSelect={false}
-                            options={amenityReactOptions}
-                            value={amenityReactOptions.filter(option => newRoom.amenities.includes(option.value))}
-                            onChange={handleReactMultiSelectChange("amenities")}
-                        />
-                    </CtnEntry>
-
-                    <DivButtonCreateUser>
+                    <styles.CtnButtonCreateUser>
                         <ButtonCreate type="submit" children='+ Create Room' fontSize='1.25em'></ButtonCreate>
-                    </DivButtonCreateUser>
-                </Form>
-            </CtnForm>
-        </roomCreateStyles.SectionPageRoomCreate>
+                    </styles.CtnButtonCreateUser>
+                </styles.Form>
+            </styles.CtnForm>
+        </styles.CtnSection>
     </>)
+
 }

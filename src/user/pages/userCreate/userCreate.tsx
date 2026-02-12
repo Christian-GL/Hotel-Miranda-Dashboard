@@ -22,8 +22,8 @@ import {
     validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
 } from '../../../common/utils/commonValidator'
 import {
-    GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntry,
-    Text, InputText, TextAreaJobDescription, SelectSingle, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
+    GlobalDateTimeStyles, CtnSection, CtnPrimaryIcons, CtnSecondaryIcons, IconUser, IconPlus, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntryVertical,
+    Text, InputText, TextAreaJobDescription, SelectSingle, Option, InputDate, CtnButtonCreateUser, CtnButtonHidePassword, EyeOpen, EyeClose
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getUserAllData, getUserAllStatus, getUserApiError } from "../../features/userSlice"
@@ -54,7 +54,7 @@ export const UserCreate = () => {
         handleDateChange,
         handlePhotoChange,
         handleTextAreaChange,
-        handleSelectChange
+        handleSingleSelectChange
     } = createFormHandlers(setNewUser)
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
 
@@ -126,73 +126,73 @@ export const UserCreate = () => {
         <GlobalDateTimeStyles />
 
         <userCreateStyles.SectionPageUserCreate>
-            <CtnForm>
-                <CtnPrimaryIcon>
-                    <CtnSecondaryIcon>
+            <CtnSection>
+                <CtnPrimaryIcons>
+                    <CtnSecondaryIcons>
                         <IconUser />
                         <IconPlus />
-                    </CtnSecondaryIcon>
-                </CtnPrimaryIcon>
+                    </CtnSecondaryIcons>
+                </CtnPrimaryIcons>
                 <TitleForm>Create User</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Photo</Text>
                         <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
                         <ImgUser src={newUser.photo ? newUser.photo : ''} />
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Full name</Text>
                         <InputText name="full_name" onChange={handleStringChange} />
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">Email</Text>
                         <InputText name="email" onChange={handleStringChange} />
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Phone number</Text>
                         <InputText name="phone_number" onChange={handleStringChange} />
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">Role</Text>
-                        <SelectSingle name="role" onChange={handleSelectChange}>
+                        <SelectSingle name="role" onChange={handleSingleSelectChange}>
                             <Option value={Role.admin}>{capitalizeFirstLetter(Role.admin)}</Option>
                             <Option value={Role.user}>{capitalizeFirstLetter(Role.user)}</Option>
                         </SelectSingle>
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Start Date</Text>
                         <InputDate name="start_date" type="datetime-local" onChange={handleDateChange} />
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">End Date</Text>
                         <InputDate name="end_date" type="datetime-local" onChange={handleDateChange} />
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Password</Text>
                         {passwordVisible ?
                             <InputText name="password" type="password" onChange={handleStringChange} /> :
                             <InputText name="password" onChange={handleStringChange} />
                         }
-                        <DivButtonHidePassword>
+                        <CtnButtonHidePassword>
                             {passwordVisible ?
                                 <EyeClose onClick={() => setPasswordVisible(!passwordVisible)} /> :
                                 <EyeOpen onClick={() => setPasswordVisible(!passwordVisible)} />
                             }
-                        </DivButtonHidePassword>
-                    </CtnEntry>
+                        </CtnButtonHidePassword>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Job Position</Text>
                         <TextAreaJobDescription name="job_position" onChange={handleTextAreaChange}></TextAreaJobDescription>
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <DivButtonCreateUser>
+                    <CtnButtonCreateUser>
                         <ButtonCreate type="submit" children='+ Create User' fontSize='1.25em'></ButtonCreate>
-                    </DivButtonCreateUser>
+                    </CtnButtonCreateUser>
                 </Form>
-            </CtnForm>
+            </CtnSection>
         </userCreateStyles.SectionPageUserCreate>
     </>)
 }

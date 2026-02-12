@@ -25,8 +25,8 @@ import {
     validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
 } from '../../../common/utils/commonValidator'
 import {
-    GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntry,
-    Text, InputText, TextAreaJobDescription, SelectSingle, Option, InputDate, DivButtonCreateUser, DivButtonHidePassword, EyeOpen, EyeClose
+    GlobalDateTimeStyles, CtnSection, CtnPrimaryIcons, CtnSecondaryIcons, IconUser, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntryVertical,
+    Text, InputText, TextAreaJobDescription, SelectSingle, Option, InputDate, CtnButtonCreateUser, CtnButtonHidePassword, EyeOpen, EyeClose
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getUserIdData, getUserIdStatus } from "../../features/userSlice"
@@ -59,7 +59,7 @@ export const UserUpdate = () => {
         handleDateChange,
         handlePhotoChange,
         handleTextAreaChange,
-        handleSelectChange
+        handleSingleSelectChange
     } = createFormHandlers(setUserUpdated)
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
     const [oldPassword, setOldPassword] = useState<String>('')
@@ -151,84 +151,84 @@ export const UserUpdate = () => {
         <GlobalDateTimeStyles />
 
         <styles.SectionPageUserUpdate>
-            <CtnForm>
-                <CtnPrimaryIcon>
-                    <CtnSecondaryIcon>
+            <CtnSection>
+                <CtnPrimaryIcons>
+                    <CtnSecondaryIcons>
                         <IconUser />
                         <IconUpdate />
-                    </CtnSecondaryIcon>
-                </CtnPrimaryIcon>
+                    </CtnSecondaryIcons>
+                </CtnPrimaryIcons>
                 <TitleForm>Update User #{userUpdated._id}</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Photo</Text>
                         <InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
                         <ImgUser
                             src={userUpdated.photo || userDefaultImg}
                             onError={(e) => { e.currentTarget.src = userDefaultImg }}
                         />
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Full name</Text>
                         <InputText name="full_name" value={userUpdated.full_name} onChange={handleStringChange} />
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">Email</Text>
                         <InputText name="email" value={userUpdated.email} onChange={handleStringChange} />
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Client</Text>
                         <InputText name="phone_number" value={userUpdated.phone_number} onChange={handleStringChange} />
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">Role</Text>
-                        <SelectSingle name="role" value={userUpdated.role} onChange={handleSelectChange}>
+                        <SelectSingle name="role" value={userUpdated.role} onChange={handleSingleSelectChange}>
                             <Option value={Role.admin}>{capitalizeFirstLetter(Role.admin)}</Option>
                             <Option value={Role.user}>{capitalizeFirstLetter(Role.user)}</Option>
                         </SelectSingle>
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Start Date</Text>
                         <InputDate name="start_date" type="datetime-local" value={formatDateForInput(userUpdated.start_date)} onChange={handleDateChange} />
 
                         <Text minWidth="7.5rem" margin="0 0 0 5rem">End Date</Text>
                         <InputDate name="end_date" type="datetime-local" value={formatDateForInput(userUpdated.end_date)} onChange={handleDateChange} />
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Password</Text>
                         {passwordVisible ?
                             <InputText name="password" value={userUpdated.password} type="password" onChange={handleStringChange} /> :
                             <InputText name="password" value={userUpdated.password} onChange={handleStringChange} />
                         }
-                        <DivButtonHidePassword>
+                        <CtnButtonHidePassword>
                             {passwordVisible ?
                                 <EyeClose onClick={() => setPasswordVisible(!passwordVisible)} /> :
                                 <EyeOpen onClick={() => setPasswordVisible(!passwordVisible)} />
                             }
-                        </DivButtonHidePassword>
-                    </CtnEntry>
+                        </CtnButtonHidePassword>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Job Position</Text>
                         <TextAreaJobDescription name="job_position" value={userUpdated.job_position} onChange={handleTextAreaChange}></TextAreaJobDescription>
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Archived</Text>
-                        <SelectSingle name="isArchived" value={userUpdated.isArchived} onChange={handleSelectChange}>
+                        <SelectSingle name="isArchived" value={userUpdated.isArchived} onChange={handleSingleSelectChange}>
                             <Option value={OptionYesNo.no}>No</Option>
                             <Option value={OptionYesNo.yes}>Yes</Option>
                         </SelectSingle>
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <DivButtonCreateUser>
+                    <CtnButtonCreateUser>
                         <ButtonCreate type="submit" children='⮂ Update User' fontSize='1.25em'></ButtonCreate>
-                    </DivButtonCreateUser>
+                    </CtnButtonCreateUser>
                 </Form>
-            </CtnForm>
+            </CtnSection>
         </styles.SectionPageUserUpdate>
 
     </>)

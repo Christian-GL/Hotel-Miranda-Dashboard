@@ -4,9 +4,11 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
+import { useTheme } from "styled-components"
 
+import * as styles from "common/styles/form"
 import roomDefaultImg from '../../../assets/img/roomDefault.jpg'
-import * as styles from "./roomUpdateStyles"
+import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
@@ -18,16 +20,12 @@ import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErr
 import { RoomAmenities } from "../../enums/roomAmenities"
 import { RoomType } from "../../enums/roomType"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
+import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import {
     validateRoomNumber, validateRoomPhotoList, validateRoomType,
     validateAmenities, validateRoomPrice, validateRoomDiscount,
     validateOptionYesNo, validateMongoDBObjectIdList
 } from '../../../common/utils/commonValidator'
-import {
-    CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconBed, IconUpdate, TitleForm, Form,
-    ImgRoom, CtnEntry, Text, CtnEntryBookings, LabelBookings, TextBookingStatus,
-    TextInfoBooking, InputText, InputTextPhoto, SelectSingle, Option, SelectMultiple, DivButtonCreateUser
-} from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "../../features/roomSlice"
 import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
@@ -44,6 +42,7 @@ export const RoomUpdate = () => {
     const idParams = id!
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
+    const theme = useTheme()
     const roomById = useSelector(getRoomIdData)
     const roomByIdLoading = useSelector(getRoomIdStatus)
     const roomAll = useSelector(getRoomAllData)
@@ -62,11 +61,19 @@ export const RoomUpdate = () => {
         isArchived: OptionYesNo.no,
         booking_id_list: []
     })
+    const amenityReactOptions: ReactSelectOption<RoomAmenities>[] = Object.values(RoomAmenities).map((amenity) => ({
+        value: amenity,
+        label: amenity
+    }))
+    const roomTypeReactOptions: ReactSelectOption<RoomType>[] = Object.values(RoomType).map((type) => ({
+        value: type,
+        label: type
+    }))
     const { handleStringChange,
         handleArrayPhotosChange,
-        handleMultiSelectChange,
+        handleReactSingleSelectChange,
+        handleReactMultiSelectChange,
         handleNumberFloatChange,
-        handleSelectChange
     } = createFormHandlers(setRoomUpdated)
 
     useEffect(() => {
@@ -155,122 +162,117 @@ export const RoomUpdate = () => {
 
     return (<>
         <ToastContainer />
-        {
-            console.log('==>', roomUpdated)
-        }
-        <styles.SectionPageRoomUpdate>
-            <CtnForm>
-                <CtnPrimaryIcon>
-                    <CtnSecondaryIcon>
-                        <IconBed />
-                        <IconUpdate />
-                    </CtnSecondaryIcon>
-                </CtnPrimaryIcon>
-                <TitleForm>Update Room #{roomUpdated._id}</TitleForm>
 
-                <Form onSubmit={handleSubmit}>
-                    <CtnEntry>
-                        <Text>Photo 1 (Main)</Text>
-                        <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(0, "photos")} />
-                        <ImgRoom
+        <styles.CtnSection>
+            <styles.CtnPrimaryIcons>
+                <styles.CtnSecondaryIcons>
+                    <styles.IconBed />
+                    <styles.IconUpdate />
+                </styles.CtnSecondaryIcons>
+            </styles.CtnPrimaryIcons>
+            <styles.TitleForm>Update Room #{roomUpdated._id}</styles.TitleForm>
+
+            <styles.CtnForm>
+                <styles.Form onSubmit={handleSubmit}>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Photo 1 (Main)</styles.Text>
+                        <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(0, "photos")} />
+                        <styles.ImgRoom
                             src={roomUpdated.photos?.[0] || roomDefaultImg}
                             onError={(e) => { e.currentTarget.src = roomDefaultImg }}
                         />
-                    </CtnEntry>
-                    <CtnEntry>
-                        <Text>Photo 2</Text>
-                        <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(1, "photos")} />
-                        <ImgRoom
+                    </styles.CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Photo 2</styles.Text>
+                        <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(1, "photos")} />
+                        <styles.ImgRoom
                             src={roomUpdated.photos?.[1] || roomDefaultImg}
                             onError={(e) => { e.currentTarget.src = roomDefaultImg }}
                         />
-                    </CtnEntry>
-                    <CtnEntry>
-                        <Text>Photo 3</Text>
-                        <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(2, "photos")} />
-                        <ImgRoom
+                    </styles.CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Photo 3</styles.Text>
+                        <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(2, "photos")} />
+                        <styles.ImgRoom
                             src={roomUpdated.photos?.[2] || roomDefaultImg}
                             onError={(e) => { e.currentTarget.src = roomDefaultImg }}
                         />
-                    </CtnEntry>
-                    <CtnEntry>
-                        <Text>Photo 4</Text>
-                        <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(3, "photos")} />
-                        <ImgRoom
+                    </styles.CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Photo 4</styles.Text>
+                        <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(3, "photos")} />
+                        <styles.ImgRoom
                             src={roomUpdated.photos?.[3] || roomDefaultImg}
                             onError={(e) => { e.currentTarget.src = roomDefaultImg }}
                         />
-                    </CtnEntry>
-                    <CtnEntry>
-                        <Text>Photo 5</Text>
-                        <InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(4, "photos")} />
-                        <ImgRoom
+                    </styles.CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Photo 5</styles.Text>
+                        <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(4, "photos")} />
+                        <styles.ImgRoom
                             src={roomUpdated.photos?.[4] || roomDefaultImg}
                             onError={(e) => { e.currentTarget.src = roomDefaultImg }}
                         />
-                    </CtnEntry>
+                    </styles.CtnEntryVertical>
 
-                    <CtnEntry>
-                        <Text>Number</Text>
-                        <InputText name="number" value={roomUpdated.number} onChange={handleStringChange} />
+                    <styles.CtnEntryVertical>
+                        <styles.CtnEntryHorizontal>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Amenities</styles.Text>
+                                <styles.SelectReact
+                                    name="amenities"
+                                    menuPlacement="top"
+                                    menuPosition="fixed"
+                                    placeholder="Select amenities"
+                                    isMulti={true}
+                                    styles={reactSelectStyles(theme)}
+                                    closeMenuOnSelect={false}
+                                    options={amenityReactOptions}
+                                    value={amenityReactOptions.filter(option => roomUpdated.amenities.includes(option.value))}
+                                    onChange={handleReactMultiSelectChange("amenities")}
+                                />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Type</styles.Text>
+                                <styles.SelectReact
+                                    name="type"
+                                    menuPlacement="top"
+                                    menuPosition="fixed"
+                                    placeholder="Select type"
+                                    isMulti={false}
+                                    styles={reactSelectStyles(theme)}
+                                    closeMenuOnSelect={true}
+                                    options={roomTypeReactOptions}
+                                    value={roomTypeReactOptions.find(option => option.value === roomUpdated.type)}
+                                    onChange={handleReactSingleSelectChange("type")}
+                                />
+                            </styles.CtnEntryVertical>
+                        </styles.CtnEntryHorizontal>
+                    </styles.CtnEntryVertical>
 
-                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Type</Text>
-                        <SelectSingle name="type" value={roomUpdated.type} onChange={handleSelectChange}>
-                            {Object.values(RoomType).map((type, index) => (
-                                <option key={index} value={type}>
-                                    {type}
-                                </option>
-                            ))}
-                        </SelectSingle>
-                    </CtnEntry>
+                    <styles.CtnEntryVertical>
+                        <styles.CtnEntryHorizontal>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Number</styles.Text>
+                                <styles.InputText name="number" value={roomUpdated.number} onChange={handleStringChange} />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Price</styles.Text>
+                                <styles.InputText name="price" value={roomUpdated.price} onChange={handleNumberFloatChange} />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Discount (%)</styles.Text>
+                                <styles.InputText name="discount" value={roomUpdated.discount} onChange={handleNumberFloatChange} />
+                            </styles.CtnEntryVertical>
+                        </styles.CtnEntryHorizontal>
+                    </styles.CtnEntryVertical>
 
-                    <CtnEntry>
-                        <Text>Price</Text>
-                        <InputText name="price" value={roomUpdated.price} onChange={handleNumberFloatChange} />
-
-                        <Text minWidth="7.5rem" margin="0 0 0 5rem">Discount (%)</Text>
-                        <InputText name="discount" value={roomUpdated.discount} onChange={handleNumberFloatChange} />
-                    </CtnEntry>
-
-                    <CtnEntry>
-                        <Text>Amenities</Text>
-                        <SelectMultiple name="amenities" value={roomUpdated.amenities} onChange={handleMultiSelectChange} multiple={true}>
-                            {Object.values(RoomAmenities).map((amenity, index) => (
-                                <Option key={index} value={amenity}>
-                                    {amenity}
-                                </Option>
-                            ))}
-                        </SelectMultiple>
-                    </CtnEntry>
-
-                    {/* !!! 
-                    <DivCtnEntry>
-                        <LabelText>Booking Status</LabelText>
-                        <DivCtnEntryBookings>
-                            {
-                                roomById?.booking_data_list ? (
-                                    roomById.booking_data_list.length === 0 ?
-                                        <LabelTextBookingStatus>Available</LabelTextBookingStatus> :
-                                        roomById.booking_data_list.map((booking, index) => (
-                                            <LabelBookings key={index}>
-                                                <LabelTextInfoBooking><b>#{booking._id}</b></LabelTextInfoBooking>
-                                                <LabelTextInfoBooking>-</LabelTextInfoBooking>
-                                                <LabelTextInfoBooking>{formatDateForPrint(booking.check_in_date)}</LabelTextInfoBooking>
-                                                <LabelTextInfoBooking>➞</LabelTextInfoBooking>
-                                                <LabelTextInfoBooking>{formatDateForPrint(booking.check_out_date)}</LabelTextInfoBooking>
-                                            </LabelBookings>
-                                        ))
-                                ) : ""
-                            }
-                        </DivCtnEntryBookings>
-                    </DivCtnEntry>
-                    */}
-
-                    <DivButtonCreateUser>
+                    <styles.CtnButtonCreateUser>
                         <ButtonCreate type="submit" children='⮂ Update Room' fontSize='1.25em'></ButtonCreate>
-                    </DivButtonCreateUser>
-                </Form>
-            </CtnForm>
-        </styles.SectionPageRoomUpdate>
+                    </styles.CtnButtonCreateUser>
+                </styles.Form>
+            </styles.CtnForm>
+        </styles.CtnSection>
     </>)
+
 }

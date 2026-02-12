@@ -15,20 +15,21 @@ import { IoMdEyeOff } from "react-icons/io"
 import * as globalConstStyles from './globalConstStyles'
 
 
-export const CtnForm = styled.div`
-    padding: 0 2em;
+export const CtnSection = styled.section`
+    height: 100%;
+    padding: 5em 5em 0;
+    overflow-y: auto;
     background-color: ${props => props.theme.backgroundPage};
 `
 
-export const CtnPrimaryIcon = styled.div`
-    padding-top: 2em;
+export const CtnPrimaryIcons = styled.div`
     text-align: center;
     border-top-left-radius: 2.5rem;
     border-top-right-radius: 2.5rem;
     background-color: transparent;
 `
 
-export const CtnSecondaryIcon = styled.div`
+export const CtnSecondaryIcons = styled.div`
     position: relative;
     margin: 0 auto;
     width: 5rem;
@@ -94,16 +95,25 @@ export const TitleForm = styled.h2`
     background-color: ${props => props.theme.backgroundPage};
 `
 
+export const CtnForm = styled.div`
+    display: flex;
+    justify-content: center;
+    border-top-left-radius: 2.5rem;
+    border-top-right-radius: 2.5rem;
+    background-color: transparent;
+`
+
 export const Form = styled.form`
-    padding: 2em;
     width: 100%;
-    border-bottom-left-radius: 2.5rem;
-    border-bottom-right-radius: 2.5rem;
+    min-width: 40rem;
+    max-width: 60rem;
+    padding: 2em 0;
+    text-align: center;
     background-color: ${props => props.theme.backgroundPage};
 `
 
 export const ImgRoom = styled.img`
-    padding-left: 2em;
+    padding-top: 1rem;
     width: 100%;
     height: auto;
     max-width: 10rem;  
@@ -111,23 +121,34 @@ export const ImgRoom = styled.img`
 `
 
 export const ImgUser = styled.img`
-    padding-left: 2em;
+    padding-top: 1rem;
     width: 100%;
     height: auto;
     max-width: 7.5rem;
     max-height: 7.5rem;
 `
 
-export const CtnEntry = styled.div`
+export const CtnEntryVertical = styled.div<{ removePaddingSeparator?: boolean }>`
+    display: flex;
+    flex-direction: column;
+    padding: ${props => props.removePaddingSeparator ? '0' : '0 0 2em'};
+    gap: 0.25rem;
+`
+
+export const CtnEntryHorizontal = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 1em 0;
+    gap: 2.5rem;
+
+    // Para todos los hijos repartir equitativamente el espacio:
+    & > * {
+        flex: 1;
+    }
 `
 
-export const Text = styled.label<{ minWidth?: string, margin?: string }>`
-    min-width: ${props => props.minWidth || '10rem'};
-    margin: ${props => props.margin || '0'};
+export const Text = styled.label`
+    text-align: left;
     font-family: ${globalConstStyles.fontPoppins};
     font-size: 1em;
     font-weight: 700;
@@ -181,10 +202,14 @@ export const InputText = styled.input`
     min-width: 10rem;
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
-    border: none;
-    border-radius: 0.5rem;
+    border: 1px solid ${props => props.theme.borderElementForm};
+    border-radius: 0.25rem;
     outline: none;
     color: ${props => props.theme.textForm};
+
+    &:hover {
+        borderColor: ${props => props.theme.borderElementHoverForm};
+    }
 `
 
 export const InputTextPhoto = styled.input`
@@ -234,51 +259,19 @@ export const TextAreaJobDescription = styled.textarea`
     color: ${props => props.theme.textForm};
 `
 
-// !!! ELIMINAR SI NO SE USA:
-export const SelectSingle = styled.select`
-    padding: 1em;
-    width: 100%;
-    min-width: 10rem;
-    max-height: 5rem;
-    font-family: ${globalConstStyles.fontPoppins};
-    font-weight: 500;
-    border: none;
-    border-radius: 0.5rem;
-    color: ${props => props.theme.textForm};
-
-    option[value="null"] {
-        display: none;
-    }
-`
-
-// !!! ELIMINAR SI NO SE USA:
-export const SelectMultiple = styled.select<{ width?: string }>`
-    padding: 1em;
-    min-width: 10rem;
-    width: ${props => props.width || '10rem'};
-    height: 10rem;
-    font-family: ${globalConstStyles.fontPoppins};
-    border: none;
-    color: ${props => props.theme.textForm};
-`
-
 export const SelectReact = styled(Select) <{ width?: string }>`
     width: ${props => props.width || '100%'};
     font-family: ${globalConstStyles.fontPoppins};
     color: ${props => props.theme.textForm};
 `
 
-export const Option = styled.option`
-    padding: 0em;
-`
-
-export const DivButtonCreateUser = styled.div`
+export const CtnButtonCreateUser = styled.div`
     padding-top: 2em;
     text-align: center;
     background-color: ${props => props.theme.backgroundPage};
 `
 
-export const DivButtonHidePassword = styled.div`
+export const CtnButtonHidePassword = styled.div`
     margin-left: 1rem;
     text-align: center;
 `
@@ -305,7 +298,7 @@ export const EyeClose = styled(IoMdEyeOff)`
     background-color: ${props => props.theme.iconEyeBackground};
 `
 
-// !!! ELIMINAR SI NO SE USAN LAS SIGUIENTES 3 CONSTANTES:
+// !!! ELIMINAR SI NO SE USAN LAS SIGUIENTES CONSTANTES:
 export const ButtonAddDelete = styled.button<{ margin?: string; isAdd?: boolean }>`
     display: flex;
     align-items: center;
@@ -340,4 +333,34 @@ export const ArrayItem = styled.span`
     display: inline-flex;
     align-items: center;
     margin-right: 0.5rem;
+`
+
+export const SelectSingle = styled.select`
+    padding: 1em;
+    width: 100%;
+    min-width: 10rem;
+    max-height: 5rem;
+    font-family: ${globalConstStyles.fontPoppins};
+    font-weight: 500;
+    border: none;
+    border-radius: 0.5rem;
+    color: ${props => props.theme.textForm};
+
+    option[value="null"] {
+        display: none;
+    }
+`
+
+export const SelectMultiple = styled.select<{ width?: string }>`
+    padding: 1em;
+    min-width: 10rem;
+    width: ${props => props.width || '10rem'};
+    height: 10rem;
+    font-family: ${globalConstStyles.fontPoppins};
+    border: none;
+    color: ${props => props.theme.textForm};
+`
+
+export const Option = styled.option`
+    padding: 0em;
 `

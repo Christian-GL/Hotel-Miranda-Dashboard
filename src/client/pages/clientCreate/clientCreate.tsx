@@ -16,8 +16,8 @@ import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErr
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
 import {
-    CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconClient, IconPlus, TitleForm,
-    Form, CtnEntry, Text, InputText, DivButtonCreateUser
+    CtnSection, CtnPrimaryIcons, CtnSecondaryIcons, IconClient, IconPlus, TitleForm,
+    Form, CtnEntryVertical, Text, InputText, CtnButtonCreateUser
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
@@ -89,36 +89,36 @@ export const ClientCreate = () => {
         <ToastContainer />
 
         <clientCreateStyles.SectionPageClientCreate>
-            <CtnForm>
-                <CtnPrimaryIcon>
-                    <CtnSecondaryIcon>
+            <CtnSection>
+                <CtnPrimaryIcons>
+                    <CtnSecondaryIcons>
                         <IconClient />
                         <IconPlus />
-                    </CtnSecondaryIcon>
-                </CtnPrimaryIcon>
+                    </CtnSecondaryIcons>
+                </CtnPrimaryIcons>
                 <TitleForm>Create Client</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Full Name</Text>
                         <InputText name="full_name" onChange={handleStringChange} />
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Email</Text>
                         <InputText name="email" onChange={handleStringChange} />
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Phone Number</Text>
                         <InputText name="phone_number" onChange={handleStringChange} />
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <DivButtonCreateUser>
+                    <CtnButtonCreateUser>
                         <ButtonCreate type="submit" children='+ Create Client' fontSize='1.25em'></ButtonCreate>
-                    </DivButtonCreateUser>
+                    </CtnButtonCreateUser>
                 </Form>
-            </CtnForm>
+            </CtnSection>
         </clientCreateStyles.SectionPageClientCreate>
     </>)
 }

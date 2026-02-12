@@ -20,8 +20,8 @@ import {
     validateCheckInCheckOutExistingBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupiedIfBookingExists
 } from '../../../common/utils/commonValidator'
 import {
-    GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntry,
-    Text, InputText, TextAreaJobDescription, SelectSingle, Option, InputDate, DivButtonCreateUser, SelectMultiple
+    GlobalDateTimeStyles, CtnSection, CtnPrimaryIcons, CtnSecondaryIcons, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntryVertical,
+    Text, InputText, TextAreaJobDescription, SelectSingle, Option, InputDate, CtnButtonCreateUser, SelectMultiple
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
@@ -61,7 +61,7 @@ export const BookingUpdate = () => {
     })
     const { handleDateChange,
         handleTextAreaChange,
-        handleSelectChange,
+        handleSingleSelectChange,
         handleMultiSelectChange
     } = createFormHandlers(setBookingUpdated)
 
@@ -199,25 +199,25 @@ export const BookingUpdate = () => {
         <GlobalDateTimeStyles />
 
         <bookingUpdateStyles.SectionPageBookingUpdate>
-            <CtnForm>
-                <CtnPrimaryIcon>
-                    <CtnSecondaryIcon>
+            <CtnSection>
+                <CtnPrimaryIcons>
+                    <CtnSecondaryIcons>
                         <IconCalendar />
                         <IconUpdate />
-                    </CtnSecondaryIcon>
-                </CtnPrimaryIcon>
+                    </CtnSecondaryIcons>
+                </CtnPrimaryIcons>
                 <TitleForm>Update Booking #{bookingUpdated._id}</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Check in date</Text>
                         <InputDate name="check_in_date" value={formatDateForInput(bookingUpdated.check_in_date)} type="datetime-local" onChange={handleDateChange} />
 
                         <Text minWidth="10rem" margin="0 0 0 5rem">Check out date</Text>
                         <InputDate name="check_out_date" value={formatDateForInput(bookingUpdated.check_out_date)} type="datetime-local" onChange={handleDateChange} />
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Room number</Text>
                         <SelectMultiple
                             name="room_id_list"
@@ -236,7 +236,7 @@ export const BookingUpdate = () => {
                         </SelectMultiple>
 
                         <Text minWidth="10rem" margin="0 0 0 5rem">Client</Text>
-                        <SelectSingle name="client_id" value={bookingUpdated.client_id} onChange={handleSelectChange}>
+                        <SelectSingle name="client_id" value={bookingUpdated.client_id} onChange={handleSingleSelectChange}>
                             <Option value="null"></Option>
                             {Object.values(clientAll).map(client => (
                                 <Option value={client._id}>
@@ -244,18 +244,18 @@ export const BookingUpdate = () => {
                                 </Option>
                             ))}
                         </SelectSingle>
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Special request</Text>
                         <TextAreaJobDescription name="special_request" value={bookingUpdated.special_request} onChange={handleTextAreaChange} ></TextAreaJobDescription>
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <DivButtonCreateUser>
+                    <CtnButtonCreateUser>
                         <ButtonCreate type="submit" children='⮂ Update Booking' fontSize='1.25em'></ButtonCreate>
-                    </DivButtonCreateUser>
+                    </CtnButtonCreateUser>
                 </Form>
-            </CtnForm>
+            </CtnSection>
         </bookingUpdateStyles.SectionPageBookingUpdate >
     </>)
 }

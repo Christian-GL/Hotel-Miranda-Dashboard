@@ -18,8 +18,8 @@ import {
     validateCheckInCheckOutNewBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupied
 } from '../../../common/utils/commonValidator'
 import {
-    GlobalDateTimeStyles, CtnForm, CtnPrimaryIcon, CtnSecondaryIcon, IconCalendar, IconPlus, TitleForm, Form, CtnEntry,
-    Text, ArrayBox, ArrayItem, ButtonAddDelete, TextAreaJobDescription, SelectSingle, Option, InputDate, DivButtonCreateUser,
+    GlobalDateTimeStyles, CtnSection, CtnPrimaryIcons, CtnSecondaryIcons, IconCalendar, IconPlus, TitleForm, Form, CtnEntryVertical,
+    Text, ArrayBox, ArrayItem, ButtonAddDelete, TextAreaJobDescription, SelectSingle, Option, InputDate, CtnButtonCreateUser,
     SelectMultiple
 } from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
@@ -54,7 +54,7 @@ export const BookingCreate = () => {
     })
     const { handleDateChange,
         handleTextAreaChange,
-        handleSelectChange,
+        handleSingleSelectChange,
         handleMultiSelectChange,
     } = createFormHandlers(setNewBooking)
 
@@ -178,17 +178,17 @@ export const BookingCreate = () => {
         <GlobalDateTimeStyles />
 
         <bookingCreateStyles.SectionPageBookingCreate>
-            <CtnForm>
-                <CtnPrimaryIcon>
-                    <CtnSecondaryIcon>
+            <CtnSection>
+                <CtnPrimaryIcons>
+                    <CtnSecondaryIcons>
                         <IconCalendar />
                         <IconPlus />
-                    </CtnSecondaryIcon>
-                </CtnPrimaryIcon>
+                    </CtnSecondaryIcons>
+                </CtnPrimaryIcons>
                 <TitleForm>Create Booking</TitleForm>
 
                 <Form onSubmit={handleSubmit}>
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Check in date</Text>
                         <InputDate name="check_in_date" type="datetime-local" onChange={(e) => {
                             setCheckInTouched(true)
@@ -200,9 +200,9 @@ export const BookingCreate = () => {
                             setCheckOutTouched(true)
                             handleDateChange(e)
                         }} />
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Room number</Text>
                         <SelectMultiple
                             name="room_id_list"
@@ -223,7 +223,7 @@ export const BookingCreate = () => {
 
                         {/* !!! SOLO LOS NO ARCHIVADOS */}
                         <Text minWidth="10rem" margin="0 0 0 5rem">Client</Text>
-                        <SelectSingle name="client_id" onChange={handleSelectChange}>
+                        <SelectSingle name="client_id" onChange={handleSingleSelectChange}>
                             <Option value="null"></Option>
                             {Object.values(clientAll).map(client => (
                                 <Option value={client._id}>
@@ -231,18 +231,18 @@ export const BookingCreate = () => {
                                 </Option>
                             ))}
                         </SelectSingle>
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <CtnEntry>
+                    <CtnEntryVertical>
                         <Text>Special request</Text>
                         <TextAreaJobDescription name="special_request" onChange={handleTextAreaChange} ></TextAreaJobDescription>
-                    </CtnEntry>
+                    </CtnEntryVertical>
 
-                    <DivButtonCreateUser>
+                    <CtnButtonCreateUser>
                         <ButtonCreate type="submit" children='+ Create Booking' fontSize='1.25em'></ButtonCreate>
-                    </DivButtonCreateUser>
+                    </CtnButtonCreateUser>
                 </Form>
-            </CtnForm>
+            </CtnSection>
         </bookingCreateStyles.SectionPageBookingCreate>
 
     </>)
