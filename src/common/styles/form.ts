@@ -196,9 +196,10 @@ export const TextInfoBooking = styled.label`
 `
 
 export const InputText = styled.input`
-    padding: 1em;
+    padding: 0 1em;
     text-align: left;
     width: 100%;
+    height: 2.5rem;
     min-width: 10rem;
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
@@ -237,8 +238,9 @@ export const GlobalDateTimeStyles = createGlobalStyle`
 `
 
 export const InputDate = styled.input`
-    padding: 1em;
+    padding: 0 1em;
     width: 100%;
+    height: 2.5rem;
     font-family: ${globalConstStyles.fontPoppins};
     border: none;
     border-radius: 0.5rem;

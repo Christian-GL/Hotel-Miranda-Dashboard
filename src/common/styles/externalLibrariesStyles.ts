@@ -10,7 +10,7 @@ export const reactSelectStyles = (theme: DefaultTheme): StylesConfig => ({
     // Equivale al input del select:
     control: (base: any, state: any) => ({
         ...base,
-        height: '2.5rem',
+        textAlign: 'left',
         border: `1px solid ${theme.borderElementForm}`,
         boxShadow: 'none',
         '&:hover': {
@@ -20,6 +20,7 @@ export const reactSelectStyles = (theme: DefaultTheme): StylesConfig => ({
     // Cuadro flotante que contiene las opciones:
     menu: (base: any) => ({
         ...base,
+        textAlign: 'left',
         backgroundColor: theme.backgroundElementForm
     }),
     option: (base: any, state: any) => ({
