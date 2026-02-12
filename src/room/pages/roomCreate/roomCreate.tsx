@@ -3,8 +3,10 @@ import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { useTheme } from "styled-components"
 
 import * as roomCreateStyles from "./roomCreateStyles"
+import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
@@ -38,6 +40,7 @@ export const RoomCreate = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
+    const theme = useTheme()
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
     const [newRoom, setNewRoom] = useState<RoomInterface>({
@@ -192,7 +195,9 @@ export const RoomCreate = () => {
                             width="100%"
                             menuPlacement="top"
                             menuPosition="fixed"
+                            placeholder="Select amenities"
                             isMulti={true}
+                            styles={reactSelectStyles(theme)}
                             closeMenuOnSelect={false}
                             options={amenityReactOptions}
                             value={amenityReactOptions.filter(option => newRoom.amenities.includes(option.value))}
