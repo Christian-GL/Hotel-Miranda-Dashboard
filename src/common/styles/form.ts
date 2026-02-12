@@ -107,7 +107,7 @@ export const Form = styled.form`
     width: 100%;
     min-width: 40rem;
     max-width: 60rem;
-    padding: 2em 0;
+    padding: 4em 0 2em;
     text-align: center;
     background-color: ${props => props.theme.backgroundPage};
 `
@@ -131,7 +131,7 @@ export const ImgUser = styled.img`
 export const CtnEntryVertical = styled.div<{ removePaddingSeparator?: boolean }>`
     display: flex;
     flex-direction: column;
-    padding: ${props => props.removePaddingSeparator ? '0' : '0 0 2em'};
+    padding: ${props => props.removePaddingSeparator ? '0' : '0 0 2.5em'};
     gap: 0.25rem;
 `
 
@@ -209,7 +209,7 @@ export const InputText = styled.input`
     color: ${props => props.theme.textForm};
 
     &:hover {
-        borderColor: ${props => props.theme.borderElementHoverForm};
+        border-color: ${props => props.theme.borderElementHoverForm};
     }
 `
 

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { useTheme } from "styled-components"
 
 import * as styles from "common/styles/form"
+import roomDefaultImg from '../../../assets/img/roomDefault.jpg'
 import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
@@ -136,29 +137,20 @@ export const RoomCreate = () => {
             <styles.CtnForm>
                 <styles.Form onSubmit={handleSubmit}>
                     <styles.CtnEntryVertical>
-                        <styles.Text>Photo 1 (Main)</styles.Text>
-                        <styles.InputTextPhoto type="file" onChange={handleArrayPhotosChange(0, "photos")} />
-                        <styles.ImgRoom src={newRoom.photos[0]} />
-                    </styles.CtnEntryVertical>
-                    <styles.CtnEntryVertical>
-                        <styles.Text>Photo 2</styles.Text>
-                        <styles.InputTextPhoto type="file" onChange={handleArrayPhotosChange(1, "photos")} />
-                        <styles.ImgRoom src={newRoom.photos[1]} />
-                    </styles.CtnEntryVertical>
-                    <styles.CtnEntryVertical>
-                        <styles.Text>Photo 3</styles.Text>
-                        <styles.InputTextPhoto type="file" onChange={handleArrayPhotosChange(2, "photos")} />
-                        <styles.ImgRoom src={newRoom.photos[2]} />
-                    </styles.CtnEntryVertical>
-                    <styles.CtnEntryVertical>
-                        <styles.Text>Photo 4</styles.Text>
-                        <styles.InputTextPhoto type="file" onChange={handleArrayPhotosChange(3, "photos")} />
-                        <styles.ImgRoom src={newRoom.photos[3]} />
-                    </styles.CtnEntryVertical>
-                    <styles.CtnEntryVertical>
-                        <styles.Text>Photo 5</styles.Text>
-                        <styles.InputTextPhoto type="file" onChange={handleArrayPhotosChange(4, "photos")} />
-                        <styles.ImgRoom src={newRoom.photos[4]} />
+                        <styles.CtnEntryHorizontal>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Number</styles.Text>
+                                <styles.InputText name="number" onChange={handleStringChange} />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Price ($)</styles.Text>
+                                <styles.InputText name="price" onChange={handleNumberFloatChange} />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Discount (%)</styles.Text>
+                                <styles.InputText name="discount" onChange={handleNumberFloatChange} />
+                            </styles.CtnEntryVertical>
+                        </styles.CtnEntryHorizontal>
                     </styles.CtnEntryVertical>
 
                     <styles.CtnEntryVertical>
@@ -197,18 +189,52 @@ export const RoomCreate = () => {
                     </styles.CtnEntryVertical>
 
                     <styles.CtnEntryVertical>
+                        <styles.Text>Photo 1 (Main)</styles.Text>
+                        <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(0, "photos")} />
+                        <styles.ImgRoom
+                            src={newRoom.photos?.[0] || roomDefaultImg}
+                            onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                        />
+                    </styles.CtnEntryVertical>
+
+                    <styles.CtnEntryVertical>
                         <styles.CtnEntryHorizontal>
                             <styles.CtnEntryVertical removePaddingSeparator={true}>
-                                <styles.Text>Number</styles.Text>
-                                <styles.InputText name="number" onChange={handleStringChange} />
+                                <styles.Text>Photo 2</styles.Text>
+                                <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(1, "photos")} />
+                                <styles.ImgRoom
+                                    src={newRoom.photos?.[1] || roomDefaultImg}
+                                    onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                                />
                             </styles.CtnEntryVertical>
                             <styles.CtnEntryVertical removePaddingSeparator={true}>
-                                <styles.Text>Price</styles.Text>
-                                <styles.InputText name="price" onChange={handleNumberFloatChange} />
+                                <styles.Text>Photo 3</styles.Text>
+                                <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(2, "photos")} />
+                                <styles.ImgRoom
+                                    src={newRoom.photos?.[2] || roomDefaultImg}
+                                    onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                                />
+                            </styles.CtnEntryVertical>
+                        </styles.CtnEntryHorizontal>
+                    </styles.CtnEntryVertical>
+
+                    <styles.CtnEntryVertical>
+                        <styles.CtnEntryHorizontal>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Photo 4</styles.Text>
+                                <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(3, "photos")} />
+                                <styles.ImgRoom
+                                    src={newRoom.photos?.[3] || roomDefaultImg}
+                                    onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                                />
                             </styles.CtnEntryVertical>
                             <styles.CtnEntryVertical removePaddingSeparator={true}>
-                                <styles.Text>Discount (%)</styles.Text>
-                                <styles.InputText name="discount" onChange={handleNumberFloatChange} />
+                                <styles.Text>Photo 5</styles.Text>
+                                <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(4, "photos")} />
+                                <styles.ImgRoom
+                                    src={newRoom.photos?.[4] || roomDefaultImg}
+                                    onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                                />
                             </styles.CtnEntryVertical>
                         </styles.CtnEntryHorizontal>
                     </styles.CtnEntryVertical>

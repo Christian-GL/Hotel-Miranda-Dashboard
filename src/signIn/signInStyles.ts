@@ -46,6 +46,7 @@ export const LabelText = styled.label`
     text-shadow: 3px 3px #262626;
 `
 
+// !!! USAR THEME NO EL COLOR DIRECTO
 export const InputText = styled.input`
     display: block;
     margin: 1rem 0;

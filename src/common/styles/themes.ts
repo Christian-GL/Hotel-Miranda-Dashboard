@@ -56,6 +56,7 @@ export const themeLight = {
     buttonFormAdd: color.green,
     buttonFormDelete: color.red,
     buttonFormText: color.white,
+    textPlaceholderForm: color.graySmoothX3,
 
     backgroundTable: color.white,
     nameTable: color.greenSmoothX2,
@@ -175,6 +176,7 @@ export const themeDark = {
     buttonFormAdd: color.green,
     buttonFormDelete: color.red,
     buttonFormText: color.white,
+    textPlaceholderForm: color.graySmoothX3,
 
     backgroundTable: color.graySmoothX2,
     nameTable: color.greenSmoothX4,

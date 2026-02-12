@@ -48,5 +48,6 @@ export const reactSelectStyles = (theme: DefaultTheme): StylesConfig => ({
     }),
     placeholder: (base) => ({
         ...base,
+        color: theme.textPlaceholderForm
     })
 })
