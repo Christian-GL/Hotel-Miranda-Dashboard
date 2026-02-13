@@ -153,12 +153,12 @@ export const UserMain = () => {
                     valueB = b.role.toLowerCase()
                     break
                 case UserNameColumn.startDate:
-                    valueA = new Date(a.start_date).getTime()
-                    valueB = new Date(b.start_date).getTime()
+                    valueA = new Date(b.start_date).getTime()
+                    valueB = new Date(a.start_date).getTime()
                     break
                 case UserNameColumn.endDate:
-                    valueA = new Date(a.end_date).getTime()
-                    valueB = new Date(b.end_date).getTime()
+                    valueA = new Date(b.end_date).getTime()
+                    valueB = new Date(a.end_date).getTime()
                     break
                 default:
                     return 0

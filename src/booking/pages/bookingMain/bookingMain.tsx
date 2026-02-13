@@ -171,16 +171,16 @@ export const BookingMain = () => {
             let valueB: any
             switch (activeColumn) {
                 case BookingNameColumn.orderDate:
-                    valueA = new Date(a.order_date).getTime()
-                    valueB = new Date(b.order_date).getTime()
+                    valueA = new Date(b.order_date).getTime()
+                    valueB = new Date(a.order_date).getTime()
                     break
                 case BookingNameColumn.checkIn:
-                    valueA = new Date(a.check_in_date).getTime()
-                    valueB = new Date(b.check_in_date).getTime()
+                    valueA = new Date(b.check_in_date).getTime()
+                    valueB = new Date(a.check_in_date).getTime()
                     break
                 case BookingNameColumn.checkOut:
-                    valueA = new Date(a.check_out_date).getTime()
-                    valueB = new Date(b.check_out_date).getTime()
+                    valueA = new Date(b.check_out_date).getTime()
+                    valueB = new Date(a.check_out_date).getTime()
                     break
                 default:
                     return 0
