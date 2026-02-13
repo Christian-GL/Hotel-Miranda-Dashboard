@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 
 import * as styles from "./bookingDetailsStyles"
+import roomDefaultImg from "../../../assets/img/roomDefault.jpg"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { BookingInterfaceId } from "../../interfaces/bookingInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
@@ -303,7 +304,10 @@ export const BookingDetails = () => {
                         {roomsOfBooking.map(room =>
                             room.photos.map((photo, index) => (
                                 <SwiperSlide key={`${room._id}-photo-${index}`}>
-                                    <styles.ImgRoom src={photo} />
+                                    <styles.ImgRoom
+                                        src={photo || roomDefaultImg}
+                                        onError={(e) => { e.currentTarget.src = roomDefaultImg }}
+                                    />
                                     {/* <styles.NameProfileH2>{clientById.full_name}</styles.NameProfileH2> */}
                                 </SwiperSlide>
                             ))
