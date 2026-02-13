@@ -18,4 +18,9 @@ export const ButtonCreateStyle = styled.button<{ padding?: string, fontSize?: st
     background-color: ${props => props.isClickDisabled
         ? props.theme.backgroundButtonCreateDisabled
         : props.theme.backgroundButtonCreate};
+
+    &:hover {
+        transition: 0.25s;
+        transform: scale(1.05);
+    }
 `

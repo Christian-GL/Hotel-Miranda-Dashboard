@@ -167,7 +167,7 @@ export const themeDark = {
     iconEye: color.whiteSmooth,
     iconEyeBackground: color.greenSmoothX4,
     borderElementForm: color.blackSmooth,
-    borderElementHoverForm: color.red,
+    borderElementHoverForm: color.redSmooth,
     backgroundElementForm: color.whiteSmooth,
     optionHoverForm: color.redSmooth,
     textForm: color.blackSmooth,

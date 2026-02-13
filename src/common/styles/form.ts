@@ -113,7 +113,7 @@ export const Form = styled.form`
 `
 
 export const ImgRoom = styled.img`
-    padding-top: 1rem;
+    margin-top: 1rem;
     width: 100%;
     height: auto;
     max-width: 10rem;  
@@ -121,11 +121,11 @@ export const ImgRoom = styled.img`
 `
 
 export const ImgUser = styled.img`
-    padding-top: 1rem;
+    margin-top: 1rem;
     width: 100%;
-    height: auto;
     max-width: 7.5rem;
     max-height: 7.5rem;
+    aspect-ratio: 1 / 1;
 `
 
 export const CtnEntryVertical = styled.div<{ removePaddingSeparator?: boolean }>`
@@ -135,15 +135,19 @@ export const CtnEntryVertical = styled.div<{ removePaddingSeparator?: boolean }>
     gap: 0.25rem;
 `
 
-export const CtnEntryHorizontal = styled.div`
+export const CtnEntryHorizontal = styled.div<{ naturalSizes?: boolean }>`
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 2.5rem;
 
     // Para todos los hijos repartir equitativamente el espacio:
-    & > * {
-        flex: 1;
+    ${props => !props.naturalSizes &&
+        `
+            & > * {
+                flex: 1;
+            }
+        `
     }
 `
 
@@ -242,10 +246,14 @@ export const InputDate = styled.input`
     width: 100%;
     height: 2.5rem;
     font-family: ${globalConstStyles.fontPoppins};
-    border: none;
-    border-radius: 0.5rem;
+    border: 1px solid ${props => props.theme.borderElementForm};
+    border-radius: 0.25rem;
     outline: none;
     color: ${props => props.theme.textForm};
+
+    &:hover {
+        border-color: ${props => props.theme.borderElementHoverForm};
+    }
 `
 
 export const TextAreaJobDescription = styled.textarea`
@@ -255,10 +263,15 @@ export const TextAreaJobDescription = styled.textarea`
     height: 7.5rem;
     font-family: ${globalConstStyles.fontPoppins};
     font-weight: 400;
-    border: none;
-    border-radius: 0.5rem;
+    border: 1px solid ${props => props.theme.borderElementForm};
+    border-radius: 0.25rem;
     outline: none;
+    resize: none;
     color: ${props => props.theme.textForm};
+
+    &:hover {
+        border-color: ${props => props.theme.borderElementHoverForm};
+    }
 `
 
 export const SelectReact = styled(Select) <{ width?: string }>`
@@ -274,14 +287,13 @@ export const CtnButtonCreateUser = styled.div`
 `
 
 export const CtnButtonHidePassword = styled.div`
-    margin-left: 1rem;
     text-align: center;
 `
 
 export const EyeOpen = styled(IoEye)`
     vertical-align: middle;
     padding: 0.5em;
-    width: 3rem;
+    width: 2.75rem;
     height: auto;
     border-radius: 0.5rem;
     cursor: pointer;
@@ -292,7 +304,7 @@ export const EyeOpen = styled(IoEye)`
 export const EyeClose = styled(IoMdEyeOff)`
     vertical-align: middle;
     padding: 0.5em;
-    width: 3rem;
+    width: 2.75rem;
     height: auto;
     border-radius: 0.5rem;
     cursor: pointer;
