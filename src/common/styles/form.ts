@@ -105,8 +105,8 @@ export const CtnForm = styled.div`
 
 export const Form = styled.form`
     width: 100%;
-    min-width: 40rem;
-    max-width: 60rem;
+    min-width: 25rem;
+    max-width: 50rem;
     padding: 4em 0 2em;
     text-align: center;
     background-color: ${props => props.theme.backgroundPage};

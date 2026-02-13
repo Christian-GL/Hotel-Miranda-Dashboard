@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
-import * as clientCreateStyles from "./clientCreateStyles"
+import * as styles from "common/styles/form"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
@@ -15,10 +15,6 @@ import { ClientInterface } from "../../interfaces/clientInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
-import {
-    CtnSection, CtnPrimaryIcons, CtnSecondaryIcons, IconClient, IconPlus, TitleForm,
-    Form, CtnEntryVertical, Text, InputText, CtnButtonCreateUser
-} from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../../../client/features/thunks/clientFetchAllThunk"
@@ -88,37 +84,38 @@ export const ClientCreate = () => {
     return (<>
         <ToastContainer />
 
-        <clientCreateStyles.SectionPageClientCreate>
-            <CtnSection>
-                <CtnPrimaryIcons>
-                    <CtnSecondaryIcons>
-                        <IconClient />
-                        <IconPlus />
-                    </CtnSecondaryIcons>
-                </CtnPrimaryIcons>
-                <TitleForm>Create Client</TitleForm>
+        <styles.CtnSection>
+            <styles.CtnPrimaryIcons>
+                <styles.CtnSecondaryIcons>
+                    <styles.IconClient />
+                    <styles.IconPlus />
+                </styles.CtnSecondaryIcons>
+            </styles.CtnPrimaryIcons>
+            <styles.TitleForm>Create Client</styles.TitleForm>
 
-                <Form onSubmit={handleSubmit}>
-                    <CtnEntryVertical>
-                        <Text>Full Name</Text>
-                        <InputText name="full_name" onChange={handleStringChange} />
-                    </CtnEntryVertical>
+            <styles.CtnForm>
+                <styles.Form onSubmit={handleSubmit}>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Full Name</styles.Text>
+                        <styles.InputText name="full_name" onChange={handleStringChange} />
+                    </styles.CtnEntryVertical>
 
-                    <CtnEntryVertical>
-                        <Text>Email</Text>
-                        <InputText name="email" onChange={handleStringChange} />
-                    </CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Email</styles.Text>
+                        <styles.InputText name="email" onChange={handleStringChange} />
+                    </styles.CtnEntryVertical>
 
-                    <CtnEntryVertical>
-                        <Text>Phone Number</Text>
-                        <InputText name="phone_number" onChange={handleStringChange} />
-                    </CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Phone Number</styles.Text>
+                        <styles.InputText name="phone_number" onChange={handleStringChange} />
+                    </styles.CtnEntryVertical>
 
-                    <CtnButtonCreateUser>
+                    <styles.CtnButtonCreateUser>
                         <ButtonCreate type="submit" children='+ Create Client' fontSize='1.25em'></ButtonCreate>
-                    </CtnButtonCreateUser>
-                </Form>
-            </CtnSection>
-        </clientCreateStyles.SectionPageClientCreate>
+                    </styles.CtnButtonCreateUser>
+                </styles.Form>
+            </styles.CtnForm>
+        </styles.CtnSection>
     </>)
+
 }

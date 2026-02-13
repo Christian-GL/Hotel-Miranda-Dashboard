@@ -5,6 +5,7 @@ import { RoomInterfaceId } from "room/interfaces/roomInterface"
 import { ClientBookingsByRoomInterface } from "../interfaces/clientBookingsByRoomInterface"
 
 
+// !!! ELIMINAR SI NO SE USA:
 export const getClientBookingsByRoom = (
     client: ClientInterfaceId,
     bookings: BookingInterfaceId[],
