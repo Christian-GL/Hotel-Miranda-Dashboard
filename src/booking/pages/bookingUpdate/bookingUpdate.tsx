@@ -252,6 +252,7 @@ export const BookingUpdate = () => {
                             <styles.CtnEntryVertical removePaddingSeparator={true}>
                                 <styles.Text>Client</styles.Text>
                                 <styles.SelectReact
+                                    isDisabled={true}
                                     name="client_id"
                                     menuPlacement="top"
                                     menuPosition="fixed"

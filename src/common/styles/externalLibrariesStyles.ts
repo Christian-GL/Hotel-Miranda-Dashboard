@@ -13,6 +13,8 @@ export const reactSelectStyles = (theme: DefaultTheme): StylesConfig => ({
         textAlign: 'left',
         border: `1px solid ${theme.borderElementForm}`,
         boxShadow: 'none',
+        backgroundColor: state.isDisabled ? theme.backgroundElementDisabledForm : theme.backgroundElementForm,
+        cursor: state.isDisabled ? 'not-allowed' : 'default',
         '&:hover': {
             borderColor: theme.borderElementHoverForm
         }
