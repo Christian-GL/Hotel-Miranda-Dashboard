@@ -3,8 +3,10 @@ import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { useTheme } from "styled-components"
 
-import * as bookingCreateStyles from "./bookingCreateStyles"
+import * as styles from "common/styles/form"
+import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
@@ -14,14 +16,10 @@ import { OptionYesNo } from "../../../common/enums/optionYesNo"
 import { BookingInterfaceCheckInOut, BookingInterface } from "../../interfaces/bookingInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
+import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import {
     validateCheckInCheckOutNewBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupied
 } from '../../../common/utils/commonValidator'
-import {
-    GlobalDateTimeStyles, CtnSection, CtnPrimaryIcons, CtnSecondaryIcons, IconCalendar, IconPlus, TitleForm, Form, CtnEntryVertical,
-    Text, ArrayBox, ArrayItem, ButtonAddDelete, TextAreaJobDescription, SelectSingle, Option, InputDate, CtnButtonCreateUser,
-    SelectMultiple
-} from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
@@ -36,6 +34,7 @@ export const BookingCreate = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
+    const theme = useTheme()
     const bookingAll = useSelector(getBookingAllData)
     const bookingAllLoading = useSelector(getBookingAllStatus)
     const roomAll = useSelector(getRoomAllData)
@@ -54,13 +53,13 @@ export const BookingCreate = () => {
     })
     const { handleDateChange,
         handleTextAreaChange,
-        handleSingleSelectChange,
-        handleMultiSelectChange,
+        handleReactSingleSelectChange,
+        handleReactMultiSelectChange,
     } = createFormHandlers(setNewBooking)
-
     const [checkInTouched, setCheckInTouched] = useState(false)
     const [checkOutTouched, setCheckOutTouched] = useState(false)
     const datesSelected = checkInTouched && checkOutTouched
+    // !!! OPTIMIZAR: (TAMBIEN EL DE bookingUpdate)
     const roomsAvailable = !datesSelected
         ? []
         : roomAll
@@ -78,6 +77,17 @@ export const BookingCreate = () => {
 
                 return validateDateIsOccupied(newBooking, bookingsOfRoom).length === 0
             })
+    const clientsAvailable = Object.values(clientAll).filter(client => client.isArchived === OptionYesNo.no)
+    const roomNumbersReactOptions: ReactSelectOption<string>[] = datesSelected && roomsAvailable.length > 0
+        ? roomsAvailable.map(room => ({
+            value: room._id,
+            label: room.number
+        }))
+        : []
+    const clientReactOptions: ReactSelectOption<string>[] = clientsAvailable.map(client => ({
+        value: client._id,
+        label: client.full_name
+    }))
 
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
@@ -171,79 +181,88 @@ export const BookingCreate = () => {
         }
     }
 
-
+    console.log(newBooking)
     return (<>
         <ToastContainer />
+        <styles.GlobalDateTimeStyles />
 
-        <GlobalDateTimeStyles />
+        <styles.CtnSection>
+            <styles.CtnPrimaryIcons>
+                <styles.CtnSecondaryIcons>
+                    <styles.IconCalendar />
+                    <styles.IconPlus />
+                </styles.CtnSecondaryIcons>
+            </styles.CtnPrimaryIcons>
+            <styles.TitleForm>Create Booking</styles.TitleForm>
 
-        <bookingCreateStyles.SectionPageBookingCreate>
-            <CtnSection>
-                <CtnPrimaryIcons>
-                    <CtnSecondaryIcons>
-                        <IconCalendar />
-                        <IconPlus />
-                    </CtnSecondaryIcons>
-                </CtnPrimaryIcons>
-                <TitleForm>Create Booking</TitleForm>
+            <styles.CtnForm>
+                <styles.Form onSubmit={handleSubmit}>
+                    <styles.CtnEntryVertical>
+                        <styles.CtnEntryHorizontal>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Check in date</styles.Text>
+                                <styles.InputDate name="check_in_date" type="datetime-local" onChange={(e) => {
+                                    setCheckInTouched(true)
+                                    handleDateChange(e)
+                                }} />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Check out date</styles.Text>
+                                <styles.InputDate name="check_out_date" type="datetime-local" onChange={(e) => {
+                                    setCheckOutTouched(true)
+                                    handleDateChange(e)
+                                }} />
+                            </styles.CtnEntryVertical>
+                        </styles.CtnEntryHorizontal>
+                    </styles.CtnEntryVertical>
 
-                <Form onSubmit={handleSubmit}>
-                    <CtnEntryVertical>
-                        <Text>Check in date</Text>
-                        <InputDate name="check_in_date" type="datetime-local" onChange={(e) => {
-                            setCheckInTouched(true)
-                            handleDateChange(e)
-                        }} />
+                    <styles.CtnEntryVertical>
+                        <styles.CtnEntryHorizontal>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Room number</styles.Text>
+                                <styles.SelectReact
+                                    name="room_id_list"
+                                    menuPlacement="top"
+                                    menuPosition="fixed"
+                                    placeholder={!datesSelected ? "⚠️ Select dates first" : "Select room numbers"}
+                                    noOptionsMessage={() => !datesSelected ? "⚠️ Select Check-in & Check-out first" : "❌ No rooms available for selected dates"}
+                                    isMulti={true}
+                                    styles={reactSelectStyles(theme)}
+                                    closeMenuOnSelect={false}
+                                    options={roomNumbersReactOptions}
+                                    value={roomNumbersReactOptions.filter(option => newBooking.room_id_list.includes(option.value))}
+                                    onChange={handleReactMultiSelectChange("room_id_list")}
+                                />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Client</styles.Text>
+                                <styles.SelectReact
+                                    name="client_id"
+                                    menuPlacement="top"
+                                    menuPosition="fixed"
+                                    placeholder="Select client"
+                                    isMulti={false}
+                                    styles={reactSelectStyles(theme)}
+                                    closeMenuOnSelect={true}
+                                    options={clientReactOptions}
+                                    value={clientReactOptions.find(option => option.value === newBooking.client_id)}
+                                    onChange={handleReactSingleSelectChange("client_id")}
+                                />
+                            </styles.CtnEntryVertical>
+                        </styles.CtnEntryHorizontal>
+                    </styles.CtnEntryVertical>
 
-                        <Text minWidth="10rem" margin="0 0 0 5rem">Check out date</Text>
-                        <InputDate name="check_out_date" type="datetime-local" onChange={(e) => {
-                            setCheckOutTouched(true)
-                            handleDateChange(e)
-                        }} />
-                    </CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Special request</styles.Text>
+                        <styles.TextAreaJobDescription name="special_request" onChange={handleTextAreaChange} ></styles.TextAreaJobDescription>
+                    </styles.CtnEntryVertical>
 
-                    <CtnEntryVertical>
-                        <Text>Room number</Text>
-                        <SelectMultiple
-                            name="room_id_list"
-                            width="100%"
-                            onChange={handleMultiSelectChange}
-                            multiple={true}
-                        >
-                            {!datesSelected
-                                ? <Option value="null" disabled>⚠️ Select Check-in date & Check-out date first</Option>
-                                : roomsAvailable.length === 0
-                                    ? <Option value="null" disabled>❌ No rooms available for the selected dates</Option>
-                                    : roomsAvailable.map((room, index) => (
-                                        <Option key={index} value={room._id}>
-                                            {room.number}
-                                        </Option>
-                                    ))}
-                        </SelectMultiple>
-
-                        {/* !!! SOLO LOS NO ARCHIVADOS */}
-                        <Text minWidth="10rem" margin="0 0 0 5rem">Client</Text>
-                        <SelectSingle name="client_id" onChange={handleSingleSelectChange}>
-                            <Option value="null"></Option>
-                            {Object.values(clientAll).map(client => (
-                                <Option value={client._id}>
-                                    {client.full_name}
-                                </Option>
-                            ))}
-                        </SelectSingle>
-                    </CtnEntryVertical>
-
-                    <CtnEntryVertical>
-                        <Text>Special request</Text>
-                        <TextAreaJobDescription name="special_request" onChange={handleTextAreaChange} ></TextAreaJobDescription>
-                    </CtnEntryVertical>
-
-                    <CtnButtonCreateUser>
+                    <styles.CtnButtonCreateUser>
                         <ButtonCreate type="submit" children='+ Create Booking' fontSize='1.25em'></ButtonCreate>
-                    </CtnButtonCreateUser>
-                </Form>
-            </CtnSection>
-        </bookingCreateStyles.SectionPageBookingCreate>
-
+                    </styles.CtnButtonCreateUser>
+                </styles.Form>
+            </styles.CtnForm>
+        </styles.CtnSection>
     </>)
+
 }

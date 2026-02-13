@@ -4,8 +4,10 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
+import { useTheme } from "styled-components"
 
-import * as bookingUpdateStyles from "./bookingUpdateStyles"
+import * as styles from "common/styles/form"
+import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import { ToastContainer } from 'react-toastify'
 import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
 import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
@@ -16,13 +18,10 @@ import { BookingInterfaceCheckInOutId, BookingInterfaceId } from "../../interfac
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { formatDateForInput } from "../../../common/utils/dateUtils"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
+import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import {
     validateCheckInCheckOutExistingBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupiedIfBookingExists
 } from '../../../common/utils/commonValidator'
-import {
-    GlobalDateTimeStyles, CtnSection, CtnPrimaryIcons, CtnSecondaryIcons, IconCalendar, IconUpdate, TitleForm, Form, InputTextPhoto, ImgUser, CtnEntryVertical,
-    Text, InputText, TextAreaJobDescription, SelectSingle, Option, InputDate, CtnButtonCreateUser, SelectMultiple
-} from "../../../common/styles/form"
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
 import { BookingUpdateThunk } from "../../../booking/features/thunks/bookingUpdateThunk"
@@ -40,6 +39,7 @@ export const BookingUpdate = () => {
     const idParams = id!
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
+    const theme = useTheme()
     const bookingById = useSelector(getBookingIdData)
     const bookingByIdLoading = useSelector(getBookingIdStatus)
     const bookingAll = useSelector(getBookingAllData)
@@ -61,8 +61,8 @@ export const BookingUpdate = () => {
     })
     const { handleDateChange,
         handleTextAreaChange,
-        handleSingleSelectChange,
-        handleMultiSelectChange
+        handleReactSingleSelectChange,
+        handleReactMultiSelectChange,
     } = createFormHandlers(setBookingUpdated)
 
     const roomsAvailable = roomAll
@@ -81,6 +81,17 @@ export const BookingUpdate = () => {
 
             return validateDateIsOccupiedIfBookingExists(bookingUpdated, bookingsOfRoom).length === 0
         })
+    const clientsAvailable = Object.values(clientAll).filter(client => client.isArchived === OptionYesNo.no)
+    const roomNumbersReactOptions: ReactSelectOption<string>[] = roomsAvailable.length > 0
+        ? roomsAvailable.map(room => ({
+            value: room._id,
+            label: room.number
+        }))
+        : []
+    const clientReactOptions: ReactSelectOption<string>[] = clientsAvailable.map(client => ({
+        value: client._id,
+        label: client.full_name
+    }))
 
     // !!! DEBERÍA SER SUFICIENTE CON 1 DE LOS 2 PRIMEROS useEffects?
     useEffect(() => {
@@ -195,67 +206,77 @@ export const BookingUpdate = () => {
 
     return (<>
         <ToastContainer />
+        <styles.GlobalDateTimeStyles />
 
-        <GlobalDateTimeStyles />
+        <styles.CtnSection>
+            <styles.CtnPrimaryIcons>
+                <styles.CtnSecondaryIcons>
+                    <styles.IconCalendar />
+                    <styles.IconUpdate />
+                </styles.CtnSecondaryIcons>
+            </styles.CtnPrimaryIcons>
+            <styles.TitleForm>Update Booking #{bookingUpdated._id}</styles.TitleForm>
 
-        <bookingUpdateStyles.SectionPageBookingUpdate>
-            <CtnSection>
-                <CtnPrimaryIcons>
-                    <CtnSecondaryIcons>
-                        <IconCalendar />
-                        <IconUpdate />
-                    </CtnSecondaryIcons>
-                </CtnPrimaryIcons>
-                <TitleForm>Update Booking #{bookingUpdated._id}</TitleForm>
+            <styles.CtnForm>
+                <styles.Form onSubmit={handleSubmit}>
+                    <styles.CtnEntryVertical>
+                        <styles.CtnEntryHorizontal>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Check in date</styles.Text>
+                                <styles.InputDate name="check_in_date" value={formatDateForInput(bookingUpdated.check_in_date)} type="datetime-local" onChange={(e) => { handleDateChange(e) }} />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Check out date</styles.Text>
+                                <styles.InputDate name="check_out_date" value={formatDateForInput(bookingUpdated.check_out_date)} type="datetime-local" onChange={(e) => { handleDateChange(e) }} />
+                            </styles.CtnEntryVertical>
+                        </styles.CtnEntryHorizontal>
+                    </styles.CtnEntryVertical>
 
-                <Form onSubmit={handleSubmit}>
-                    <CtnEntryVertical>
-                        <Text>Check in date</Text>
-                        <InputDate name="check_in_date" value={formatDateForInput(bookingUpdated.check_in_date)} type="datetime-local" onChange={handleDateChange} />
+                    <styles.CtnEntryVertical>
+                        <styles.CtnEntryHorizontal>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Room number</styles.Text>
+                                <styles.SelectReact
+                                    name="room_id_list"
+                                    menuPlacement="top"
+                                    menuPosition="fixed"
+                                    placeholder={"Select room numbers"}
+                                    isMulti={true}
+                                    styles={reactSelectStyles(theme)}
+                                    closeMenuOnSelect={false}
+                                    options={roomNumbersReactOptions}
+                                    value={roomNumbersReactOptions.filter(option => bookingUpdated.room_id_list.includes(option.value))}
+                                    onChange={handleReactMultiSelectChange("room_id_list")}
+                                />
+                            </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Client</styles.Text>
+                                <styles.SelectReact
+                                    name="client_id"
+                                    menuPlacement="top"
+                                    menuPosition="fixed"
+                                    placeholder="Select client"
+                                    isMulti={false}
+                                    styles={reactSelectStyles(theme)}
+                                    closeMenuOnSelect={true}
+                                    options={clientReactOptions}
+                                    value={clientReactOptions.find(option => option.value === bookingUpdated.client_id)}
+                                    onChange={handleReactSingleSelectChange("client_id")}
+                                />
+                            </styles.CtnEntryVertical>
+                        </styles.CtnEntryHorizontal>
+                    </styles.CtnEntryVertical>
 
-                        <Text minWidth="10rem" margin="0 0 0 5rem">Check out date</Text>
-                        <InputDate name="check_out_date" value={formatDateForInput(bookingUpdated.check_out_date)} type="datetime-local" onChange={handleDateChange} />
-                    </CtnEntryVertical>
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Special request</styles.Text>
+                        <styles.TextAreaJobDescription name="special_request" value={bookingUpdated.special_request} onChange={handleTextAreaChange} ></styles.TextAreaJobDescription>
+                    </styles.CtnEntryVertical>
 
-                    <CtnEntryVertical>
-                        <Text>Room number</Text>
-                        <SelectMultiple
-                            name="room_id_list"
-                            width="100%"
-                            value={bookingUpdated.room_id_list}
-                            onChange={handleMultiSelectChange}
-                            multiple={true}
-                        >
-                            {roomsAvailable.length === 0
-                                ? <Option value="null" disabled>❌ No rooms available for the selected dates</Option>
-                                : roomsAvailable.map((room, index) => (
-                                    <Option key={index} value={room._id}>
-                                        {room.number}
-                                    </Option>
-                                ))}
-                        </SelectMultiple>
-
-                        <Text minWidth="10rem" margin="0 0 0 5rem">Client</Text>
-                        <SelectSingle name="client_id" value={bookingUpdated.client_id} onChange={handleSingleSelectChange}>
-                            <Option value="null"></Option>
-                            {Object.values(clientAll).map(client => (
-                                <Option value={client._id}>
-                                    {client.full_name}
-                                </Option>
-                            ))}
-                        </SelectSingle>
-                    </CtnEntryVertical>
-
-                    <CtnEntryVertical>
-                        <Text>Special request</Text>
-                        <TextAreaJobDescription name="special_request" value={bookingUpdated.special_request} onChange={handleTextAreaChange} ></TextAreaJobDescription>
-                    </CtnEntryVertical>
-
-                    <CtnButtonCreateUser>
+                    <styles.CtnButtonCreateUser>
                         <ButtonCreate type="submit" children='⮂ Update Booking' fontSize='1.25em'></ButtonCreate>
-                    </CtnButtonCreateUser>
-                </Form>
-            </CtnSection>
-        </bookingUpdateStyles.SectionPageBookingUpdate >
+                    </styles.CtnButtonCreateUser>
+                </styles.Form>
+            </styles.CtnForm>
+        </styles.CtnSection>
     </>)
 }

@@ -48,20 +48,20 @@ export const RoomCreate = () => {
         isArchived: OptionYesNo.no,
         booking_id_list: []
     })
-    const amenityReactOptions: ReactSelectOption<RoomAmenities>[] = Object.values(RoomAmenities).map((amenity) => ({
-        value: amenity,
-        label: amenity
-    }))
-    const roomTypeReactOptions: ReactSelectOption<RoomType>[] = Object.values(RoomType).map((type) => ({
-        value: type,
-        label: type
-    }))
     const { handleStringChange,
         handleArrayPhotosChange,
         handleReactSingleSelectChange,
         handleReactMultiSelectChange,
         handleNumberFloatChange,
     } = createFormHandlers(setNewRoom)
+    const amenityReactOptions: ReactSelectOption<RoomAmenities>[] = Object.values(RoomAmenities).map(amenity => ({
+        value: amenity,
+        label: amenity
+    }))
+    const roomTypeReactOptions: ReactSelectOption<RoomType>[] = Object.values(RoomType).map(type => ({
+        value: type,
+        label: type
+    }))
 
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
