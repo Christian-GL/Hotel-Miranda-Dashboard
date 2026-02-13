@@ -10,6 +10,7 @@ import { CtnSwiperCustom, ButtonPrev, ButtonNext } from "../../../common/styles/
 import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
 import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
 import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
+import { ClientHasBookings } from "../../enums/clientWithBookings"
 import { AppDispatch } from '../../../common/redux/store'
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { Role } from "../../../user/enums/role"
@@ -65,6 +66,7 @@ export const ClientMain = () => {
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const [inputText, setInputText] = useState<string>('')
     const [tableOptionsDisplayed, setTableOptionsDisplayed] = useState<string>('')
+    const [hasBookingsFilterButton, setHasBookingsFilterButton] = useState<ClientHasBookings>(ClientHasBookings.all)
     const [archivedFilterButton, setArchivedFilterButton] = useState<ArchivedButtonType>(ArchivedButtonType.notArchived)
     const [filteredClients, setFilteredClients] = useState<ClientInterfaceId[]>([])
     const sortableColumns: ClientNameColumn[] = [
@@ -90,7 +92,7 @@ export const ClientMain = () => {
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
         else if (clientAllLoading === ApiStatus.fulfilled) { displayClients() }
-    }, [clientAllLoading, clientAll, inputText, archivedFilterButton, arrowStates])
+    }, [clientAllLoading, clientAll, inputText, hasBookingsFilterButton, archivedFilterButton, arrowStates])
     useEffect(() => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
     }, [roomAllLoading, roomAll])
@@ -105,6 +107,19 @@ export const ClientMain = () => {
             || client.full_name.toLowerCase().includes(normalizedText)
             || client.email.toLocaleLowerCase().includes(normalizedText)
         )
+    }
+    const filterByHasBookings = (clients: ClientInterfaceId[], hasBookingsFilterButton: ClientHasBookings): ClientInterfaceId[] => {
+        switch (hasBookingsFilterButton) {
+            case ClientHasBookings.hasBookings:
+                return clients.filter(client => client.booking_id_list.length > 0)
+
+            case ClientHasBookings.hasNoBookings:
+                return clients.filter(client => client.booking_id_list.length === 0)
+
+            case ClientHasBookings.all:
+            default:
+                return clients
+        }
     }
     const filterByArchivedStatus = (clients: ClientInterfaceId[], archivedFilterButton: ArchivedButtonType): ClientInterfaceId[] => {
         switch (archivedFilterButton) {
@@ -122,8 +137,9 @@ export const ClientMain = () => {
     const displayClients = (): void => {
         let filteredData = clientAll
 
-        filteredData = filterByIdOrNameOrEmail(filteredData, inputText)
+        filteredData = filterByHasBookings(filteredData, hasBookingsFilterButton)
         filteredData = filterByArchivedStatus(filteredData, archivedFilterButton)
+        filteredData = filterByIdOrNameOrEmail(filteredData, inputText)
 
         setFilteredClients(sortData(filteredData))
         resetPage()
@@ -189,7 +205,6 @@ export const ClientMain = () => {
 
 
     return (<>
-
         <SectionPage>
             <CtnFuncionality>
                 <CtnAllDisplayFilter>
@@ -197,6 +212,11 @@ export const ClientMain = () => {
                         <TableDisplaySelector text='All Clients' onClick={() => setArchivedFilterButton(ArchivedButtonType.all)} isSelected={archivedFilterButton === ArchivedButtonType.all} />
                         <TableDisplaySelector text='Not Archived' onClick={() => setArchivedFilterButton(ArchivedButtonType.notArchived)} isSelected={archivedFilterButton === ArchivedButtonType.notArchived} />
                         <TableDisplaySelector text='Archived' onClick={() => setArchivedFilterButton(ArchivedButtonType.archived)} isSelected={archivedFilterButton === ArchivedButtonType.archived} />
+                    </CtnTableDisplayFilter>
+                    <CtnTableDisplayFilter>
+                        <TableDisplaySelector text='All Clients' onClick={() => setHasBookingsFilterButton(ClientHasBookings.all)} isSelected={hasBookingsFilterButton === ClientHasBookings.all} />
+                        <TableDisplaySelector text='With bookings' onClick={() => setHasBookingsFilterButton(ClientHasBookings.hasBookings)} isSelected={hasBookingsFilterButton === ClientHasBookings.hasBookings} />
+                        <TableDisplaySelector text='Without bookings' onClick={() => setHasBookingsFilterButton(ClientHasBookings.hasNoBookings)} isSelected={hasBookingsFilterButton === ClientHasBookings.hasNoBookings} />
                     </CtnTableDisplayFilter>
                 </CtnAllDisplayFilter>
 
@@ -394,6 +414,6 @@ export const ClientMain = () => {
                 onLast={lastPage}
             />
         </SectionPage >
-
     </>)
+
 }
