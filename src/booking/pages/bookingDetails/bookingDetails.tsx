@@ -22,7 +22,7 @@ import { handleSelectionPopupMessage } from '../../../common/utils/selectionPopu
 import { PopupText } from "../../../common/components/popupText/popupText"
 import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
 import { ToastContainer, toast } from 'react-toastify'
-import { ToastifyLoadingData } from "../../../common/components/toastify/loadingDataPopup/toastifyLoadingData"
+import { ToastifyLoading } from "../../../common/components/toastify/loadingPopup/toastifyLoading"
 import { Role } from "../../../user/enums/role"
 import { ApiStatus } from "../../../common/enums/ApiStatus"
 import { RoomAmenities } from "../../../room/enums/roomAmenities"
@@ -85,7 +85,7 @@ export const BookingDetails = () => {
         }
     }, [])
     useEffect(() => {
-        if (isDataLoading) { ToastifyLoadingData(1, 'Loading rooms data...') }
+        if (isDataLoading) { ToastifyLoading(1, 'Loading rooms data...') }
         else { toast.dismiss(1) }
     }, [isDataLoading])
 
