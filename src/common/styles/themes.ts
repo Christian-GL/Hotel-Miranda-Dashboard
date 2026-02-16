@@ -42,6 +42,7 @@ export const themeLight = {
     textButtonBookingDetails: color.white,
     backgroundButtonBookingDetails: color.greenDark,
     textInfoBookingDetails: color.blackSmooth,
+    scrollbarBookingDetails: color.gray,
 
     iconForm: color.blackSmooth,
     iconEye: color.white,
@@ -163,6 +164,7 @@ export const themeDark = {
     textButtonBookingDetails: color.whiteSmooth,
     backgroundButtonBookingDetails: color.greenSmoothX4,
     textInfoBookingDetails: color.blackSmooth,
+    scrollbarBookingDetails: color.gray,
 
     iconForm: color.whiteSmooth,
     iconEye: color.whiteSmooth,

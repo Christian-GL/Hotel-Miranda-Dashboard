@@ -16,7 +16,7 @@ export const PageBookingDetails = styled.section`
     flex-direction: row;
     padding: 2em;
     height: 100%;
-    overflow-y: auto;
+    gap: 2rem;
     background-color: ${props => props.theme.backgroundBookingDetails};
 `
 
@@ -25,6 +25,9 @@ export const Section = styled.div<{ padding?: string }>`
     width: 50%;
     min-width: 35rem;
     height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
+    scrollbar-color: ${props => `${props.theme.scrollbarBookingDetails} transparent`};
 `
 
 export const CtnMainData = styled.div`
