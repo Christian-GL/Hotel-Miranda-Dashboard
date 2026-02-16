@@ -14,7 +14,7 @@ import { OptionYesNo } from "common/enums/optionYesNo"
 import { ClientInterface } from "../../interfaces/clientInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { createFormHandlers } from '../../../common/utils/formHandlers'
-import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/commonValidator'
+import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/validators'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
 import { ClientFetchAllThunk } from "../../../client/features/thunks/clientFetchAllThunk"

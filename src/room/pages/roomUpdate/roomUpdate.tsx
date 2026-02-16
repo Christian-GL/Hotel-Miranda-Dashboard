@@ -25,7 +25,7 @@ import {
     validateRoomNumber, validateRoomPhotoList, validateRoomType,
     validateAmenities, validateRoomPrice, validateRoomDiscount,
     validateOptionYesNo, validateMongoDBObjectIdList
-} from '../../../common/utils/commonValidator'
+} from '../../../common/utils/validators'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "../../features/roomSlice"
 import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"

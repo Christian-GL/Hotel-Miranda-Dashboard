@@ -19,7 +19,7 @@ import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import {
     validateCheckInCheckOutNewBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupied
-} from '../../../common/utils/commonValidator'
+} from '../../../common/utils/validators'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"

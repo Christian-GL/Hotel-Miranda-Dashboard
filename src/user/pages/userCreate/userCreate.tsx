@@ -24,7 +24,7 @@ import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import {
     validatePhoto, validateFullName, validateEmail, validatePhoneNumber, validateDateRelativeToAnother,
     validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
-} from '../../../common/utils/commonValidator'
+} from '../../../common/utils/validators'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getUserAllData, getUserAllStatus, getUserApiError } from "../../features/userSlice"
 import { UserFetchAllThunk } from "../../features/thunks/userFetchAllThunk"

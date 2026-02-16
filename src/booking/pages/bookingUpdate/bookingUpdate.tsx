@@ -21,7 +21,7 @@ import { createFormHandlers } from '../../../common/utils/formHandlers'
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import {
     validateCheckInCheckOutExistingBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupiedIfBookingExists
-} from '../../../common/utils/commonValidator'
+} from '../../../common/utils/validators'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
 import { BookingUpdateThunk } from "../../../booking/features/thunks/bookingUpdateThunk"

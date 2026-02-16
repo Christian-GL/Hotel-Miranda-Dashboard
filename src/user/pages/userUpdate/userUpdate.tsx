@@ -26,7 +26,7 @@ import { formatDateForInput } from "../../../common/utils/dateUtils"
 import {
     validatePhoto, validateFullName, validateEmail, validatePhoneNumber, validateDateRelativeToAnother,
     validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
-} from '../../../common/utils/commonValidator'
+} from '../../../common/utils/validators'
 import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
 import { getUserIdData, getUserIdStatus } from "../../features/userSlice"
 import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk"
