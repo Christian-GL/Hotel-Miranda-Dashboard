@@ -39,6 +39,7 @@ import { usePagination } from "../../../common/hooks/usePagination"
 import { getUserAllData, getUserAllStatus } from "./../../features/userSlice"
 import { UserFetchAllThunk } from "./../../features/thunks/userFetchAllThunk"
 import { UserUpdateThunk } from "./../../features/thunks/userUpdateThunk"
+import { UserArchiveThunk } from "./../../features/thunks/userArchiveThunk"
 import { UserDeleteByIdThunk } from "./../../features/thunks/userDeleteByIdThunk"
 
 
@@ -175,16 +176,30 @@ export const UserMain = () => {
             : setTableOptionsDisplayed(id)
     }
     // !!! ESTA FUNCIÓN PUEDE SER COMÚN (DELETE TAMBIÉN)
-    const toggleArchivedUser = async (user: UserInterfaceId): Promise<void> => {
-        const updatedUser = {
-            ...user,
-            isArchived: user.isArchived === OptionYesNo.no
-                ? OptionYesNo.yes
-                : OptionYesNo.no
-        }
+    // const toggleArchivedUser = async (user: UserInterfaceId): Promise<void> => {
+    //     const updatedUser = {
+    //         ...user,
+    //         isArchived: user.isArchived === OptionYesNo.no
+    //             ? OptionYesNo.yes
+    //             : OptionYesNo.no
+    //     }
+    //     try {
+    //         await dispatch(UserUpdateThunk({ idUser: user._id, updatedUserData: updatedUser })).unwrap()
+    //         displayMenuOptions(user._id)
+    //         resetPage()
+    //     }
+    //     catch (error) {
+    //         const apiError = error as ApiErrorResponseInterface
+    //         customPopupMessage(setInfoPopup, setShowPopup, 'API Error', apiError.message)
+    //     }
+    // }
+    const toggleArchivedUser = async (idUser: string, userArchivedValue: OptionYesNo): Promise<void> => {
+        const newArchivedValue = userArchivedValue === OptionYesNo.no
+            ? OptionYesNo.yes
+            : OptionYesNo.no
         try {
-            await dispatch(UserUpdateThunk({ idUser: user._id, updatedUserData: updatedUser })).unwrap()
-            displayMenuOptions(user._id)
+            await dispatch(UserArchiveThunk({ idUser: idUser, isArchived: newArchivedValue })).unwrap()
+            displayMenuOptions(idUser)
             resetPage()
         }
         catch (error) {
@@ -192,6 +207,7 @@ export const UserMain = () => {
             customPopupMessage(setInfoPopup, setShowPopup, 'API Error', apiError.message)
         }
     }
+
     const deleteUserById = async (id: string): Promise<void> => {
         try {
             await dispatch(UserDeleteByIdThunk(id)).unwrap()
@@ -347,7 +363,7 @@ export const UserMain = () => {
                                                         setShowPopup,
                                                         `${userData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'} user #${userData._id}`,
                                                         `Are you sure you want to ${userData.isArchived === OptionYesNo.no ? 'archive' : 'unarchive'} this user?`,
-                                                        () => { toggleArchivedUser(userData); displayMenuOptions('') },
+                                                        () => { toggleArchivedUser(userData._id, userData.isArchived); displayMenuOptions('') },
                                                         () => setTableOptionsDisplayed('')
                                                     )
                                                 }

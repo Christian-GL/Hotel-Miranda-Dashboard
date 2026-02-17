@@ -10,6 +10,7 @@ import { UserFetchAllThunk } from './thunks/userFetchAllThunk'
 import { UserFetchByIDThunk } from './thunks/userFetchByIDThunk'
 import { UserCreateThunk } from './thunks/userCreateThunk'
 import { UserUpdateThunk } from './thunks/userUpdateThunk'
+import { UserArchiveThunk } from './thunks/userArchiveThunk'
 import { UserDeleteByIdThunk } from './thunks/userDeleteByIdThunk'
 
 
@@ -20,6 +21,7 @@ const initialState: UserStateInterface = {
     idStatus: ApiStatus.idle,
     createStatus: ApiStatus.idle,
     updateStatus: ApiStatus.idle,
+    archivedStatus: ApiStatus.idle,
     deleteStatus: ApiStatus.idle,
     apiError: null
 }
@@ -52,10 +54,7 @@ export const UserSlice = createSlice({
             })
             .addCase(UserFetchAllThunk.rejected, (state, action) => {
                 state.allStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             .addCase(UserFetchByIDThunk.pending, (state) => {
@@ -69,10 +68,7 @@ export const UserSlice = createSlice({
             })
             .addCase(UserFetchByIDThunk.rejected, (state, action) => {
                 state.idStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             .addCase(UserCreateThunk.pending, (state) => {
@@ -86,10 +82,7 @@ export const UserSlice = createSlice({
             })
             .addCase(UserCreateThunk.rejected, (state, action) => {
                 state.createStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             .addCase(UserUpdateThunk.pending, (state) => {
@@ -110,10 +103,28 @@ export const UserSlice = createSlice({
             })
             .addCase(UserUpdateThunk.rejected, (state, action) => {
                 state.updateStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
+            })
+
+            .addCase(UserArchiveThunk.pending, (state) => {
+                state.archivedStatus = ApiStatus.pending
+                state.apiError = null
+            })
+            .addCase(UserArchiveThunk.fulfilled, (state, action) => {
+                state.archivedStatus = ApiStatus.fulfilled
+                const archivedUser = action.payload
+                const index = state.allData.findIndex(user => user._id === archivedUser._id)
+                if (index !== -1) {
+                    state.allData[index] = archivedUser
                 }
+                if (state.idData && state.idData._id === archivedUser._id) {
+                    state.idData = archivedUser
+                }
+                state.apiError = null
+            })
+            .addCase(UserArchiveThunk.rejected, (state, action) => {
+                state.archivedStatus = ApiStatus.rejected
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             .addCase(UserDeleteByIdThunk.pending, (state) => {
@@ -128,10 +139,7 @@ export const UserSlice = createSlice({
             })
             .addCase(UserDeleteByIdThunk.rejected, (state, action) => {
                 state.deleteStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
     }
 })
@@ -144,6 +152,7 @@ export const getUserAllStatus = (state: RootState) => state.userSlice.allStatus
 export const getUserIdStatus = (state: RootState) => state.userSlice.idStatus
 export const getUserCreateStatus = (state: RootState) => state.userSlice.createStatus
 export const getUserUpdateStatus = (state: RootState) => state.userSlice.updateStatus
+export const getUserArchiveStatus = (state: RootState) => state.userSlice.archivedStatus
 export const getUserDeleteStatus = (state: RootState) => state.userSlice.deleteStatus
 
 export const getUserApiError = (state: RootState) => state.userSlice.apiError
