@@ -1,17 +1,17 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { UserInterfaceId } from '../../interfaces/userInterface'
+import { ClientArchiveResponseInterface } from "common/interfaces/apiResponses/clientArchiveResponseInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { OptionYesNo } from "common/enums/optionYesNo"
 
 
-export const UserArchiveThunk = createAsyncThunk<
-    UserInterfaceId,
-    { idUser: string; isArchived: OptionYesNo },
+export const ClientArchiveThunk = createAsyncThunk<
+    ClientArchiveResponseInterface,
+    { idClient: string; isArchived: OptionYesNo },
     { rejectValue: ApiErrorResponseInterface }
 >(
-    "user/archive",
-    async ({ idUser, isArchived }, { rejectWithValue }) => {
+    "client/archive",
+    async ({ idClient, isArchived }, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) {
@@ -22,7 +22,7 @@ export const UserArchiveThunk = createAsyncThunk<
         }
 
         try {
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_USERS}/archive/${idUser}`, {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CLIENTS}/archive/${idClient}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -30,16 +30,15 @@ export const UserArchiveThunk = createAsyncThunk<
                 },
                 body: JSON.stringify({ isArchived })
             })
-
             if (request.ok) {
-                const userUpdated = await request.json()
-                return userUpdated
+                const clientUpdated = await request.json()
+                return clientUpdated
             }
             else {
                 const errorData = await request.json().catch(() => null)
                 return rejectWithValue({
                     status: request.status,
-                    message: errorData?.message ?? 'Error archiving user',
+                    message: errorData?.message ?? 'Error archiving client',
                 })
             }
         }

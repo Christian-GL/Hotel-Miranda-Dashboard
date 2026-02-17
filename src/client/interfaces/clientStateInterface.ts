@@ -10,6 +10,7 @@ export interface ClientStateInterface {
     idStatus: ApiStatus
     createStatus: ApiStatus
     updateStatus: ApiStatus
+    archiveStatus: ApiStatus
     deleteStatus: ApiStatus
     apiError: ApiErrorResponseInterface | null
 }

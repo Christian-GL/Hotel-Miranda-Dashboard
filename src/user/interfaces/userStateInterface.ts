@@ -10,7 +10,7 @@ export interface UserStateInterface {
     idStatus: ApiStatus
     createStatus: ApiStatus
     updateStatus: ApiStatus
-    archivedStatus: ApiStatus
+    archiveStatus: ApiStatus
     deleteStatus: ApiStatus
     apiError: ApiErrorResponseInterface | null
 }

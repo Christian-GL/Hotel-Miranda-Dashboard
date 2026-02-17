@@ -10,6 +10,7 @@ import { ClientFetchAllThunk } from './thunks/clientFetchAllThunk'
 import { ClientFetchByIDThunk } from './thunks/clientFetchByIDThunk'
 import { ClientCreateThunk } from './thunks/clientCreateThunk'
 import { ClientUpdateThunk } from './thunks/clientUpdateThunk'
+import { ClientArchiveThunk } from './thunks/clientArchiveThunk'
 import { ClientDeleteByIdThunk } from './thunks/clientDeleteByIdThunk'
 import { BookingCreateThunk } from '../../booking/features/thunks/bookingCreateThunk'
 import { BookingDeleteByIdThunk } from '../../booking/features/thunks/bookingDeleteByIdThunk'
@@ -25,6 +26,7 @@ const initialState: ClientStateInterface = {
     idStatus: ApiStatus.idle,
     createStatus: ApiStatus.idle,
     updateStatus: ApiStatus.idle,
+    archiveStatus: ApiStatus.idle,
     deleteStatus: ApiStatus.idle,
     apiError: null
 }
@@ -57,10 +59,7 @@ export const ClientSlice = createSlice({
             })
             .addCase(ClientFetchAllThunk.rejected, (state, action) => {
                 state.allStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             .addCase(ClientFetchByIDThunk.pending, (state) => {
@@ -74,10 +73,7 @@ export const ClientSlice = createSlice({
             })
             .addCase(ClientFetchByIDThunk.rejected, (state, action) => {
                 state.idStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             .addCase(ClientCreateThunk.pending, (state) => {
@@ -91,10 +87,7 @@ export const ClientSlice = createSlice({
             })
             .addCase(ClientCreateThunk.rejected, (state, action) => {
                 state.createStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             .addCase(ClientUpdateThunk.pending, (state) => {
@@ -116,10 +109,30 @@ export const ClientSlice = createSlice({
             })
             .addCase(ClientUpdateThunk.rejected, (state, action) => {
                 state.updateStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
+            })
+
+            .addCase(ClientArchiveThunk.pending, (state) => {
+                state.archiveStatus = ApiStatus.pending
+                state.apiError = null
+            })
+            .addCase(ClientArchiveThunk.fulfilled, (state, action) => {
+                state.archiveStatus = ApiStatus.fulfilled
+                const { clientUpdated } = action.payload
+                const index = state.allData.findIndex(
+                    user => user._id === clientUpdated._id
+                )
+                if (index !== -1) {
+                    state.allData[index] = clientUpdated
                 }
+                if (state.idData && state.idData._id === clientUpdated._id) {
+                    state.idData = clientUpdated
+                }
+                state.apiError = null
+            })
+            .addCase(ClientArchiveThunk.rejected, (state, action) => {
+                state.archiveStatus = ApiStatus.rejected
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             .addCase(ClientDeleteByIdThunk.pending, (state) => {
@@ -134,10 +147,7 @@ export const ClientSlice = createSlice({
             })
             .addCase(ClientDeleteByIdThunk.rejected, (state, action) => {
                 state.deleteStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             // BOOKING:
@@ -216,6 +226,7 @@ export const getClientAllStatus = (state: RootState) => state.clientSlice.allSta
 export const getClientIdStatus = (state: RootState) => state.clientSlice.idStatus
 export const getClientCreateStatus = (state: RootState) => state.clientSlice.createStatus
 export const getClientUpdateStatus = (state: RootState) => state.clientSlice.updateStatus
+export const getClientArchiveStatus = (state: RootState) => state.clientSlice.archiveStatus
 export const getClientDeleteStatus = (state: RootState) => state.clientSlice.deleteStatus
 
 export const getClientApiError = (state: RootState) => state.clientSlice.apiError

@@ -21,7 +21,7 @@ const initialState: UserStateInterface = {
     idStatus: ApiStatus.idle,
     createStatus: ApiStatus.idle,
     updateStatus: ApiStatus.idle,
-    archivedStatus: ApiStatus.idle,
+    archiveStatus: ApiStatus.idle,
     deleteStatus: ApiStatus.idle,
     apiError: null
 }
@@ -107,11 +107,11 @@ export const UserSlice = createSlice({
             })
 
             .addCase(UserArchiveThunk.pending, (state) => {
-                state.archivedStatus = ApiStatus.pending
+                state.archiveStatus = ApiStatus.pending
                 state.apiError = null
             })
             .addCase(UserArchiveThunk.fulfilled, (state, action) => {
-                state.archivedStatus = ApiStatus.fulfilled
+                state.archiveStatus = ApiStatus.fulfilled
                 const archivedUser = action.payload
                 const index = state.allData.findIndex(user => user._id === archivedUser._id)
                 if (index !== -1) {
@@ -123,7 +123,7 @@ export const UserSlice = createSlice({
                 state.apiError = null
             })
             .addCase(UserArchiveThunk.rejected, (state, action) => {
-                state.archivedStatus = ApiStatus.rejected
+                state.archiveStatus = ApiStatus.rejected
                 state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
@@ -152,7 +152,7 @@ export const getUserAllStatus = (state: RootState) => state.userSlice.allStatus
 export const getUserIdStatus = (state: RootState) => state.userSlice.idStatus
 export const getUserCreateStatus = (state: RootState) => state.userSlice.createStatus
 export const getUserUpdateStatus = (state: RootState) => state.userSlice.updateStatus
-export const getUserArchiveStatus = (state: RootState) => state.userSlice.archivedStatus
+export const getUserArchiveStatus = (state: RootState) => state.userSlice.archiveStatus
 export const getUserDeleteStatus = (state: RootState) => state.userSlice.deleteStatus
 
 export const getUserApiError = (state: RootState) => state.userSlice.apiError

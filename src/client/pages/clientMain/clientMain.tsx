@@ -43,6 +43,7 @@ import {
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getClientAllData, getClientAllStatus } from "../../features/clientSlice"
 import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
+import { ClientArchiveThunk } from "../../features/thunks/clientArchiveThunk"
 import { ClientUpdateThunk } from "./../../features/thunks/clientUpdateThunk"
 import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
 import { RoomInterfaceId } from "room/interfaces/roomInterface"
@@ -174,16 +175,13 @@ export const ClientMain = () => {
             ? setTableOptionsDisplayed('')
             : setTableOptionsDisplayed(id)
     }
-    const toggleArchivedClient = async (client: ClientInterfaceId): Promise<void> => {
-        const updatedClient = {
-            ...client,
-            isArchived: client.isArchived === OptionYesNo.no
-                ? OptionYesNo.yes
-                : OptionYesNo.no
-        }
+    const toggleArchivedClient = async (idClient: string, clientArchivedValue: OptionYesNo): Promise<void> => {
+        const newArchivedValue = clientArchivedValue === OptionYesNo.no
+            ? OptionYesNo.yes
+            : OptionYesNo.no
         try {
-            await dispatch(ClientUpdateThunk({ idClient: client._id, updatedClientData: updatedClient })).unwrap()
-            displayMenuOptions(client._id)
+            await dispatch(ClientArchiveThunk({ idClient: idClient, isArchived: newArchivedValue })).unwrap()
+            displayMenuOptions(idClient)
             resetPage()
         }
         catch (error) {
@@ -376,7 +374,7 @@ export const ClientMain = () => {
                                                     setShowPopup,
                                                     `${clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'} client #${clientData._id}`,
                                                     `Are you sure you want to ${clientData.isArchived === OptionYesNo.no ? 'archive' : 'unarchive'} this client?`,
-                                                    () => { toggleArchivedClient(clientData); displayMenuOptions('') },
+                                                    () => { toggleArchivedClient(clientData._id, clientData.isArchived); displayMenuOptions('') },
                                                     () => setTableOptionsDisplayed('')
                                                 )}
                                             >{clientData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}
