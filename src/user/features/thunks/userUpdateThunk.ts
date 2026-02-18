@@ -1,12 +1,13 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { UserInterfaceId, UserInterface } from '../../interfaces/userInterface'
+import { UserInterfaceId } from '../../interfaces/userInterface'
+import { UserUpdateRequestInterface } from "../../interfaces/api/requests/userUpdateRequestInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 
 export const UserUpdateThunk = createAsyncThunk<
     UserInterfaceId,
-    { idUser: string; updatedUserData: UserInterface },
+    UserUpdateRequestInterface,
     { rejectValue: ApiErrorResponseInterface }
 >(
     "user/update",
