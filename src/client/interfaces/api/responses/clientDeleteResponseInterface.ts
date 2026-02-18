@@ -1,5 +1,5 @@
 
-import { BookingInterfaceId } from "../../../booking/interfaces/bookingInterface"
+import { BookingInterfaceId } from "../../../../booking/interfaces/bookingInterface"
 
 
 export interface ClientDeleteResponseInterface {

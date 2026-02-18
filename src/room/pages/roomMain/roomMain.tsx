@@ -37,7 +37,7 @@ import {
 } from "../../../common/styles/tableStyles"
 import { getRoomAllData, getRoomAllStatus } from "./../../features/roomSlice"
 import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
-import { RoomUpdateThunk } from "./../../features/thunks/roomUpdateThunk"
+import { RoomArchiveThunk } from "../../features/thunks/roomArchiveThunk"
 import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk"
 import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
 import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
@@ -184,16 +184,13 @@ export const RoomMain = () => {
             ? setTableOptionsDisplayed('')
             : setTableOptionsDisplayed(id)
     }
-    const toggleArchivedRoom = async (room: RoomInterfaceId): Promise<void> => {
-        const updatedRoom = {
-            ...room,
-            isArchived: room.isArchived === OptionYesNo.no
-                ? OptionYesNo.yes
-                : OptionYesNo.no
-        }
+    const toggleArchivedRoom = async (idRoom: string, roomArchivedValue: OptionYesNo): Promise<void> => {
+        const newArchivedValue = roomArchivedValue === OptionYesNo.no
+            ? OptionYesNo.yes
+            : OptionYesNo.no
         try {
-            await dispatch(RoomUpdateThunk({ idRoom: room._id, updatedRoomData: updatedRoom })).unwrap()
-            displayMenuOptions(room._id)
+            await dispatch(RoomArchiveThunk({ idRoom: idRoom, isArchived: newArchivedValue })).unwrap()
+            displayMenuOptions(idRoom)
             resetPage()
         }
         catch (error) {
@@ -378,7 +375,7 @@ export const RoomMain = () => {
                                                     setShowPopup,
                                                     `${roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'} room #${roomData._id}`,
                                                     `Are you sure you want to ${roomData.isArchived === OptionYesNo.no ? 'archive' : 'unarchive'} this room?`,
-                                                    () => { toggleArchivedRoom(roomData); displayMenuOptions('') },
+                                                    () => { toggleArchivedRoom(roomData._id, roomData.isArchived); displayMenuOptions('') },
                                                     () => setTableOptionsDisplayed('')
                                                 )}
                                             >{roomData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}

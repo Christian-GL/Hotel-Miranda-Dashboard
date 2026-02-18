@@ -1,16 +1,16 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { RoomInterfaceId } from "../../interfaces/roomInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { RoomUpdateRequestInterface } from "room/interfaces/api/requests/roomUpdateRequestInterface"
+import { RoomArchiveRequestInterface } from "../../interfaces/api/requests/roomArchiveRequestInterface"
+import { RoomArchiveResponseInterface } from "../../interfaces/api/responses/roomArchiveResponseInterface"
 
 
-export const RoomUpdateThunk = createAsyncThunk<
-    RoomInterfaceId,
-    RoomUpdateRequestInterface,
+export const RoomArchiveThunk = createAsyncThunk<
+    RoomArchiveResponseInterface,
+    RoomArchiveRequestInterface,
     { rejectValue: ApiErrorResponseInterface }
 >(
-    "room/update",
+    "room/archive",
     async (RoomUpdateRequestInterface, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem("token")
@@ -23,24 +23,25 @@ export const RoomUpdateThunk = createAsyncThunk<
 
         try {
             const request = await fetch(
-                `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}/${RoomUpdateRequestInterface.idRoom}`,
+                `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}/archive/${RoomUpdateRequestInterface.idRoom}`,
                 {
-                    method: "PUT",
+                    method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${apiToken}`
                     },
-                    body: JSON.stringify(RoomUpdateRequestInterface.updatedRoomData)
+                    body: JSON.stringify(RoomUpdateRequestInterface.isArchived)
                 }
             )
             if (request.ok) {
-                return await request.json()
+                const roomUpdated = await request.json()
+                return roomUpdated
             }
             else {
                 const errorData = await request.json().catch(() => null)
                 return rejectWithValue({
                     status: request.status,
-                    message: errorData?.message ?? 'Error fetching room',
+                    message: errorData?.message ?? 'Error archiving room',
                 })
             }
         }

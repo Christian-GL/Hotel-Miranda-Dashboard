@@ -1,6 +1,6 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { RoomDeleteResponseInterface } from "../../../common/interfaces/apiResponses/roomDeleteResponseInterface"
+import { RoomDeleteResponseInterface } from "../../interfaces/api/responses/roomDeleteResponseInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 

@@ -11,7 +11,7 @@ export const ClientArchiveThunk = createAsyncThunk<
     { rejectValue: ApiErrorResponseInterface }
 >(
     "client/archive",
-    async ({ idClient, isArchived }, { rejectWithValue }) => {
+    async (ClientArchiveRequestInterface, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) {
@@ -22,13 +22,13 @@ export const ClientArchiveThunk = createAsyncThunk<
         }
 
         try {
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CLIENTS}/archive/${idClient}`, {
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_CLIENTS}/archive/${ClientArchiveRequestInterface.idClient}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${apiToken}`
                 },
-                body: JSON.stringify({ isArchived })
+                body: JSON.stringify(ClientArchiveRequestInterface.isArchived)
             })
             if (request.ok) {
                 const clientUpdated = await request.json()

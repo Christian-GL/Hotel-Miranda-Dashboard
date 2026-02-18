@@ -15,7 +15,7 @@ import { ClientDeleteByIdThunk } from './thunks/clientDeleteByIdThunk'
 import { BookingCreateThunk } from '../../booking/features/thunks/bookingCreateThunk'
 import { BookingDeleteByIdThunk } from '../../booking/features/thunks/bookingDeleteByIdThunk'
 import { BookingUpdateThunk } from '../../booking/features/thunks/bookingUpdateThunk'
-import { RoomUpdateThunk } from '../../room/features/thunks/roomUpdateThunk'
+import { RoomArchiveThunk } from '../../room/features/thunks/roomArchiveThunk'
 import { RoomDeleteByIdThunk } from '../../room/features/thunks/roomDeleteByIdThunk'
 
 
@@ -96,14 +96,13 @@ export const ClientSlice = createSlice({
             })
             .addCase(ClientUpdateThunk.fulfilled, (state, action) => {
                 state.updateStatus = ApiStatus.fulfilled
-                const { clientUpdated } = action.payload
-                if (!clientUpdated) return
-                const index = state.allData.findIndex(client => client._id === clientUpdated._id)
+                const updatedClient = action.payload
+                const index = state.allData.findIndex(c => c._id === updatedClient._id)
                 if (index !== -1) {
-                    state.allData[index] = clientUpdated
+                    state.allData[index] = updatedClient
                 }
-                if (state.idData && state.idData._id === clientUpdated._id) {
-                    state.idData = clientUpdated
+                if (state.idData?._id === updatedClient._id) {
+                    state.idData = updatedClient
                 }
                 state.apiError = null
             })
@@ -186,8 +185,8 @@ export const ClientSlice = createSlice({
             })
 
             // ROOM
-            .addCase(RoomUpdateThunk.fulfilled, (state, action) => {
-                const updatedClients = action.payload.updatedClients ?? []
+            .addCase(RoomArchiveThunk.fulfilled, (state, action) => {
+                const { updatedClients } = action.payload
                 updatedClients.forEach(client => {
                     const index = state.allData.findIndex(c => c._id === client._id)
                     if (index !== -1) {
@@ -197,9 +196,6 @@ export const ClientSlice = createSlice({
                         state.idData = client
                     }
                 })
-                if (updatedClients.length > 0) {
-                    state.allData = [...state.allData]
-                }
             })
             .addCase(RoomDeleteByIdThunk.fulfilled, (state, action) => {
                 const updatedClients = action.payload.updatedClients ?? []
