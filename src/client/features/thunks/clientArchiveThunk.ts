@@ -1,13 +1,13 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { ClientArchiveResponseInterface } from "common/interfaces/apiResponses/clientArchiveResponseInterface"
+import { ClientArchiveResponseInterface } from "../../interfaces/api/responses/clientArchiveResponseInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { OptionYesNo } from "common/enums/optionYesNo"
+import { ClientArchiveRequestInterface } from "client/interfaces/api/requests/clientArchiveRequestInterface"
 
 
 export const ClientArchiveThunk = createAsyncThunk<
     ClientArchiveResponseInterface,
-    { idClient: string; isArchived: OptionYesNo },
+    ClientArchiveRequestInterface,
     { rejectValue: ApiErrorResponseInterface }
 >(
     "client/archive",
