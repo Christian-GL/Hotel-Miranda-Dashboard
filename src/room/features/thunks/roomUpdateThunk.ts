@@ -11,7 +11,7 @@ export const RoomUpdateThunk = createAsyncThunk<
     { rejectValue: ApiErrorResponseInterface }
 >(
     "room/update",
-    async (RoomUpdateRequestInterface, { rejectWithValue }) => {
+    async ({ idRoom, updatedRoomData }, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem("token")
         if (!apiToken) {
@@ -23,14 +23,14 @@ export const RoomUpdateThunk = createAsyncThunk<
 
         try {
             const request = await fetch(
-                `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}/${RoomUpdateRequestInterface.idRoom}`,
+                `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}/${idRoom}`,
                 {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${apiToken}`
                     },
-                    body: JSON.stringify(RoomUpdateRequestInterface.updatedRoomData)
+                    body: JSON.stringify(updatedRoomData)
                 }
             )
             if (request.ok) {

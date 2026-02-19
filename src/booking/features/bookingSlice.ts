@@ -12,6 +12,7 @@ import { BookingCreateThunk } from './thunks/bookingCreateThunk'
 import { BookingUpdateThunk } from './thunks/bookingUpdateThunk'
 import { BookingDeleteByIdThunk } from './thunks/bookingDeleteByIdThunk'
 import { RoomUpdateThunk } from '../../room/features/thunks/roomUpdateThunk'
+import { RoomArchiveThunk } from '../../room/features/thunks/roomArchiveThunk'
 import { RoomDeleteByIdThunk } from '../../room/features/thunks/roomDeleteByIdThunk'
 import { ClientUpdateThunk } from '../../client/features/thunks/clientUpdateThunk'
 import { ClientArchiveThunk } from '../../client/features/thunks/clientArchiveThunk'
@@ -144,63 +145,42 @@ export const BookingSlice = createSlice({
             })
 
             // ROOM:
-            .addCase(RoomUpdateThunk.fulfilled, (state, action) => {
-                const { updatedBookings } = action.payload
-
+            .addCase(RoomArchiveThunk.fulfilled, (state, action) => {
+                const updatedBookings = (action.payload && (action.payload.updatedBookings ?? action.payload.updatedBookings)) ?? []
+                if (!Array.isArray(updatedBookings) || updatedBookings.length === 0) return
                 updatedBookings.forEach(updatedBooking => {
                     const index = state.allData.findIndex(b => b._id === updatedBooking._id)
-                    if (index !== -1) {
-                        state.allData[index] = updatedBooking
-                    }
+                    if (index !== -1) state.allData[index] = updatedBooking
+                    if (state.idData?._id === updatedBooking._id) state.idData = updatedBooking
                 })
             })
             .addCase(RoomDeleteByIdThunk.fulfilled, (state, action) => {
-                action.payload.updatedBookings.forEach(booking => {
-                    const index = state.allData.findIndex(b => b._id === booking._id)
-                    if (index !== -1) {
-                        state.allData[index] = booking
-                    }
+                const updatedBookings = action.payload?.updatedBookings ?? []
+                if (!Array.isArray(updatedBookings) || updatedBookings.length === 0) return
+                updatedBookings.forEach(updatedBooking => {
+                    const index = state.allData.findIndex(b => b._id === updatedBooking._id)
+                    if (index !== -1) state.allData[index] = updatedBooking
+                    if (state.idData?._id === updatedBooking._id) state.idData = updatedBooking
                 })
             })
 
             // CLIENT:
-            .addCase(ClientUpdateThunk.fulfilled, (state, action) => {
-                const { updatedBookings } = action.payload
-                if (!Array.isArray(updatedBookings)) return
-
-                updatedBookings.forEach(updatedBooking => {
-                    const index = state.allData.findIndex(
-                        b => b._id === updatedBooking._id
-                    )
-                    if (index !== -1) {
-                        state.allData[index] = updatedBooking
-                    }
-                })
-            })
             .addCase(ClientArchiveThunk.fulfilled, (state, action) => {
-                const { updatedBookings } = action.payload
-                if (!Array.isArray(updatedBookings)) return
-
+                const updatedBookings = action.payload?.updatedBookings ?? []
+                if (!Array.isArray(updatedBookings) || updatedBookings.length === 0) return
                 updatedBookings.forEach(updatedBooking => {
-                    const index = state.allData.findIndex(
-                        b => b._id === updatedBooking._id
-                    )
-                    if (index !== -1) {
-                        state.allData[index] = updatedBooking
-                    }
+                    const index = state.allData.findIndex(b => b._id === updatedBooking._id)
+                    if (index !== -1) state.allData[index] = updatedBooking
+                    if (state.idData?._id === updatedBooking._id) state.idData = updatedBooking
                 })
             })
             .addCase(ClientDeleteByIdThunk.fulfilled, (state, action) => {
-                const { updatedBookings } = action.payload
-                if (!Array.isArray(updatedBookings)) return
-
+                const updatedBookings = action.payload?.updatedBookings ?? []
+                if (!Array.isArray(updatedBookings) || updatedBookings.length === 0) return
                 updatedBookings.forEach(updatedBooking => {
-                    const index = state.allData.findIndex(
-                        b => b._id === updatedBooking._id
-                    )
-                    if (index !== -1) {
-                        state.allData[index] = updatedBooking
-                    }
+                    const index = state.allData.findIndex(b => b._id === updatedBooking._id)
+                    if (index !== -1) state.allData[index] = updatedBooking
+                    if (state.idData?._id === updatedBooking._id) state.idData = updatedBooking
                 })
             })
 

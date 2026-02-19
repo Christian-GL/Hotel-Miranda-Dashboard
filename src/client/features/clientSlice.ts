@@ -162,26 +162,18 @@ export const ClientSlice = createSlice({
                 }
             })
             .addCase(BookingUpdateThunk.fulfilled, (state, action) => {
-                const { updatedClient } = action.payload
+                const updatedClient = action.payload.updatedClient
                 if (!updatedClient) return
                 const index = state.allData.findIndex(c => c._id === updatedClient._id)
-                if (index !== -1) {
-                    state.allData[index] = updatedClient
-                }
-                if (state.idData?._id === updatedClient._id) {
-                    state.idData = updatedClient
-                }
+                if (index !== -1) state.allData[index] = updatedClient
+                if (state.idData?._id === updatedClient._id) state.idData = updatedClient
             })
             .addCase(BookingDeleteByIdThunk.fulfilled, (state, action) => {
-                const { updatedClient } = action.payload
+                const updatedClient = action.payload.updatedClient
                 if (!updatedClient) return
                 const index = state.allData.findIndex(c => c._id === updatedClient._id)
-                if (index !== -1) {
-                    state.allData[index] = updatedClient
-                }
-                if (state.idData?._id === updatedClient._id) {
-                    state.idData = updatedClient
-                }
+                if (index !== -1) state.allData[index] = updatedClient
+                if (state.idData?._id === updatedClient._id) state.idData = updatedClient
             })
 
             // ROOM

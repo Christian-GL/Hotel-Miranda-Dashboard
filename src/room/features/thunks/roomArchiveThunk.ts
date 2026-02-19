@@ -11,7 +11,7 @@ export const RoomArchiveThunk = createAsyncThunk<
     { rejectValue: ApiErrorResponseInterface }
 >(
     "room/archive",
-    async (RoomUpdateRequestInterface, { rejectWithValue }) => {
+    async ({ idRoom, isArchived }, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem("token")
         if (!apiToken) {
@@ -23,14 +23,14 @@ export const RoomArchiveThunk = createAsyncThunk<
 
         try {
             const request = await fetch(
-                `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}/archive/${RoomUpdateRequestInterface.idRoom}`,
+                `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_ROOMS}/archive/${idRoom}`,
                 {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${apiToken}`
                     },
-                    body: JSON.stringify(RoomUpdateRequestInterface.isArchived)
+                    body: JSON.stringify({ isArchived })
                 }
             )
             if (request.ok) {

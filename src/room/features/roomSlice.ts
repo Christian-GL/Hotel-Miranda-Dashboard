@@ -164,27 +164,21 @@ export const RoomSlice = createSlice({
                 })
             })
             .addCase(BookingUpdateThunk.fulfilled, (state, action) => {
-                const updatedRooms = action.payload.updatedRooms ?? []
+                const updatedRooms = action.payload.updatedRooms
+                if (!Array.isArray(updatedRooms) || updatedRooms.length === 0) return
                 updatedRooms.forEach(updatedRoom => {
                     const index = state.allData.findIndex(r => r._id === updatedRoom._id)
-                    if (index !== -1) {
-                        state.allData[index] = updatedRoom
-                    }
-                    if (state.idData?._id === updatedRoom._id) {
-                        state.idData = updatedRoom
-                    }
+                    if (index !== -1) state.allData[index] = updatedRoom
+                    if (state.idData?._id === updatedRoom._id) state.idData = updatedRoom
                 })
             })
             .addCase(BookingDeleteByIdThunk.fulfilled, (state, action) => {
-                const updatedRooms = action.payload.updatedRooms ?? []
+                const updatedRooms = action.payload.updatedRooms
+                if (!Array.isArray(updatedRooms) || updatedRooms.length === 0) return
                 updatedRooms.forEach(updatedRoom => {
                     const index = state.allData.findIndex(r => r._id === updatedRoom._id)
-                    if (index !== -1) {
-                        state.allData[index] = updatedRoom
-                    }
-                    if (state.idData?._id === updatedRoom._id) {
-                        state.idData = updatedRoom
-                    }
+                    if (index !== -1) state.allData[index] = updatedRoom
+                    if (state.idData?._id === updatedRoom._id) state.idData = updatedRoom
                 })
             })
 
