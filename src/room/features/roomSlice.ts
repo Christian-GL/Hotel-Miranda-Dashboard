@@ -13,7 +13,7 @@ import { RoomUpdateThunk } from './thunks/roomUpdateThunk'
 import { RoomArchiveThunk } from './thunks/roomArchiveThunk'
 import { RoomDeleteByIdThunk } from './thunks/roomDeleteByIdThunk'
 import { BookingCreateThunk } from '../../booking/features/thunks/bookingCreateThunk'
-import { BookingUpdateThunk } from '../../booking/features/thunks/bookingUpdateThunk'
+import { BookingArchiveThunk } from '../../booking/features/thunks/bookingArchiveThunk'
 import { BookingDeleteByIdThunk } from '../../booking/features/thunks/bookingDeleteByIdThunk'
 
 
@@ -163,13 +163,15 @@ export const RoomSlice = createSlice({
                     }
                 })
             })
-            .addCase(BookingUpdateThunk.fulfilled, (state, action) => {
-                const updatedRooms = action.payload.updatedRooms
+            .addCase(BookingArchiveThunk.fulfilled, (state, action) => {
+                const { updatedRooms } = action.payload
                 if (!Array.isArray(updatedRooms) || updatedRooms.length === 0) return
                 updatedRooms.forEach(updatedRoom => {
                     const index = state.allData.findIndex(r => r._id === updatedRoom._id)
                     if (index !== -1) state.allData[index] = updatedRoom
-                    if (state.idData?._id === updatedRoom._id) state.idData = updatedRoom
+                    if (state.idData?._id === updatedRoom._id) {
+                        state.idData = updatedRoom
+                    }
                 })
             })
             .addCase(BookingDeleteByIdThunk.fulfilled, (state, action) => {

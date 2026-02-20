@@ -39,7 +39,7 @@ import {
 import { usePagination } from "../../../common/hooks/usePagination"
 import { getBookingAllData, getBookingAllStatus } from "./../../features/bookingSlice"
 import { BookingFetchAllThunk } from "./../../features/thunks/bookingFetchAllThunk"
-import { BookingUpdateThunk } from "./../../features/thunks/bookingUpdateThunk"
+import { BookingArchiveThunk } from "./../../features/thunks/bookingArchiveThunk"
 import { BookingDeleteByIdThunk } from "./../../features/thunks/bookingDeleteByIdThunk"
 import { RoomInterfaceId } from "../../../room/interfaces/roomInterface"
 import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
@@ -196,16 +196,13 @@ export const BookingMain = () => {
             ? setTableOptionsDisplayed('')
             : setTableOptionsDisplayed(id)
     }
-    const toggleArchivedBooking = async (booking: BookingInterfaceId): Promise<void> => {
-        const updatedBooking = {
-            ...booking,
-            isArchived: booking.isArchived === OptionYesNo.no
-                ? OptionYesNo.yes
-                : OptionYesNo.no
-        }
+    const toggleArchivedBooking = async (idBooking: string, bookingArchivedValue: OptionYesNo): Promise<void> => {
+        const newArchivedValue = bookingArchivedValue === OptionYesNo.no
+            ? OptionYesNo.yes
+            : OptionYesNo.no
         try {
-            await dispatch(BookingUpdateThunk({ idBooking: booking._id, updatedBookingData: updatedBooking })).unwrap()
-            displayMenuOptions(booking._id)
+            await dispatch(BookingArchiveThunk({ idBooking: idBooking, isArchived: newArchivedValue })).unwrap()
+            displayMenuOptions(idBooking)
             resetPage()
         }
         catch (error) {
@@ -393,7 +390,7 @@ export const BookingMain = () => {
                                                     setShowPopup,
                                                     `${bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'} booking #${bookingData._id}`,
                                                     `Are you sure you want to ${bookingData.isArchived === OptionYesNo.no ? 'archive' : 'unarchive'} this booking?`,
-                                                    () => { toggleArchivedBooking(bookingData); displayMenuOptions('') },
+                                                    () => { toggleArchivedBooking(bookingData._id, bookingData.isArchived); displayMenuOptions('') },
                                                     () => setTableOptionsDisplayed('')
                                                 )}
                                             >{bookingData.isArchived === OptionYesNo.no ? 'Archive' : 'Unarchive'}

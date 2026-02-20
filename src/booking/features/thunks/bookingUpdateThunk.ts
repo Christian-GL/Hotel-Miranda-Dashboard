@@ -1,13 +1,13 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { BookingInterface } from "../../interfaces/bookingInterface"
-import { BookingUpdateResponseInterface } from '../../../common/interfaces/apiResponses/bookingUpdateResponseInterface'
-import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface";
+import { BookingInterfaceId } from "../../interfaces/bookingInterface"
+import { BookingUpdateRequestInterface } from "../../interfaces/api/requests/bookingUpdateRequestInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 
 export const BookingUpdateThunk = createAsyncThunk<
-    BookingUpdateResponseInterface,
-    { idBooking: string; updatedBookingData: BookingInterface },
+    BookingInterfaceId,
+    BookingUpdateRequestInterface,
     { rejectValue: ApiErrorResponseInterface }
 >(
     "booking/update",
@@ -32,7 +32,7 @@ export const BookingUpdateThunk = createAsyncThunk<
             })
 
             if (request.ok) {
-                return await request.json() as BookingUpdateResponseInterface
+                return await request.json()
             }
             else {
                 const errorData = await request.json().catch(() => null)

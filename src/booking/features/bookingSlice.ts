@@ -10,6 +10,7 @@ import { BookingFetchAllThunk } from './thunks/bookingFetchAllThunk'
 import { BookingFetchByIDThunk } from './thunks/bookingFetchByIDThunk'
 import { BookingCreateThunk } from './thunks/bookingCreateThunk'
 import { BookingUpdateThunk } from './thunks/bookingUpdateThunk'
+import { BookingArchiveThunk } from './thunks/bookingArchiveThunk'
 import { BookingDeleteByIdThunk } from './thunks/bookingDeleteByIdThunk'
 import { RoomUpdateThunk } from '../../room/features/thunks/roomUpdateThunk'
 import { RoomArchiveThunk } from '../../room/features/thunks/roomArchiveThunk'
@@ -58,10 +59,7 @@ export const BookingSlice = createSlice({
             })
             .addCase(BookingFetchAllThunk.rejected, (state, action) => {
                 state.allStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             .addCase(BookingFetchByIDThunk.pending, (state) => {
@@ -75,10 +73,7 @@ export const BookingSlice = createSlice({
             })
             .addCase(BookingFetchByIDThunk.rejected, (state, action) => {
                 state.idStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             .addCase(BookingCreateThunk.pending, (state) => {
@@ -95,10 +90,7 @@ export const BookingSlice = createSlice({
             )
             .addCase(BookingCreateThunk.rejected, (state, action) => {
                 state.createStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             .addCase(BookingUpdateThunk.pending, (state) => {
@@ -107,23 +99,43 @@ export const BookingSlice = createSlice({
             })
             .addCase(BookingUpdateThunk.fulfilled, (state, action) => {
                 state.updateStatus = ApiStatus.fulfilled
-                const { booking } = action.payload
-                if (!booking) return
-                const index = state.allData.findIndex(b => b._id === booking._id)
+                const updatedBooking = action.payload
+                if (!updatedBooking) return
+                const index = state.allData.findIndex(b => b._id === updatedBooking._id)
                 if (index !== -1) {
-                    state.allData[index] = booking
+                    state.allData[index] = updatedBooking
                 }
-                if (state.idData?._id === booking._id) {
-                    state.idData = booking
+                if (state.idData?._id === updatedBooking._id) {
+                    state.idData = updatedBooking
                 }
                 state.apiError = null
             })
             .addCase(BookingUpdateThunk.rejected, (state, action) => {
                 state.updateStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
+            })
+
+            .addCase(BookingArchiveThunk.pending, (state) => {
+                state.updateStatus = ApiStatus.pending
+                state.apiError = null
+            })
+            .addCase(BookingArchiveThunk.fulfilled, (state, action) => {
+                state.updateStatus = ApiStatus.fulfilled
+                const { booking } = action.payload
+                if (booking) {
+                    const index = state.allData.findIndex(b => b._id === booking._id)
+                    if (index !== -1) {
+                        state.allData[index] = booking
+                    }
+                    if (state.idData?._id === booking._id) {
+                        state.idData = booking
+                    }
                 }
+                state.apiError = null
+            })
+            .addCase(BookingArchiveThunk.rejected, (state, action) => {
+                state.updateStatus = ApiStatus.rejected
+                state.apiError = action.payload ?? { status: 500, message: action.error?.message ?? 'Unknown API error' }
             })
 
             .addCase(BookingDeleteByIdThunk.pending, (state) => {
@@ -138,10 +150,7 @@ export const BookingSlice = createSlice({
             })
             .addCase(BookingDeleteByIdThunk.rejected, (state, action) => {
                 state.deleteStatus = ApiStatus.rejected
-                state.apiError = action.payload ?? {
-                    status: 500,
-                    message: 'Unknown API error'
-                }
+                state.apiError = action.payload ?? { status: 500, message: 'Unknown API error' }
             })
 
             // ROOM:

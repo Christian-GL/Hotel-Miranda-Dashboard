@@ -1,17 +1,17 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { BookingInterface } from '../../interfaces/bookingInterface'
-import { BookingCreateResponseInterface } from "../../interfaces/api/responses/bookingCreateResponseInterface"
+import { BookingArchiveRequestInterface } from "../../interfaces/api/requests/bookingArchiveRequestInterface"
+import { BookingArchiveResponseInterface } from "../..//interfaces/api/responses/bookingArchiveResponseInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 
-export const BookingCreateThunk = createAsyncThunk<
-    BookingCreateResponseInterface,
-    BookingInterface,
+export const BookingArchiveThunk = createAsyncThunk<
+    BookingArchiveResponseInterface,
+    BookingArchiveRequestInterface,
     { rejectValue: ApiErrorResponseInterface }
 >(
-    "booking/create",
-    async (newBookingData, { rejectWithValue }) => {
+    "booking/archive",
+    async ({ idBooking, isArchived }, { rejectWithValue }) => {
 
         const apiToken = localStorage.getItem('token')
         if (!apiToken) {
@@ -22,17 +22,17 @@ export const BookingCreateThunk = createAsyncThunk<
         }
 
         try {
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_BOOKINGS}`, {
-                method: "POST",
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_ENDPOINT_BOOKINGS}/archive/${idBooking}`, {
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${apiToken}`
                 },
-                body: JSON.stringify(newBookingData)
+                body: JSON.stringify({ isArchived })
             })
+
             if (request.ok) {
-                const bookingCreated = await request.json()
-                return bookingCreated
+                return await request.json()
             }
             else {
                 const errorData = await request.json().catch(() => null)

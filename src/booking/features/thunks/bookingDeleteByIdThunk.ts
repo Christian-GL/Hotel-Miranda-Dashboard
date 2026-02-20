@@ -1,6 +1,6 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { BookingDeleteResponseInterface } from '../../../common/interfaces/apiResponses/bookingDeleteResponseInterface'
+import { BookingDeleteResponseInterface } from '../../interfaces/api/responses/bookingDeleteResponseInterface'
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 

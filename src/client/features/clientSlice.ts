@@ -14,7 +14,7 @@ import { ClientArchiveThunk } from './thunks/clientArchiveThunk'
 import { ClientDeleteByIdThunk } from './thunks/clientDeleteByIdThunk'
 import { BookingCreateThunk } from '../../booking/features/thunks/bookingCreateThunk'
 import { BookingDeleteByIdThunk } from '../../booking/features/thunks/bookingDeleteByIdThunk'
-import { BookingUpdateThunk } from '../../booking/features/thunks/bookingUpdateThunk'
+import { BookingArchiveThunk } from '../../booking/features/thunks/bookingArchiveThunk'
 import { RoomArchiveThunk } from '../../room/features/thunks/roomArchiveThunk'
 import { RoomDeleteByIdThunk } from '../../room/features/thunks/roomDeleteByIdThunk'
 
@@ -161,12 +161,14 @@ export const ClientSlice = createSlice({
                     state.idData = updatedClient
                 }
             })
-            .addCase(BookingUpdateThunk.fulfilled, (state, action) => {
-                const updatedClient = action.payload.updatedClient
+            .addCase(BookingArchiveThunk.fulfilled, (state, action) => {
+                const { updatedClient } = action.payload
                 if (!updatedClient) return
                 const index = state.allData.findIndex(c => c._id === updatedClient._id)
                 if (index !== -1) state.allData[index] = updatedClient
-                if (state.idData?._id === updatedClient._id) state.idData = updatedClient
+                if (state.idData?._id === updatedClient._id) {
+                    state.idData = updatedClient
+                }
             })
             .addCase(BookingDeleteByIdThunk.fulfilled, (state, action) => {
                 const updatedClient = action.payload.updatedClient
