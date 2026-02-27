@@ -1,8 +1,7 @@
 
-import React from 'react'
+import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import { ButtonCreate } from '../common/components/buttonCreate/buttonCreate'
-import '@testing-library/jest-dom';
+import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
 
 
 describe('ButtonCreate', () => {

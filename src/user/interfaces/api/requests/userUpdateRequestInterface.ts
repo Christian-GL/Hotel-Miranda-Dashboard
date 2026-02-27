@@ -1,5 +1,5 @@
 
-import { UserInterface } from "../../userInterface"
+import { UserInterface } from "user/interfaces/userInterface"
 
 
 export interface UserUpdateRequestInterface {

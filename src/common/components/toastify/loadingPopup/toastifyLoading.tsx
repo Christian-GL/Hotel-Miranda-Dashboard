@@ -1,9 +1,8 @@
 
-import { toast } from 'react-toastify'
-import { ToastTransitionProps } from 'react-toastify'
-import { Zoom } from 'react-toastify'
+import { toast, ToastTransitionProps, Zoom } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import * as toastifyLoadingStyles from './toastifyLoadingStyles'
+
+import * as toastifyLoadingStyles from 'common/components/toastify/loadingPopup/toastifyLoadingStyles'
 
 
 const NoTransition = ({ children }: ToastTransitionProps) => {

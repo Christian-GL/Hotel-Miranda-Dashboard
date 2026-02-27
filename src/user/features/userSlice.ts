@@ -1,17 +1,17 @@
 
 import { createSlice } from '@reduxjs/toolkit'
 
-import { resetStore } from '../../common/redux/rootActions'
-import { ApiStatus } from '../../common/enums/ApiStatus'
-import { UserStateInterface } from '../interfaces/userStateInterface'
-import { UserInterfaceId } from '../interfaces/userInterface'
-import { RootState } from '../../common/redux/store'
-import { UserFetchAllThunk } from './thunks/userFetchAllThunk'
-import { UserFetchByIDThunk } from './thunks/userFetchByIDThunk'
-import { UserCreateThunk } from './thunks/userCreateThunk'
-import { UserUpdateThunk } from './thunks/userUpdateThunk'
-import { UserArchiveThunk } from './thunks/userArchiveThunk'
-import { UserDeleteByIdThunk } from './thunks/userDeleteByIdThunk'
+import { ApiStatus } from 'common/enums/ApiStatus'
+import { resetStore } from 'common/redux/rootActions'
+import { RootState } from 'common/redux/store'
+import { UserArchiveThunk } from 'user/features/thunks/userArchiveThunk'
+import { UserCreateThunk } from 'user/features/thunks/userCreateThunk'
+import { UserDeleteByIdThunk } from 'user/features/thunks/userDeleteByIdThunk'
+import { UserFetchAllThunk } from 'user/features/thunks/userFetchAllThunk'
+import { UserFetchByIDThunk } from 'user/features/thunks/userFetchByIDThunk'
+import { UserUpdateThunk } from 'user/features/thunks/userUpdateThunk'
+import { UserInterfaceId } from 'user/interfaces/userInterface'
+import { UserStateInterface } from 'user/interfaces/userStateInterface'
 
 
 const initialState: UserStateInterface = {

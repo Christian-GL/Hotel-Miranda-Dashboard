@@ -1,36 +1,30 @@
 
-import React from "react"
-import { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import { useParams } from "react-router-dom"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, useParams } from "react-router-dom"
+import { ToastContainer } from 'react-toastify'
 import { useTheme } from "styled-components"
 
-import * as styles from "common/styles/form"
-import userDefaultImg from '../../../assets/img/userDefault.png'
-import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
-import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
-import { AppDispatch } from "../../../common/redux/store"
-import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { JobPosition } from "../../enums/jobPosition"
-import { Role } from "../../enums/role"
-import { OptionYesNo } from "../../../common/enums/optionYesNo"
-import { UserInterfaceId } from "../../interfaces/userInterface"
+import userDefaultImg from 'assets/img/userDefault.png'
+import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
+import { ToastifyError } from "common/components/toastify/errorPopup/toastifyError"
+import { ToastifySuccess } from "common/components/toastify/successPopup/toastifySuccess"
+import { ApiStatus } from "common/enums/ApiStatus"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter"
-import { createFormHandlers } from '../../../common/utils/formHandlers'
+import { AppDispatch } from "common/redux/store"
+import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
+import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
-import { formatDateForInput } from "../../../common/utils/dateUtils"
-import {
-    validatePhoto, validateFullName, validateEmail, validatePhoneNumber, validateDateRelativeToAnother,
-    validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
-} from '../../../common/utils/validators'
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getUserIdData, getUserIdStatus } from "../../features/userSlice"
-import { UserFetchByIDThunk } from "../../features/thunks/userFetchByIDThunk"
-import { UserUpdateThunk } from "../../features/thunks/userUpdateThunk"
+import { formatDateForInput } from "common/utils/dateUtils"
+import { createFormHandlers } from 'common/utils/formHandlers'
+import { validateDateRelativeToAnother, validateEmail, validateFullName, validateNewPassword, validateOptionYesNo, validatePhoneNumber, validatePhoto, validateRole, validateTextArea } from 'common/utils/validators'
+import { JobPosition } from "user/enums/jobPosition"
+import { Role } from "user/enums/role"
+import { UserFetchByIDThunk } from "user/features/thunks/userFetchByIDThunk"
+import { UserUpdateThunk } from "user/features/thunks/userUpdateThunk"
+import { getUserIdData, getUserIdStatus } from "user/features/userSlice"
+import { UserInterfaceId } from "user/interfaces/userInterface"
 
 
 export const UserUpdate = () => {

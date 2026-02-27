@@ -1,7 +1,7 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { RoomInterface, RoomInterfaceId } from '../../interfaces/roomInterface'
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
+import { RoomInterface, RoomInterfaceId } from 'room/interfaces/roomInterface'
 
 
 export const RoomCreateThunk = createAsyncThunk<

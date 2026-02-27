@@ -1,7 +1,7 @@
 
-import React from 'react'
+import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
 import renderer from "react-test-renderer"
-import { ButtonCreate } from '../common/components/buttonCreate/buttonCreate'
+
 
 test("renders learn react link", () => {
   const button = renderer.create(<ButtonCreate />).toJSON()

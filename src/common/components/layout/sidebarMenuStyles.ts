@@ -1,14 +1,12 @@
 
-import { styled } from 'styled-components'
-
-import { FaRegCalendarAlt } from "react-icons/fa"
-import { RiHotelFill } from "react-icons/ri"
+import { FaRegCalendarAlt, FaUser } from "react-icons/fa"
+import { FaUserGear } from "react-icons/fa6"
 import { LuLayoutDashboard } from "react-icons/lu"
 import { MdOutlineBedroomParent } from "react-icons/md"
-import { FaUserGear } from "react-icons/fa6"
-import { FaUser } from "react-icons/fa"
+import { RiHotelFill } from "react-icons/ri"
+import { styled } from 'styled-components'
 
-import * as globalConstStyles from '../../styles/globalConstStyles'
+import * as globalConstStyles from 'common/styles/globalConstStyles'
 
 
 export const SideNavigationBar = styled.aside<{ isSidebarCollapsed?: boolean }>`

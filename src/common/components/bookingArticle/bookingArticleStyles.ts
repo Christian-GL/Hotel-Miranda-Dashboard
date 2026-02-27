@@ -1,8 +1,8 @@
 
 import { styled } from 'styled-components'
 
-import * as globalConstStyles from '../../styles/globalConstStyles'
-import { BookingStatus } from '../../../booking/enums/bookingStatus'
+import { BookingStatus } from 'booking/enums/bookingStatus'
+import * as globalConstStyles from 'common/styles/globalConstStyles'
 
 
 export const BookingArticle = styled.article`

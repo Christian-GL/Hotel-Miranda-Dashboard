@@ -1,14 +1,11 @@
 
-import { styled } from 'styled-components'
-
+import { GoTriangleDown, GoTriangleRight, GoTriangleUp } from "react-icons/go"
 import { ImPhone } from "react-icons/im"
 import { SlOptionsVertical } from "react-icons/sl"
-import { GoTriangleUp } from "react-icons/go"
-import { GoTriangleRight } from "react-icons/go"
-import { GoTriangleDown } from "react-icons/go"
+import { styled } from 'styled-components'
 
-import * as globalConstStyles from './globalConstStyles'
-import { BookingStatus } from '../../booking/enums/bookingStatus'
+import { BookingStatus } from 'booking/enums/bookingStatus'
+import * as globalConstStyles from 'common/styles/globalConstStyles'
 
 
 export const EmptyTableMessage = styled.p`

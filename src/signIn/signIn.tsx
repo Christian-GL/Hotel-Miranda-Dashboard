@@ -1,12 +1,11 @@
 
-import React from "react"
-import { useState } from "react"
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
-
-import * as signInStyles from "./signInStyles"
 import { ToastContainer } from 'react-toastify'
-import { ToastifyError } from '../common/components/toastify/errorPopup/toastifyError'
-import { useLoginOptionsContext } from "./features/loginProvider"
+
+import { ToastifyError } from 'common/components/toastify/errorPopup/toastifyError'
+import { useLoginOptionsContext } from "signIn/features/loginProvider"
+import * as signInStyles from "signIn/signInStyles"
 
 
 export const SignIn = () => {

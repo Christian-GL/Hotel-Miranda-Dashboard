@@ -1,12 +1,11 @@
 
-import React from 'react'
-import { useState } from "react"
+import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 
-import * as styles from "./bookingArticleStyles"
-import { BookingArticleInterface } from "../../interfaces/bookingArticleInterface"
-import { IconHotel } from '../layout/sidebarMenuStyles'
-import { PopupText } from "../popupText/popupText"
+import * as styles from "common/components/bookingArticle/bookingArticleStyles"
+import { IconHotel } from 'common/components/layout/sidebarMenuStyles'
+import { PopupText } from "common/components/popupText/popupText"
+import { BookingArticleInterface } from "common/interfaces/bookingArticleInterface"
 
 
 export const BookingArticle: React.FC<BookingArticleInterface> = ({

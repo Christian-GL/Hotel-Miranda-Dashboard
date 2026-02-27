@@ -1,33 +1,29 @@
 
-import React from "react"
-import { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { ToastContainer } from 'react-toastify'
 import { useTheme } from "styled-components"
 
-import * as styles from "common/styles/form"
-import roomDefaultImg from '../../../assets/img/roomDefault.jpg'
-import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
-import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
-import { AppDispatch } from "../../../common/redux/store"
-import { ApiStatus } from "../../../common/enums/ApiStatus"
+import roomDefaultImg from 'assets/img/roomDefault.jpg'
+import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
+import { ToastifyError } from "common/components/toastify/errorPopup/toastifyError"
+import { ToastifySuccess } from "common/components/toastify/successPopup/toastifySuccess"
+import { ApiStatus } from "common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
-import { RoomInterface } from "../../interfaces/roomInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { RoomAmenities } from "../../enums/roomAmenities"
-import { RoomType } from "../../enums/roomType"
-import { createFormHandlers } from '../../../common/utils/formHandlers'
+import { AppDispatch } from "common/redux/store"
+import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
+import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
-import {
-    validateRoomNumber, validateRoomPhotoList, validateRoomType, validateAmenities,
-    validateRoomPrice, validateRoomDiscount, validateOptionYesNo, validateMongoDBObjectIdList
-} from '../../../common/utils/validators'
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getRoomAllData, getRoomAllStatus } from "../../features/roomSlice"
-import { RoomFetchAllThunk } from "../../features/thunks/roomFetchAllThunk"
-import { RoomCreateThunk } from "../../features/thunks/roomCreateThunk"
+import { createFormHandlers } from 'common/utils/formHandlers'
+import { validateAmenities, validateMongoDBObjectIdList, validateOptionYesNo, validateRoomDiscount, validateRoomNumber, validateRoomPhotoList, validateRoomPrice, validateRoomType } from 'common/utils/validators'
+import { RoomAmenities } from "room/enums/roomAmenities"
+import { RoomType } from "room/enums/roomType"
+import { getRoomAllData, getRoomAllStatus } from "room/features/roomSlice"
+import { RoomCreateThunk } from "room/features/thunks/roomCreateThunk"
+import { RoomFetchAllThunk } from "room/features/thunks/roomFetchAllThunk"
+import { RoomInterface } from "room/interfaces/roomInterface"
 
 
 export const RoomCreate = () => {

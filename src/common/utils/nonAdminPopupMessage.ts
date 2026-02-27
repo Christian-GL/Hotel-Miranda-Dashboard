@@ -1,5 +1,5 @@
 
-import { PopupTextInterface } from "../interfaces/popupTextInterface"
+import { PopupTextInterface } from "common/interfaces/popupTextInterface"
 
 
 // !!! CONVINAR CON customPopupMessage y selectionPopupMessage ???

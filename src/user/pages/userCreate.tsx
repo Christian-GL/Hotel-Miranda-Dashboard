@@ -1,34 +1,29 @@
 
-import React from "react"
-import { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { ToastContainer } from 'react-toastify'
 import { useTheme } from "styled-components"
 
-import * as styles from "common/styles/form"
-import userDefaultImg from '../../../assets/img/userDefault.png'
-import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
-import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
-import { AppDispatch } from "../../../common/redux/store"
-import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { JobPosition } from "../../enums/jobPosition"
-import { Role } from "../../enums/role"
-import { OptionYesNo } from "../../../common/enums/optionYesNo"
-import { UserInterface } from "../../interfaces/userInterface"
+import userDefaultImg from 'assets/img/userDefault.png'
+import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
+import { ToastifyError } from "common/components/toastify/errorPopup/toastifyError"
+import { ToastifySuccess } from "common/components/toastify/successPopup/toastifySuccess"
+import { ApiStatus } from "common/enums/ApiStatus"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { capitalizeFirstLetter } from "../../../common/utils/capitalizeFirstLetter"
-import { createFormHandlers } from '../../../common/utils/formHandlers'
+import { AppDispatch } from "common/redux/store"
+import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
+import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
-import {
-    validatePhoto, validateFullName, validateEmail, validatePhoneNumber, validateDateRelativeToAnother,
-    validateTextArea, validateRole, validateNewPassword, validateOptionYesNo
-} from '../../../common/utils/validators'
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getUserAllData, getUserAllStatus, getUserApiError } from "../../features/userSlice"
-import { UserFetchAllThunk } from "../../features/thunks/userFetchAllThunk"
-import { UserCreateThunk } from "../../features/thunks/userCreateThunk"
+import { createFormHandlers } from 'common/utils/formHandlers'
+import { validateDateRelativeToAnother, validateEmail, validateFullName, validateNewPassword, validateOptionYesNo, validatePhoneNumber, validatePhoto, validateRole, validateTextArea } from 'common/utils/validators'
+import { JobPosition } from "user/enums/jobPosition"
+import { Role } from "user/enums/role"
+import { UserCreateThunk } from "user/features/thunks/userCreateThunk"
+import { UserFetchAllThunk } from "user/features/thunks/userFetchAllThunk"
+import { getUserAllData, getUserAllStatus, getUserApiError } from "user/features/userSlice"
+import { UserInterface } from "user/interfaces/userInterface"
 
 
 export const UserCreate = () => {

@@ -1,7 +1,7 @@
 
-import { JobPosition } from "../enums/jobPosition"
-import { Role } from "../enums/role"
-import { OptionYesNo } from "../../common/enums/optionYesNo"
+import { OptionYesNo } from "common/enums/optionYesNo"
+import { JobPosition } from "user/enums/jobPosition"
+import { Role } from "user/enums/role"
 
 
 export interface UserInterface {

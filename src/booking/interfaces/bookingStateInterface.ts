@@ -1,6 +1,6 @@
 
-import { BookingInterfaceId } from './bookingInterface'
-import { ApiStatus } from "../../common/enums/ApiStatus"
+import { BookingInterfaceId } from 'booking/interfaces/bookingInterface'
+import { ApiStatus } from "common/enums/ApiStatus"
 import { ApiErrorResponseInterface } from 'common/interfaces/apiResponses/apiErrorResponseInterface'
 
 export interface BookingStateInterface {

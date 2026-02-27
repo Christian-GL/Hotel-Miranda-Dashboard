@@ -1,5 +1,5 @@
 
-import { RoomInterfaceId } from "../../roomInterface"
+import { RoomInterfaceId } from "room/interfaces/roomInterface"
 
 
 export interface RoomUpdateRequestInterface {

@@ -1,9 +1,8 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { ClientInterfaceId } from "../../interfaces/clientInterface"
-
+import { ClientUpdateRequestInterface } from "client/interfaces/api/requests/clientUpdateRequestInterface"
+import { ClientInterfaceId } from "client/interfaces/clientInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { ClientUpdateRequestInterface } from "../../interfaces/api/requests/clientUpdateRequestInterface"
 
 
 export const ClientUpdateThunk = createAsyncThunk<

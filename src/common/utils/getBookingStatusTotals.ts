@@ -1,8 +1,8 @@
 
-import { BookingStatus } from "../../booking/enums/bookingStatus"
-import { BookingStatusTotals } from "../../booking/interfaces/bookingStatusTotals"
-import { checkBookingStatus } from "./checkBookingStatus"
-import { BookingInterfaceId } from "../../booking/interfaces/bookingInterface"
+import { BookingStatus } from "booking/enums/bookingStatus"
+import { BookingInterfaceId } from "booking/interfaces/bookingInterface"
+import { BookingStatusTotals } from "booking/interfaces/bookingStatusTotals"
+import { checkBookingStatus } from "common/utils/checkBookingStatus"
 
 
 export const getBookingStatusTotals = (clientBookingIdList: string[], bookingAll: BookingInterfaceId[]): BookingStatusTotals => {

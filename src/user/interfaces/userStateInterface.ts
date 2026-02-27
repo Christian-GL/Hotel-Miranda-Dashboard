@@ -1,7 +1,7 @@
 
-import { UserInterfaceId } from "./userInterface"
-import { ApiStatus } from "../../common/enums/ApiStatus"
+import { ApiStatus } from "common/enums/ApiStatus"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
+import { UserInterfaceId } from "user/interfaces/userInterface"
 
 export interface UserStateInterface {
     allData: UserInterfaceId[]

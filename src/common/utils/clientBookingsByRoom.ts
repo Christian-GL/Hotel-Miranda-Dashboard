@@ -1,8 +1,8 @@
 
-import { ClientInterfaceId } from "client/interfaces/clientInterface"
 import { BookingInterfaceId } from "booking/interfaces/bookingInterface"
+import { ClientInterfaceId } from "client/interfaces/clientInterface"
+import { ClientBookingsByRoomInterface } from "common/interfaces/clientBookingsByRoomInterface"
 import { RoomInterfaceId } from "room/interfaces/roomInterface"
-import { ClientBookingsByRoomInterface } from "../interfaces/clientBookingsByRoomInterface"
 
 
 // !!! ELIMINAR SI NO SE USA:

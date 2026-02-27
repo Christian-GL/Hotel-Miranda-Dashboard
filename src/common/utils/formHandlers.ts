@@ -1,6 +1,6 @@
 
 import React from "react"
-import { MultiValue, ActionMeta } from "react-select"
+import { ActionMeta, MultiValue } from "react-select"
 
 
 type AnyState = Record<string, any>

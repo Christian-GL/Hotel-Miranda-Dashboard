@@ -1,8 +1,8 @@
 
-import { toast } from 'react-toastify'
-import { Slide } from 'react-toastify'
+import { Slide, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import * as toastifySuccessStyles from './toastifySuccessStyles'
+
+import * as toastifySuccessStyles from 'common/components/toastify/successPopup/toastifySuccessStyles'
 
 
 export const ToastifySuccess = (message: string, onClose: () => void) => {

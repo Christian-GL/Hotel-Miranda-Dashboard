@@ -1,36 +1,32 @@
 
-import React from "react"
-import { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import { useParams } from "react-router-dom"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, useParams } from "react-router-dom"
 import { useTheme } from "styled-components"
 
-import * as styles from "common/styles/form"
-import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
-import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
-import { AppDispatch } from "../../../common/redux/store"
-import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { OptionYesNo } from "../../../common/enums/optionYesNo"
-import { BookingInterfaceCheckInOutId, BookingInterfaceId } from "../../interfaces/bookingInterface"
+import { getBookingAllData, getBookingAllStatus, getBookingIdData, getBookingIdStatus } from "booking/features/bookingSlice"
+import { BookingFetchAllThunk } from "booking/features/thunks/bookingFetchAllThunk"
+import { BookingFetchByIDThunk } from "booking/features/thunks/bookingFetchByIDThunk"
+import { BookingUpdateThunk } from "booking/features/thunks/bookingUpdateThunk"
+import { BookingInterfaceCheckInOutId, BookingInterfaceId } from "booking/interfaces/bookingInterface"
+import { getClientAllData, getClientAllStatus } from "client/features/clientSlice"
+import { ClientFetchAllThunk } from 'client/features/thunks/clientFetchAllThunk'
+import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
+import { ToastifyError } from "common/components/toastify/errorPopup/toastifyError"
+import { ToastifySuccess } from "common/components/toastify/successPopup/toastifySuccess"
+import { ApiStatus } from "common/enums/ApiStatus"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { formatDateForInput } from "../../../common/utils/dateUtils"
-import { createFormHandlers } from '../../../common/utils/formHandlers'
+import { AppDispatch } from "common/redux/store"
+import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
+import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
-import {
-    validateCheckInCheckOutExistingBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupiedIfBookingExists
-} from '../../../common/utils/validators'
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { BookingFetchByIDThunk } from "../../../booking/features/thunks/bookingFetchByIDThunk"
-import { BookingUpdateThunk } from "../../../booking/features/thunks/bookingUpdateThunk"
-import { getBookingAllData, getBookingAllStatus, getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice"
-import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
-import { getRoomAllData, getRoomAllStatus } from '../../../room/features/roomSlice'
-import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk'
-import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
-import { ClientFetchAllThunk } from '../../../client/features/thunks/clientFetchAllThunk'
+import { formatDateForInput } from "common/utils/dateUtils"
+import { createFormHandlers } from 'common/utils/formHandlers'
+import { validateCheckInCheckOutExistingBooking, validateDateIsOccupiedIfBookingExists, validateOptionYesNo, validateTextArea } from 'common/utils/validators'
+import { ToastContainer } from 'react-toastify'
+import { getRoomAllData, getRoomAllStatus } from 'room/features/roomSlice'
+import { RoomFetchAllThunk } from 'room/features/thunks/roomFetchAllThunk'
 
 
 export const BookingUpdate = () => {

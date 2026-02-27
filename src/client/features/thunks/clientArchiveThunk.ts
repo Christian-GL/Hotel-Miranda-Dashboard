@@ -1,8 +1,8 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { ClientArchiveResponseInterface } from "../../interfaces/api/responses/clientArchiveResponseInterface"
-import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { ClientArchiveRequestInterface } from "client/interfaces/api/requests/clientArchiveRequestInterface"
+import { ClientArchiveResponseInterface } from "client/interfaces/api/responses/clientArchiveResponseInterface"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 
 export const ClientArchiveThunk = createAsyncThunk<

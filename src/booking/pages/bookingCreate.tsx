@@ -1,33 +1,30 @@
 
-import React from "react"
-import { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useTheme } from "styled-components"
 
-import * as styles from "common/styles/form"
-import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
-import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
-import { AppDispatch } from "../../../common/redux/store"
-import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { OptionYesNo } from "../../../common/enums/optionYesNo"
-import { BookingInterfaceCheckInOut, BookingInterface } from "../../interfaces/bookingInterface"
+import { getBookingAllData, getBookingAllStatus } from "booking/features/bookingSlice"
+import { BookingCreateThunk } from "booking/features/thunks/bookingCreateThunk"
+import { BookingFetchAllThunk } from "booking/features/thunks/bookingFetchAllThunk"
+import { BookingInterface, BookingInterfaceCheckInOut } from "booking/interfaces/bookingInterface"
+import { getClientAllData, getClientAllStatus } from "client/features/clientSlice"
+import { ClientFetchAllThunk } from 'client/features/thunks/clientFetchAllThunk'
+import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
+import { ToastifyError } from "common/components/toastify/errorPopup/toastifyError"
+import { ToastifySuccess } from "common/components/toastify/successPopup/toastifySuccess"
+import { ApiStatus } from "common/enums/ApiStatus"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { createFormHandlers } from '../../../common/utils/formHandlers'
+import { AppDispatch } from "common/redux/store"
+import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
+import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
-import {
-    validateCheckInCheckOutNewBooking, validateTextArea, validateOptionYesNo, validateDateIsOccupied
-} from '../../../common/utils/validators'
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
-import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
-import { BookingCreateThunk } from "../../../booking/features/thunks/bookingCreateThunk"
-import { getRoomAllData, getRoomAllStatus } from '../../../room/features/roomSlice'
-import { RoomFetchAllThunk } from '../../../room/features/thunks/roomFetchAllThunk'
-import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
-import { ClientFetchAllThunk } from '../../../client/features/thunks/clientFetchAllThunk'
+import { createFormHandlers } from 'common/utils/formHandlers'
+import { validateCheckInCheckOutNewBooking, validateDateIsOccupied, validateOptionYesNo, validateTextArea } from 'common/utils/validators'
+import { ToastContainer } from 'react-toastify'
+import { getRoomAllData, getRoomAllStatus } from 'room/features/roomSlice'
+import { RoomFetchAllThunk } from 'room/features/thunks/roomFetchAllThunk'
 
 
 export const BookingCreate = () => {

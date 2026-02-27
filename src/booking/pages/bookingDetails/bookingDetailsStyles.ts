@@ -1,14 +1,13 @@
 
+import { BsChatDots } from "react-icons/bs"
+import { FaWifi } from "react-icons/fa"
+import { GoShieldCheck } from "react-icons/go"
+import { ImPhone } from "react-icons/im"
+import { IoBedSharp } from "react-icons/io5"
+import { SlOptionsVertical } from "react-icons/sl"
 import { styled } from 'styled-components'
 
-import { ImPhone } from "react-icons/im";
-import { SlOptionsVertical } from "react-icons/sl";
-import { BsChatDots } from "react-icons/bs";
-import { FaWifi } from "react-icons/fa";
-import { IoBedSharp } from "react-icons/io5";
-import { GoShieldCheck } from "react-icons/go";
-
-import * as globalConstStyles from '../../../common/styles/globalConstStyles'
+import * as globalConstStyles from 'common/styles/globalConstStyles'
 
 
 export const PageBookingDetails = styled.section`

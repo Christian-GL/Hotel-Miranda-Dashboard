@@ -1,12 +1,10 @@
 
+import { FaRegCalendarCheck } from "react-icons/fa"
+import { IoLogInOutline, IoLogOutOutline } from "react-icons/io5"
+import { MdOutlineBedroomParent } from "react-icons/md"
 import { styled } from 'styled-components'
 
-import { MdOutlineBedroomParent } from "react-icons/md"
-import { FaRegCalendarCheck } from "react-icons/fa"
-import { IoLogInOutline } from "react-icons/io5"
-import { IoLogOutOutline } from "react-icons/io5"
-
-import * as globalConstStyles from '../common/styles/globalConstStyles'
+import * as globalConstStyles from 'common/styles/globalConstStyles'
 
 
 export const SectionPageDashboard = styled.section`

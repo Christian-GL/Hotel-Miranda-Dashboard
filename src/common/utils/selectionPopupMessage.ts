@@ -1,6 +1,8 @@
 
 import React from 'react'
-import { PopupTextInterface } from '../interfaces/popupTextInterface'
+
+import { PopupTextInterface } from 'common/interfaces/popupTextInterface'
+
 
 export const handleSelectionPopupMessage = (
     setInfoPopup: React.Dispatch<React.SetStateAction<PopupTextInterface>>,

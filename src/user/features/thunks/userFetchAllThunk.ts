@@ -1,7 +1,7 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { UserInterfaceId } from '../../interfaces/userInterface'
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
+import { UserInterfaceId } from 'user/interfaces/userInterface'
 
 
 export const UserFetchAllThunk = createAsyncThunk<

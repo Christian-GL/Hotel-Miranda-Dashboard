@@ -1,29 +1,28 @@
 
 import { useEffect, useMemo } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { Swiper, SwiperSlide } from 'swiper/react'
+import { useDispatch, useSelector } from "react-redux"
 import { Navigation, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
-import * as styles from "./dashboardMainStyles"
-import { CtnSwiperCustom, ButtonPrev, ButtonNext } from "../common/styles/customSwiperStyles"
-import { AppDispatch } from '../common/redux/store'
-import { ApiStatus } from "../common/enums/ApiStatus"
-import { OptionYesNo } from "common/enums/optionYesNo"
-import { BookingStatus } from "../booking/enums/bookingStatus"
-import { formatDateForPrint } from '../common/utils/dateUtils'
-import { checkBookingStatus } from '../common/utils/checkBookingStatus'
-import { getBookingStatusTotals } from "../common/utils/getBookingStatusTotals"
-import { BookingArticle } from "../common/components/bookingArticle/bookingArticle"
-import { getBookingAllData, getBookingAllStatus } from '../booking/features/bookingSlice'
-import { BookingFetchAllThunk } from '../booking/features/thunks/bookingFetchAllThunk'
-import { getClientAllData, getClientAllStatus } from "../client/features/clientSlice"
-import { ClientFetchAllThunk } from "../client/features/thunks/clientFetchAllThunk"
+import { getBookingAllData, getBookingAllStatus } from 'booking/features/bookingSlice'
+import { BookingFetchAllThunk } from 'booking/features/thunks/bookingFetchAllThunk'
+import { BookingInterfaceId } from "booking/interfaces/bookingInterface"
 import { BookingStatusTotals } from "booking/interfaces/bookingStatusTotals"
-import { BookingInterfaceId } from "../booking/interfaces/bookingInterface"
-import { ClientInterfaceId } from "../client/interfaces/clientInterface"
-import { RoomInterfaceId } from "../room/interfaces/roomInterface"
-import { getRoomAllData, getRoomAllStatus } from "../room/features/roomSlice"
-import { RoomFetchAllThunk } from "../room/features/thunks/roomFetchAllThunk"
+import { getClientAllData, getClientAllStatus } from "client/features/clientSlice"
+import { ClientFetchAllThunk } from "client/features/thunks/clientFetchAllThunk"
+import { ClientInterfaceId } from "client/interfaces/clientInterface"
+import { BookingArticle } from "common/components/bookingArticle/bookingArticle"
+import { ApiStatus } from "common/enums/ApiStatus"
+import { OptionYesNo } from "common/enums/optionYesNo"
+import { AppDispatch } from 'common/redux/store'
+import { ButtonNext, ButtonPrev, CtnSwiperCustom } from "common/styles/customSwiperStyles"
+import { checkBookingStatus } from 'common/utils/checkBookingStatus'
+import { formatDateForPrint } from 'common/utils/dateUtils'
+import { getBookingStatusTotals } from "common/utils/getBookingStatusTotals"
+import * as styles from "dashboard/dashboardMainStyles"
+import { getRoomAllData, getRoomAllStatus } from "room/features/roomSlice"
+import { RoomFetchAllThunk } from "room/features/thunks/roomFetchAllThunk"
+import { RoomInterfaceId } from "room/interfaces/roomInterface"
 
 
 export const DashboardMain = () => {

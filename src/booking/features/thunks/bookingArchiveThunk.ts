@@ -1,7 +1,7 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { BookingArchiveRequestInterface } from "../../interfaces/api/requests/bookingArchiveRequestInterface"
-import { BookingArchiveResponseInterface } from "../..//interfaces/api/responses/bookingArchiveResponseInterface"
+import { BookingArchiveRequestInterface } from "booking/interfaces/api/requests/bookingArchiveRequestInterface"
+import { BookingArchiveResponseInterface } from "booking/interfaces/api/responses/bookingArchiveResponseInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 

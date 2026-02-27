@@ -1,7 +1,7 @@
 
-import { RoomInterfaceId } from './roomInterface'
-import { ApiStatus } from "../../common/enums/ApiStatus"
+import { ApiStatus } from "common/enums/ApiStatus"
 import { ApiErrorResponseInterface } from 'common/interfaces/apiResponses/apiErrorResponseInterface'
+import { RoomInterfaceId } from 'room/interfaces/roomInterface'
 
 
 export interface RoomStateInterface {

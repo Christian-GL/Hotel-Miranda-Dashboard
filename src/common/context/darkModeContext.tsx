@@ -1,6 +1,7 @@
 
-import { createContext, useState, PropsWithChildren } from "react"
-import { DarkModeInterface } from "./darkModeInterface"
+import { createContext, PropsWithChildren, useState } from "react"
+
+import { DarkModeInterface } from "common/context/darkModeInterface"
 import { ThemeType } from "common/enums/themeType"
 
 

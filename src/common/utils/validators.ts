@@ -1,9 +1,9 @@
 
-import { BookingInterfaceCheckInOutId, BookingInterfaceCheckInOut, BookingInterface, BookingInterfaceId } from "../../booking/interfaces/bookingInterface"
-import { RoomType } from "../../room/enums/roomType"
-import { Role } from "../../user/enums/role"
-import { RoomAmenities } from "../../room/enums/roomAmenities"
-import { OptionYesNo } from "../enums/optionYesNo"
+import { BookingInterface, BookingInterfaceCheckInOut, BookingInterfaceCheckInOutId, BookingInterfaceId } from "booking/interfaces/bookingInterface"
+import { OptionYesNo } from "common/enums/optionYesNo"
+import { RoomAmenities } from "room/enums/roomAmenities"
+import { RoomType } from "room/enums/roomType"
+import { Role } from "user/enums/role"
 
 
 /* TYPE VALIDATORS */

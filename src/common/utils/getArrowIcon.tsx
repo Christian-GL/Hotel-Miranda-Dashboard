@@ -1,6 +1,6 @@
 
-import { ArrowType } from "../../common/enums/ArrowType"
-import { TriangleRight, TriangleDown, TriangleUp } from "common/styles/tableStyles"
+import { ArrowType } from "common/enums/ArrowType"
+import { TriangleDown, TriangleRight, TriangleUp } from "common/styles/tableStyles"
 
 
 export const getArrowIcon = (state: ArrowType | undefined): JSX.Element => {

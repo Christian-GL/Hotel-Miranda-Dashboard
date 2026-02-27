@@ -1,16 +1,16 @@
 
-import { useContext, createContext } from "react"
+import { createContext, useContext } from "react"
 import { useDispatch } from "react-redux"
 
-import { AppDispatch } from "../../common/redux/store"
-import { LoginContextTypeInterface } from '../interfaces/loginContextTypeInterface'
-import { LoginProviderInterface } from '../interfaces/loginProviderInterface'
-import { LoginThunk } from "./loginThunk"
-import { resetStore } from "../../common/redux/rootActions"
-import { resetBookingAllStatus, resetBookingIdStatus } from "../../booking/features/bookingSlice"
-import { resetRoomAllStatus, resetRoomIdStatus } from "../../room/features/roomSlice"
-import { resetClientAllStatus, resetClientIdStatus } from "../../client/features/clientSlice"
-import { resetUserAllStatus, resetUserIdStatus } from "../../user/features/userSlice"
+import { resetBookingAllStatus, resetBookingIdStatus } from "booking/features/bookingSlice"
+import { resetClientAllStatus, resetClientIdStatus } from "client/features/clientSlice"
+import { resetStore } from "common/redux/rootActions"
+import { AppDispatch } from "common/redux/store"
+import { resetRoomAllStatus, resetRoomIdStatus } from "room/features/roomSlice"
+import { LoginThunk } from "signIn/features/loginThunk"
+import { LoginContextTypeInterface } from 'signIn/interfaces/loginContextTypeInterface'
+import { LoginProviderInterface } from 'signIn/interfaces/loginProviderInterface'
+import { resetUserAllStatus, resetUserIdStatus } from "user/features/userSlice"
 
 
 const loginOptionsContext = createContext<LoginContextTypeInterface | undefined>(undefined)

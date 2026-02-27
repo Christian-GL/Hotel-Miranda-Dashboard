@@ -1,5 +1,5 @@
 
-import { BookingInterface } from "../../bookingInterface"
+import { BookingInterface } from "booking/interfaces/bookingInterface"
 
 
 export interface BookingUpdateRequestInterface {

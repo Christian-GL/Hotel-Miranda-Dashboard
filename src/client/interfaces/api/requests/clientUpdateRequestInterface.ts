@@ -1,5 +1,5 @@
 
-import { ClientInterface } from "../../clientInterface"
+import { ClientInterface } from "client/interfaces/clientInterface"
 
 
 export interface ClientUpdateRequestInterface {

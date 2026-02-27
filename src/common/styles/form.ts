@@ -1,18 +1,15 @@
 
-import { styled } from 'styled-components'
-import { createGlobalStyle } from 'styled-components'
-import Select from "react-select"
-
-import { FaUser } from "react-icons/fa"
-import { FaRegCalendarAlt } from "react-icons/fa"
-import { MdOutlineBedroomParent } from "react-icons/md"
 import { BiSolidPlusCircle } from "react-icons/bi"
-import { RiExchangeFill } from "react-icons/ri"
+import { FaRegCalendarAlt, FaUser } from "react-icons/fa"
 import { FaUserGear } from "react-icons/fa6"
-import { IoEye } from "react-icons/io5"
 import { IoMdEyeOff } from "react-icons/io"
+import { IoEye } from "react-icons/io5"
+import { MdOutlineBedroomParent } from "react-icons/md"
+import { RiExchangeFill } from "react-icons/ri"
+import Select from "react-select"
+import { createGlobalStyle, styled } from 'styled-components'
 
-import * as globalConstStyles from './globalConstStyles'
+import * as globalConstStyles from 'common/styles/globalConstStyles'
 
 
 export const CtnSection = styled.section`

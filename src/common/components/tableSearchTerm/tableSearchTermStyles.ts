@@ -1,10 +1,9 @@
 
-import { styled } from 'styled-components'
 import { InputHTMLAttributes } from "react"
-
 import { HiMiniMagnifyingGlass } from "react-icons/hi2"
+import { styled } from 'styled-components'
 
-import * as globalConstStyles from '../../styles/globalConstStyles'
+import * as globalConstStyles from 'common/styles/globalConstStyles'
 
 
 export const InputSearch = styled.input<InputHTMLAttributes<HTMLInputElement>>`

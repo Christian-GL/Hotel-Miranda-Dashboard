@@ -1,8 +1,8 @@
 
-import { toast } from 'react-toastify'
-import { Slide } from 'react-toastify'
+import { Slide, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import * as toastifyErrorStyles from './toastifyErrorStyles'
+
+import * as toastifyErrorStyles from 'common/components/toastify/errorPopup/toastifyErrorStyles'
 
 
 export const ToastifyError = (message: string) => {

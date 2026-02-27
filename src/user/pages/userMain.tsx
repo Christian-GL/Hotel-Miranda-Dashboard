@@ -1,46 +1,41 @@
 
-import React from "react"
-import { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
 
-import userDefaultImg from '../../../assets/img/userDefault.png'
-import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
-import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
-import { ActiveButtonType } from "../../../common/enums/activeButtonType"
-import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
-import { AppDispatch } from '../../../common/redux/store'
-import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { Role } from "../../enums/role"
-import { UserInterfaceId } from "./../../interfaces/userInterface"
+import userDefaultImg from 'assets/img/userDefault.png'
+import { ButtonCreate } from "common/components/buttonCreate/buttonCreate"
+import { PopupText } from "common/components/popupText/popupText"
+import { TableDisplaySelector } from "common/components/tableDisplaySelector/tableDisplaySelector"
+import { TablePagination } from "common/components/tablePagination/tablePagination"
+import { TableSearchTerm } from "common/components/tableSearchTerm/tableSearchTerm"
+import { ActiveButtonType } from "common/enums/activeButtonType"
+import { ApiStatus } from "common/enums/ApiStatus"
+import { ArchivedButtonType } from "common/enums/archivedButtonType"
+import { ArrowType } from "common/enums/ArrowType"
+import { OptionYesNo } from "common/enums/optionYesNo"
+import { usePagination } from "common/hooks/usePagination"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { formatDateForPrint } from '../../../common/utils/dateUtils'
+import { PopupTextInterface } from 'common/interfaces/popupTextInterface'
+import { AppDispatch } from 'common/redux/store'
+import { CtnAllDisplayFilter, CtnButton, CtnFuncionality, CtnSearch, CtnTableDisplayFilter, SectionPage } from "common/styles/funcionalityStyles"
+import { ButtonOption, CtnCell, CtnMenuOptions, CtnOptions, EmptyTableMessage, IconOptions, IconPhone, ImgUser, Table, TextCell, TextId, TextStatusAvailableUsers, TitleColumn } from "common/styles/tableStyles"
+import { capitalizeFirstLetter } from "common/utils/capitalizeFirstLetter"
+import { customPopupMessage } from 'common/utils/customPopupMessage'
+import { formatDateForPrint } from 'common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
-import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { handleSelectionPopupMessage } from 'common/utils/selectionPopupMessage'
-import { customPopupMessage } from 'common/utils/customPopupMessage'
-import { capitalizeFirstLetter } from "common/utils/capitalizeFirstLetter"
-import { ArrowType } from "../../../common/enums/ArrowType"
-import { OptionYesNo } from "common/enums/optionYesNo"
-import { UserNameColumn } from "../../enums/userNameColumn"
-import { PopupText } from "../../../common/components/popupText/popupText"
-import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
-import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
-import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
-import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
-import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
-import {
-    EmptyTableMessage, Table, TitleColumn, ImgUser, CtnCell, TextCell, TextId,
-    TextStatusAvailableUsers, IconPhone, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
-} from "../../../common/styles/tableStyles"
-import { usePagination } from "../../../common/hooks/usePagination"
-import { getUserAllData, getUserAllStatus } from "./../../features/userSlice"
-import { UserFetchAllThunk } from "./../../features/thunks/userFetchAllThunk"
-import { UserUpdateThunk } from "./../../features/thunks/userUpdateThunk"
-import { UserArchiveThunk } from "./../../features/thunks/userArchiveThunk"
-import { UserDeleteByIdThunk } from "./../../features/thunks/userDeleteByIdThunk"
+import { sortValues } from "common/utils/sortValues"
+import { useLoginOptionsContext } from "signIn/features/loginProvider"
+import { Role } from "user/enums/role"
+import { UserNameColumn } from "user/enums/userNameColumn"
+import { UserArchiveThunk } from "user/features/thunks/userArchiveThunk"
+import { UserDeleteByIdThunk } from "user/features/thunks/userDeleteByIdThunk"
+import { UserFetchAllThunk } from "user/features/thunks/userFetchAllThunk"
+import { getUserAllData, getUserAllStatus } from "user/features/userSlice"
+import { UserInterfaceId } from "user/interfaces/userInterface"
 
 
 export const UserMain = () => {

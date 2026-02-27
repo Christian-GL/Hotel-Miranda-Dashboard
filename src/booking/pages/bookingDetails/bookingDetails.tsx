@@ -1,42 +1,40 @@
 
-import { useState } from "react"
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
-import { useParams } from "react-router-dom"
-import { Swiper, SwiperSlide } from 'swiper/react'
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, useParams } from "react-router-dom"
 import { Navigation, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
-import * as styles from "./bookingDetailsStyles"
-import roomDefaultImg from "../../../assets/img/roomDefault.jpg"
-import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
-import { BookingInterfaceId } from "../../interfaces/bookingInterface"
+import roomDefaultImg from "assets/img/roomDefault.jpg"
+import { getBookingIdData, getBookingIdStatus } from "booking/features/bookingSlice"
+import { BookingDeleteByIdThunk } from "booking/features/thunks/bookingDeleteByIdThunk"
+import { BookingFetchByIDThunk } from "booking/features/thunks/bookingFetchByIDThunk"
+import { BookingUpdateThunk } from "booking/features/thunks/bookingUpdateThunk"
+import { BookingInterfaceId } from "booking/interfaces/bookingInterface"
+import * as styles from "booking/pages/bookingDetails/bookingDetailsStyles"
+import { getClientIdData, getClientIdStatus } from "client/features/clientSlice"
+import { ClientFetchByIDThunk } from "client/features/thunks/clientFetchByIDThunk"
+import { ClientInterfaceId } from "client/interfaces/clientInterface"
+import { PopupText } from "common/components/popupText/popupText"
+import { ToastifyLoading } from "common/components/toastify/loadingPopup/toastifyLoading"
+import { ApiStatus } from "common/enums/ApiStatus"
+import { OptionYesNo } from "common/enums/optionYesNo"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { CtnOptions, ButtonOption } from "../../../common/styles/tableStyles"
-import { AppDispatch } from "../../../common/redux/store"
+import { PopupTextInterface } from 'common/interfaces/popupTextInterface'
+import { AppDispatch } from "common/redux/store"
+import { ButtonOption, CtnOptions } from "common/styles/tableStyles"
+import { customPopupMessage } from 'common/utils/customPopupMessage'
+import { formatDateForPrint } from "common/utils/dateUtils"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
-import { formatDateForPrint } from "../../../common/utils/dateUtils"
-import { applyDiscount } from '../../../common/utils/tableUtils'
-import { customPopupMessage } from '../../../common/utils/customPopupMessage'
-import { handleSelectionPopupMessage } from '../../../common/utils/selectionPopupMessage'
-import { PopupText } from "../../../common/components/popupText/popupText"
-import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
+import { handleSelectionPopupMessage } from 'common/utils/selectionPopupMessage'
+import { applyDiscount } from 'common/utils/tableUtils'
 import { ToastContainer, toast } from 'react-toastify'
-import { ToastifyLoading } from "../../../common/components/toastify/loadingPopup/toastifyLoading"
-import { Role } from "../../../user/enums/role"
-import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { RoomAmenities } from "../../../room/enums/roomAmenities"
-import { OptionYesNo } from "../../../common/enums/optionYesNo"
-import { getBookingIdData, getBookingIdStatus } from "../../../booking/features/bookingSlice"
-import { BookingFetchByIDThunk } from "../../features/thunks/bookingFetchByIDThunk"
-import { BookingUpdateThunk } from "./../../features/thunks/bookingUpdateThunk"
-import { BookingDeleteByIdThunk } from "../../features/thunks/bookingDeleteByIdThunk"
-import { ClientInterfaceId } from "../../../client/interfaces/clientInterface"
-import { getClientIdData, getClientIdStatus, getClientApiError } from "../../../client/features/clientSlice"
-import { ClientFetchByIDThunk } from "../../../client/features/thunks/clientFetchByIDThunk"
-import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "../../../room/features/roomSlice"
-import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
-import { RoomInterfaceId } from "../../../room/interfaces/roomInterface"
+import { RoomAmenities } from "room/enums/roomAmenities"
+import { getRoomAllData, getRoomAllStatus } from "room/features/roomSlice"
+import { RoomFetchAllThunk } from "room/features/thunks/roomFetchAllThunk"
+import { RoomInterfaceId } from "room/interfaces/roomInterface"
+import { useLoginOptionsContext } from "signIn/features/loginProvider"
+import { Role } from "user/enums/role"
 
 
 export const BookingDetails = () => {
@@ -164,7 +162,7 @@ export const BookingDetails = () => {
                         <styles.IconOptions onClick={() => { setOptionsDisplayed(!optionsDisplayed) }} />
                         <CtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} isInTable={false}>
                             <ButtonOption onClick={() => { navigateBackToBookings() }}>Go back to bookings</ButtonOption>
-                            <ButtonOption onClick={() => { navigate(`../booking-update/${bookingById._id}`) }}>Update</ButtonOption>
+                            <ButtonOption onClick={() => { navigate(`booking-update/${bookingById._id}`) }}>Update</ButtonOption>
                             <ButtonOption
                                 onClick={() => handleSelectionPopupMessage(
                                     setInfoPopup,

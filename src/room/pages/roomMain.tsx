@@ -1,47 +1,43 @@
 
-import React from "react"
-import { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
 
-import roomDefaultImg from '../../../assets/img/roomDefault.jpg'
-import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
-import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
-import { ActiveButtonType } from "../../../common/enums/activeButtonType"
-import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
-import { AppDispatch } from '../../../common/redux/store'
-import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { Role } from "../../../user/enums/role"
-import { RoomInterfaceId } from "./../../interfaces/roomInterface"
+import roomDefaultImg from 'assets/img/roomDefault.jpg'
+import { getBookingAllData, getBookingAllStatus } from "booking/features/bookingSlice"
+import { BookingFetchAllThunk } from "booking/features/thunks/bookingFetchAllThunk"
+import { BookingInterfaceId } from "booking/interfaces/bookingInterface"
+import { ButtonCreate } from "common/components/buttonCreate/buttonCreate"
+import { PopupText } from "common/components/popupText/popupText"
+import { TableDisplaySelector } from "common/components/tableDisplaySelector/tableDisplaySelector"
+import { TablePagination } from "common/components/tablePagination/tablePagination"
+import { TableSearchTerm } from "common/components/tableSearchTerm/tableSearchTerm"
+import { ActiveButtonType } from "common/enums/activeButtonType"
+import { ApiStatus } from "common/enums/ApiStatus"
+import { ArchivedButtonType } from "common/enums/archivedButtonType"
+import { ArrowType } from "common/enums/ArrowType"
+import { OptionYesNo } from "common/enums/optionYesNo"
+import { usePagination } from "common/hooks/usePagination"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
+import { PopupTextInterface } from 'common/interfaces/popupTextInterface'
+import { AppDispatch } from 'common/redux/store'
+import { CtnAllDisplayFilter, CtnButton, CtnFuncionality, CtnSearch, CtnTableDisplayFilter, SectionPage } from "common/styles/funcionalityStyles"
+import { ButtonOption, CtnCell, CtnMenuOptions, CtnOptions, EmptyTableMessage, IconOptions, ImgRoom, Table, TextCell, TextId, TextStatusAvailableUsers, TextStatusRoomList, TitleColumn } from "common/styles/tableStyles"
+import { customPopupMessage } from 'common/utils/customPopupMessage'
 import { getArrowIcon } from "common/utils/getArrowIcon"
-import { sortValues } from "common/utils/sortValues"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { handleSelectionPopupMessage } from 'common/utils/selectionPopupMessage'
-import { customPopupMessage } from 'common/utils/customPopupMessage'
-import { ArrowType } from "../../../common/enums/ArrowType"
-import { OptionYesNo } from "common/enums/optionYesNo"
-import { RoomNameColumn } from "../../enums/roomNameColumn"
-import { PopupText } from "../../../common/components/popupText/popupText"
-import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
-import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
-import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
-import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
-import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
-import { applyDiscount } from "../../../common/utils/tableUtils"
-import { usePagination } from "../../../common/hooks/usePagination"
-import {
-    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, TextStatusAvailableUsers,
-    ImgRoom, CtnCell, TextCell, TextId, TextStatusRoomList, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption
-} from "../../../common/styles/tableStyles"
-import { getRoomAllData, getRoomAllStatus } from "./../../features/roomSlice"
-import { RoomFetchAllThunk } from "./../../features/thunks/roomFetchAllThunk"
-import { RoomArchiveThunk } from "../../features/thunks/roomArchiveThunk"
-import { RoomDeleteByIdThunk } from "./../../features/thunks/roomDeleteByIdThunk"
-import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
-import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
-import { BookingInterfaceId } from "../../../booking/interfaces/bookingInterface"
+import { sortValues } from "common/utils/sortValues"
+import { applyDiscount } from "common/utils/tableUtils"
+import { RoomNameColumn } from "room/enums/roomNameColumn"
+import { getRoomAllData, getRoomAllStatus } from "room/features/roomSlice"
+import { RoomArchiveThunk } from "room/features/thunks/roomArchiveThunk"
+import { RoomDeleteByIdThunk } from "room/features/thunks/roomDeleteByIdThunk"
+import { RoomFetchAllThunk } from "room/features/thunks/roomFetchAllThunk"
+import { RoomInterfaceId } from "room/interfaces/roomInterface"
+import { useLoginOptionsContext } from "signIn/features/loginProvider"
+import { Role } from "user/enums/role"
 
 
 export const RoomMain = () => {

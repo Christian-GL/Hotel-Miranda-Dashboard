@@ -1,7 +1,8 @@
 
 import React from 'react'
-import { TablePaginationInterface } from '../../interfaces/tablePaginationInterface'
-import { DivCtnPagination, ButtonSwitchPage, SpanPageCount } from './tablePaginationStyles'
+
+import { ButtonSwitchPage, DivCtnPagination, SpanPageCount } from 'common/components/tablePagination/tablePaginationStyles'
+import { TablePaginationInterface } from 'common/interfaces/tablePaginationInterface'
 
 
 export const TablePagination: React.FC<TablePaginationInterface> = ({

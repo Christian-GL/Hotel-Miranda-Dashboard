@@ -1,8 +1,8 @@
 
-import { styled } from 'styled-components'
-import { createGlobalStyle } from 'styled-components'
 import { ImSpinner9 } from "react-icons/im"
-import * as globalConstStyles from '../../../styles/globalConstStyles'
+import { createGlobalStyle, styled } from 'styled-components'
+
+import * as globalConstStyles from 'common/styles/globalConstStyles'
 
 
 export const GlobalToastStyles = createGlobalStyle`

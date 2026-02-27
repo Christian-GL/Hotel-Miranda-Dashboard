@@ -1,7 +1,7 @@
 
-import { RoomType } from "../enums/roomType"
-import { RoomAmenities } from '../enums/roomAmenities'
 import { OptionYesNo } from "common/enums/optionYesNo"
+import { RoomAmenities } from 'room/enums/roomAmenities'
+import { RoomType } from "room/enums/roomType"
 
 
 export interface RoomInterface {

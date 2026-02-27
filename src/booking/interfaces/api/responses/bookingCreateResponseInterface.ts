@@ -1,7 +1,7 @@
 
-import { BookingInterfaceId } from "../../bookingInterface"
-import { RoomInterfaceId } from "../../../../room/interfaces/roomInterface"
-import { ClientInterfaceId } from "../../../../client/interfaces/clientInterface"
+import { BookingInterfaceId } from "booking/interfaces/bookingInterface"
+import { ClientInterfaceId } from "client/interfaces/clientInterface"
+import { RoomInterfaceId } from "room/interfaces/roomInterface"
 
 
 export interface BookingCreateResponseInterface {

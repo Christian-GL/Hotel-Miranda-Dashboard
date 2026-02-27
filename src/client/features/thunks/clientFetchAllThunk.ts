@@ -1,6 +1,6 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { ClientInterfaceId } from "../../interfaces/clientInterface"
+import { ClientInterfaceId } from "client/interfaces/clientInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 
 

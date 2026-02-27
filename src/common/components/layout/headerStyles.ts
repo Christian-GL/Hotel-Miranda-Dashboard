@@ -1,15 +1,13 @@
 
-import { styled } from 'styled-components'
-
-import { HiMenuAlt2 } from "react-icons/hi"
-import { MdOutlineEmail } from "react-icons/md"
-import { FaRegBell } from "react-icons/fa6"
 import { AiOutlineLogout } from "react-icons/ai"
 import { FaMoon } from "react-icons/fa"
+import { FaRegBell } from "react-icons/fa6"
 import { FiSun } from "react-icons/fi"
-import { MdKeyboardDoubleArrowLeft } from "react-icons/md"
+import { HiMenuAlt2 } from "react-icons/hi"
+import { MdKeyboardDoubleArrowLeft, MdOutlineEmail } from "react-icons/md"
+import { styled } from 'styled-components'
 
-import * as globalConstStyles from '../../styles/globalConstStyles'
+import * as globalConstStyles from 'common/styles/globalConstStyles'
 
 
 export const Header = styled.header<{ isSidebarCollapsed?: boolean }>`

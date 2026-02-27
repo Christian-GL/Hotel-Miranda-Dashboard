@@ -1,27 +1,26 @@
 
-import { useEffect, useState, useContext } from "react"
-import { Navigate, Outlet, useLocation } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
+import { useContext, useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify'
-
-import * as headerStyles from "./headerStyles"
-import * as sidebarStyles from "./sidebarMenuStyles"
-import * as layoutStyles from "./layoutStyles"
 import { ThemeProvider } from 'styled-components'
-import { Theme } from "../../context/darkModeContext"
+
+import { getBookingAllStatus, getBookingApIError, getBookingIdStatus } from "booking/features/bookingSlice"
+import { getClientAllStatus, getClientApiError, getClientIdStatus } from "client/features/clientSlice"
+import * as headerStyles from "common/components/layout/headerStyles"
+import * as layoutStyles from "common/components/layout/layoutStyles"
+import * as sidebarStyles from "common/components/layout/sidebarMenuStyles"
+import { ToastifyError } from "common/components/toastify/errorPopup/toastifyError"
+import { ToastifyLoading } from "common/components/toastify/loadingPopup/toastifyLoading"
+import { Theme } from "common/context/darkModeContext"
+import { ApiStatus } from "common/enums/ApiStatus"
 import { ThemeType } from "common/enums/themeType"
-import { themeLight, themeDark } from "../../styles/themes"
-import { ToastifyLoading } from "../toastify/loadingPopup/toastifyLoading"
-import { ToastifyError } from "../toastify/errorPopup/toastifyError"
-import { AppDispatch } from "../../redux/store"
-import { useLoginOptionsContext } from '../../../signIn/features/loginProvider'
-import { ApiStatus } from "../../enums/ApiStatus"
-import { getBookingAllStatus, getBookingIdStatus, getBookingApIError } from "../../../booking/features/bookingSlice"
-import { getRoomAllStatus, getRoomIdStatus, getRoomApiError } from "../../../room/features/roomSlice"
-import { getClientAllStatus, getClientIdStatus, getClientApiError } from "../../../client/features/clientSlice"
-import { getUserAllStatus, getUserIdStatus, getUserIdData, getUserApiError } from "../../../user/features/userSlice"
-import { UserFetchByIDThunk } from "../../../user/features/thunks/userFetchByIDThunk"
+import { AppDispatch } from "common/redux/store"
+import { themeDark, themeLight } from "common/styles/themes"
+import { getRoomAllStatus, getRoomApiError, getRoomIdStatus } from "room/features/roomSlice"
+import { useLoginOptionsContext } from 'signIn/features/loginProvider'
+import { UserFetchByIDThunk } from "user/features/thunks/userFetchByIDThunk"
+import { getUserAllStatus, getUserApiError, getUserIdData, getUserIdStatus } from "user/features/userSlice"
 
 
 export const Layout = () => {

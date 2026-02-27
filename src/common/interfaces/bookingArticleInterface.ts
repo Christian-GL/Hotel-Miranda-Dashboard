@@ -1,5 +1,5 @@
 
-import { BookingStatus } from "../../booking/enums/bookingStatus"
+import { BookingStatus } from "booking/enums/bookingStatus"
 
 
 export interface BookingArticleInterface extends React.HTMLAttributes<HTMLElement> {

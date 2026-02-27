@@ -1,57 +1,52 @@
 
-import React from "react"
-import { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
-import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
-import { CtnSwiperCustom, ButtonPrev, ButtonNext } from "../../../common/styles/customSwiperStyles"
-import { SectionPage, CtnFuncionality, CtnAllDisplayFilter, CtnTableDisplayFilter, CtnSearch, CtnButton } from "../../../common/styles/funcionalityStyles"
-import { useLoginOptionsContext } from "../../../signIn/features/loginProvider"
-import { ArchivedButtonType } from "../../../common/enums/archivedButtonType"
-import { ClientHasBookings } from "../../enums/clientWithBookings"
-import { AppDispatch } from '../../../common/redux/store'
-import { ApiStatus } from "../../../common/enums/ApiStatus"
-import { Role } from "../../../user/enums/role"
-import { BookingStatus } from "../../../booking/enums/bookingStatus"
-import { ClientInterfaceId } from '../../interfaces/clientInterface'
+import { BookingStatus } from "booking/enums/bookingStatus"
+import { getBookingAllData, getBookingAllStatus } from "booking/features/bookingSlice"
+import { BookingFetchAllThunk } from "booking/features/thunks/bookingFetchAllThunk"
+import { BookingInterfaceId } from "booking/interfaces/bookingInterface"
+import { ClientNameColumn } from "client/enums/ClientNameColumn"
+import { ClientHasBookings } from "client/enums/clientWithBookings"
+import { getClientAllData, getClientAllStatus } from "client/features/clientSlice"
+import { ClientArchiveThunk } from "client/features/thunks/clientArchiveThunk"
+import { ClientDeleteByIdThunk } from "client/features/thunks/clientDeleteByIdThunk"
+import { ClientFetchAllThunk } from "client/features/thunks/clientFetchAllThunk"
+import { ClientInterfaceId } from 'client/interfaces/clientInterface'
+import { BookingArticle } from "common/components/bookingArticle/bookingArticle"
+import { ButtonCreate } from "common/components/buttonCreate/buttonCreate"
+import { PopupText } from "common/components/popupText/popupText"
+import { TableDisplaySelector } from "common/components/tableDisplaySelector/tableDisplaySelector"
+import { TablePagination } from "common/components/tablePagination/tablePagination"
+import { TableSearchTerm } from "common/components/tableSearchTerm/tableSearchTerm"
+import { ApiStatus } from "common/enums/ApiStatus"
+import { ArchivedButtonType } from "common/enums/archivedButtonType"
+import { ArrowType } from "common/enums/ArrowType"
+import { OptionYesNo } from "common/enums/optionYesNo"
+import { usePagination } from "common/hooks/usePagination"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { formatDateForPrint } from '../../../common/utils/dateUtils'
+import { PopupTextInterface } from 'common/interfaces/popupTextInterface'
+import { AppDispatch } from 'common/redux/store'
+import { ButtonNext, ButtonPrev, CtnSwiperCustom } from "common/styles/customSwiperStyles"
+import { CtnAllDisplayFilter, CtnButton, CtnFuncionality, CtnSearch, CtnTableDisplayFilter, SectionPage } from "common/styles/funcionalityStyles"
+import { ButtonOption, ButtonView, CtnCell, CtnMenuOptions, CtnOptions, EmptyTableMessage, IconOptions, IconPhone, Table, TextCell, TextId, TextStatusAvailableUsers, TitleColumn, TotalBookingStatus } from "common/styles/tableStyles"
+import { checkBookingStatus } from "common/utils/checkBookingStatus"
+import { customPopupMessage } from 'common/utils/customPopupMessage'
+import { formatDateForPrint } from 'common/utils/dateUtils'
 import { getArrowIcon } from "common/utils/getArrowIcon"
-import { sortValues } from "common/utils/sortValues"
+import { getBookingStatusTotals } from "common/utils/getBookingStatusTotals"
 import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { handleSelectionPopupMessage } from 'common/utils/selectionPopupMessage'
-import { customPopupMessage } from 'common/utils/customPopupMessage'
-import { checkBookingStatus } from "../../../common/utils/checkBookingStatus"
-import { getBookingStatusTotals } from "../../../common/utils/getBookingStatusTotals"
-import { ArrowType } from "../../../common/enums/ArrowType"
-import { ClientNameColumn } from "../../enums/ClientNameColumn"
-import { PopupText } from "../../../common/components/popupText/popupText"
-import { PopupTextInterface } from '../../../common/interfaces/popupTextInterface'
-import { OptionYesNo } from "common/enums/optionYesNo"
-import { BookingArticle } from "../../../common/components/bookingArticle/bookingArticle"
-import { TableDisplaySelector } from "../../../common/components/tableDisplaySelector/tableDisplaySelector"
-import { TableSearchTerm } from "../../../common/components/tableSearchTerm/tableSearchTerm"
-import { TablePagination } from "../../../common/components/tablePagination/tablePagination"
-import { ButtonCreate } from "../../../common/components/buttonCreate/buttonCreate"
-import {
-    EmptyTableMessage, Table, TitleColumn, TriangleUp, TriangleRight, TriangleDown, CtnCell, TextStatusAvailableUsers,
-    TextCell, TextId, TotalBookingStatus, IconPhone, ButtonView, ButtonPublishArchive, CtnMenuOptions, IconOptions, CtnOptions, ButtonOption,
-} from "../../../common/styles/tableStyles"
-import { usePagination } from "../../../common/hooks/usePagination"
-import { getClientAllData, getClientAllStatus } from "../../features/clientSlice"
-import { ClientFetchAllThunk } from "../../features/thunks/clientFetchAllThunk"
-import { ClientArchiveThunk } from "../../features/thunks/clientArchiveThunk"
-import { ClientUpdateThunk } from "./../../features/thunks/clientUpdateThunk"
-import { ClientDeleteByIdThunk } from "../../features/thunks/clientDeleteByIdThunk"
+import { sortValues } from "common/utils/sortValues"
+import { getRoomAllData, getRoomAllStatus } from "room/features/roomSlice"
+import { RoomFetchAllThunk } from "room/features/thunks/roomFetchAllThunk"
 import { RoomInterfaceId } from "room/interfaces/roomInterface"
-import { getRoomAllData, getRoomAllStatus } from "../../../room/features/roomSlice"
-import { RoomFetchAllThunk } from "../../../room/features/thunks/roomFetchAllThunk"
-import { BookingInterfaceId } from "../../../booking/interfaces/bookingInterface"
-import { getBookingAllData, getBookingAllStatus } from "../../../booking/features/bookingSlice"
-import { BookingFetchAllThunk } from "../../../booking/features/thunks/bookingFetchAllThunk"
+import { useLoginOptionsContext } from "signIn/features/loginProvider"
+import { Role } from "user/enums/role"
 
 
 export const ClientMain = () => {
@@ -267,7 +262,7 @@ export const ClientMain = () => {
                                             roomNumbersText={`Room numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
                                             orderDateText={`Order date: ${formatDateForPrint(booking.order_date)}`}
                                             specialRequest={booking.special_request}
-                                            navigationRoute={`../bookings/booking-details/${booking._id}`}
+                                            navigationRoute={`bookings/booking-details/${booking._id}`}
                                         />
                                     </SwiperSlide>
                                 )

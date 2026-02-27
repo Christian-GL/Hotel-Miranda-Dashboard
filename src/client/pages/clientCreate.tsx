@@ -1,24 +1,23 @@
 
-import React from "react"
-import { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-
-import * as styles from "common/styles/form"
 import { ToastContainer } from 'react-toastify'
-import { ToastifySuccess } from "../../../common/components/toastify/successPopup/toastifySuccess"
-import { ToastifyError } from "../../../common/components/toastify/errorPopup/toastifyError"
-import { AppDispatch } from "../../../common/redux/store"
-import { ApiStatus } from "../../../common/enums/ApiStatus"
+
+import { getClientAllData, getClientAllStatus } from "client/features/clientSlice"
+import { ClientCreateThunk } from "client/features/thunks/clientCreateThunk"
+import { ClientFetchAllThunk } from "client/features/thunks/clientFetchAllThunk"
+import { ClientInterface } from "client/interfaces/clientInterface"
+import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
+import { ToastifyError } from "common/components/toastify/errorPopup/toastifyError"
+import { ToastifySuccess } from "common/components/toastify/successPopup/toastifySuccess"
+import { ApiStatus } from "common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
-import { ClientInterface } from "../../interfaces/clientInterface"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
-import { createFormHandlers } from '../../../common/utils/formHandlers'
-import { validateFullName, validateEmail, validatePhoneNumber, validateMongoDBObjectIdList } from '../../../common/utils/validators'
-import { ButtonCreate } from '../../../common/components/buttonCreate/buttonCreate'
-import { getClientAllData, getClientAllStatus } from "../../../client/features/clientSlice"
-import { ClientFetchAllThunk } from "../../../client/features/thunks/clientFetchAllThunk"
-import { ClientCreateThunk } from "../../../client/features/thunks/clientCreateThunk"
+import { AppDispatch } from "common/redux/store"
+import * as styles from "common/styles/form"
+import { createFormHandlers } from 'common/utils/formHandlers'
+import { validateEmail, validateFullName, validateMongoDBObjectIdList, validatePhoneNumber } from 'common/utils/validators'
 
 
 export const ClientCreate = () => {

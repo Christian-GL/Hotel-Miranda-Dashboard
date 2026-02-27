@@ -1,6 +1,6 @@
 
-import { createAsyncThunk } from "@reduxjs/toolkit"
-import { LoginResponse } from "../interfaces/loginResponse"
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { LoginResponse } from 'signIn/interfaces/loginResponse';
 
 
 export const LoginThunk = createAsyncThunk<

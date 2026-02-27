@@ -1,9 +1,8 @@
 
+import { RiCloseCircleLine } from "react-icons/ri"
 import { styled } from 'styled-components'
 
-import { RiCloseCircleLine } from "react-icons/ri"
-
-import * as globalConstStyles from '../../../common/styles/globalConstStyles'
+import * as globalConstStyles from 'common/styles/globalConstStyles'
 
 
 export const DialogPopup = styled.dialog<{ isSlider?: boolean }>`

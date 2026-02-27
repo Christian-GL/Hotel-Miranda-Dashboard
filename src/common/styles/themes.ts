@@ -1,5 +1,5 @@
 
-import * as color from './colors'
+import * as color from 'common/styles/colors'
 
 
 export const themeLight = {

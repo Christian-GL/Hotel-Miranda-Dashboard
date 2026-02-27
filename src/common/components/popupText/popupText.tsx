@@ -1,6 +1,6 @@
 
-import * as styles from "./popupTextStyles"
-import { PopupTextInterface } from "../../interfaces/popupTextInterface"
+import * as styles from "common/components/popupText/popupTextStyles"
+import { PopupTextInterface } from "common/interfaces/popupTextInterface"
 
 
 export const PopupText = ({
