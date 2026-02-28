@@ -15,6 +15,7 @@ import { ApiStatus } from "common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { AppDispatch } from "common/redux/store"
+import { ROUTES } from "common/router/routes"
 import * as styles from "common/styles/form"
 import { createFormHandlers } from 'common/utils/formHandlers'
 import { validateEmail, validateFullName, validateMongoDBObjectIdList, validatePhoneNumber } from 'common/utils/validators'
@@ -69,7 +70,7 @@ export const ClientCreate = () => {
         try {
             await dispatch(ClientCreateThunk(newClient))
                 .unwrap()
-                .then(() => ToastifySuccess('Client created', () => navigate('../')))
+                .then(() => ToastifySuccess('Client created', () => navigate(ROUTES.clients.root)))
         }
         catch (error) {
             const apiError = error as ApiErrorResponseInterface

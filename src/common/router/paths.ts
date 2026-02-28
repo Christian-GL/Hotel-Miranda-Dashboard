@@ -2,7 +2,9 @@
 export const PATHS = {
     root: "/",
 
-    dashboard: "dashboard",
+    dashboard: {
+        root: "dashboard",
+    },
 
     bookings: {
         root: "bookings",

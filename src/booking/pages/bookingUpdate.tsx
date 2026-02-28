@@ -18,6 +18,7 @@ import { ApiStatus } from "common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { AppDispatch } from "common/redux/store"
+import { ROUTES } from "common/router/routes"
 import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
@@ -189,7 +190,7 @@ export const BookingUpdate = () => {
         try {
             await dispatch(BookingUpdateThunk({ idBooking: bookingUpdated._id, updatedBookingData: bookingUpdated }))
                 .unwrap()
-                .then(() => ToastifySuccess('Booking updated', () => navigate('../')))
+                .then(() => ToastifySuccess('Booking updated', () => navigate(ROUTES.bookings.root)))
         }
         catch (error) {
             const apiError = error as ApiErrorResponseInterface

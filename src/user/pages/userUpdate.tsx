@@ -13,6 +13,7 @@ import { ApiStatus } from "common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { AppDispatch } from "common/redux/store"
+import { ROUTES } from "common/router/routes"
 import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
@@ -133,7 +134,7 @@ export const UserUpdate = () => {
         try {
             await dispatch(UserUpdateThunk({ idUser: userUpdated._id, updatedUserData: userUpdated }))
                 .unwrap()
-                .then(() => ToastifySuccess('User updated', () => navigate('../')))
+                .then(() => ToastifySuccess('User updated', () => navigate(ROUTES.users.root)))
         }
         catch (error) {
             const apiError = error as ApiErrorResponseInterface

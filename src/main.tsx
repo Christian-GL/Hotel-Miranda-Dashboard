@@ -36,7 +36,7 @@ createRoot(document.getElementById('root')!).render(
                         <Route path={PATHS.root} element={<SignIn />} />
                         <Route element={<Layout />}>
 
-                            <Route path={PATHS.dashboard} element={<DashboardMain />} />
+                            <Route path={PATHS.dashboard.root} element={<DashboardMain />} />
 
                             <Route path={PATHS.bookings.root} element={<Outlet />}>
                                 <Route index element={<BookingMain />} />

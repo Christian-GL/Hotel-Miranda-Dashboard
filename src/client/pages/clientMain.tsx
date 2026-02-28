@@ -30,6 +30,7 @@ import { usePagination } from "common/hooks/usePagination"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { PopupTextInterface } from 'common/interfaces/popupTextInterface'
 import { AppDispatch } from 'common/redux/store'
+import { ROUTES } from "common/router/routes"
 import { ButtonNext, ButtonPrev, CtnSwiperCustom } from "common/styles/customSwiperStyles"
 import { CtnAllDisplayFilter, CtnButton, CtnFuncionality, CtnSearch, CtnTableDisplayFilter, SectionPage } from "common/styles/funcionalityStyles"
 import { ButtonOption, ButtonView, CtnCell, CtnMenuOptions, CtnOptions, EmptyTableMessage, IconOptions, IconPhone, Table, TextCell, TextId, TextStatusAvailableUsers, TitleColumn, TotalBookingStatus } from "common/styles/tableStyles"
@@ -224,7 +225,7 @@ export const ClientMain = () => {
                 </CtnSearch>
 
                 <CtnButton>
-                    <ButtonCreate onClick={() => navigate('client-create')}>
+                    <ButtonCreate onClick={() => navigate(ROUTES.clients.create)}>
                         + New Client
                     </ButtonCreate>
                 </CtnButton>
@@ -262,7 +263,7 @@ export const ClientMain = () => {
                                             roomNumbersText={`Room numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
                                             orderDateText={`Order date: ${formatDateForPrint(booking.order_date)}`}
                                             specialRequest={booking.special_request}
-                                            navigationRoute={`bookings/booking-details/${booking._id}`}
+                                            navigationRoute={ROUTES.bookings.details(booking._id)}
                                         />
                                     </SwiperSlide>
                                 )
@@ -360,7 +361,7 @@ export const ClientMain = () => {
                                         <IconOptions onClick={() => { displayMenuOptions(clientData._id) }} />
                                         <CtnOptions display={`${tableOptionsDisplayed === clientData._id ? 'flex' : 'none'}`} isInTable={true} >
                                             <ButtonOption
-                                                onClick={() => navigate(`client-update/${clientData._id}`)}
+                                                onClick={() => navigate(ROUTES.clients.update(clientData._id))}
                                             >Update
                                             </ButtonOption>
                                             <ButtonOption

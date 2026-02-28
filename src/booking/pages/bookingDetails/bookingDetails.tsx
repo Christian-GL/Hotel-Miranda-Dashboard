@@ -22,6 +22,7 @@ import { OptionYesNo } from "common/enums/optionYesNo"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { PopupTextInterface } from 'common/interfaces/popupTextInterface'
 import { AppDispatch } from "common/redux/store"
+import { ROUTES } from "common/router/routes"
 import { ButtonOption, CtnOptions } from "common/styles/tableStyles"
 import { customPopupMessage } from 'common/utils/customPopupMessage'
 import { formatDateForPrint } from "common/utils/dateUtils"
@@ -40,7 +41,7 @@ import { Role } from "user/enums/role"
 export const BookingDetails = () => {
 
     const navigate = useNavigate()
-    const navigateBackToBookings = () => navigate('../')
+    const navigateBackToBookings = () => navigate(ROUTES.bookings.root)
     const dispatch = useDispatch<AppDispatch>()
     const { getRole } = useLoginOptionsContext()
     const { id } = useParams()
@@ -162,7 +163,7 @@ export const BookingDetails = () => {
                         <styles.IconOptions onClick={() => { setOptionsDisplayed(!optionsDisplayed) }} />
                         <CtnOptions display={`${optionsDisplayed ? 'flex' : 'none'}`} isInTable={false}>
                             <ButtonOption onClick={() => { navigateBackToBookings() }}>Go back to bookings</ButtonOption>
-                            <ButtonOption onClick={() => { navigate(`booking-update/${bookingById._id}`) }}>Update</ButtonOption>
+                            <ButtonOption onClick={() => { navigate(ROUTES.bookings.update(bookingById._id)) }}>Update</ButtonOption>
                             <ButtonOption
                                 onClick={() => handleSelectionPopupMessage(
                                     setInfoPopup,

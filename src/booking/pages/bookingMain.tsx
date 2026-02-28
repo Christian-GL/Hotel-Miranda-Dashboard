@@ -259,7 +259,7 @@ export const BookingMain = () => {
                 </CtnSearch>
 
                 <CtnButton>
-                    <ButtonCreate onClick={() => navigate('booking-create')} >
+                    <ButtonCreate onClick={() => navigate(ROUTES.bookings.create)} >
                         + New Booking
                     </ButtonCreate>
                 </CtnButton>
@@ -358,7 +358,7 @@ export const BookingMain = () => {
                                 </CtnCell>
 
                                 <CtnCell>
-                                    <ButtonView onClick={() => navigate(`booking-details/${bookingData._id}`)}>View details</ButtonView>
+                                    <ButtonView onClick={() => navigate(ROUTES.bookings.details(bookingData._id))}>View details</ButtonView>
                                 </CtnCell>
 
                                 <CtnCell flexdirection='column' alignitems='left' justifycontent='center' >

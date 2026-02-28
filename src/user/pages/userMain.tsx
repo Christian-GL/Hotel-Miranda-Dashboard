@@ -18,6 +18,7 @@ import { usePagination } from "common/hooks/usePagination"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { PopupTextInterface } from 'common/interfaces/popupTextInterface'
 import { AppDispatch } from 'common/redux/store'
+import { ROUTES } from "common/router/routes"
 import { CtnAllDisplayFilter, CtnButton, CtnFuncionality, CtnSearch, CtnTableDisplayFilter, SectionPage } from "common/styles/funcionalityStyles"
 import { ButtonOption, CtnCell, CtnMenuOptions, CtnOptions, EmptyTableMessage, IconOptions, IconPhone, ImgUser, Table, TextCell, TextId, TextStatusAvailableUsers, TitleColumn } from "common/styles/tableStyles"
 import { capitalizeFirstLetter } from "common/utils/capitalizeFirstLetter"
@@ -247,7 +248,7 @@ export const UserMain = () => {
                     <ButtonCreate
                         isClickDisabled={getRole() !== Role.admin}
                         onClick={getRole() === Role.admin
-                            ? () => navigate('user-create')
+                            ? () => navigate(ROUTES.users.create)
                             : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                     >+ New Employee
                     </ButtonCreate>
@@ -345,7 +346,7 @@ export const UserMain = () => {
                                     <CtnOptions display={`${tableOptionsDisplayed === userData._id ? 'flex' : 'none'}`} isInTable={true} >
                                         <ButtonOption
                                             onClick={getRole() === Role.admin
-                                                ? () => { navigate(`user-update/${userData._id}`) }
+                                                ? () => { navigate(ROUTES.users.update(userData._id)) }
                                                 : () => handleNonAdminClick(setInfoPopup, setShowPopup)}
                                             disabledClick={getRole() !== Role.admin}
                                         >Update

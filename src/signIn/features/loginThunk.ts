@@ -1,12 +1,14 @@
 
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { LoginResponse } from 'signIn/interfaces/loginResponse';
+import { createAsyncThunk } from "@reduxjs/toolkit"
+import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
+import { LoginRequestInterface } from "signIn/interfaces/loginRequestInterface"
+import { LoginResponseInterface } from 'signIn/interfaces/loginResponseInterface'
 
 
 export const LoginThunk = createAsyncThunk<
-    LoginResponse,
-    { email: string; password: string },
-    { rejectValue: { status: number; message: string } }
+    LoginResponseInterface,
+    LoginRequestInterface,
+    { rejectValue: ApiErrorResponseInterface }
 >
     ('login', async (loginData, { rejectWithValue }) => {
 

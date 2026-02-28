@@ -15,6 +15,7 @@ import { BookingArticle } from "common/components/bookingArticle/bookingArticle"
 import { ApiStatus } from "common/enums/ApiStatus"
 import { OptionYesNo } from "common/enums/optionYesNo"
 import { AppDispatch } from 'common/redux/store'
+import { ROUTES } from "common/router/routes"
 import { ButtonNext, ButtonPrev, CtnSwiperCustom } from "common/styles/customSwiperStyles"
 import { checkBookingStatus } from 'common/utils/checkBookingStatus'
 import { formatDateForPrint } from 'common/utils/dateUtils'
@@ -112,7 +113,7 @@ export const DashboardMain = () => {
                                                 roomNumbersText={`Room numbers: ${booking.room_id_list.map(roomId => roomAll.find(room => room._id === roomId)?.number || 'No room number found').join(', ')}`}
                                                 orderDateText={`Order date: ${formatDateForPrint(booking.order_date)}`}
                                                 specialRequest={booking.special_request}
-                                                navigationRoute={`../bookings/booking-details/${booking._id}`}
+                                                navigationRoute={ROUTES.bookings.details(booking._id)}
                                             />
                                         </SwiperSlide>
                                     )

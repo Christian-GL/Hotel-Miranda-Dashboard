@@ -21,6 +21,7 @@ import { usePagination } from "common/hooks/usePagination"
 import { ApiErrorResponseInterface } from "common/interfaces/apiResponses/apiErrorResponseInterface"
 import { PopupTextInterface } from 'common/interfaces/popupTextInterface'
 import { AppDispatch } from 'common/redux/store'
+import { ROUTES } from "common/router/routes"
 import { CtnAllDisplayFilter, CtnButton, CtnFuncionality, CtnSearch, CtnTableDisplayFilter, SectionPage } from "common/styles/funcionalityStyles"
 import { ButtonOption, CtnCell, CtnMenuOptions, CtnOptions, EmptyTableMessage, IconOptions, ImgRoom, Table, TextCell, TextId, TextStatusAvailableUsers, TextStatusRoomList, TitleColumn } from "common/styles/tableStyles"
 import { customPopupMessage } from 'common/utils/customPopupMessage'
@@ -253,7 +254,7 @@ export const RoomMain = () => {
                 </CtnSearch>
 
                 <CtnButton>
-                    <ButtonCreate onClick={() => navigate('room-create')}>
+                    <ButtonCreate onClick={() => navigate(ROUTES.rooms.create)}>
                         + New Room
                     </ButtonCreate>
                 </CtnButton>
@@ -362,7 +363,7 @@ export const RoomMain = () => {
                                         <IconOptions onClick={() => { displayMenuOptions(roomData._id) }} />
                                         <CtnOptions display={`${tableOptionsDisplayed === roomData._id ? 'flex' : 'none'}`} isInTable={true} >
                                             <ButtonOption
-                                                onClick={() => { navigate(`room-update/${roomData._id}`) }}
+                                                onClick={() => { navigate(ROUTES.rooms.update(roomData._id)) }}
                                             >Update
                                             </ButtonOption>
                                             <ButtonOption

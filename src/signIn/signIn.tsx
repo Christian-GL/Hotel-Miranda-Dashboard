@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { ToastContainer } from 'react-toastify'
 
 import { ToastifyError } from 'common/components/toastify/errorPopup/toastifyError'
+import { ROUTES } from "common/router/routes"
 import { useLoginOptionsContext } from "signIn/features/loginProvider"
 import * as signInStyles from "signIn/signInStyles"
 
@@ -23,7 +24,7 @@ export const SignIn = () => {
 
         const loginSuccessful = await tryLogin(email, password)
         loginSuccessful.success
-            ? navigate('/dashboard')
+            ? navigate(ROUTES.dashboard.root)
             : ToastifyError(loginSuccessful.error ?? 'Login failed')
     }
 

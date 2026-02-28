@@ -16,6 +16,7 @@ import { Theme } from "common/context/darkModeContext"
 import { ApiStatus } from "common/enums/ApiStatus"
 import { ThemeType } from "common/enums/themeType"
 import { AppDispatch } from "common/redux/store"
+import { ROUTES } from "common/router/routes"
 import { themeDark, themeLight } from "common/styles/themes"
 import { getRoomAllStatus, getRoomApiError, getRoomIdStatus } from "room/features/roomSlice"
 import { useLoginOptionsContext } from 'signIn/features/loginProvider'
@@ -48,7 +49,7 @@ export const Layout = () => {
     const loggedUserID = localStorage.getItem('loggedUserID') || null
 
     useEffect(() => {
-        if (!isAuthenticated()) { navigate('/') }
+        if (!isAuthenticated()) { navigate(ROUTES.root) }
         const savedTheme = localStorage.getItem("theme")
         savedTheme === null
             ? setTheme(ThemeType.dark)
@@ -118,7 +119,7 @@ export const Layout = () => {
     }
     const closeSession = () => {
         logout()
-        navigate('')
+        navigate(ROUTES.root)
     }
     const formatRouteTitle = (pathname: string) => {
         const formattedTitle = pathname
@@ -188,7 +189,7 @@ export const Layout = () => {
             <sidebarStyles.SideNavigationBar isSidebarCollapsed={isSidebarCollapsed} >
                 <div>
                     <sidebarStyles.IconHotel
-                        onClick={() => navigate('/dashboard')}
+                        onClick={() => navigate(ROUTES.dashboard.root)}
                         isSidebarCollapsed={isSidebarCollapsed}
                         isCursorPointer={true}
                     />
@@ -200,8 +201,8 @@ export const Layout = () => {
 
                 <div>
                     <sidebarStyles.CtnNavOption
-                        onClick={() => navigate('/dashboard')}
-                        routeIsActive={routeIsActive('/dashboard')}
+                        onClick={() => navigate(ROUTES.dashboard.root)}
+                        routeIsActive={routeIsActive(ROUTES.dashboard.root)}
                         isSidebarCollapsed={isSidebarCollapsed}>
                         <sidebarStyles.IconDashboard />
                         <sidebarStyles.NavOptionText isSidebarCollapsed={isSidebarCollapsed} >
@@ -210,8 +211,8 @@ export const Layout = () => {
                     </sidebarStyles.CtnNavOption>
                     <sidebarStyles.CtnNavOption
                         data-cy="nav-ctn-bookings"
-                        onClick={() => navigate('/bookings')}
-                        routeIsActive={routeIsActive('/bookings')}
+                        onClick={() => navigate(ROUTES.bookings.root)}
+                        routeIsActive={routeIsActive(ROUTES.bookings.root)}
                         isSidebarCollapsed={isSidebarCollapsed}>
                         <sidebarStyles.IconBooking />
                         <sidebarStyles.NavOptionText isSidebarCollapsed={isSidebarCollapsed} >
@@ -220,8 +221,8 @@ export const Layout = () => {
                     </sidebarStyles.CtnNavOption>
                     <sidebarStyles.CtnNavOption
                         data-cy="nav-ctn-rooms"
-                        onClick={() => navigate('/rooms')}
-                        routeIsActive={routeIsActive('/rooms')}
+                        onClick={() => navigate(ROUTES.rooms.root)}
+                        routeIsActive={routeIsActive(ROUTES.rooms.root)}
                         isSidebarCollapsed={isSidebarCollapsed}>
                         <sidebarStyles.IconRooms />
                         <sidebarStyles.NavOptionText isSidebarCollapsed={isSidebarCollapsed} >
@@ -229,8 +230,8 @@ export const Layout = () => {
                         </sidebarStyles.NavOptionText>
                     </sidebarStyles.CtnNavOption>
                     <sidebarStyles.CtnNavOption
-                        onClick={() => navigate('/clients')}
-                        routeIsActive={routeIsActive('/clients')}
+                        onClick={() => navigate(ROUTES.clients.root)}
+                        routeIsActive={routeIsActive(ROUTES.clients.root)}
                         isSidebarCollapsed={isSidebarCollapsed}>
                         <sidebarStyles.IconClient />
                         <sidebarStyles.NavOptionText isSidebarCollapsed={isSidebarCollapsed} >
@@ -238,8 +239,8 @@ export const Layout = () => {
                         </sidebarStyles.NavOptionText>
                     </sidebarStyles.CtnNavOption>
                     <sidebarStyles.CtnNavOption
-                        onClick={() => navigate('/users')}
-                        routeIsActive={routeIsActive('/users')}
+                        onClick={() => navigate(ROUTES.users.root)}
+                        routeIsActive={routeIsActive(ROUTES.users.root)}
                         isSidebarCollapsed={isSidebarCollapsed}>
                         <sidebarStyles.IconUsers />
                         <sidebarStyles.NavOptionText isSidebarCollapsed={isSidebarCollapsed} >
