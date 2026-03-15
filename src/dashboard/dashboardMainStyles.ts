@@ -119,7 +119,3 @@ export const TitleSectionReviewsH5 = styled.h5`
     font-size: 1em;
     color: ${props => props.theme.titleReviewsDashboard};
 `
-
-export const CtnReviews = styled.div`
-    display: flex;
-`

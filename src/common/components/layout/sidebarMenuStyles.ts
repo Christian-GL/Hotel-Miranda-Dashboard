@@ -184,16 +184,6 @@ export const TitleH5 = styled.h5`
     color: ${props => props.theme.textSidebar};
 `
 
-export const ButtonEdit = styled.button`
-    margin-top: 1rem;
-    padding: 1em 2em;
-    font-family: ${globalConstStyles.fontPoppins};
-    border: none;
-    border-radius: 1rem;
-    cursor: pointer;
-    background-color: ${props => props.theme.buttonSidebar};
-`
-
 export const CtnCredits = styled.div<{ isSidebarCollapsed?: boolean }>`
     display: ${props => props.isSidebarCollapsed ? 'none' : 'block'};
 `

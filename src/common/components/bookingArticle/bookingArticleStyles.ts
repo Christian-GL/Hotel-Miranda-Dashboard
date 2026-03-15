@@ -79,16 +79,6 @@ export const CtnLeft = styled.div`
     align-items: center;
 `
 
-export const ImgHotel = styled.img`
-    display: inline-block;
-    vertical-align: middle;
-    width: 5rem;
-    height: 5rem;
-    min-width: 5rem;
-    min-height: 5rem;
-    border-radius: 0.5rem;
-`
-
 export const CtnInfo = styled.div`
     display: inline-block;
     vertical-align: middle;

@@ -50,15 +50,6 @@ export const IconOptions = styled(SlOptionsVertical)`
     color: ${props => props.theme.iconOptionsBookingDetails};
 `
 
-export const ImgProfile = styled.img`
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 2rem;
-    width: 7.5rem;
-    height: 7.5rem;
-    border-radius: 1rem;
-`
-
 export const SubCtnMainData = styled.div`
     display: inline-block;
     vertical-align: middle;

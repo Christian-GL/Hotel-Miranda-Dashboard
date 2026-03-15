@@ -156,46 +156,6 @@ export const Text = styled.label`
     color: ${props => props.theme.textLabelForm};
 `
 
-export const TextNote = styled.label`
-    margin-left: 1rem;
-    font-family: ${globalConstStyles.fontPoppins};
-    font-size: 0.75em;
-    font-weight: 500;
-    color: ${props => props.theme.textLabelForm};
-`
-
-export const CtnEntryBookings = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    display: grid;
-    padding: 1em 0;
-`
-
-export const LabelBookings = styled.label`
-    font-family: ${globalConstStyles.fontPoppins};
-    font-size: 0.8em;
-    font-weight: 500;
-    color: ${props => props.theme.textLabelForm};
-`
-
-export const TextBookingStatus = styled.label`
-    min-width: 10rem;
-    font-family: ${globalConstStyles.fontPoppins};
-    font-size: 1em;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: ${props => props.theme.textLabelStatusForm};
-`
-
-export const TextInfoBooking = styled.label`
-    margin-right: 1rem;
-    font-family: ${globalConstStyles.fontPoppins};
-    font-size: 1em;
-    font-weight: 700;
-    color: ${props => props.theme.textLabelForm};
-`
-
 export const InputText = styled.input`
     padding: 0 1em;
     text-align: left;
@@ -307,71 +267,4 @@ export const EyeClose = styled(IoMdEyeOff)`
     cursor: pointer;
     color: ${props => props.theme.iconEye};
     background-color: ${props => props.theme.iconEyeBackground};
-`
-
-// !!! ELIMINAR SI NO SE USAN LAS SIGUIENTES CONSTANTES:
-export const ButtonAddDelete = styled.button<{ margin?: string; isAdd?: boolean }>`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: ${props => props.margin || '0rem'};
-    width: 1.6rem;
-    height: 1.6rem;
-    border-radius: 50%;
-    font-size: 1.25em;
-    font-weight: 700;
-    cursor: pointer;
-    color: ${props => props.theme.buttonFormText};
-    background-color: ${props => props.isAdd ? props.theme.buttonFormAdd : props.theme.buttonFormDelete || 'green'};    // !!! EL COLOR NO SEA PUESTO A PIÑON
-`
-
-export const ArrayBox = styled.div`
-    display: inline-flex;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 0.5rem;
-    gap: 0.5rem;
-    width: fit-content;
-    font-weight: 600;
-    max-width: 35rem;
-    border: 2px solid black;    // !!! EL COLOR NO SEA PUESTO A PIÑON
-    border-radius: 0.4rem;
-    color: gray;                // !!! EL COLOR NO SEA PUESTO A PIÑON
-    background-color: gray;     // !!! EL COLOR NO SEA PUESTO A PIÑON
-`
-
-export const ArrayItem = styled.span`
-    display: inline-flex;
-    align-items: center;
-    margin-right: 0.5rem;
-`
-
-export const SelectSingle = styled.select`
-    padding: 1em;
-    width: 100%;
-    min-width: 10rem;
-    max-height: 5rem;
-    font-family: ${globalConstStyles.fontPoppins};
-    font-weight: 500;
-    border: none;
-    border-radius: 0.5rem;
-    color: ${props => props.theme.textForm};
-
-    option[value="null"] {
-        display: none;
-    }
-`
-
-export const SelectMultiple = styled.select<{ width?: string }>`
-    padding: 1em;
-    min-width: 10rem;
-    width: ${props => props.width || '10rem'};
-    height: 10rem;
-    font-family: ${globalConstStyles.fontPoppins};
-    border: none;
-    color: ${props => props.theme.textForm};
-`
-
-export const Option = styled.option`
-    padding: 0em;
 `
