@@ -121,6 +121,7 @@ export const UserCreate = () => {
     }
 
 
+    console.log(newUser)
     return (<>
         <ToastContainer />
         <styles.GlobalDateTimeStyles />

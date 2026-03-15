@@ -79,7 +79,7 @@ export const UserUpdate = () => {
                 end_date: userById.end_date || new Date(),
                 job_position: userById.job_position || JobPosition.receptionist,
                 role: userById.role || Role.user,
-                password: userById.password || '',
+                password: '',
                 isArchived: userById.isArchived || OptionYesNo.yes
             })
             setOldPassword(userById.password)
@@ -113,8 +113,7 @@ export const UserUpdate = () => {
         validateOptionYesNo(userUpdated.isArchived, 'User isArchived').map(
             error => allErrorMessages.push(error)
         )
-        // !!! EXTRA: HACER FUNCION QUE PERMITA CAMBIAR UNA CONTRASEÑA SI SE CONOCE lA ANTERIOR O SI SE ES "ADMIN" SE PUEDE SIEMPRE ???
-        if (oldPassword !== userUpdated.password) {
+        if (userUpdated.password !== "") {
             validateNewPassword(userUpdated.password).map(
                 error => allErrorMessages.push(error)
             )
@@ -144,6 +143,7 @@ export const UserUpdate = () => {
         }
     }
 
+    console.log(userUpdated)
     return (<>
         <ToastContainer />
         <styles.GlobalDateTimeStyles />
@@ -216,11 +216,12 @@ export const UserUpdate = () => {
                     </styles.CtnEntryVertical>
 
                     <styles.CtnEntryVertical>
-                        <styles.Text>Password</styles.Text>
+                        {/* !!! USAR TEXTO "DESPLEGABLE" CON EL TEXTO ENTRE PARÉNTESIS PARA SER MAS PROFESIONAL */}
+                        <styles.Text>Password (leave blank to keep the current password)</styles.Text>
                         <styles.CtnEntryHorizontal naturalSizes={true}>
                             {passwordVisible
-                                ? <styles.InputText name="password" value={userUpdated.password} type="password" onChange={handleStringChange} />
-                                : <styles.InputText name="password" value={userUpdated.password} onChange={handleStringChange} />
+                                ? <styles.InputText name="password" type="password" onChange={handleStringChange} />
+                                : <styles.InputText name="password" onChange={handleStringChange} />
                             }
                             <styles.CtnButtonHidePassword>
                                 {passwordVisible
