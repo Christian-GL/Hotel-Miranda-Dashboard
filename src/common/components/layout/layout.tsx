@@ -22,6 +22,8 @@ import { getRoomAllStatus, getRoomApiError, getRoomIdStatus } from "room/feature
 import { useLoginOptionsContext } from 'signIn/features/loginProvider'
 import { UserFetchByIDThunk } from "user/features/thunks/userFetchByIDThunk"
 import { getUserAllStatus, getUserApiError, getUserIdData, getUserIdStatus } from "user/features/userSlice"
+import { UserInterfaceId } from "../../../user/interfaces/userInterface"
+import { ApiErrorResponseInterface } from "../../interfaces/apiResponses/apiErrorResponseInterface"
 
 
 export const Layout = () => {
@@ -35,18 +37,19 @@ export const Layout = () => {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(true)
     const bookingAllLoading: ApiStatus = useSelector(getBookingAllStatus)
     const bookingByIdLoading: ApiStatus = useSelector(getBookingIdStatus)
-    const bookingApiError = useSelector(getBookingApIError)
+    const bookingApiError: ApiErrorResponseInterface | null = useSelector(getBookingApIError)
     const roomAllLoading: ApiStatus = useSelector(getRoomAllStatus)
     const roomByIdLoading: ApiStatus = useSelector(getRoomIdStatus)
-    const roomApiError = useSelector(getRoomApiError)
+    const roomApiError: ApiErrorResponseInterface | null = useSelector(getRoomApiError)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
     const clientByIdLoading: ApiStatus = useSelector(getClientIdStatus)
-    const clientApiError = useSelector(getClientApiError)
-    const userById = useSelector(getUserIdData)
+    const clientApiError: ApiErrorResponseInterface | null = useSelector(getClientApiError)
+    const userById: UserInterfaceId = useSelector(getUserIdData)
     const userAllLoading: ApiStatus = useSelector(getUserAllStatus)
     const userByIdLoading: ApiStatus = useSelector(getUserIdStatus)
-    const userApiError = useSelector(getUserApiError)
-    const loggedUserID = localStorage.getItem('loggedUserID') || null
+    const userApiError: ApiErrorResponseInterface | null = useSelector(getUserApiError)
+    const [sessionUser, setSessionUser] = useState<UserInterfaceId | null>(null)
+    const loggedUserID: string | null = localStorage.getItem('loggedUserID') || null
 
     useEffect(() => {
         if (!isAuthenticated()) { navigate(ROUTES.root) }
@@ -57,12 +60,10 @@ export const Layout = () => {
     }, [navigate, isAuthenticated, theme])
     useEffect(() => {
         if (loggedUserID && userByIdLoading === ApiStatus.idle) { dispatch(UserFetchByIDThunk(loggedUserID)) }
-        else if (userByIdLoading === ApiStatus.fulfilled) {
-            if (loggedUserID && loggedUserID !== userById._id && !routeIsActive('/users')) {
-                dispatch(UserFetchByIDThunk(loggedUserID))
-            }
+        else if (userByIdLoading === ApiStatus.fulfilled && sessionUser === null) {
+            setSessionUser(userById)
         }
-    }, [userByIdLoading, userById, loggedUserID])
+    }, [userByIdLoading, userById, loggedUserID, sessionUser])
     useEffect(() => {
         if (bookingAllLoading === ApiStatus.pending) { ToastifyLoading(1, 'Loading all booking data...') } else { toast.dismiss(1) }
         if (bookingByIdLoading === ApiStatus.pending) { ToastifyLoading(2, 'Loading booking data...') } else { toast.dismiss(2) }
@@ -250,9 +251,9 @@ export const Layout = () => {
                 </div>
 
                 <sidebarStyles.CtnUser isSidebarCollapsed={isSidebarCollapsed} >
-                    <sidebarStyles.ImgProfile src={`${userById.photo}`}></sidebarStyles.ImgProfile>
-                    <sidebarStyles.TitleH4>{userById.full_name}</sidebarStyles.TitleH4>
-                    <sidebarStyles.TitleH5>{userById.email}</sidebarStyles.TitleH5>
+                    <sidebarStyles.ImgProfile src={sessionUser?.photo || ''} />
+                    <sidebarStyles.TitleH4>{sessionUser?.full_name || ''}</sidebarStyles.TitleH4>
+                    <sidebarStyles.TitleH5>{sessionUser?.email || ''}</sidebarStyles.TitleH5>
                     {/* !!! SI EL USUARIO SE QUIERE EDITAR A SI MISMO (REPLANTEAR CONCEPTO): */}
                     {/* <sidebarStyles.ButtonEdit onClick={() => { navigateToUserUpdate(userById._id) }}>Edit</sidebarStyles.ButtonEdit> */}
                 </sidebarStyles.CtnUser>
