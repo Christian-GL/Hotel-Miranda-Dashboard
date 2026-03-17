@@ -30,7 +30,7 @@ import { handleColumnClick } from "common/utils/handleColumnClick"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { handleSelectionPopupMessage } from 'common/utils/selectionPopupMessage'
 import { sortValues } from "common/utils/sortValues"
-import { applyDiscount } from "common/utils/tableUtils"
+import { applyDiscount, formatPrice } from "common/utils/tableUtils"
 import { RoomNameColumn } from "room/enums/roomNameColumn"
 import { getRoomAllData, getRoomAllStatus } from "room/features/roomSlice"
 import { RoomArchiveThunk } from "room/features/thunks/roomArchiveThunk"
@@ -334,7 +334,7 @@ export const RoomMain = () => {
                                 </CtnCell>
 
                                 <CtnCell>
-                                    <TextCell><b>${priceDiscounted}</b></TextCell>
+                                    <TextCell><b>${formatPrice(priceDiscounted)}</b></TextCell>
                                 </CtnCell>
 
                                 <CtnCell>

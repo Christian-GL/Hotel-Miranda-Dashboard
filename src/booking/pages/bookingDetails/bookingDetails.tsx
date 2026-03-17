@@ -28,7 +28,7 @@ import { customPopupMessage } from 'common/utils/customPopupMessage'
 import { formatDateForPrint } from "common/utils/dateUtils"
 import { handleNonAdminClick } from 'common/utils/nonAdminPopupMessage'
 import { handleSelectionPopupMessage } from 'common/utils/selectionPopupMessage'
-import { applyDiscount } from 'common/utils/tableUtils'
+import { applyDiscount, formatPrice } from 'common/utils/tableUtils'
 import { ToastContainer, toast } from 'react-toastify'
 import { RoomAmenities } from "room/enums/roomAmenities"
 import { getRoomAllData, getRoomAllStatus } from "room/features/roomSlice"
@@ -219,7 +219,7 @@ export const BookingDetails = () => {
                     <styles.CtnEcualSection>
                         <styles.SubTittleH4 isId={true}>Original price</styles.SubTittleH4>
                         {roomsOfBooking.map((room) => (
-                            <styles.SubTittleH4 key={room._id}>{room.price}€</styles.SubTittleH4>
+                            <styles.SubTittleH4 key={room._id}>{room.price}$</styles.SubTittleH4>
                         ))}
                     </styles.CtnEcualSection>
                     <styles.CtnEcualSection>
@@ -231,12 +231,12 @@ export const BookingDetails = () => {
                     <styles.CtnEcualSection>
                         <styles.SubTittleH4 isId={true}>Final price per room</styles.SubTittleH4>
                         {roomsOfBooking.map((room) => (
-                            <styles.SubTittleH4 key={room._id}>{applyDiscount(room.price, room.discount)}€</styles.SubTittleH4>
+                            <styles.SubTittleH4 key={room._id}>{formatPrice(applyDiscount(room.price, room.discount))}$</styles.SubTittleH4>
                         ))}
                     </styles.CtnEcualSection>
                     <styles.CtnEcualSection>
                         <styles.SubTittleH4 isId={true}>Total price</styles.SubTittleH4>
-                        <styles.SubTittleH4 key={bookingById._id}>{bookingById.price}€</styles.SubTittleH4>
+                        <styles.SubTittleH4 key={bookingById._id}>{bookingById.price}$</styles.SubTittleH4>
                     </styles.CtnEcualSection>
                 </styles.CtnInfo>
 
