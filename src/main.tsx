@@ -15,7 +15,6 @@ import { DarkModeProvider } from 'common/context/darkModeContext'
 import { store } from 'common/redux/store'
 import { PATHS } from 'common/router/paths'
 import { ROUTES } from 'common/router/routes'
-import { DashboardMain } from 'dashboard/dashboardMain'
 import { RoomCreate } from 'room/pages/roomCreate'
 import { RoomMain } from 'room/pages/roomMain'
 import { RoomUpdate } from 'room/pages/roomUpdate'
@@ -24,6 +23,7 @@ import { SignIn } from 'signIn/signIn'
 import { UserCreate } from 'user/pages/userCreate'
 import { UserMain } from 'user/pages/userMain'
 import { UserUpdate } from 'user/pages/userUpdate'
+import { DashboardMain } from './dashboard/dashboardMain'
 
 
 createRoot(document.getElementById('root')!).render(

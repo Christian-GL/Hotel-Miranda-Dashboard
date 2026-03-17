@@ -69,6 +69,10 @@ export const RoomUpdate = () => {
         value: type,
         label: type
     }))
+    const OptionYesNoReactOptions: ReactSelectOption<OptionYesNo>[] = Object.values(OptionYesNo).map(option => ({
+        value: option,
+        label: option.charAt(0).toUpperCase() + option.slice(1)
+    }))
 
     useEffect(() => {
         if (roomByIdLoading === ApiStatus.idle) { dispatch(RoomFetchByIDThunk(idParams)) }
@@ -188,25 +192,10 @@ export const RoomUpdate = () => {
                     <styles.CtnEntryVertical>
                         <styles.CtnEntryHorizontal>
                             <styles.CtnEntryVertical removePaddingSeparator={true}>
-                                <styles.Text>Amenities</styles.Text>
-                                <styles.SelectReact
-                                    name="amenities"
-                                    menuPlacement="top"
-                                    menuPosition="fixed"
-                                    placeholder="Select amenities"
-                                    isMulti={true}
-                                    styles={reactSelectStyles(theme)}
-                                    closeMenuOnSelect={false}
-                                    options={amenityReactOptions}
-                                    value={amenityReactOptions.filter(option => roomUpdated.amenities.includes(option.value))}
-                                    onChange={handleReactMultiSelectChange("amenities")}
-                                />
-                            </styles.CtnEntryVertical>
-                            <styles.CtnEntryVertical removePaddingSeparator={true}>
                                 <styles.Text>Type</styles.Text>
                                 <styles.SelectReact
                                     name="type"
-                                    menuPlacement="top"
+                                    menuPlacement="bottom"
                                     menuPosition="fixed"
                                     placeholder="Select type"
                                     isMulti={false}
@@ -217,7 +206,38 @@ export const RoomUpdate = () => {
                                     onChange={handleReactSingleSelectChange("type")}
                                 />
                             </styles.CtnEntryVertical>
+                            <styles.CtnEntryVertical removePaddingSeparator={true}>
+                                <styles.Text>Is active</styles.Text>
+                                <styles.SelectReact
+                                    name="isActive"
+                                    menuPlacement="bottom"
+                                    menuPosition="fixed"
+                                    placeholder="Select if the room is active"
+                                    isMulti={false}
+                                    styles={reactSelectStyles(theme)}
+                                    closeMenuOnSelect={true}
+                                    options={OptionYesNoReactOptions}
+                                    value={OptionYesNoReactOptions.filter(option => roomUpdated.isActive.includes(option.value))}
+                                    onChange={handleReactSingleSelectChange("isActive")}
+                                />
+                            </styles.CtnEntryVertical>
                         </styles.CtnEntryHorizontal>
+                    </styles.CtnEntryVertical>
+
+                    <styles.CtnEntryVertical>
+                        <styles.Text>Amenities</styles.Text>
+                        <styles.SelectReact
+                            name="amenities"
+                            menuPlacement="bottom"
+                            menuPosition="fixed"
+                            placeholder="Select amenities"
+                            isMulti={true}
+                            styles={reactSelectStyles(theme)}
+                            closeMenuOnSelect={false}
+                            options={amenityReactOptions}
+                            value={amenityReactOptions.filter(option => roomUpdated.amenities.includes(option.value))}
+                            onChange={handleReactMultiSelectChange("amenities")}
+                        />
                     </styles.CtnEntryVertical>
 
                     <styles.CtnEntryVertical>
