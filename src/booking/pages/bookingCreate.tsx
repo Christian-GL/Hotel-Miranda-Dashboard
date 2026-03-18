@@ -22,7 +22,7 @@ import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateCheckInCheckOutNewBooking, validateDateIsOccupied, validateOptionYesNo, validateTextArea } from 'common/utils/validators'
+import { validateCheckInCheckOutNewBooking, validateDateIsOccupied, validateOptionYesNo, validateTextArea } from 'common/utils/validations'
 import { ToastContainer } from 'react-toastify'
 import { getRoomAllData, getRoomAllStatus } from 'room/features/roomSlice'
 import { RoomFetchAllThunk } from 'room/features/thunks/roomFetchAllThunk'

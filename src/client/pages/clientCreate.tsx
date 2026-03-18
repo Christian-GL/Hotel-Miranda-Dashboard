@@ -18,7 +18,7 @@ import { AppDispatch } from "common/redux/store"
 import { ROUTES } from "common/router/routes"
 import * as styles from "common/styles/form"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateEmail, validateFullName, validateMongoDBObjectIdList, validatePhoneNumber } from 'common/utils/validators'
+import { validateEmail, validateFullName, validateMongoDBObjectIdList, validatePhoneNumber } from 'common/utils/validations'
 
 
 export const ClientCreate = () => {

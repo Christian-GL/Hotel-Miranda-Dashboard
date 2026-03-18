@@ -24,7 +24,7 @@ import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import { formatDateForInput } from "common/utils/dateUtils"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateCheckInCheckOutExistingBooking, validateDateIsOccupiedIfBookingExists, validateOptionYesNo, validateTextArea } from 'common/utils/validators'
+import { validateCheckInCheckOutExistingBooking, validateDateIsOccupiedIfBookingExists, validateOptionYesNo, validateTextArea } from 'common/utils/validations'
 import { ToastContainer } from 'react-toastify'
 import { getRoomAllData, getRoomAllStatus } from 'room/features/roomSlice'
 import { RoomFetchAllThunk } from 'room/features/thunks/roomFetchAllThunk'

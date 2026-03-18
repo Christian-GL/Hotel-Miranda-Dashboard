@@ -20,7 +20,7 @@ import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateAmenities, validateMongoDBObjectIdList, validateOptionYesNo, validateRoomDiscount, validateRoomNumber, validateRoomPhotoList, validateRoomPrice, validateRoomType } from 'common/utils/validators'
+import { validateAmenities, validateMongoDBObjectIdList, validateOptionYesNo, validateRoomDiscount, validateRoomNumber, validateRoomPhotoList, validateRoomPrice, validateRoomType } from 'common/utils/validations'
 import { RoomAmenities } from "room/enums/roomAmenities"
 import { RoomType } from "room/enums/roomType"
 import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "room/features/roomSlice"

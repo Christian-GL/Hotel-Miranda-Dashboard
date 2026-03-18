@@ -18,7 +18,7 @@ import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateDateRelativeToAnother, validateEmail, validateFullName, validateNewPassword, validateOptionYesNo, validatePhoneNumber, validatePhoto, validateRole, validateTextArea } from 'common/utils/validators'
+import { validateDateRelativeToAnother, validateEmail, validateFullName, validateNewPassword, validateOptionYesNo, validatePhoneNumber, validatePhoto, validateRole, validateTextArea } from 'common/utils/validations'
 import { JobPosition } from "user/enums/jobPosition"
 import { Role } from "user/enums/role"
 import { UserCreateThunk } from "user/features/thunks/userCreateThunk"
