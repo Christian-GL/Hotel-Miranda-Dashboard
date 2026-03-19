@@ -18,13 +18,13 @@ import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateAmenities, validateMongoDBObjectIdList, validateOptionYesNo, validateRoomDiscount, validateRoomNumber, validateRoomPhotoList, validateRoomPrice, validateRoomType } from 'common/utils/validations'
 import { RoomAmenities } from "room/enums/roomAmenities"
 import { RoomType } from "room/enums/roomType"
 import { getRoomAllData, getRoomAllStatus } from "room/features/roomSlice"
 import { RoomCreateThunk } from "room/features/thunks/roomCreateThunk"
 import { RoomFetchAllThunk } from "room/features/thunks/roomFetchAllThunk"
 import { RoomInterface } from "room/interfaces/roomInterface"
+import { RoomValidator } from "room/validators/roomValidator"
 
 
 export const RoomCreate = () => {
@@ -34,7 +34,7 @@ export const RoomCreate = () => {
     const theme = useTheme()
     const roomAll = useSelector(getRoomAllData)
     const roomAllLoading = useSelector(getRoomAllStatus)
-    const [newRoom, setNewRoom] = useState<RoomInterface>({
+    const [roomNew, setRoomNew] = useState<RoomInterface>({
         number: '0',
         photos: [],
         type: RoomType.singleBed,
@@ -50,7 +50,7 @@ export const RoomCreate = () => {
         handleReactSingleSelectChange,
         handleReactMultiSelectChange,
         handleNumberFloatChange,
-    } = createFormHandlers(setNewRoom)
+    } = createFormHandlers(setRoomNew)
     const amenityReactOptions: ReactSelectOption<RoomAmenities>[] = Object.values(RoomAmenities).map(amenity => ({
         value: amenity,
         label: amenity
@@ -68,57 +68,26 @@ export const RoomCreate = () => {
         if (roomAllLoading === ApiStatus.idle) { dispatch(RoomFetchAllThunk()) }
     }, [roomAllLoading, roomAll])
 
-    const validateAllData = (): string[] => {
-        const allErrorMessages: string[] = []
-
-        validateRoomNumber(newRoom.number, 'Number').map(
-            error => allErrorMessages.push(error)
-        )
-        validateRoomPhotoList(newRoom.photos, 'Photos').map(
-            error => allErrorMessages.push(error)
-        )
-        validateRoomType(newRoom.type, 'Type').map(
-            error => allErrorMessages.push(error)
-        )
-        validateAmenities(newRoom.amenities, 'Amenities').map(
-            error => allErrorMessages.push(error)
-        )
-        validateRoomPrice(newRoom.price, 'Price').map(
-            error => allErrorMessages.push(error)
-        )
-        validateRoomDiscount(newRoom.discount, 'Discount').map(
-            error => allErrorMessages.push(error)
-        )
-        validateOptionYesNo(newRoom.isActive, 'Room isActive').map(
-            error => allErrorMessages.push(error)
-        )
-        validateOptionYesNo(newRoom.isArchived, 'Room isArchived').map(
-            error => allErrorMessages.push(error)
-        )
-        validateMongoDBObjectIdList(newRoom.booking_id_list).map(
-            error => allErrorMessages.push(error)
-        )
-
-        return allErrorMessages
-    }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const errors = validateAllData()
-        if (errors.length > 0) {
-            errors.forEach(error => ToastifyError(error))
+        const roomValidator = new RoomValidator()
+        const allRoomNumbersNotArchived = roomAll.filter(room => room.isArchived !== OptionYesNo.yes).map(room => room.number);
+        const validationErrors = roomValidator.validateNewRoom(roomNew, allRoomNumbersNotArchived)
+        if (validationErrors.length > 0) {
+            validationErrors.forEach(error => ToastifyError(error))
             return
         }
 
         try {
-            await dispatch(RoomCreateThunk(newRoom))
+            await dispatch(RoomCreateThunk(roomNew))
                 .unwrap()
                 .then(() => ToastifySuccess('Room created', () => navigate(ROUTES.rooms.root)))
         }
         catch (error) {
             const apiError = error as ApiErrorResponseInterface
             apiError.message
-                ? ToastifyError(apiError.message)
+                ? ToastifyError('API Error: ' + apiError.message)
                 : ToastifyError('Unexpected API Error')
         }
     }
@@ -168,7 +137,7 @@ export const RoomCreate = () => {
                                     styles={reactSelectStyles(theme)}
                                     closeMenuOnSelect={true}
                                     options={roomTypeReactOptions}
-                                    value={roomTypeReactOptions.find(option => option.value === newRoom.type)}
+                                    value={roomTypeReactOptions.find(option => option.value === roomNew.type)}
                                     onChange={handleReactSingleSelectChange("type")}
                                 />
                             </styles.CtnEntryVertical>
@@ -183,7 +152,7 @@ export const RoomCreate = () => {
                                     styles={reactSelectStyles(theme)}
                                     closeMenuOnSelect={true}
                                     options={OptionYesNoReactOptions}
-                                    value={OptionYesNoReactOptions.filter(option => newRoom.isActive.includes(option.value))}
+                                    value={OptionYesNoReactOptions.filter(option => roomNew.isActive.includes(option.value))}
                                     onChange={handleReactSingleSelectChange("isActive")}
                                 />
                             </styles.CtnEntryVertical>
@@ -201,7 +170,7 @@ export const RoomCreate = () => {
                             styles={reactSelectStyles(theme)}
                             closeMenuOnSelect={false}
                             options={amenityReactOptions}
-                            value={amenityReactOptions.filter(option => newRoom.amenities.includes(option.value))}
+                            value={amenityReactOptions.filter(option => roomNew.amenities.includes(option.value))}
                             onChange={handleReactMultiSelectChange("amenities")}
                         />
                     </styles.CtnEntryVertical>
@@ -210,7 +179,7 @@ export const RoomCreate = () => {
                         <styles.Text>Photo 1 (Main)</styles.Text>
                         <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(0, "photos")} />
                         <styles.ImgRoom
-                            src={newRoom.photos?.[0] || roomDefaultImg}
+                            src={roomNew.photos?.[0] || roomDefaultImg}
                             onError={(e) => { e.currentTarget.src = roomDefaultImg }}
                         />
                     </styles.CtnEntryVertical>
@@ -221,7 +190,7 @@ export const RoomCreate = () => {
                                 <styles.Text>Photo 2</styles.Text>
                                 <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(1, "photos")} />
                                 <styles.ImgRoom
-                                    src={newRoom.photos?.[1] || roomDefaultImg}
+                                    src={roomNew.photos?.[1] || roomDefaultImg}
                                     onError={(e) => { e.currentTarget.src = roomDefaultImg }}
                                 />
                             </styles.CtnEntryVertical>
@@ -229,7 +198,7 @@ export const RoomCreate = () => {
                                 <styles.Text>Photo 3</styles.Text>
                                 <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(2, "photos")} />
                                 <styles.ImgRoom
-                                    src={newRoom.photos?.[2] || roomDefaultImg}
+                                    src={roomNew.photos?.[2] || roomDefaultImg}
                                     onError={(e) => { e.currentTarget.src = roomDefaultImg }}
                                 />
                             </styles.CtnEntryVertical>
@@ -242,7 +211,7 @@ export const RoomCreate = () => {
                                 <styles.Text>Photo 4</styles.Text>
                                 <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(3, "photos")} />
                                 <styles.ImgRoom
-                                    src={newRoom.photos?.[3] || roomDefaultImg}
+                                    src={roomNew.photos?.[3] || roomDefaultImg}
                                     onError={(e) => { e.currentTarget.src = roomDefaultImg }}
                                 />
                             </styles.CtnEntryVertical>
@@ -250,7 +219,7 @@ export const RoomCreate = () => {
                                 <styles.Text>Photo 5</styles.Text>
                                 <styles.InputTextPhoto name="photos" type="file" onChange={handleArrayPhotosChange(4, "photos")} />
                                 <styles.ImgRoom
-                                    src={newRoom.photos?.[4] || roomDefaultImg}
+                                    src={roomNew.photos?.[4] || roomDefaultImg}
                                     onError={(e) => { e.currentTarget.src = roomDefaultImg }}
                                 />
                             </styles.CtnEntryVertical>

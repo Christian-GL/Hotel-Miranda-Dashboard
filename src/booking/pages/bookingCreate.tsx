@@ -8,6 +8,7 @@ import { getBookingAllData, getBookingAllStatus } from "booking/features/booking
 import { BookingCreateThunk } from "booking/features/thunks/bookingCreateThunk"
 import { BookingFetchAllThunk } from "booking/features/thunks/bookingFetchAllThunk"
 import { BookingInterface, BookingInterfaceCheckInOut } from "booking/interfaces/bookingInterface"
+import { BookingValidator } from "booking/validators/bookingValidator"
 import { getClientAllData, getClientAllStatus } from "client/features/clientSlice"
 import { ClientFetchAllThunk } from 'client/features/thunks/clientFetchAllThunk'
 import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
@@ -22,7 +23,7 @@ import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateCheckInCheckOutNewBooking, validateDateIsOccupied, validateOptionYesNo, validateTextArea } from 'common/utils/validations'
+import { validateDateIsOccupied } from 'common/utils/validations'
 import { ToastContainer } from 'react-toastify'
 import { getRoomAllData, getRoomAllStatus } from 'room/features/roomSlice'
 import { RoomFetchAllThunk } from 'room/features/thunks/roomFetchAllThunk'
@@ -39,7 +40,7 @@ export const BookingCreate = () => {
     const roomAllLoading = useSelector(getRoomAllStatus)
     const clientAll = useSelector(getClientAllData)
     const clientAllLoading: ApiStatus = useSelector(getClientAllStatus)
-    const [newBooking, setNewBooking] = useState<BookingInterface>({
+    const [bookingNew, setBookingNew] = useState<BookingInterface>({
         order_date: new Date(),
         check_in_date: new Date(),
         check_out_date: new Date(),
@@ -53,7 +54,7 @@ export const BookingCreate = () => {
         handleTextAreaChange,
         handleReactSingleSelectChange,
         handleReactMultiSelectChange,
-    } = createFormHandlers(setNewBooking)
+    } = createFormHandlers(setBookingNew)
     const [checkInTouched, setCheckInTouched] = useState(false)
     const [checkOutTouched, setCheckOutTouched] = useState(false)
     const datesSelected = checkInTouched && checkOutTouched
@@ -73,7 +74,7 @@ export const BookingCreate = () => {
                         check_out_date: booking.check_out_date
                     }))
 
-                return validateDateIsOccupied(newBooking, bookingsOfRoom).length === 0
+                return validateDateIsOccupied(bookingNew, bookingsOfRoom).length === 0
             })
     const clientsAvailable = Object.values(clientAll).filter(client => client.isArchived === OptionYesNo.no)
     const roomNumbersReactOptions: ReactSelectOption<string>[] = datesSelected && roomsAvailable.length > 0
@@ -97,72 +98,42 @@ export const BookingCreate = () => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
     }, [clientAllLoading, clientAll])
 
-    const validateAllData = (): string[] => {
-        const allErrorMessages: string[] = []
-
-        if (newBooking.room_id_list.length < 1) {
-            allErrorMessages.push('Room ID list is empty')
-        }
-        if (newBooking.client_id === '') {
-            allErrorMessages.push('Client ID is empty')
-        }
-
-        validateTextArea(newBooking.special_request, 'Booking special request').map(
-            error => allErrorMessages.push(error)
-        )
-        validateOptionYesNo(newBooking.isArchived, 'Booking isArchived').map(
-            error => allErrorMessages.push(error)
-        )
-
-        // Comprobamos que los IDs de las rooms y el cliente asociados a la booking existan en BD
-        const allRoomIdsNotArchived: string[] = roomAll
-            .filter(room => room.isArchived === OptionYesNo.no)
-            .map(room => room._id)
-        for (const roomId of newBooking.room_id_list) {
-            if (!allRoomIdsNotArchived.includes(roomId)) {
-                allErrorMessages.push(`Room ID: ${roomId} didn't exist in DB or is archived`)
-            }
-        }
-        const allClientIdsNotArchived: string[] = clientAll
-            .filter(client => client.isArchived === OptionYesNo.no)
-            .map(client => client._id)
-        if (!allClientIdsNotArchived.includes(newBooking.client_id)) {
-            allErrorMessages.push(`Client ID: ${newBooking.client_id} didn't exist in DB or is archived`)
-        }
-
-        // Validaciones de nueva booking:
-        validateCheckInCheckOutNewBooking(newBooking.check_in_date, newBooking.check_out_date).map(
-            error => allErrorMessages.push(error)
-        )
-        const allBookingDatesByRoomsNotArchived: BookingInterfaceCheckInOut[] =
-            bookingAll
-                .filter(booking =>
-                    booking.isArchived === OptionYesNo.no &&
-                    booking.room_id_list.some(roomId =>
-                        newBooking.room_id_list.includes(roomId)
-                    )
-                )
-                .map(booking => ({
-                    check_in_date: new Date(booking.check_in_date),
-                    check_out_date: new Date(booking.check_out_date)
-                }))
-        validateDateIsOccupied(newBooking, allBookingDatesByRoomsNotArchived).map(
-            error => allErrorMessages.push(error)
-        )
-
-        return allErrorMessages
-    }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const errors = validateAllData()
-        if (errors.length > 0) {
-            errors.forEach(error => ToastifyError(error))
+        const clientId: string | undefined = clientAll.find((client) => client._id === bookingNew.client_id)?._id
+        if (!clientId) {
+            ToastifyError(`Client #${clientId} not found`)
+            return
+        }
+        const allBookingDatesNotArchived: BookingInterfaceCheckInOut[] = bookingAll
+            .filter((booking) => booking.isArchived === OptionYesNo.no)
+            .map((booking) => ({
+                check_in_date: booking.check_in_date,
+                check_out_date: booking.check_out_date
+            }))
+        const allRoomIdsNotArchived: string[] = roomAll
+            .filter((room) => room.isArchived === OptionYesNo.no)
+            .map((room) => room._id)
+        const allClientIdsNotArchived: string[] = clientAll
+            .filter((client) => client.isArchived === OptionYesNo.no)
+            .map((client) => client._id)
+
+        const bookingValidator = new BookingValidator()
+        const validationErrors = bookingValidator.validateNewBooking(
+            bookingNew,
+            allBookingDatesNotArchived,
+            allRoomIdsNotArchived,
+            clientId,
+            allClientIdsNotArchived
+        )
+        if (validationErrors.length > 0) {
+            validationErrors.forEach(error => ToastifyError(error))
             return
         }
 
         const newBookingToDispatch = {
-            ...newBooking,
+            ...bookingNew,
             order_date: new Date()
         }
 
@@ -174,12 +145,12 @@ export const BookingCreate = () => {
         catch (error) {
             const apiError = error as ApiErrorResponseInterface
             apiError.message
-                ? ToastifyError(apiError.message)
+                ? ToastifyError('API Error: ' + apiError.message)
                 : ToastifyError('Unexpected API Error')
         }
     }
 
-    console.log(newBooking)
+
     return (<>
         <ToastContainer />
         <styles.GlobalDateTimeStyles />
@@ -228,7 +199,7 @@ export const BookingCreate = () => {
                                     styles={reactSelectStyles(theme)}
                                     closeMenuOnSelect={false}
                                     options={roomNumbersReactOptions}
-                                    value={roomNumbersReactOptions.filter(option => newBooking.room_id_list.includes(option.value))}
+                                    value={roomNumbersReactOptions.filter(option => bookingNew.room_id_list.includes(option.value))}
                                     onChange={handleReactMultiSelectChange("room_id_list")}
                                 />
                             </styles.CtnEntryVertical>
@@ -243,7 +214,7 @@ export const BookingCreate = () => {
                                     styles={reactSelectStyles(theme)}
                                     closeMenuOnSelect={true}
                                     options={clientReactOptions}
-                                    value={clientReactOptions.find(option => option.value === newBooking.client_id)}
+                                    value={clientReactOptions.find(option => option.value === bookingNew.client_id)}
                                     onChange={handleReactSingleSelectChange("client_id")}
                                 />
                             </styles.CtnEntryVertical>

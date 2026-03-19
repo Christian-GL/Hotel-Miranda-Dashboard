@@ -8,6 +8,7 @@ import { getClientIdData, getClientIdStatus } from "client/features/clientSlice"
 import { ClientFetchByIDThunk } from "client/features/thunks/clientFetchByIDThunk"
 import { ClientUpdateThunk } from 'client/features/thunks/clientUpdateThunk'
 import { ClientInterfaceId } from "client/interfaces/clientInterface"
+import { ClientValidator } from "client/validators/clientValidator"
 import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
 import { ToastifyError } from "common/components/toastify/errorPopup/toastifyError"
 import { ToastifySuccess } from "common/components/toastify/successPopup/toastifySuccess"
@@ -18,7 +19,6 @@ import { AppDispatch } from "common/redux/store"
 import { ROUTES } from "common/router/routes"
 import * as styles from "common/styles/form"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateEmail, validateFullName, validatePhoneNumber } from 'common/utils/validations'
 
 
 export const ClientUpdate = () => {
@@ -34,7 +34,7 @@ export const ClientUpdate = () => {
         full_name: '',
         email: '',
         phone_number: '',
-        isArchived: OptionYesNo.no,
+        isArchived: OptionYesNo.yes,
         booking_id_list: []
     })
     const { handleStringChange } = createFormHandlers(setClientUpdated)
@@ -50,33 +50,19 @@ export const ClientUpdate = () => {
                 full_name: clientById.full_name || '',
                 email: clientById.email || '',
                 phone_number: clientById.phone_number || '',
-                isArchived: clientById.isArchived,
+                isArchived: clientById.isArchived || OptionYesNo.yes,
                 booking_id_list: clientById.booking_id_list || []
             })
         }
     }, [clientByIdLoading, clientById, id])
 
-    const validateAllData = (): string[] => {
-        const allErrorMessages: string[] = []
-
-        validateFullName(clientUpdated.full_name, 'Full name').map(
-            error => allErrorMessages.push(error)
-        )
-        validateEmail(clientUpdated.email, 'Email').map(
-            error => allErrorMessages.push(error)
-        )
-        validatePhoneNumber(clientUpdated.phone_number, 'Phone number').map(
-            error => allErrorMessages.push(error)
-        )
-
-        return allErrorMessages
-    }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const errors = validateAllData()
-        if (errors.length > 0) {
-            errors.forEach(error => ToastifyError(error))
+        const clientValidator = new ClientValidator()
+        const validationErrors = clientValidator.validateExistingClient(clientUpdated)
+        if (validationErrors.length > 0) {
+            validationErrors.forEach(error => ToastifyError(error))
             return
         }
 
@@ -88,7 +74,7 @@ export const ClientUpdate = () => {
         catch (error) {
             const apiError = error as ApiErrorResponseInterface
             apiError.message
-                ? ToastifyError(apiError.message)
+                ? ToastifyError('API Error: ' + apiError.message)
                 : ToastifyError('Unexpected API Error')
         }
     }

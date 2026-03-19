@@ -9,6 +9,7 @@ import { BookingFetchAllThunk } from "booking/features/thunks/bookingFetchAllThu
 import { BookingFetchByIDThunk } from "booking/features/thunks/bookingFetchByIDThunk"
 import { BookingUpdateThunk } from "booking/features/thunks/bookingUpdateThunk"
 import { BookingInterfaceCheckInOutId, BookingInterfaceId } from "booking/interfaces/bookingInterface"
+import { BookingValidator } from "booking/validators/bookingValidator"
 import { getClientAllData, getClientAllStatus } from "client/features/clientSlice"
 import { ClientFetchAllThunk } from 'client/features/thunks/clientFetchAllThunk'
 import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
@@ -24,7 +25,7 @@ import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import { formatDateForInput } from "common/utils/dateUtils"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateCheckInCheckOutExistingBooking, validateDateIsOccupiedIfBookingExists, validateOptionYesNo, validateTextArea } from 'common/utils/validations'
+import { validateDateIsOccupiedIfBookingExists } from 'common/utils/validations'
 import { ToastContainer } from 'react-toastify'
 import { getRoomAllData, getRoomAllStatus } from 'room/features/roomSlice'
 import { RoomFetchAllThunk } from 'room/features/thunks/roomFetchAllThunk'
@@ -99,9 +100,9 @@ export const BookingUpdate = () => {
             }
             setBookingUpdated({
                 _id: bookingById._id || "0",
-                order_date: bookingById.order_date || '',
-                check_in_date: bookingById.check_in_date || '',
-                check_out_date: bookingById.check_out_date || '',
+                order_date: bookingById.order_date ? new Date(bookingById.order_date) : new Date(),
+                check_in_date: bookingById.check_in_date ? new Date(bookingById.check_in_date) : new Date(),
+                check_out_date: bookingById.check_out_date ? new Date(bookingById.check_out_date) : new Date(),
                 price: bookingById.price || 0,
                 special_request: bookingById.special_request || '',
                 isArchived: bookingById.isArchived || OptionYesNo.yes,
@@ -120,70 +121,38 @@ export const BookingUpdate = () => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
     }, [clientAllLoading, clientAll])
 
-    const validateAllData = (): string[] => {
-        const allErrorMessages: string[] = []
-
-        if (bookingUpdated.room_id_list.length < 1) {
-            allErrorMessages.push('Room ID list is empty')
-        }
-        if (bookingUpdated.client_id === '') {
-            allErrorMessages.push('Client ID is empty')
-        }
-
-        validateTextArea(bookingUpdated.special_request, 'Booking special request').map(
-            error => allErrorMessages.push(error)
-        )
-        validateOptionYesNo(bookingUpdated.isArchived, 'Booking isArchived').map(
-            error => allErrorMessages.push(error)
-        )
-
-        // Comprobamos que los IDs de las rooms y el cliente asociados a la booking existan en BD
-        const allRoomIdsNotArchived: string[] = roomAll
-            .filter(room => room.isArchived === OptionYesNo.no)
-            .map(room => room._id)
-        for (const roomId of bookingUpdated.room_id_list) {
-            if (!allRoomIdsNotArchived.includes(roomId)) {
-                allErrorMessages.push(`Room ID: ${roomId} didn't exist in DB or is archived`)
-            }
-        }
-        const allClientIdsNotArchived: string[] = clientAll
-            .filter(client => client.isArchived === OptionYesNo.no)
-            .map(client => client._id)
-        if (!allClientIdsNotArchived.includes(bookingUpdated.client_id)) {
-            allErrorMessages.push(`Client ID: ${bookingUpdated.client_id} didn't exist in DB or is archived`)
-        }
-
-        // Validaciones de booking existente:
-        validateCheckInCheckOutExistingBooking(new Date(bookingUpdated.check_in_date), new Date(bookingUpdated.check_out_date)).map(
-            error => allErrorMessages.push(error)
-        )
-        const allBookingDatesAndIdByRoomsNotArchived: BookingInterfaceCheckInOutId[] =
-            bookingAll
-                .filter(booking =>
-                    booking.isArchived === OptionYesNo.no &&
-                    booking.room_id_list.some(roomId =>
-                        bookingUpdated.room_id_list.includes(roomId)
-                    )
-                )
-                .map(booking => ({
-                    _id: booking._id,
-                    check_in_date: new Date(booking.check_in_date),
-                    check_out_date: new Date(booking.check_out_date)
-                }))
-        validateDateIsOccupiedIfBookingExists(bookingUpdated, allBookingDatesAndIdByRoomsNotArchived).map(
-            error => allErrorMessages.push(error)
-        )
-
-
-
-        return allErrorMessages
-    }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const errors = validateAllData()
-        if (errors.length > 0) {
-            errors.forEach(error => ToastifyError(error))
+        const clientId: string | undefined = clientAll.find((client) => client._id === bookingUpdated.client_id)?._id
+        if (!clientId) {
+            ToastifyError(`Client #${clientId} not found`)
+            return
+        }
+        const allBookingDatesAndIdByRoomsNotArchived: BookingInterfaceCheckInOutId[] = bookingAll
+            .filter((booking) => booking.isArchived === OptionYesNo.no)
+            .map((booking) => ({
+                _id: booking._id,
+                check_in_date: booking.check_in_date,
+                check_out_date: booking.check_out_date
+            }))
+        const allRoomIdsNotArchived: string[] = roomAll
+            .filter((room) => room.isArchived === OptionYesNo.no)
+            .map((room) => room._id)
+        const allClientIdsNotArchived: string[] = clientAll
+            .filter((client) => client.isArchived === OptionYesNo.no)
+            .map((client) => client._id)
+
+        const bookingValidator = new BookingValidator()
+        const validationErrors = bookingValidator.validateExistingBooking(
+            bookingUpdated,
+            allBookingDatesAndIdByRoomsNotArchived,
+            allRoomIdsNotArchived,
+            clientId,
+            allClientIdsNotArchived
+        )
+        if (validationErrors.length > 0) {
+            validationErrors.forEach(error => ToastifyError(error))
             return
         }
 
@@ -195,7 +164,7 @@ export const BookingUpdate = () => {
         catch (error) {
             const apiError = error as ApiErrorResponseInterface
             apiError.message
-                ? ToastifyError(apiError.message)
+                ? ToastifyError('API Error: ' + apiError.message)
                 : ToastifyError('Unexpected API Error')
         }
     }

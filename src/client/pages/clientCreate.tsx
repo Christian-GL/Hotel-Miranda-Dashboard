@@ -8,6 +8,7 @@ import { getClientAllData, getClientAllStatus } from "client/features/clientSlic
 import { ClientCreateThunk } from "client/features/thunks/clientCreateThunk"
 import { ClientFetchAllThunk } from "client/features/thunks/clientFetchAllThunk"
 import { ClientInterface } from "client/interfaces/clientInterface"
+import { ClientValidator } from "client/validators/clientValidator"
 import { ButtonCreate } from 'common/components/buttonCreate/buttonCreate'
 import { ToastifyError } from "common/components/toastify/errorPopup/toastifyError"
 import { ToastifySuccess } from "common/components/toastify/successPopup/toastifySuccess"
@@ -18,7 +19,6 @@ import { AppDispatch } from "common/redux/store"
 import { ROUTES } from "common/router/routes"
 import * as styles from "common/styles/form"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateEmail, validateFullName, validateMongoDBObjectIdList, validatePhoneNumber } from 'common/utils/validations'
 
 
 export const ClientCreate = () => {
@@ -27,55 +27,38 @@ export const ClientCreate = () => {
     const dispatch = useDispatch<AppDispatch>()
     const clientAll = useSelector(getClientAllData)
     const clientAllLoading = useSelector(getClientAllStatus)
-    const [newClient, setNewClient] = useState<ClientInterface>({
+    const [clientNew, setClientNew] = useState<ClientInterface>({
         full_name: '',
         email: '',
         phone_number: '',
         isArchived: OptionYesNo.no,
         booking_id_list: []
     })
-    const { handleStringChange } = createFormHandlers(setNewClient)
+    const { handleStringChange } = createFormHandlers(setClientNew)
 
     useEffect(() => {
         if (clientAllLoading === ApiStatus.idle) { dispatch(ClientFetchAllThunk()) }
     }, [clientAllLoading, clientAll])
 
-    const validateAllData = (): string[] => {
-        const allErrorMessages: string[] = []
-
-        validateFullName(newClient.full_name, 'Full name').map(
-            error => allErrorMessages.push(error)
-        )
-        validateEmail(newClient.email, 'Email').map(
-            error => allErrorMessages.push(error)
-        )
-        validatePhoneNumber(newClient.phone_number, 'Phone number').map(
-            error => allErrorMessages.push(error)
-        )
-        validateMongoDBObjectIdList(newClient.booking_id_list, 'Booking ID list').map(
-            error => allErrorMessages.push(error)
-        )
-
-        return allErrorMessages
-    }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const errors = validateAllData()
-        if (errors.length > 0) {
-            errors.forEach(error => ToastifyError(error))
+        const clientValidator = new ClientValidator()
+        const validationErrors = clientValidator.validateNewClient(clientNew)
+        if (validationErrors.length > 0) {
+            validationErrors.forEach(error => ToastifyError(error))
             return
         }
 
         try {
-            await dispatch(ClientCreateThunk(newClient))
+            await dispatch(ClientCreateThunk(clientNew))
                 .unwrap()
                 .then(() => ToastifySuccess('Client created', () => navigate(ROUTES.clients.root)))
         }
         catch (error) {
             const apiError = error as ApiErrorResponseInterface
             apiError.message
-                ? ToastifyError(apiError.message)
+                ? ToastifyError('API Error: ' + apiError.message)
                 : ToastifyError('Unexpected API Error')
         }
     }

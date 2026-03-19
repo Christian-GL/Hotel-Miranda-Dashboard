@@ -392,7 +392,7 @@ export const validateAmenities = (amenities: any[], fieldName: string = 'Ameniti
 
 export const validateOptionYesNo = (option: any, fieldName: string = 'Option Yes-No'): string[] => {
     const errorMessages: string[] = []
-
+    
     if (typeof option !== "string") {
         errorMessages.push(`${fieldName} is not a String`)
     }

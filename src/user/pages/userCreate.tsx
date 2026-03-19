@@ -18,13 +18,13 @@ import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateDateRelativeToAnother, validateEmail, validateFullName, validateNewPassword, validateOptionYesNo, validatePhoneNumber, validatePhoto, validateRole, validateTextArea } from 'common/utils/validations'
 import { JobPosition } from "user/enums/jobPosition"
 import { Role } from "user/enums/role"
 import { UserCreateThunk } from "user/features/thunks/userCreateThunk"
 import { UserFetchAllThunk } from "user/features/thunks/userFetchAllThunk"
 import { getUserAllData, getUserAllStatus, getUserApiError } from "user/features/userSlice"
 import { UserInterface } from "user/interfaces/userInterface"
+import { UserValidator } from "user/validators/userValidator"
 
 
 export const UserCreate = () => {
@@ -35,7 +35,7 @@ export const UserCreate = () => {
     const userAll = useSelector(getUserAllData)
     const userAllLoading = useSelector(getUserAllStatus)
     const userErrorMessage = useSelector(getUserApiError)
-    const [newUser, setNewUser] = useState<UserInterface>({
+    const [userNew, setUserNew] = useState<UserInterface>({
         photo: null,
         full_name: '',
         email: '',
@@ -52,7 +52,7 @@ export const UserCreate = () => {
         handlePhotoChange,
         handleTextAreaChange,
         handleReactSingleSelectChange
-    } = createFormHandlers(setNewUser)
+    } = createFormHandlers(setUserNew)
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
     const roleReactOptions: ReactSelectOption<Role>[] = Object.values(Role).map(role => ({
         value: role,
@@ -63,65 +63,30 @@ export const UserCreate = () => {
         if (userAllLoading === ApiStatus.idle) { dispatch(UserFetchAllThunk()) }
     }, [userAllLoading, userAll, userErrorMessage])
 
-    const validateAllData = (): string[] => {
-        // !!! CREAR FUNCIÓN COMÚN PARA VALIDAR USUARIOS NUEVOS Y USUARIOS ACTUALIZADOS SIMILAR A COMO ES EN LA API
-        const allErrorMessages: string[] = []
-
-        validatePhoto(newUser.photo, 'Photo').map(
-            error => allErrorMessages.push(error)
-        )
-        validateFullName(newUser.full_name, 'Full name').map(
-            error => allErrorMessages.push(error)
-        )
-        validateEmail(newUser.email, 'Email').map(
-            error => allErrorMessages.push(error)
-        )
-        validatePhoneNumber(newUser.phone_number, 'Phone number').map(
-            error => allErrorMessages.push(error)
-        )
-        validateDateRelativeToAnother(new Date(newUser.start_date), true, new Date(newUser.end_date), 'Dates').map(
-            error => allErrorMessages.push(error)
-        )
-        validateTextArea(newUser.job_position, 'Job position').map(
-            error => allErrorMessages.push(error)
-        )
-        validateRole(newUser.role, 'Role').map(
-            error => allErrorMessages.push(error)
-        )
-        validateNewPassword(newUser.password).map(
-            error => allErrorMessages.push(error)
-        )
-        validateOptionYesNo(newUser.isArchived, 'User isArchived').map(
-            error => allErrorMessages.push(error)
-        )
-
-        return allErrorMessages
-    }
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const errors = validateAllData()
-        if (errors.length > 0) {
-            errors.forEach(error => ToastifyError(error))
+        const userValidator = new UserValidator()
+        const validationErrors = userValidator.validateNewUser(userNew)
+        if (validationErrors.length > 0) {
+            validationErrors.forEach(error => ToastifyError(error))
             return
         }
 
         try {
-            await dispatch(UserCreateThunk(newUser))
+            await dispatch(UserCreateThunk(userNew))
                 .unwrap()
                 .then(() => ToastifySuccess('User created', () => navigate(ROUTES.users.root)))
         }
         catch (error) {
             const apiError = error as ApiErrorResponseInterface
             apiError.message
-                ? ToastifyError(apiError.message)
+                ? ToastifyError('API Error: ' + apiError.message)
                 : ToastifyError('Unexpected API Error')
         }
     }
 
 
-    console.log(newUser)
     return (<>
         <ToastContainer />
         <styles.GlobalDateTimeStyles />
@@ -141,7 +106,7 @@ export const UserCreate = () => {
                         <styles.Text>Photo</styles.Text>
                         <styles.InputTextPhoto name="photo" type='file' onChange={handlePhotoChange} />
                         <styles.ImgUser
-                            src={newUser.photo || userDefaultImg}
+                            src={userNew.photo || userDefaultImg}
                             onError={(e) => { e.currentTarget.src = userDefaultImg }}
                         />
                     </styles.CtnEntryVertical>
@@ -173,7 +138,7 @@ export const UserCreate = () => {
                                     styles={reactSelectStyles(theme)}
                                     closeMenuOnSelect={true}
                                     options={roleReactOptions}
-                                    value={roleReactOptions.find(option => option.value === newUser.role)}
+                                    value={roleReactOptions.find(option => option.value === userNew.role)}
                                     onChange={handleReactSingleSelectChange("role")}
                                 />
                             </styles.CtnEntryVertical>

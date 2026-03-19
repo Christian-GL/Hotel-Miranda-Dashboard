@@ -20,7 +20,6 @@ import { reactSelectStyles } from "common/styles/externalLibrariesStyles"
 import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateAmenities, validateMongoDBObjectIdList, validateOptionYesNo, validateRoomDiscount, validateRoomNumber, validateRoomPhotoList, validateRoomPrice, validateRoomType } from 'common/utils/validations'
 import { RoomAmenities } from "room/enums/roomAmenities"
 import { RoomType } from "room/enums/roomType"
 import { getRoomAllData, getRoomAllStatus, getRoomIdData, getRoomIdStatus } from "room/features/roomSlice"
@@ -28,6 +27,7 @@ import { RoomFetchAllThunk } from "room/features/thunks/roomFetchAllThunk"
 import { RoomFetchByIDThunk } from "room/features/thunks/roomFetchByIDThunk"
 import { RoomUpdateThunk } from 'room/features/thunks/roomUpdateThunk'
 import { RoomInterfaceId } from "room/interfaces/roomInterface"
+import { RoomValidator } from "room/validators/roomValidator"
 
 
 export const RoomUpdate = () => {
@@ -101,45 +101,19 @@ export const RoomUpdate = () => {
         if (bookingAllLoading === ApiStatus.idle) { dispatch(BookingFetchAllThunk()) }
     }, [bookingAllLoading, bookingAll])
 
-    const validateAllData = (): string[] => {
-        const allErrorMessages: string[] = []
-
-        validateRoomNumber(roomUpdated.number, 'Number').map(
-            error => allErrorMessages.push(error)
-        )
-        validateRoomPhotoList(roomUpdated.photos, 'Photos').map(
-            error => allErrorMessages.push(error)
-        )
-        validateRoomType(roomUpdated.type, 'Type').map(
-            error => allErrorMessages.push(error)
-        )
-        validateAmenities(roomUpdated.amenities, 'Amenities').map(
-            error => allErrorMessages.push(error)
-        )
-        validateRoomPrice(roomUpdated.price, 'Price').map(
-            error => allErrorMessages.push(error)
-        )
-        validateRoomDiscount(roomUpdated.discount, 'Discount').map(
-            error => allErrorMessages.push(error)
-        )
-        validateOptionYesNo(roomUpdated.isActive, 'Room isActive').map(
-            error => allErrorMessages.push(error)
-        )
-        validateOptionYesNo(roomUpdated.isArchived, 'Room isArchived').map(
-            error => allErrorMessages.push(error)
-        )
-        validateMongoDBObjectIdList(roomUpdated.booking_id_list).map(
-            error => allErrorMessages.push(error)
-        )
-
-        return allErrorMessages
-    }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const errors = validateAllData()
-        if (errors.length > 0) {
-            errors.forEach(error => ToastifyError(error))
+        const existingRoomNumber = roomAll.find(room => room._id === roomUpdated._id)?.number
+        if (!existingRoomNumber) {
+            ToastifyError(`Room #${roomUpdated._id} not found`)
+            return
+        }
+        const allRoomNumbersNotArchived = roomAll.filter(room => room.isArchived !== OptionYesNo.yes).map(room => room.number)
+        const roomValidator = new RoomValidator()
+        const validationErrors = roomValidator.validateExistingRoom(roomUpdated, existingRoomNumber, allRoomNumbersNotArchived)
+        if (validationErrors.length > 0) {
+            validationErrors.forEach(error => ToastifyError(error))
             return
         }
 
@@ -151,7 +125,7 @@ export const RoomUpdate = () => {
         catch (error) {
             const apiError = error as ApiErrorResponseInterface
             apiError.message
-                ? ToastifyError(apiError.message)
+                ? ToastifyError('API Error: ' + apiError.message)
                 : ToastifyError('Unexpected API Error')
         }
 

@@ -19,13 +19,13 @@ import * as styles from "common/styles/form"
 import { ReactSelectOption } from "common/types/reactMultiSelectOption"
 import { formatDateForInput } from "common/utils/dateUtils"
 import { createFormHandlers } from 'common/utils/formHandlers'
-import { validateDateRelativeToAnother, validateEmail, validateFullName, validateNewPassword, validateOptionYesNo, validatePhoneNumber, validatePhoto, validateRole, validateTextArea } from 'common/utils/validations'
 import { JobPosition } from "user/enums/jobPosition"
 import { Role } from "user/enums/role"
 import { UserFetchByIDThunk } from "user/features/thunks/userFetchByIDThunk"
 import { UserUpdateThunk } from "user/features/thunks/userUpdateThunk"
 import { getUserIdData, getUserIdStatus } from "user/features/userSlice"
 import { UserInterfaceId } from "user/interfaces/userInterface"
+import { UserValidator } from "user/validators/userValidator"
 
 
 export const UserUpdate = () => {
@@ -57,7 +57,7 @@ export const UserUpdate = () => {
         handleReactSingleSelectChange
     } = createFormHandlers(setUserUpdated)
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
-    const [oldPassword, setOldPassword] = useState<String>('')
+    const [oldPassword, setOldPassword] = useState<string>('')
     const roleReactOptions: ReactSelectOption<Role>[] = Object.values(Role).map(role => ({
         value: role,
         label: role
@@ -75,8 +75,8 @@ export const UserUpdate = () => {
                 full_name: userById.full_name || '',
                 email: userById.email || '',
                 phone_number: userById.phone_number || '',
-                start_date: userById.start_date || new Date(),
-                end_date: userById.end_date || new Date(),
+                start_date: userById.start_date ? new Date(userById.start_date) : new Date(),
+                end_date: userById.end_date ? new Date(userById.end_date) : new Date(),
                 job_position: userById.job_position || JobPosition.receptionist,
                 role: userById.role || Role.user,
                 password: '',
@@ -86,47 +86,16 @@ export const UserUpdate = () => {
         }
     }, [userByIdLoading, userById, id])
 
-    const validateAllData = (): string[] => {
-        const allErrorMessages: string[] = []
-
-        validatePhoto(userUpdated.photo, 'Photo').map(
-            error => allErrorMessages.push(error)
-        )
-        validateFullName(userUpdated.full_name, 'Full name').map(
-            error => allErrorMessages.push(error)
-        )
-        validateEmail(userUpdated.email, 'Email').map(
-            error => allErrorMessages.push(error)
-        )
-        validatePhoneNumber(userUpdated.phone_number, 'Phone number').map(
-            error => allErrorMessages.push(error)
-        )
-        validateDateRelativeToAnother(new Date(userUpdated.start_date), true, new Date(userUpdated.end_date), 'Dates').map(
-            error => allErrorMessages.push(error)
-        )
-        validateTextArea(userUpdated.job_position, 'Job position').map(
-            error => allErrorMessages.push(error)
-        )
-        validateRole(userUpdated.role, 'Role').map(
-            error => allErrorMessages.push(error)
-        )
-        validateOptionYesNo(userUpdated.isArchived, 'User isArchived').map(
-            error => allErrorMessages.push(error)
-        )
-        if (userUpdated.password !== "") {
-            validateNewPassword(userUpdated.password).map(
-                error => allErrorMessages.push(error)
-            )
-        }
-
-        return allErrorMessages
-    }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const errors = validateAllData()
-        if (errors.length > 0) {
-            errors.forEach(error => ToastifyError(error))
+        const userValidator = new UserValidator()
+        const validationErrors =
+            userUpdated.password === ""
+                ? userValidator.validateExistingUser(userUpdated)
+                : userValidator.validateExistingUserNewPassword(userUpdated, oldPassword)
+        if (validationErrors.length > 0) {
+            validationErrors.forEach(error => ToastifyError(error))
             return
         }
 
@@ -138,12 +107,12 @@ export const UserUpdate = () => {
         catch (error) {
             const apiError = error as ApiErrorResponseInterface
             apiError.message
-                ? ToastifyError(apiError.message)
+                ? ToastifyError('API Error: ' + apiError.message)
                 : ToastifyError('Unexpected API Error')
         }
     }
 
-    console.log(userUpdated)
+
     return (<>
         <ToastContainer />
         <styles.GlobalDateTimeStyles />
